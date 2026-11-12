@@ -202,3 +202,12 @@ test("email authentication, data privacy, ownership, update and deletion", async
     false,
   );
 });
+
+// HTML must revalidate so returning visitors receive current scripts and styles.
+test("homepage and deep-link HTML revalidate after releases", async () => {
+  for (const path of ["/", "/account"]) {
+    const response = await request(path);
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get("cache-control"), "no-cache");
+  }
+});
