@@ -1,5 +1,7 @@
 # Operations
 
+For step-by-step Google sign-in, custom domain, sender setup, and delivery testing, see [Finish the integrations](INTEGRATIONS.md).
+
 ## Azure resources
 
 Subscription: `9a04b64b-af19-4519-be50-56ec2acbd855`. Tenant: `148ba320-1a6d-4fd7-ba8b-2897083e7531`.
@@ -13,6 +15,7 @@ All resources are isolated in `reunite-now-rg`:
 | `reunite-now-pg-9a04`       | PostgreSQL 16, Burstable B1ms, 32 GB, database `reunite_now`       |
 | `reunite-now-communication` | Azure Communication Services                                       |
 | `reunite-now-email`         | Email service and verified Azure-managed sender domain             |
+| `reunite-now-reminders`     | Consumption Logic App; daily reminder eligibility check at 16:00 UTC |
 
 App Service and PostgreSQL have ongoing compute charges even with no visitors. Email and Logic Apps runs are metered. This avoids separate worker hosting and keeps the initial operational setup small. Review actual costs in Azure Cost Management; no monthly price is guaranteed here. The B1 database is not highly available.
 
@@ -40,7 +43,7 @@ After deployment verify:
 
 `AZURE_COMMUNICATION_CONNECTION_STRING` and `EMAIL_FROM` configure the current Azure-managed sender. The code also supports `AZURE_COMMUNICATION_ENDPOINT` plus managed identity if the necessary email-send role is assigned. Tracking is disabled on the email domain. A custom sender domain later needs DNS verification, SPF, and DKIM in Azure.
 
-The daily job calls `/api/jobs/reminders` with `Bearer CRON_SECRET`. Eligibility is opt-in, at least one active case, and at least 30 days since profile confirmation. A database ledger permits at most one send per calendar month. Each operation has a deterministic Azure operation ID, so retrying a recent pending send reuses it. Pending sends older than 23 hours are skipped for manual reconciliation rather than risk duplicate delivery. Review failed/skipped counts in Logic Apps run history; do not print message payloads or credentials.
+The daily job calls `/api/jobs/reminders` with `Bearer CRON_SECRET`. Eligibility is opt-in, at least one active case, and at least 30 days since profile confirmation. A database ledger permits at most one send per calendar month. Each operation has a deterministic Azure operation ID, so retrying a recent pending send reuses it. Pending sends older than 23 hours are skipped for manual reconciliation rather than risk duplicate delivery. Review the `configured`, `sent`, and `failed` fields in the Logic App HTTP action response; skipped entries are not returned as a separate count. Reconcile old pending ledger entries against Azure delivery status. Do not print message payloads or credentials.
 
 Saving an account or pressing “No changes” confirms all cases. Monthly reminders never modify case timelines. Turn off reminders in the account to unsubscribe. Account deletion cascades through the reminder ledger.
 
