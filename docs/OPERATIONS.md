@@ -6,15 +6,15 @@ Subscription: `9a04b64b-af19-4519-be50-56ec2acbd855`. Tenant: `148ba320-1a6d-4fd
 
 All resources are isolated in `reunite-now-rg`:
 
-| Resource                    | Purpose                                                      |
-| --------------------------- | ------------------------------------------------------------ |
-| `reunite-now-plan`          | Linux B1 App Service plan; always on for scheduled jobs      |
-| `reunite-now-9a04`          | React static assets and Express API, Node 24                 |
-| `reunite-now-pg-9a04`       | PostgreSQL 16, Burstable B1ms, 32 GB, database `reunite_now` |
-| `reunite-now-communication` | Azure Communication Services                                 |
-| `reunite-now-email`         | Email service and verified Azure-managed sender domain       |
+| Resource                    | Purpose                                                            |
+| --------------------------- | ------------------------------------------------------------------ |
+| `reunite-now-plan`          | Linux B1 App Service plan; always on for reliable API availability |
+| `reunite-now-9a04`          | React static assets and Express API, Node 24                       |
+| `reunite-now-pg-9a04`       | PostgreSQL 16, Burstable B1ms, 32 GB, database `reunite_now`       |
+| `reunite-now-communication` | Azure Communication Services                                       |
+| `reunite-now-email`         | Email service and verified Azure-managed sender domain             |
 
-App Service and PostgreSQL have ongoing compute charges even with no visitors. Email is metered. This avoids separate worker hosting and keeps the initial operational setup small. Review actual costs in Azure Cost Management; no monthly price is guaranteed here. The B1 database is not highly available.
+App Service and PostgreSQL have ongoing compute charges even with no visitors. Email and Logic Apps runs are metered. This avoids separate worker hosting and keeps the initial operational setup small. Review actual costs in Azure Cost Management; no monthly price is guaranteed here. The B1 database is not highly available.
 
 ## Provisioning
 
@@ -26,7 +26,7 @@ Deploy email infrastructure after the main template, then run `python3 scripts/c
 
 ## Releases
 
-Run build, unit/storage tests, and the local API integration test. Package with `python3 scripts/package.py`, then zip-deploy using the command in README. The archive includes a self-contained server bundle and a scheduled WebJob. No database files or `.env` files are included. Keep the previous deployment ZIP privately if rollback is needed. Use Git commit IDs to identify releases.
+Run build, unit/storage tests, and the local API integration test. Package with `python3 scripts/package.py`, then zip-deploy using the command in README. The archive includes a self-contained server bundle. No database files or `.env` files are included. Keep the previous deployment ZIP privately if rollback is needed. Use Git commit IDs to identify releases.
 
 After deployment verify:
 
@@ -34,13 +34,13 @@ After deployment verify:
 - `/api/config` reports production sign-in availability and no development bypass.
 - `/api/public` contains no email, session, or reminder preferences.
 - Home, account login, maps, story gallery, and deep links load over HTTPS.
-- The `monthly-reminders` triggered WebJob is present with schedule `0 0 16 * * *` (16:00 UTC daily).
+- The `reunite-now-reminders` Logic App is enabled with a daily 16:00 UTC recurrence.
 
 ## Email and reminders
 
 `AZURE_COMMUNICATION_CONNECTION_STRING` and `EMAIL_FROM` configure the current Azure-managed sender. The code also supports `AZURE_COMMUNICATION_ENDPOINT` plus managed identity if the necessary email-send role is assigned. Tracking is disabled on the email domain. A custom sender domain later needs DNS verification, SPF, and DKIM in Azure.
 
-The daily job calls `/api/jobs/reminders` with `Bearer CRON_SECRET`. Eligibility is opt-in, at least one active case, and at least 30 days since profile confirmation. A database ledger permits at most one send per calendar month. Each operation has a deterministic Azure operation ID, so retrying a recent pending send reuses it. Pending sends older than 23 hours are skipped for manual reconciliation rather than risk duplicate delivery. Review failed/skipped counts in job logs; do not print message payloads or credentials.
+The daily job calls `/api/jobs/reminders` with `Bearer CRON_SECRET`. Eligibility is opt-in, at least one active case, and at least 30 days since profile confirmation. A database ledger permits at most one send per calendar month. Each operation has a deterministic Azure operation ID, so retrying a recent pending send reuses it. Pending sends older than 23 hours are skipped for manual reconciliation rather than risk duplicate delivery. Review failed/skipped counts in Logic Apps run history; do not print message payloads or credentials.
 
 Saving an account or pressing “No changes” confirms all cases. Monthly reminders never modify case timelines. Turn off reminders in the account to unsubscribe. Account deletion cascades through the reminder ledger.
 
@@ -54,8 +54,8 @@ Create a Google OAuth web client and configure `GOOGLE_CLIENT_ID` and `GOOGLE_CL
 
 PostgreSQL backups retain up to seven days. Deletion removes the live account and dependent records, including photos and sessions. A point-in-time database restore can resurrect deleted records. Keep the restored site offline; reconcile users against a snapshot of the current live account IDs and remove restored records no longer present before serving requests. If the current database is unavailable, the implementation has no independent deletion ledger: do not expose an older restore until deletions can be reconciled. Deleting a user is intentionally not an audit-retained personal record.
 
-No request body logging or third-party analytics is installed. Avoid enabling request capture containing profiles, addresses, or sign-in tokens. Configure Azure alerts for app health, database storage, and WebJob failures as traffic grows.
+No request body logging or third-party analytics is installed. Avoid enabling request capture containing profiles, addresses, or sign-in tokens. Configure Azure alerts for app health, database storage, and reminder workflow failures as traffic grows.
 
 Run `python3 scripts/verify-live.py` for a read-only API smoke check. Adding `--check-reminders` invokes the real reminder job and can email eligible opted-in users; use it intentionally, not as a read-only check. It prints aggregate results only.
 
-Linux WebJobs require `WEBSITE_SKIP_RUNNING_KUDUAGENT=false` as well as Always On. This is configured by provisioning. See [Microsoft's WebJobs setup](https://learn.microsoft.com/en-us/azure/app-service/quickstart-webjobs).
+Run `python3 scripts/configure-reminders.py` after initial provisioning and whenever `CRON_SECRET` or `APP_URL` changes. It configures the Consumption Logic App from `infra/reminders.bicep`, with the bearer secret stored as a secure workflow parameter and hidden from run inputs. App Service's WebJob agent remains disabled. See [Microsoft's Logic Apps deployment guide](https://learn.microsoft.com/en-us/azure/logic-apps/quickstart-create-deploy-bicep).

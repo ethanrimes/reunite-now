@@ -9,8 +9,6 @@ for name in ['dist','public']:
  if target.exists():shutil.rmtree(target)
  shutil.copytree(root/name,target)
 (stage/'package.json').write_text(json.dumps({'name':'reunite-now','version':'0.1.0','private':True,'type':'module','scripts':{'start':'node dist/server.js'},'engines':{'node':'>=22'}}))
-job=stage/'App_Data/jobs/triggered/monthly-reminders';job.mkdir(parents=True,exist_ok=True)
-for name in ['run.js','settings.job']:shutil.copy2(root/'infra/webjob'/name,job/name)
 archive=root/'work'/'reunite-now.zip'
 with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED) as z:
  for p in stage.rglob('*'):

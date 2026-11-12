@@ -28,7 +28,7 @@ Tests cover timeline calculations, date validation, SQL transactions, deletion c
 
 ## Hosting
 
-The backend stays on Azure: App Service (Node/Express and static React files), PostgreSQL Flexible Server, Azure Communication Services Email, and a scheduled App Service WebJob. No Render service or third-party email provider is required.
+The backend stays on Azure: App Service (Node/Express and static React files), PostgreSQL Flexible Server, Azure Communication Services Email, and an Azure Logic Apps daily schedule. No Render service or third-party email provider is required.
 
 Infrastructure definitions are under `infra/`; provisioning, email configuration, and packaging scripts are under `scripts/`. See [operations](docs/OPERATIONS.md) before redeploying infrastructure or restoring a database.
 
