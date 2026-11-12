@@ -159,9 +159,7 @@ function App() {
             </span>
           </Link>
           <p>
-            {t("For transparent, accountable")}
-            <br />
-            {t("visa processing.")}
+            {t("For transparent, accountable")} {t("visa processing.")}
           </p>
           <Link to="/login?intent=sign" className="footer-cta">
             {t("Sign the petition ")}
