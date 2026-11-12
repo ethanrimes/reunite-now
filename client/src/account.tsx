@@ -59,16 +59,13 @@ export function Login() {
       <div className="auth-art">
         <span className="eyebrow">{t("REUNITE NOW")}</span>
         <h1>
-          {t("Help change")}
-          <br />
-          <em>{t("the process.")}</em>
+          {t("Help change")} {t("the process.")}
         </h1>
         <div className="auth-heart">
           <Heart size={110} />
         </div>
         <p>
-          {t("Sign the petition and keep")}
-          <br />
+          {t("Sign the petition and keep")}{" "}
           {t("your visa timeline up to date.")}
         </p>
       </div>
