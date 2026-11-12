@@ -7,16 +7,20 @@ import {
   translate,
   setLanguage,
   getLanguage,
+  getLocale,
   subscribeLanguage,
   validLanguage,
 } from "../client/src/i18n";
 
-test("Spanish and Portuguese catalogs cover interface strings and preserve placeholders", () => {
-  const catalog = messages as Record<string, { es: string; pt: string }>;
+test("Spanish, Portuguese, and Tagalog catalogs cover interface strings and preserve placeholders", () => {
+  const catalog = messages as Record<
+    string,
+    { es: string; pt: string; tl: string }
+  >;
   const placeholders = (s: string) =>
     [...s.matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort();
   for (const [english, translations] of Object.entries(catalog)) {
-    for (const language of ["es", "pt"] as const) {
+    for (const language of ["es", "pt", "tl"] as const) {
       assert.ok(translations[language].trim(), `${language}: ${english}`);
       assert.deepEqual(
         placeholders(translations[language]),
@@ -81,6 +85,13 @@ test("translation interpolation, fallback, and locale selection", () => {
     "3 selecionados",
   );
   assert.equal(translate("María's own story", "pt"), "María's own story");
+  assert.equal(translate("Sign the petition", "tl"), "Lagdaan ang petisyon");
+  assert.equal(
+    translate("{count} selected", "tl", { count: 3 }),
+    "3 ang napili",
+  );
+  assert.equal(translate("My personal story", "tl"), "My personal story");
+  assert.equal(validLanguage("tl"), true);
   assert.equal(validLanguage("fr"), false);
   let changes = 0;
   const unsubscribe = subscribeLanguage(() => changes++);
@@ -89,7 +100,11 @@ test("translation interpolation, fallback, and locale selection", () => {
   setLanguage("pt");
   assert.equal(getLanguage(), "pt");
   assert.equal(changes, 2);
+  setLanguage("tl");
+  assert.equal(getLanguage(), "tl");
+  assert.equal(getLocale(), "fil-PH");
+  assert.equal(changes, 3);
   unsubscribe();
   setLanguage("en");
-  assert.equal(changes, 2);
+  assert.equal(changes, 3);
 });

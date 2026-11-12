@@ -69,6 +69,6 @@ Stories publish when their author opts in. There is no staffed moderation queue 
 
 ## Languages
 
-The header selector supports English, Spanish, and Brazilian Portuguese. English is the default; the choice is stored in this browser and survives navigation and reloads. Switching languages keeps unsaved form input and filters intact. The page language, title, dates, number formatting, controls, policy summaries, privacy text, and consent labels follow the selection.
+The header selector supports English, Spanish, Brazilian Portuguese, and Tagalog. English is the default; the choice is stored in this browser and survives navigation and reloads. Switching languages keeps unsaved form input and filters intact. The page language, title, dates, number formatting, controls, policy summaries, privacy text, and consent labels follow the selection.
 
 Translations are maintained in `client/src/locales/messages.json`, keyed by the English interface text. Use `t()` for display text and placeholders for variable values; keep API values, IDs, option values, and React keys unchanged. `tests/i18n.test.ts` checks catalog coverage, placeholders, and stable values. No translation service or additional integration is required. Personal stories, user-entered notes, names, source documents, and outgoing emails remain in their original language. The selector does not translate content submitted by participants.
