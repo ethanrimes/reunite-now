@@ -195,8 +195,14 @@ export async function createDemoData(now = new Date()) {
       reminders: false,
       cases,
     });
-    const { reminders, signed, publicConsent, adultConsent, ...publicFields } =
-      profile;
+    const {
+      reminders,
+      reminderEmails,
+      signed,
+      publicConsent,
+      adultConsent,
+      ...publicFields
+    } = profile;
     return {
       ...publicFields,
       id: `demo-${index}`,

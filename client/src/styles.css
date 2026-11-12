@@ -4953,3 +4953,55 @@ textarea:focus-visible {
 .image-label::first-letter {
   text-transform: uppercase;
 }
+/* Reminder settings follow the civic theme's compact, quiet form layout. */
+.reminder-emails {
+  min-width: 0;
+  margin: 12px 0 24px 28px;
+  padding: 20px 0 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+.reminder-emails legend {
+  padding: 0 12px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+.reminder-emails .small-copy {
+  margin: 0 0 12px;
+  max-width: 65ch;
+  overflow-wrap: anywhere;
+}
+.reminder-email-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  max-width: 520px;
+  margin: 16px 0;
+}
+.reminder-email-row .field {
+  min-width: 0;
+  flex: 1;
+  margin: 0;
+}
+.reminder-email-row .icon-button {
+  flex-shrink: 0;
+  min-width: 44px;
+  min-height: 44px;
+}
+@media (max-width: 600px) {
+  .reminder-emails { margin-left: 0; }
+}
+.reminder-emails .text-button {
+  min-height: 44px;
+}
+.button:focus-visible,
+.icon-button:focus-visible,
+.text-button:focus-visible,
+.site-header a:focus-visible {
+  outline: 2px solid var(--coral);
+  outline-offset: 3px;
+}
+@media (max-width: 650px) {
+  .reminder-emails input { font-size: 16px; }
+  .language-selector select { min-height: 40px; }
+}

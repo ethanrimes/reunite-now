@@ -607,7 +607,7 @@ export function DataUse() {
         <h2>{t("What stays private")}</h2>
         <p>
           {t(
-            "Your email address, sign-in tokens, session details, and reminder preference are not included in public profiles. They are used to operate your account and, if requested, send reminders. We do not sell personal data or use advertising trackers.",
+            "Your sign-in and reminder email addresses, sign-in tokens, session details, and reminder preferences stay private. They are used to operate your account and send optional reminders. We do not sell personal data or use advertising trackers.",
           )}
         </p>
         <h2>{t("Address lookup")}</h2>
@@ -631,7 +631,7 @@ export function DataUse() {
         <h2>{t("Monthly reminders")}</h2>
         <p>
           {t(
-            "Reminders are optional. When email delivery is enabled, we send at most one reminder per calendar month for accounts with active visa cases that have not been confirmed in at least 30 days. The reminder asks you to add a dated milestone or confirm no change. It never changes a timeline automatically. Turn reminders off at any time in your account.",
+            "Reminders are optional. For active cases not confirmed in at least 30 days, we send at most one reminder per calendar month to each selected address. Your sign-in email receives reminders, and you can add up to 5 other addresses you own or have permission to notify. Each recipient gets a separate email without applicant details or other recipients’ addresses. Add a dated milestone or confirm no change in your account; reminders never update timelines automatically. Edit recipients or turn reminders off in Account.",
           )}
         </p>
         <h2>{t("Export, correct, or delete")}</h2>

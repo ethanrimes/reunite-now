@@ -134,7 +134,7 @@ From `/login` on `https://visatransparency.org`, request a link to an inbox you 
 
 The Azure Consumption Logic App **reunite-now-reminders** runs daily at **16:00 UTC**. It calls `POST /api/jobs/reminders` with a protected bearer secret. There is no Render worker to configure.
 
-Daily scheduling does not mean daily emails. The application checks for an opted-in profile with an active visa case and a last-confirmed timestamp at least 30 days old. It sends at most once per UTC calendar month. Updating the account or pressing “No changes” resets the confirmation timestamp without changing visa milestone dates. Turning reminders off stops eligibility.
+Daily scheduling does not mean daily emails. The application checks for an opted-in profile with an active visa case and a last-confirmed timestamp at least 30 days old. It sends at most once per recipient per account per UTC calendar month. The account’s sign-in address always receives opted-in reminders; the owner can add up to five additional private addresses. Addresses are normalized and deduplicated, and each receives a separate message. A delivery failure for one address does not resend successful messages to the others. The job’s `sent` and `failed` counters count recipient messages, not accounts. Updating the account or pressing “No changes” resets the confirmation timestamp without changing visa milestone dates. Turning reminders off stops eligibility.
 
 In Azure Portal, open the Logic App and check that it is enabled. Review **Runs history**, including a run triggered by the schedule itself. Inspect the HTTP action's aggregate response: `configured` should be `true` and `failed` should be `0`. A successful workflow with `sent: 0` confirms the job ran, not that an email arrived. A run can also succeed at the HTTP level while reporting failed sends, so inspect the body.
 
@@ -154,13 +154,13 @@ Use a separate staging instance and database containing only test accounts, with
    ```
 
    Confirm exactly one row changed. An old filing date alone does not make a profile eligible. Do not backdate real participants' confirmation timestamps.
-3. Invoke the staging reminder endpoint using that environment's job secret in a private HTTP client. Expect `sent: 1, failed: 0`, then confirm the message arrives, contains the staging account link, and contains no applicant details.
+3. Invoke the staging reminder endpoint using that environment's job secret in a private HTTP client. With only the sign-in address, expect `sent: 1, failed: 0`. If additional addresses are configured, expect one sent message per distinct selected address. Confirm messages arrive separately, contain the staging account link, and contain no applicant details or other recipient addresses.
 4. Invoke it again in the same month: expect `sent: 0`. Sign in and press “No changes”; confirm the last-checked date updates while event dates stay intact. Turn reminders off and confirm they remain disabled after reloading.
 5. For a separate eligible staging account, let a scheduled run deliver the message without manual invocation. Delete test accounts afterward through Account.
 
 For production, `python3 scripts/verify-live.py --check-reminders` invokes the **real production job** and may email every eligible opted-in user. It is not a dry run or a staging command. Without that flag, the script is read-only. Rerun `configure-reminders.py` whenever production `APP_URL` or `CRON_SECRET` changes.
 
-Pending ledger entries older than 23 hours require manual reconciliation with Azure delivery status before retrying. They are skipped by the job and are not reported in a separate skipped counter. Do not erase delivery records simply to force another send.
+Pending account or recipient ledger entries older than 23 hours require manual reconciliation with Azure delivery status before retrying. They are skipped by the job and are not reported in a separate skipped counter. Do not erase delivery records simply to force another send.
 
 ## Final checks and troubleshooting
 

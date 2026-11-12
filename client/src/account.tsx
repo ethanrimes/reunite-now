@@ -22,6 +22,7 @@ import {
   legalStatuses,
   visaCategories,
   eventTypes,
+  reminderEmailSchema,
   type Profile,
   type VisaCase,
   type VisaEvent,
@@ -220,6 +221,7 @@ const emptyProfile = {
   publicConsent: false,
   adultConsent: false,
   reminders: false,
+  reminderEmails: [],
   cases: [],
 } as unknown as Profile;
 function newCase(): VisaCase {
@@ -805,7 +807,12 @@ export function Account() {
   const [confirmation, setConfirmation] = useState("");
   const [deleteError, setDeleteError] = useState("");
   useEffect(() => {
-    if (me.profile) setForm(me.profile);
+    if (me.profile)
+      setForm({
+        ...emptyProfile,
+        ...me.profile,
+        reminderEmails: me.profile.reminderEmails || [],
+      });
   }, [me.profile]);
   useEffect(() => {
     fetch("/data/districts.json")
@@ -1245,7 +1252,17 @@ export function Account() {
             <input
               type="checkbox"
               checked={form.reminders}
-              onChange={(e) => set("reminders", e.target.checked)}
+              onChange={(e) =>
+                setForm((profile) => ({
+                  ...profile,
+                  reminders: e.target.checked,
+                  reminderEmails: e.target.checked
+                    ? profile.reminderEmails
+                    : profile.reminderEmails.filter(
+                        (email) => reminderEmailSchema.safeParse(email).success,
+                      ),
+                }))
+              }
             />
             <span>
               {t(
@@ -1263,6 +1280,73 @@ export function Account() {
               </small>
             </span>
           </label>
+          {form.reminders && (
+            <fieldset className="reminder-emails">
+              <legend>{t("Additional reminder emails")}</legend>
+              <p className="small-copy">
+                {t("Reminders go to your sign-in email: {email}.", {
+                  email: me.user?.email || "",
+                })}
+              </p>
+              <p className="small-copy">
+                {t(
+                  "Add up to 5 other addresses you own or have permission to notify. Each gets a separate email. These addresses stay private.",
+                )}
+              </p>
+              {form.reminderEmails.map((email, index) => (
+                <div className="reminder-email-row" key={index}>
+                  <Field
+                    label={t("Reminder email {number}", { number: index + 1 })}
+                  >
+                    <input
+                      type="email"
+                      autoComplete="off"
+                      maxLength={254}
+                      required
+                      value={email}
+                      onChange={(event) =>
+                        set(
+                          "reminderEmails",
+                          form.reminderEmails.map((value, i) =>
+                            i === index ? event.target.value : value,
+                          ),
+                        )
+                      }
+                    />
+                  </Field>
+                  <button
+                    type="button"
+                    className="icon-button"
+                    aria-label={t("Remove reminder email {number}", {
+                      number: index + 1,
+                    })}
+                    onClick={() =>
+                      set(
+                        "reminderEmails",
+                        form.reminderEmails.filter((_, i) => i !== index),
+                      )
+                    }
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                </div>
+              ))}
+              {form.reminderEmails.length < 5 && (
+                <button
+                  type="button"
+                  className="text-button"
+                  onClick={() =>
+                    set("reminderEmails", [...form.reminderEmails, ""])
+                  }
+                >
+                  <Plus size={16} /> {t("Add reminder email")}
+                </button>
+              )}
+              <p className="small-copy">
+                {t("Save your account below to apply reminder changes.")}
+              </p>
+            </fieldset>
+          )}
           <button className="button coral" disabled={busy}>
             {busy
               ? t("Saving…")

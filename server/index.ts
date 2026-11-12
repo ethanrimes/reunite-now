@@ -266,6 +266,9 @@ app.get("/api/me", async (req, res) => {
 });
 app.put("/api/me/profile", requireUser, async (req, res) => {
   const data = profileSchema.parse(req.body);
+  data.reminderEmails = data.reminderEmails.filter(
+    (email) => email !== res.locals.user.email.trim().toLowerCase(),
+  );
   if (data.country === "United States") {
     const districts = JSON.parse(
       await readFile("public/data/districts.json", "utf8"),
@@ -367,7 +370,14 @@ app.get("/api/public", async (_req, res) => {
   );
   const profiles = rows.rows.map((r) => {
     const p = profileSchema.parse(r.data);
-    const { reminders, adultConsent, publicConsent, signed, ...data } = p;
+    const {
+      reminders,
+      reminderEmails,
+      adultConsent,
+      publicConsent,
+      signed,
+      ...data
+    } = p;
     return {
       ...data,
       id: r.user_id,

@@ -166,6 +166,12 @@ export const caseSchema = z
         message: "Timeline events cannot precede filing",
       });
   });
+export const reminderEmailSchema = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .email("Use a valid email address")
+  .max(254);
 export const profileSchema = z
   .object({
     name: z.string().trim().min(2).max(80),
@@ -182,6 +188,11 @@ export const profileSchema = z
     publicConsent: z.literal(true),
     adultConsent: z.literal(true),
     reminders: z.boolean(),
+    reminderEmails: z
+      .array(reminderEmailSchema)
+      .max(5, "Add no more than 5 additional reminder emails")
+      .transform((emails) => [...new Set(emails)])
+      .default([]),
     cases: z.array(caseSchema).max(20),
   })
   .superRefine((p, c) => {
@@ -237,7 +248,10 @@ export type VisaEvent = z.infer<typeof eventSchema>;
 export type VisaCase = z.infer<typeof caseSchema>;
 export type Profile = z.infer<typeof profileSchema>;
 export type Story = z.infer<typeof storySchema>;
-export type PublicProfile = Profile & {
+export type PublicProfile = Omit<
+  Profile,
+  "reminders" | "reminderEmails" | "adultConsent" | "publicConsent" | "signed"
+> & {
   id: string;
   updatedAt: string;
   signedAt: string;
