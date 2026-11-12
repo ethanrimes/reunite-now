@@ -1,3 +1,4 @@
+import { t, getLocale } from "./i18n";
 import { useEffect, useRef, type ReactNode } from "react";
 import { X, ArrowUpRight } from "lucide-react";
 import type { VisaEvent } from "../../shared/schema";
@@ -34,9 +35,9 @@ export function PageIntro({
   return (
     <header className="page-intro">
       <div>
-        <div className="eyebrow">{eyebrow}</div>
-        <h1>{title}</h1>
-        <p>{text}</p>
+        <div className="eyebrow">{t(eyebrow)}</div>
+        <h1>{typeof title === "string" ? t(title) : title}</h1>
+        <p>{t(text)}</p>
       </div>
       {children}
     </header>
@@ -89,10 +90,12 @@ export function Modal({
       }}
     >
       <div className="modal-top">
-        <span className="eyebrow">{title}</span>
+        <span className="eyebrow">
+          {typeof title === "string" ? t(title) : title}
+        </span>
         <button
           className="icon-button"
-          aria-label="Close dialog"
+          aria-label={t("Close dialog")}
           onClick={onClose}
         >
           <X />
@@ -111,9 +114,9 @@ export function Timeline({ events }: { events: VisaEvent[] }) {
           <li key={e.id}>
             <time>{date(e.date)}</time>
             <div>
-              <strong>{e.type}</strong>
+              <strong>{t(e.type)}</strong>
               {e.date > new Date().toISOString().slice(0, 10) && (
-                <span className="tag">Scheduled</span>
+                <span className="tag">{t("Scheduled")}</span>
               )}
               {e.note && <p>{e.note}</p>}
             </div>
@@ -124,7 +127,7 @@ export function Timeline({ events }: { events: VisaEvent[] }) {
 }
 export function date(s: string) {
   return new Date(s.length === 10 ? `${s}T12:00:00Z` : s).toLocaleDateString(
-    "en-US",
+    getLocale(),
     { month: "short", day: "numeric", year: "numeric" },
   );
 }
@@ -138,7 +141,7 @@ export function Empty({
   return (
     <div className="empty">
       <span className="empty-mark">↗</span>
-      <h3>{title}</h3>
+      <h3>{typeof title === "string" ? t(title) : title}</h3>
       <p>{children}</p>
     </div>
   );
@@ -154,9 +157,9 @@ export function Field({
 }) {
   return (
     <label className="field">
-      <span>{label}</span>
+      <span>{t(label)}</span>
       {children}
-      {hint && <small>{hint}</small>}
+      {hint && <small>{t(hint)}</small>}
     </label>
   );
 }

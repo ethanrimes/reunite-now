@@ -1,3 +1,4 @@
+import { t } from "./i18n";
 import { useState, useEffect, useRef, type FormEvent } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -56,33 +57,37 @@ export function Login() {
   return (
     <div className="auth-page">
       <div className="auth-art">
-        <span className="eyebrow">REUNITE NOW</span>
+        <span className="eyebrow">{t("REUNITE NOW")}</span>
         <h1>
-          Help change
+          {t("Help change")}
           <br />
-          <em>the process.</em>
+          <em>{t("the process.")}</em>
         </h1>
         <div className="auth-heart">
           <Heart size={110} />
         </div>
         <p>
-          Sign the petition and keep
+          {t("Sign the petition and keep")}
           <br />
-          your visa timeline up to date.
+          {t("your visa timeline up to date.")}
         </p>
       </div>
       <div className="auth-form">
-        <span className="eyebrow">SIGN IN OR CREATE AN ACCOUNT</span>
+        <span className="eyebrow">{t("SIGN IN OR CREATE AN ACCOUNT")}</span>
         <h2>
-          {params.get("intent") === "sign" ? "Sign the petition" : "Log in"}
+          {params.get("intent") === "sign"
+            ? t("Sign the petition")
+            : t("Log in")}
         </h2>
         <p>
-          Sign in or create an account with a secure email link or Google. New
-          members complete their petition profile next.
+          {t(
+            "Sign in or create an account with a secure email link or Google. New members complete their petition profile next.",
+          )}
         </p>
         {me.user ? (
           <Link className="button" to="/account">
-            Continue to your account <ArrowUpRight size={17} />
+            {t("Continue to your account ")}
+            <ArrowUpRight size={17} />
           </Link>
         ) : (
           <>
@@ -91,26 +96,27 @@ export function Login() {
               href={config.googleAuth ? "/api/auth/google" : undefined}
               aria-disabled={!config.googleAuth}
             >
-              <span className="google-g">G</span> Continue with Google
+              <span className="google-g">{t("G")}</span>
+              {t(" Continue with Google")}
             </a>
             {!loading && !config.googleAuth && (
               <small className="availability">
-                Google sign-in is awaiting connection.
+                {t("Google sign-in is awaiting connection.")}
               </small>
             )}
             <div className="or">
               <span />
-              or use your email
+              {t("or use your email")}
               <span />
             </div>
             <form onSubmit={submit}>
-              <Field label="Email address">
+              <Field label={t("Email address")}>
                 <input
                   type="email"
                   autoComplete="email"
                   required
                   value={email}
-                  placeholder="you@example.com"
+                  placeholder={t("you@example.com")}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </Field>
@@ -120,35 +126,39 @@ export function Login() {
                   busy || loading || (!config.emailAuth && !config.devAuth)
                 }
               >
-                {busy ? "Sending your link…" : "Email me a sign-in link"}
+                {busy ? t("Sending your link…") : t("Email me a sign-in link")}
                 <Mail size={18} />
               </button>
             </form>
             {!loading && !config.emailAuth && !config.devAuth && (
               <Notice>
-                Email sign-in opens once the project’s email domain is
-                connected. You can explore the petition, policies, and maps now.
+                {t(
+                  "Email sign-in opens once the project’s email domain is connected. You can explore the petition, policies, and maps now.",
+                )}
               </Notice>
             )}
             {sent && (
               <Notice tone="success">
-                Check your inbox. Your link expires in 15 minutes and works
-                once.
+                {t(
+                  "Check your inbox. Your link expires in 15 minutes and works once.",
+                )}
               </Notice>
             )}
             {devLink && (
               <Notice>
-                <strong>Local development only</strong>
+                <strong>{t("Local development only")}</strong>
                 <p>
-                  No email was sent. Use this link to test your account on this
-                  computer.
+                  {t(
+                    "No email was sent. Use this link to test your account on this computer.",
+                  )}
                 </p>
-                <a href={devLink}>Open local sign-in link →</a>
+                <a href={devLink}>{t("Open local sign-in link →")}</a>
               </Notice>
             )}
             {(error || params.get("error")) && (
               <Notice tone="error">
-                {error || "Sign-in could not be completed. Please try again."}
+                {t(error) ||
+                  t("Sign-in could not be completed. Please try again.")}
               </Notice>
             )}
           </>
@@ -156,8 +166,9 @@ export function Login() {
         <div className="auth-privacy">
           <ShieldCheck size={18} />
           <p>
-            Your email is never public. You’ll review the{" "}
-            <Link to="/data-use">data use agreement</Link> before signing.
+            {t("Your email is never public. You’ll review the")}{" "}
+            <Link to="/data-use">{t("data use agreement")}</Link>
+            {t(" before signing.")}
           </p>
         </div>
       </div>
@@ -187,12 +198,12 @@ export function Verify() {
   }, []);
   return (
     <div className="page-shell narrow">
-      <h1>{error ? "Let’s try that again." : "Signing you in…"}</h1>
+      <h1>{error ? t("Let’s try that again.") : t("Signing you in…")}</h1>
       {error && (
         <>
-          <Notice tone="error">{error}</Notice>
+          <Notice tone="error">{t(error)}</Notice>
           <Link className="button" to="/login">
-            Request a new link
+            {t("Request a new link")}
           </Link>
         </>
       )}
@@ -250,13 +261,13 @@ function VisaEditor({
         <span className="case-number">
           {String(index + 1).padStart(2, "0")}
         </span>
-        <strong>{value.applicantName || "New visa applicant"}</strong>
-        <span className="tag">{caseStatus(value)}</span>
+        <strong>{value.applicantName || t("New visa applicant")}</strong>
+        <span className="tag">{t(caseStatus(value))}</span>
         <ChevronDown size={18} />
       </summary>
       <div className="case-body">
         <div className="form-grid">
-          <Field label="Applicant name or nickname *">
+          <Field label={t("Applicant name or nickname *")}>
             <input
               required
               maxLength={100}
@@ -264,7 +275,7 @@ function VisaEditor({
               onChange={(e) => set("applicantName", e.target.value)}
             />
           </Field>
-          <Field label="Relationship to you *">
+          <Field label={t("Relationship to you *")}>
             <select
               value={value.relationship}
               onChange={(e) => set("relationship", e.target.value)}
@@ -279,35 +290,43 @@ function VisaEditor({
               ]
                 .filter((r) => !citizen || r !== "Self")
                 .map((r) => (
-                  <option key={r}>{r}</option>
+                  <option key={r} value={r}>
+                    {t(r)}
+                  </option>
                 ))}
             </select>
           </Field>
-          <Field label="Applicant country *">
+          <Field label={t("Applicant country *")}>
             <select
               required
               value={value.country}
               onChange={(e) => set("country", e.target.value)}
             >
-              <option value="">Choose a country</option>
+              <option value="">{t("Choose a country")}</option>
               {countries.map((c) => (
-                <option key={c}>{c}</option>
+                <option key={c} value={c}>
+                  {t(c)}
+                </option>
               ))}
             </select>
           </Field>
-          <Field label="Visa category *">
+          <Field label={t("Visa category *")}>
             <select
               value={value.category}
               onChange={(e) => set("category", e.target.value)}
             >
               {visaCategories.map((c) => (
-                <option key={c}>{c}</option>
+                <option key={c} value={c}>
+                  {t(c)}
+                </option>
               ))}
             </select>
           </Field>
           <Field
-            label="Processing embassy / consular post *"
-            hint="Use the city name, for example Bogotá or London. If not assigned, enter Not assigned."
+            label={t("Processing embassy / consular post *")}
+            hint={t(
+              "Use the city name, for example Bogotá or London. If not assigned, enter Not assigned.",
+            )}
           >
             <input
               required
@@ -369,35 +388,38 @@ function VisaEditor({
                 "Yerevan",
                 "Not assigned",
               ].map((p) => (
-                <option key={p}>{p}</option>
+                <option key={p} value={p}>
+                  {t(p)}
+                </option>
               ))}
             </datalist>
           </Field>
         </div>
         <div className="timeline-editor-title">
-          <h4>Visa timeline</h4>
-          <span>Dates and notes will be public</span>
+          <h4>{t("Visa timeline")}</h4>
+          <span>{t("Dates and notes will be public")}</span>
         </div>
         <p className="small-copy">
-          Add milestones you know. You can record multiple interviews and future
-          interview appointments. A §221(g) or policy-related refusal stays
-          active; choose “Final refusal” only for a final denial. Use “Reopened”
-          if a closed case resumes.
+          {t(
+            "Add milestones you know. You can record multiple interviews and future interview appointments. A §221(g) or policy-related refusal stays active; choose “Final refusal” only for a final denial. Use “Reopened” if a closed case resumes.",
+          )}
         </p>
         <div className="event-list">
           {value.events.map((e) => (
             <div className="event-editor" key={e.id}>
-              <Field label="Milestone">
+              <Field label={t("Milestone")}>
                 <select
                   value={e.type}
                   onChange={(x) => editEvent(e.id, "type", x.target.value)}
                 >
-                  {eventTypes.map((t) => (
-                    <option key={t}>{t}</option>
+                  {eventTypes.map((eventType) => (
+                    <option key={eventType} value={eventType}>
+                      {t(eventType)}
+                    </option>
                   ))}
                 </select>
               </Field>
-              <Field label="Date">
+              <Field label={t("Date")}>
                 <input
                   type="date"
                   required
@@ -410,11 +432,11 @@ function VisaEditor({
                   onChange={(x) => editEvent(e.id, "date", x.target.value)}
                 />
               </Field>
-              <Field label="Note (optional)">
+              <Field label={t("Note (optional)")}>
                 <input
                   value={e.note}
                   maxLength={1000}
-                  placeholder="No case numbers or private details"
+                  placeholder={t("No case numbers or private details")}
                   onChange={(x) => editEvent(e.id, "note", x.target.value)}
                 />
               </Field>
@@ -422,7 +444,7 @@ function VisaEditor({
                 type="button"
                 className="icon-button danger-text"
                 disabled={value.events.length === 1}
-                aria-label="Remove milestone"
+                aria-label={t("Remove milestone")}
                 onClick={() =>
                   set(
                     "events",
@@ -452,7 +474,7 @@ function VisaEditor({
             }
           >
             <Plus size={16} />
-            Add milestone
+            {t("Add milestone")}
           </button>
           <button
             type="button"
@@ -460,7 +482,7 @@ function VisaEditor({
             onClick={onRemove}
           >
             <Trash2 size={16} />
-            Remove this applicant
+            {t("Remove this applicant")}
           </button>
         </div>
       </div>
@@ -530,34 +552,34 @@ function StoryEditor() {
     <section className="account-section" id="story">
       <div className="section-heading">
         <div>
-          <span className="eyebrow">YOUR STORY</span>
-          <h2>Share your experience</h2>
+          <span className="eyebrow">{t("YOUR STORY")}</span>
+          <h2>{t("Share your experience")}</h2>
         </div>
-        <span className="tag">Optional</span>
+        <span className="tag">{t("Optional")}</span>
       </div>
       <p>
-        Share the moments behind the dates. You choose whether to publish.
-        Please do not include case numbers, private documents, or anyone’s
-        information without permission.
+        {t(
+          "Share the moments behind the dates. You choose whether to publish. Please do not include case numbers, private documents, or anyone’s information without permission.",
+        )}
       </p>
       <form onSubmit={save}>
         <div className="form-grid">
-          <Field label="Story title *">
+          <Field label={t("Story title *")}>
             <input
               minLength={8}
               maxLength={120}
               required
               value={story.title}
               onChange={(e) => set("title", e.target.value)}
-              placeholder="What would you like people to understand?"
+              placeholder={t("What would you like people to understand?")}
             />
           </Field>
-          <Field label="Link a visa timeline">
+          <Field label={t("Link a visa timeline")}>
             <select
               value={story.caseId}
               onChange={(e) => set("caseId", e.target.value)}
             >
-              <option value="">No linked timeline</option>
+              <option value="">{t("No linked timeline")}</option>
               {me.profile?.cases.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.applicantName} · {c.category}
@@ -567,8 +589,8 @@ function StoryEditor() {
           </Field>
         </div>
         <Field
-          label="Short introduction *"
-          hint="Shown on your story card (20–240 characters)."
+          label={t("Short introduction *")}
+          hint={t("Shown on your story card (20–240 characters).")}
         >
           <textarea
             required
@@ -579,7 +601,7 @@ function StoryEditor() {
             rows={2}
           />
         </Field>
-        <Field label="Your story *">
+        <Field label={t("Your story *")}>
           <textarea
             required
             minLength={60}
@@ -587,11 +609,13 @@ function StoryEditor() {
             rows={7}
             value={story.body}
             onChange={(e) => set("body", e.target.value)}
-            placeholder="Tell us about the people, the uncertainty, and how the process has affected your life."
+            placeholder={t(
+              "Tell us about the people, the uncertainty, and how the process has affected your life.",
+            )}
           />
         </Field>
         <fieldset className="impact-options">
-          <legend>What has the wait affected?</legend>
+          <legend>{t("What has the wait affected?")}</legend>
           {[
             "Family separation",
             "Missed milestones",
@@ -615,16 +639,18 @@ function StoryEditor() {
                   )
                 }
               />
-              {x}
+              {t(x)}
             </label>
           ))}
         </fieldset>
-        <Field label="Support you’re looking for (optional)">
+        <Field label={t("Support you’re looking for (optional)")}>
           <textarea
             maxLength={2000}
             value={story.support}
             onChange={(e) => set("support", e.target.value)}
-            placeholder="For example, an elected official’s attention or a group working on this issue. Publishing here does not send your story to them."
+            placeholder={t(
+              "For example, an elected official’s attention or a group working on this issue. Publishing here does not send your story to them.",
+            )}
             rows={3}
           />
         </Field>
@@ -632,11 +658,14 @@ function StoryEditor() {
           <div className="photo-previews">
             {story.photos.map((p, i) => (
               <div key={i}>
-                <img src={p} alt={`Your uploaded photo ${i + 1}`} />
+                <img
+                  src={p}
+                  alt={t("Your uploaded photo {count}", { count: i + 1 })}
+                />
                 <button
                   type="button"
                   className="icon-button"
-                  aria-label={`Remove photo ${i + 1}`}
+                  aria-label={t("Remove photo {count}", { count: i + 1 })}
                   onClick={() =>
                     set(
                       "photos",
@@ -651,8 +680,8 @@ function StoryEditor() {
           </div>
           <label className="upload-control">
             <Camera size={22} />
-            <span>Add up to 4 photos</span>
-            <small>JPG, PNG, WebP · resized and metadata removed</small>
+            <span>{t("Add up to 4 photos")}</span>
+            <small>{t("JPG, PNG, WebP · resized and metadata removed")}</small>
             <input
               type="file"
               multiple
@@ -685,8 +714,9 @@ function StoryEditor() {
             onChange={(e) => set("rightsConsent", e.target.checked)}
           />
           <span>
-            I have permission to share this story, these images, and information
-            about anyone included. *
+            {t(
+              "I have permission to share this story, these images, and information about anyone included. *",
+            )}
           </span>
         </label>
         <label className="checkbox">
@@ -696,19 +726,20 @@ function StoryEditor() {
             onChange={(e) => set("publish", e.target.checked)}
           />
           <span>
-            Publish my story and photos for everyone to see. Uncheck and save to
-            unpublish.
+            {t(
+              "Publish my story and photos for everyone to see. Uncheck and save to unpublish.",
+            )}
           </span>
         </label>
-        {error && <Notice tone="error">{error}</Notice>}
-        {msg && <Notice tone="success">{msg}</Notice>}
+        {error && <Notice tone="error">{t(error)}</Notice>}
+        {msg && <Notice tone="success">{t(msg)}</Notice>}
         <div className="row-between">
           <button className="button" disabled={busy}>
             {busy
-              ? "Saving…"
+              ? t("Saving…")
               : story.publish
-                ? "Publish story"
-                : "Save private draft"}
+                ? t("Publish story")
+                : t("Save private draft")}
             <ArrowUpRight size={17} />
           </button>
           {me.story && (
@@ -717,17 +748,18 @@ function StoryEditor() {
               className="text-button danger-text"
               onClick={() => setRemove(true)}
             >
-              Delete story
+              {t("Delete story")}
             </button>
           )}
         </div>
       </form>
       {remove && (
-        <Modal title="DELETE STORY" onClose={() => setRemove(false)}>
-          <h2>Remove your story?</h2>
+        <Modal title={t("DELETE STORY")} onClose={() => setRemove(false)}>
+          <h2>{t("Remove your story?")}</h2>
           <p>
-            This permanently removes the story and its photos from this
-            application.
+            {t(
+              "This permanently removes the story and its photos from this application.",
+            )}
           </p>
           <button
             className="button danger"
@@ -754,7 +786,7 @@ function StoryEditor() {
               }
             }}
           >
-            Delete story
+            {t("Delete story")}
           </button>
         </Modal>
       )}
@@ -832,19 +864,22 @@ export function Account() {
   if (loading)
     return (
       <div className="page-shell">
-        <h2>Loading your account…</h2>
+        <h2>{t("Loading your account…")}</h2>
       </div>
     );
   if (!me.user)
     return (
       <div className="page-shell narrow">
         <PageIntro
-          eyebrow="JOIN REUNITE NOW"
-          title="Sign in to take part."
-          text="Sign in to sign the petition, record visa timelines, and share your story."
+          eyebrow={t("JOIN REUNITE NOW")}
+          title={t("Sign in to take part.")}
+          text={t(
+            "Sign in to sign the petition, record visa timelines, and share your story.",
+          )}
         />
         <Link className="button coral" to="/login?intent=sign">
-          Sign in or create an account <ArrowUpRight size={18} />
+          {t("Sign in or create an account ")}
+          <ArrowUpRight size={18} />
         </Link>
       </div>
     );
@@ -857,12 +892,18 @@ export function Account() {
   return (
     <div className="page-shell account-shell">
       <PageIntro
-        eyebrow={me.profile ? "YOUR ACCOUNT" : "SIGN THE PETITION"}
-        title={me.profile ? <>Your account</> : <>Sign the petition</>}
+        eyebrow={me.profile ? t("YOUR ACCOUNT") : t("SIGN THE PETITION")}
+        title={
+          me.profile ? <>{t("Your account")}</> : <>{t("Sign the petition")}</>
+        }
         text={
           me.profile
-            ? "Edit your profile, update visa timelines, or confirm that nothing has changed."
-            : "Complete your public petition profile. You can use a nickname, and your email always stays private."
+            ? t(
+                "Edit your profile, update visa timelines, or confirm that nothing has changed.",
+              )
+            : t(
+                "Complete your public petition profile. You can use a nickname, and your email always stays private.",
+              )
         }
       >
         <button
@@ -874,7 +915,7 @@ export function Account() {
           }}
         >
           <LogOut size={16} />
-          Log out
+          {t("Log out")}
         </button>
       </PageIntro>
       {me.profile && (
@@ -882,8 +923,11 @@ export function Account() {
           <div>
             <Check size={22} />
             <span>
-              <strong>You’ve signed. Thank you.</strong>
-              <small>Last confirmed {date(me.profile.updatedAt)}</small>
+              <strong>{t("You’ve signed. Thank you.")}</strong>
+              <small>
+                {t("Last confirmed ")}
+                {date(me.profile.updatedAt)}
+              </small>
             </span>
           </div>
           <button
@@ -905,23 +949,24 @@ export function Account() {
               }
             }}
           >
-            No changes — confirm today <Check size={16} />
+            {t("No changes — confirm today ")}
+            <Check size={16} />
           </button>
         </div>
       )}
-      {error && <Notice tone="error">{error}</Notice>}
-      {message && <Notice tone="success">{message}</Notice>}
+      {error && <Notice tone="error">{t(error)}</Notice>}
+      {message && <Notice tone="success">{t(message)}</Notice>}
       <form onSubmit={save}>
         <section className="account-section">
           <div className="section-heading">
             <div>
-              <span className="eyebrow">YOUR PUBLIC PROFILE</span>
-              <h2>Profile details</h2>
+              <span className="eyebrow">{t("YOUR PUBLIC PROFILE")}</span>
+              <h2>{t("Profile details")}</h2>
             </div>
-            <span className="tag">Public after signing</span>
+            <span className="tag">{t("Public after signing")}</span>
           </div>
           <div className="form-grid">
-            <Field label="Name or nickname *">
+            <Field label={t("Name or nickname *")}>
               <div className="input-action">
                 <input
                   required
@@ -933,8 +978,8 @@ export function Account() {
                 />
                 <button
                   type="button"
-                  aria-label="Generate a random nickname"
-                  title="Generate a nickname"
+                  aria-label={t("Generate a random nickname")}
+                  title={t("Generate a nickname")}
                   onClick={() =>
                     set(
                       "name",
@@ -947,35 +992,41 @@ export function Account() {
               </div>
             </Field>
             <Field
-              label="Email · private"
-              hint="Verified through your sign-in method. This is your unique account email."
+              label={t("Email · private")}
+              hint={t(
+                "Verified through your sign-in method. This is your unique account email.",
+              )}
             >
               <input disabled type="email" value={me.user.email} />
             </Field>
-            <Field label="Legal status *">
+            <Field label={t("Legal status *")}>
               <select
                 value={form.legalStatus}
                 onChange={(e) => set("legalStatus", e.target.value)}
               >
                 {legalStatuses.map((s) => (
-                  <option key={s}>{s}</option>
+                  <option key={s} value={s}>
+                    {t(s)}
+                  </option>
                 ))}
               </select>
             </Field>
-            <Field label="Political affiliation · optional">
+            <Field label={t("Political affiliation · optional")}>
               <select
                 value={form.politicalAffiliation}
                 onChange={(e) => set("politicalAffiliation", e.target.value)}
               >
-                <option value="">Prefer not to say</option>
+                <option value="">{t("Prefer not to say")}</option>
                 {["Democratic", "Independent", "Republican", "Other"].map(
                   (p) => (
-                    <option key={p}>{p}</option>
+                    <option key={p} value={p}>
+                      {t(p)}
+                    </option>
                   ),
                 )}
               </select>
             </Field>
-            <Field label="Country of residence *">
+            <Field label={t("Country of residence *")}>
               <select
                 required
                 value={form.country}
@@ -989,11 +1040,13 @@ export function Account() {
                 }}
               >
                 {countries.map((c) => (
-                  <option key={c}>{c}</option>
+                  <option key={c} value={c}>
+                    {t(c)}
+                  </option>
                 ))}
               </select>
             </Field>
-            <Field label="City *">
+            <Field label={t("City *")}>
               <input
                 required
                 minLength={2}
@@ -1005,7 +1058,7 @@ export function Account() {
             </Field>
             {form.country === "United States" && (
               <>
-                <Field label="State or territory *">
+                <Field label={t("State or territory *")}>
                   <select
                     required
                     value={form.state}
@@ -1017,7 +1070,7 @@ export function Account() {
                       }))
                     }
                   >
-                    <option value="">Select a state</option>
+                    <option value="">{t("Select a state")}</option>
                     {states.map((s) => (
                       <option key={s[1]} value={s[1]}>
                         {s[2]}
@@ -1026,19 +1079,19 @@ export function Account() {
                   </select>
                 </Field>
                 <Field
-                  label="Congressional district *"
-                  hint="119th Congress · 00 means an at-large district."
+                  label={t("Congressional district *")}
+                  hint={t("119th Congress · 00 means an at-large district.")}
                 >
                   <select
                     required
                     value={form.district}
                     onChange={(e) => set("district", e.target.value)}
                   >
-                    <option value="">Select your district</option>
+                    <option value="">{t("Select your district")}</option>
                     {districtOptions.map((d) => (
                       <option key={d} value={d}>
                         {form.state}-{d}
-                        {d === "00" ? " (at-large)" : ""}
+                        {d === "00" ? t(" (at-large)") : ""}
                       </option>
                     ))}
                   </select>
@@ -1049,20 +1102,19 @@ export function Account() {
           {form.country === "United States" && (
             <details className="address-lookup">
               <summary>
-                Not sure of your district? Look it up by address.
+                {t("Not sure of your district? Look it up by address.")}
               </summary>
               <p>
-                Your address is sent to the US Census Bureau to find your
-                district. This application does not retain your address or
-                search results. Only the state and district you confirm are
-                saved.
+                {t(
+                  "Your address is sent to the US Census Bureau to find your district. This application does not retain your address or search results. Only the state and district you confirm are saved.",
+                )}
               </p>
               <div className="input-action">
                 <input
-                  aria-label="Address for district lookup"
+                  aria-label={t("Address for district lookup")}
                   value={address}
                   autoComplete="off"
-                  placeholder="Full street address, city, state, ZIP"
+                  placeholder={t("Full street address, city, state, ZIP")}
                   onChange={(e) => setAddress(e.target.value)}
                 />
                 <button
@@ -1070,14 +1122,16 @@ export function Account() {
                   disabled={lookBusy || address.length < 8}
                   onClick={lookup}
                 >
-                  {lookBusy ? "Looking up…" : "Find district"}
+                  {lookBusy ? t("Looking up…") : t("Find district")}
                 </button>
               </div>
-              {lookupMessage && <Notice>{lookupMessage}</Notice>}
+              {lookupMessage && <Notice>{t(lookupMessage)}</Notice>}
             </details>
           )}
           <fieldset className="involvement">
-            <legend>Are you personally involved in a visa process? *</legend>
+            <legend>
+              {t("Are you personally involved in a visa process? *")}
+            </legend>
             <label>
               <input
                 type="radio"
@@ -1085,7 +1139,7 @@ export function Account() {
                 checked={form.personallyInvolved}
                 onChange={() => set("personallyInvolved", true)}
               />
-              Yes — for me or someone relevant to me
+              {t("Yes — for me or someone relevant to me")}
             </label>
             <label>
               <input
@@ -1094,22 +1148,22 @@ export function Account() {
                 checked={!form.personallyInvolved}
                 onChange={() => set("personallyInvolved", false)}
               />
-              No — I’m here to support
+              {t("No — I’m here to support")}
             </label>
           </fieldset>
         </section>
         <section className="account-section">
           <div className="section-heading">
             <div>
-              <span className="eyebrow">VISA TIMELINES</span>
-              <h2>Your visa cases</h2>
+              <span className="eyebrow">{t("VISA TIMELINES")}</span>
+              <h2>{t("Your visa cases")}</h2>
             </div>
-            <span className="tag">Optional · public</span>
+            <span className="tag">{t("Optional · public")}</span>
           </div>
           <p>
-            Add yourself or someone relevant to you. US citizens can add
-            applicants other than themselves. Use nicknames and only share
-            another person’s details with their permission.
+            {t(
+              "Add yourself or someone relevant to you. US citizens can add applicants other than themselves. Use nicknames and only share another person’s details with their permission.",
+            )}
           </p>
           {form.cases.map((c, i) => (
             <VisaEditor
@@ -1138,16 +1192,18 @@ export function Account() {
             onClick={() => set("cases", [...form.cases, newCase()])}
           >
             <Plus size={18} />
-            Add a visa applicant
+            {t("Add a visa applicant")}
           </button>
         </section>
         <section className="account-section consent-section">
-          <span className="eyebrow">CONSENT & PREFERENCES</span>
-          <h2>{me.profile ? "Review and save" : "Confirm your signature"}</h2>
+          <span className="eyebrow">{t("CONSENT & PREFERENCES")}</span>
+          <h2>
+            {me.profile ? t("Review and save") : t("Confirm your signature")}
+          </h2>
           <p className="petition-statement">
-            I support transparent visa processing times, meaningful
-            accountability for the Department of State, and the staffing and
-            resources needed to reduce unnecessary delays.
+            {t(
+              "I support transparent visa processing times, meaningful accountability for the Department of State, and the staffing and resources needed to reduce unnecessary delays.",
+            )}
           </p>
           <label className="checkbox">
             <input
@@ -1156,7 +1212,7 @@ export function Account() {
               checked={form.signed}
               onChange={(e) => set("signed", e.target.checked)}
             />
-            <span>I sign the Reunite Now petition. *</span>
+            <span>{t("I sign the Reunite Now petition. *")}</span>
           </label>
           <label className="checkbox">
             <input
@@ -1166,13 +1222,13 @@ export function Account() {
               onChange={(e) => set("publicConsent", e.target.checked)}
             />
             <span>
-              I have read the{" "}
+              {t("I have read the")}{" "}
               <Link to="/data-use" target="_blank">
-                data use agreement
+                {t("data use agreement")}
               </Link>{" "}
-              and understand that my name or nickname, profile, location, legal
-              status, optional affiliation, and submitted visa timelines will be
-              publicly accessible. My email stays private. *
+              {t(
+                "and understand that my name or nickname, profile, location, legal status, optional affiliation, and submitted visa timelines will be publicly accessible. My email stays private. *",
+              )}
             </span>
           </label>
           <label className="checkbox">
@@ -1183,8 +1239,9 @@ export function Account() {
               onChange={(e) => set("adultConsent", e.target.checked)}
             />
             <span>
-              I am at least 18 and have permission to publish information about
-              any other applicants I add. *
+              {t(
+                "I am at least 18 and have permission to publish information about any other applicants I add. *",
+              )}
             </span>
           </label>
           <label className="checkbox">
@@ -1194,72 +1251,79 @@ export function Account() {
               onChange={(e) => set("reminders", e.target.checked)}
             />
             <span>
-              Send me an optional monthly reminder to update active visa
-              timelines or confirm no change.
+              {t(
+                "Send me an optional monthly reminder to update active visa timelines or confirm no change.",
+              )}
               <small>
-                At most once per month after 30 days without a check-in.
-                Unsubscribe here anytime.{" "}
+                {t(
+                  "At most once per month after 30 days without a check-in. Unsubscribe here anytime.",
+                )}{" "}
                 {config.reminders
                   ? ""
-                  : "Email delivery is pending setup; your preference will be saved."}
+                  : t(
+                      "Email delivery is pending setup; your preference will be saved.",
+                    )}
               </small>
             </span>
           </label>
           <button className="button coral" disabled={busy}>
             {busy
-              ? "Saving…"
+              ? t("Saving…")
               : me.profile
-                ? "Save & confirm all information"
-                : "Sign the petition"}
+                ? t("Save & confirm all information")
+                : t("Sign the petition")}
             <ArrowUpRight size={18} />
           </button>
           <p className="small-copy">
-            Saving confirms that you have reviewed all listed cases and updates
-            their last-checked date.
+            {t(
+              "Saving confirms that you have reviewed all listed cases and updates their last-checked date.",
+            )}
           </p>
         </section>
       </form>
       {me.profile && <StoryEditor />}
       <section className="account-section manage-section">
         <div>
-          <h2>Export or delete your data</h2>
+          <h2>{t("Export or delete your data")}</h2>
           <p>
-            Export a copy or delete your account and all associated information.
+            {t(
+              "Export a copy or delete your account and all associated information.",
+            )}
           </p>
         </div>
         <div className="row-between">
           <a className="button outline" href="/api/me/export">
             <Download size={17} />
-            Export my data
+            {t("Export my data")}
           </a>
           <button
             className="text-button danger-text"
             onClick={() => setDeleteOpen(true)}
           >
             <Trash2 size={17} />
-            Delete account
+            {t("Delete account")}
           </button>
         </div>
       </section>
       {deleteOpen && (
         <Modal
-          title="PERMANENT ACCOUNT DELETION"
+          title={t("PERMANENT ACCOUNT DELETION")}
           onClose={() => setDeleteOpen(false)}
         >
-          <h2>Remove your account and data?</h2>
+          <h2>{t("Remove your account and data?")}</h2>
           <p>
-            This removes your signature, profile, visa cases, stories, photos,
-            and sign-in sessions from the live application. Azure backups expire
-            within 7 days; public copies others saved cannot be recalled.
+            {t(
+              "This removes your signature, profile, visa cases, stories, photos, and sign-in sessions from the live application. Azure backups expire within 7 days; public copies others saved cannot be recalled.",
+            )}
           </p>
-          <Field label="Type DELETE to confirm">
+          <Field label={t("Type DELETE to confirm")}>
             <input
               value={confirmation}
               onChange={(e) => setConfirmation(e.target.value)}
               autoComplete="off"
             />
           </Field>
-          {deleteError && <Notice tone="error">{deleteError}</Notice>}
+          {deleteError && <Notice tone="error">{t(deleteError)}</Notice>}
           <button
             className="button danger"
             disabled={confirmation !== "DELETE" || busy}
@@ -1279,7 +1343,7 @@ export function Account() {
               }
             }}
           >
-            Permanently delete my account
+            {t("Permanently delete my account")}
           </button>
         </Modal>
       )}

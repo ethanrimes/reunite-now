@@ -1,3 +1,5 @@
+import { t } from "./i18n";
+import { LanguageSelector, useLanguage } from "./language";
 import React, { useEffect, useState, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import {
@@ -28,6 +30,7 @@ const Verify = lazy(() =>
 );
 import "./styles.css";
 function App() {
+  useLanguage();
   const [menu, setMenu] = useState(false);
   const location = useLocation();
   const { me, error, config } = useData();
@@ -38,50 +41,56 @@ function App() {
   return (
     <>
       <a className="skip-link" href="#main">
-        Skip to content
+        {t("Skip to content")}
       </a>
       <div className="announcement">
-        <span className="status-dot" /> Supporting better US visa processing.{" "}
+        <span className="status-dot" />
+        {t(" Supporting better US visa processing.")}{" "}
         <Link to="/policies/reducing-visa-delays-act">
-          Read H.R. 10711 <ArrowUpRight size={12} />
+          {t("Read H.R. 10711 ")}
+          <ArrowUpRight size={12} />
         </Link>
       </div>
       <header className="site-header">
-        <Link className="brand" to="/" aria-label="Reunite Now home">
+        <Link className="brand" to="/" aria-label={t("Reunite Now home")}>
           <span className="brand-mark">
             <Heart size={21} />
           </span>
           <span>
-            reunite<span className="brand-now">now</span>
+            {t("reunite")}
+            <span className="brand-now">{t("now")}</span>
           </span>
         </Link>
+        <LanguageSelector />
         <button
           className="mobile-menu icon-button"
           aria-expanded={menu}
-          aria-label="Toggle navigation"
+          aria-label={t("Toggle navigation")}
           onClick={() => setMenu(!menu)}
         >
           {menu ? <X /> : <Menu />}
         </button>
-        <nav aria-label="Main navigation" className={menu ? "open" : ""}>
-          <NavLink to="/policies">Policy & action</NavLink>
-          <NavLink to="/stories">Our stories</NavLink>
-          <NavLink to="/coverage">Signature map</NavLink>
-          <NavLink to="/visa-data">Visa data</NavLink>
-          <NavLink to="/data-use">Data use</NavLink>
-          <NavLink to="/about">About</NavLink>
+        <nav aria-label={t("Main navigation")} className={menu ? "open" : ""}>
+          <NavLink to="/policies">{t("Policy & action")}</NavLink>
+          <NavLink to="/stories">{t("Our stories")}</NavLink>
+          <NavLink to="/coverage">{t("Signature map")}</NavLink>
+          <NavLink to="/visa-data">{t("Visa data")}</NavLink>
+          <NavLink to="/data-use">{t("Data use")}</NavLink>
+          <NavLink to="/about">{t("About")}</NavLink>
           <div className="nav-account">
             {me.user ? (
               <Link className="button small" to="/account">
-                My account <ArrowUpRight size={15} />
+                {t("My account ")}
+                <ArrowUpRight size={15} />
               </Link>
             ) : (
               <>
                 <Link className="login-link" to="/login">
-                  Log in
+                  {t("Log in")}
                 </Link>
                 <Link className="button small" to="/login?intent=sign">
-                  Sign the petition <ArrowUpRight size={15} />
+                  {t("Sign the petition ")}
+                  <ArrowUpRight size={15} />
                 </Link>
               </>
             )}
@@ -90,23 +99,25 @@ function App() {
       </header>
       {config.demoData && (
         <div className="demo-banner" role="status">
-          <strong>Local demo</strong>
+          <strong>{t("Local demo")}</strong>
           <span>
-            Sample signatures, stories, and visa timelines. These are fictional
-            records.
+            {t(
+              "Sample signatures, stories, and visa timelines. These are fictional records.",
+            )}
           </span>
         </div>
       )}
       {error && (
         <div className="site-error">
-          We couldn’t load community data. Please refresh to try again. {error}
+          {t("We couldn’t load community data. Please refresh to try again. ")}
+          {t(error)}
         </div>
       )}
       <main id="main">
         <Suspense
           fallback={
             <div className="page-shell">
-              <p>Loading…</p>
+              <p>{t("Loading…")}</p>
             </div>
           }
         >
@@ -126,9 +137,9 @@ function App() {
               path="*"
               element={
                 <div className="page-shell">
-                  <h1>Let’s find your way back.</h1>
+                  <h1>{t("Let’s find your way back.")}</h1>
                   <Link className="button" to="/">
-                    Return home
+                    {t("Return home")}
                   </Link>
                 </div>
               }
@@ -143,39 +154,41 @@ function App() {
               <Heart size={21} />
             </span>
             <span>
-              reunite<span className="brand-now">now</span>
+              {t("reunite")}
+              <span className="brand-now">{t("now")}</span>
             </span>
           </Link>
           <p>
-            For transparent, accountable
+            {t("For transparent, accountable")}
             <br />
-            visa processing.
+            {t("visa processing.")}
           </p>
           <Link to="/login?intent=sign" className="footer-cta">
-            Sign the petition <MoveUpRight />
+            {t("Sign the petition ")}
+            <MoveUpRight />
           </Link>
         </div>
         <div className="footer-bottom">
           <span>
-            © {new Date().getFullYear()} Reunite Now · Independent,
-            community-led advocacy
+            © {new Date().getFullYear()}
+            {t(" Reunite Now · Independent, community-led advocacy")}
           </span>
           <div>
-            <Link to="/data-use">Privacy & data use</Link>
-            <Link to="/about">Our purpose</Link>
+            <Link to="/data-use">{t("Privacy & data use")}</Link>
+            <Link to="/about">{t("Our purpose")}</Link>
             <a
               href="https://github.com/ethanrimes"
               target="_blank"
               rel="noreferrer"
             >
-              Project maintainer ↗
+              {t("Project maintainer ↗")}
             </a>
           </div>
         </div>
         <p className="footer-note">
-          Not affiliated with the U.S. government, any political party, or the
-          legal teams featured here. Community reports are not official
-          processing estimates.
+          {t(
+            "Not affiliated with the U.S. government, any political party, or the legal teams featured here. Community reports are not official processing estimates.",
+          )}
         </p>
       </footer>
     </>

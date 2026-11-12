@@ -66,3 +66,9 @@ Policy updates are editorial, not an automatic docket feed. Member cards show th
 Public statistics are self-reported, with metric-specific sample sizes and no invented signatories. Public profiles intentionally expose the fields described in the consent form; emails and authentication data remain private. The initial release loads public profiles to calculate aggregates in the browser. Larger deployments should move aggregation to indexed server queries and photo storage to Azure Blob Storage.
 
 Stories publish when their author opts in. There is no staffed moderation queue or automated content screening. Before outreach, establish a monitored contact and moderation process. See [data and privacy](docs/DATA.md).
+
+## Languages
+
+The header selector supports English, Spanish, and Brazilian Portuguese. English is the default; the choice is stored in this browser and survives navigation and reloads. Switching languages keeps unsaved form input and filters intact. The page language, title, dates, number formatting, controls, policy summaries, privacy text, and consent labels follow the selection.
+
+Translations are maintained in `client/src/locales/messages.json`, keyed by the English interface text. Use `t()` for display text and placeholders for variable values; keep API values, IDs, option values, and React keys unchanged. `tests/i18n.test.ts` checks catalog coverage, placeholders, and stable values. No translation service or additional integration is required. Personal stories, user-entered notes, names, source documents, and outgoing emails remain in their original language. The selector does not translate content submitted by participants.

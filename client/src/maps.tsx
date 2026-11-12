@@ -1,5 +1,7 @@
+import { t, number } from "./i18n";
 import { useState, useEffect, useRef, useMemo } from "react";
 import L from "leaflet";
+import { useLanguage } from "./language";
 import "leaflet/dist/leaflet.css";
 import {
   Map as MapIcon,
@@ -84,13 +86,14 @@ function GeoMap({
   shade?: string;
   onSelect?: (r: Region) => void;
 }) {
+  const language = useLanguage();
   const root = useRef<HTMLDivElement>(null),
     map = useRef<L.Map | null>(null);
   const [error, setError] = useState("");
   useEffect(() => {
     if (!root.current) return;
     const m = L.map(root.current, {
-      zoomControl: true,
+      zoomControl: false,
       scrollWheelZoom: false,
       minZoom: kind === "world" ? 1 : 2,
       maxZoom: 10,
@@ -111,6 +114,15 @@ function GeoMap({
       map.current = null;
     };
   }, [kind]);
+  useEffect(() => {
+    if (!map.current) return;
+    const zoom = L.control
+      .zoom({ zoomInTitle: t("Zoom in"), zoomOutTitle: t("Zoom out") })
+      .addTo(map.current);
+    return () => {
+      zoom.remove();
+    };
+  }, [kind, language]);
   useEffect(() => {
     const m = map.current;
     if (!m) return;
@@ -158,18 +170,21 @@ function GeoMap({
             const r = get(f);
             const tip = document.createElement("div");
             const title = document.createElement("strong");
-            title.textContent = r.name;
+            title.textContent = t(r.name);
             tip.append(title, document.createElement("br"));
             const body = document.createElement("span");
-            body.textContent = `${r.count.toLocaleString()} ${kind === "world" ? "applicants" : "signatures"}`;
+            body.textContent = `${number(r.count)} ${t(kind === "world" ? "applicants" : "signatures")}`;
             tip.append(body);
             if (kind === "world") {
               tip.append(document.createElement("br"));
               const med = document.createElement("span");
               med.textContent =
                 r.median == null
-                  ? "No dated cases for this metric"
-                  : `${Math.round(r.median)} days median · n=${r.sample}`;
+                  ? t("No dated cases for this metric")
+                  : t("{days} days median · n={sample}", {
+                      days: number(Math.round(r.median)),
+                      sample: number(r.sample || 0),
+                    });
               tip.append(med);
             } else if (r.reps?.length) {
               tip.append(document.createElement("br"));
@@ -196,7 +211,7 @@ function GeoMap({
                 el.setAttribute("role", "button");
                 el.setAttribute(
                   "aria-label",
-                  `${r.name}: ${r.count} ${kind === "world" ? "applicants" : "signatures"}`,
+                  `${t(r.name)}: ${number(r.count)} ${t(kind === "world" ? "applicants" : "signatures")}`,
                 );
                 el.addEventListener("keydown", (e) => {
                   if ((e as KeyboardEvent).key === "Enter") onSelect?.(r);
@@ -211,7 +226,7 @@ function GeoMap({
       canceled = true;
       if (layer) m.removeLayer(layer);
     };
-  }, [kind, regions, shade, onSelect]);
+  }, [kind, regions, shade, onSelect, language]);
   return (
     <div className="map-wrap">
       <div
@@ -219,39 +234,39 @@ function GeoMap({
         className="geo-map"
         aria-label={
           kind === "world"
-            ? "Visa applicant country map"
-            : "Petition signature coverage map"
+            ? t("Visa applicant country map")
+            : t("Petition signature coverage map")
         }
       />
-      {error && <div className="map-error">{error}</div>}
-      <div className="map-help">Drag to explore · Use + / − to zoom</div>
+      {error && <div className="map-error">{t(error)}</div>}
+      <div className="map-help">{t("Drag to explore · Use + / − to zoom")}</div>
       <div className="map-legend">
-        <span>{shade === "median" ? "No data" : "0"}</span>
+        <span>{shade === "median" ? t("No data") : "0"}</span>
         {palette.map((c) => (
           <i key={c} style={{ background: c }} />
         ))}
         <span>
           {shade === "median"
-            ? "Longer wait"
+            ? t("Longer wait")
             : kind === "world"
-              ? "More applicants"
-              : "More signatures"}
+              ? t("More applicants")
+              : t("More signatures")}
         </span>
       </div>
       <div className="map-location-buttons">
         {kind !== "world" && (
           <>
             <button onClick={() => map.current?.setView([38, -97], 4)}>
-              Contiguous US
+              {t("Contiguous US")}
             </button>
             <button onClick={() => map.current?.setView([64, -152], 4)}>
-              Alaska
+              {t("Alaska")}
             </button>
             <button onClick={() => map.current?.setView([20.7, -157], 6)}>
-              Hawaii
+              {t("Hawaii")}
             </button>
             <button onClick={() => map.current?.setView([18.2, -66.4], 7)}>
-              Puerto Rico
+              {t("Puerto Rico")}
             </button>
           </>
         )}
@@ -273,9 +288,11 @@ function Multi({
   return (
     <details className="multi-select">
       <summary>
-        {label}
+        {t(label)}
         <span>
-          {value.length === options.length ? "All" : `${value.length} selected`}
+          {value.length === options.length
+            ? t("All")
+            : t("{count} selected", { count: number(value.length) })}
           ⌄
         </span>
       </summary>
@@ -293,7 +310,7 @@ function Multi({
                 )
               }
             />
-            {o}
+            {t(o)}
           </label>
         ))}
       </div>
@@ -384,33 +401,35 @@ export function Coverage() {
   return (
     <div className="page-shell">
       <PageIntro
-        eyebrow="SIGNATURE COVERAGE"
+        eyebrow={t("SIGNATURE COVERAGE")}
         title={
           <>
-            Where people
+            {t("Where people")}
             <br />
-            <em>have signed.</em>
+            <em>{t("have signed.")}</em>
           </>
         }
-        text="See petition signatures by state or congressional district, and look up the members of Congress who represent each area."
+        text={t(
+          "See petition signatures by state or congressional district, and look up the members of Congress who represent each area.",
+        )}
       />
       <div className="mini-stats">
         <div>
           <Users />
           <strong>{filtered.length}</strong>
-          <span>signatures in this view</span>
+          <span>{t("signatures in this view")}</span>
         </div>
         <div>
           <MapPin />
           <strong>{new Set(filtered.map((p) => p.state)).size}</strong>
-          <span>states & territories</span>
+          <span>{t("states & territories")}</span>
         </div>
         <div>
           <Globe2 />
           <strong>
             {profiles.filter((p) => p.country !== "United States").length}
           </strong>
-          <span>supporters outside the US</span>
+          <span>{t("supporters outside the US")}</span>
         </div>
       </div>
       <div className="map-panel">
@@ -420,23 +439,23 @@ export function Coverage() {
               className={kind === "states" ? "selected" : ""}
               onClick={() => setKind("states")}
             >
-              States
+              {t("States")}
             </button>
             <button
               className={kind === "districts" ? "selected" : ""}
               onClick={() => setKind("districts")}
             >
-              Congressional districts
+              {t("Congressional districts")}
             </button>
           </div>
           <Multi
-            label="Legal status"
+            label={t("Legal status")}
             options={[...legalStatuses]}
             value={status}
             onChange={setStatus}
           />
           <Multi
-            label="Personally involved"
+            label={t("Personally involved")}
             options={["Yes", "No"]}
             value={involved}
             onChange={setInvolved}
@@ -446,14 +465,15 @@ export function Coverage() {
       </div>
       <div className="below-map">
         <div>
-          <h3>Explore your representation</h3>
+          <h3>{t("Explore your representation")}</h3>
           <p>
-            Hover for signatures and names. Click a state for senators or a
-            district for its House representative.
+            {t(
+              "Hover for signatures and names. Click a state for senators or a district for its House representative.",
+            )}
           </p>
-          {repError && <p role="alert">{repError}</p>}
+          {repError && <p role="alert">{t(repError)}</p>}
           <label className="field">
-            <span>Find a state or district</span>
+            <span>{t("Find a state or district")}</span>
             <select
               value={lookup}
               onChange={(e) => {
@@ -462,34 +482,38 @@ export function Coverage() {
                   setSelected(regions[e.target.value]);
               }}
             >
-              <option value="">Choose a division…</option>
+              <option value="">{t("Choose a division…")}</option>
               {ranked.map((r) => (
                 <option key={r.key} value={r.key}>
-                  {r.name} · {r.count} signatures
+                  {t(r.name)} · {r.count}
+                  {t(" signatures")}
                 </option>
               ))}
             </select>
           </label>
         </div>
         <div className="method-note">
-          <strong>About this data</strong>
+          <strong>{t("About this data")}</strong>
           <p>
-            Only submitted signatures appear. Geography and legal status are
-            self-reported, not verified voter records. Map boundaries represent
-            the 119th Congress. DC and territories have delegates or a resident
-            commissioner; they do not have US senators.
+            {t(
+              "Only submitted signatures appear. Geography and legal status are self-reported, not verified voter records. Map boundaries represent the 119th Congress. DC and territories have delegates or a resident commissioner; they do not have US senators.",
+            )}
           </p>
           <External href="https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/4">
-            Boundary source · US Census
+            {t("Boundary source · US Census")}
           </External>
         </div>
       </div>
       {selected && (
-        <Modal title="YOUR REPRESENTATION" onClose={() => setSelected(null)}>
-          <h2>{selected.name}</h2>
+        <Modal
+          title={t("YOUR REPRESENTATION")}
+          onClose={() => setSelected(null)}
+        >
+          <h2>{t(selected.name)}</h2>
           <p>
-            {selected.count} {selected.count === 1 ? "signature" : "signatures"}{" "}
-            with the selected filters
+            {selected.count}{" "}
+            {selected.count === 1 ? t("signature") : t("signatures")}{" "}
+            {t("with the selected filters")}
           </p>
           {selected.reps?.length ? (
             selected.reps.map((r) => (
@@ -503,55 +527,61 @@ export function Coverage() {
                 </div>
                 <div>
                   <span className="eyebrow">
-                    {r.chamber} · {r.party}
+                    {t(r.chamber)} · {t(r.party)}
                   </span>
                   <h3>{r.name}</h3>
                   <p>
-                    Serving this{" "}
+                    {t("Serving this")}{" "}
                     {r.chamber === "House"
-                      ? "state/district seat"
-                      : "state in the Senate"}{" "}
-                    since {date(r.seatSince)}
+                      ? t("state/district seat")
+                      : t("state in the Senate")}{" "}
+                    {t("since ")}
+                    {date(r.seatSince)}
                     <br />
-                    Current term began {date(r.termStart)}
+                    {t("Current term began ")}
+                    {date(r.termStart)}
                   </p>
-                  <External href={r.url}>Official office & contact</External>
+                  <External href={r.url}>
+                    {t("Official office & contact")}
+                  </External>
                   {r.phone && <p>{r.phone}</p>}
-                  <h4>Tracked legislation</h4>
-                  <p>H.R. 10711 · Reducing Visa Delays Act</p>
+                  <h4>{t("Tracked legislation")}</h4>
+                  <p>{t("H.R. 10711 · Reducing Visa Delays Act")}</p>
                   <span className="tag">
                     {r.name.includes("Subramanyam")
-                      ? "Bill sponsor"
-                      : "No recorded floor vote"}
+                      ? t("Bill sponsor")
+                      : t("No recorded floor vote")}
                   </span>
                   <p className="small-copy">
-                    The tracked record shows introduction and committee
-                    referral, not a floor vote. Sponsorship and voting are
-                    different actions. This is not a rating of this member’s
-                    position.
+                    {t(
+                      "The tracked record shows introduction and committee referral, not a floor vote. Sponsorship and voting are different actions. This is not a rating of this member’s position.",
+                    )}
                   </p>
                   <External href="https://www.congress.gov/bill/119th-congress/house-bill/10711/all-actions">
-                    Official actions & votes
+                    {t("Official actions & votes")}
                   </External>
-                  <External href={r.source}>Congressional biography</External>
+                  <External href={r.source}>
+                    {t("Congressional biography")}
+                  </External>
                 </div>
               </article>
             ))
           ) : (
-            <Empty title="No representative record in this view">
-              Some divisions are unassigned or do not have senators. Use the
-              official House or Senate directories to verify representation.
+            <Empty title={t("No representative record in this view")}>
+              {t(
+                "Some divisions are unassigned or do not have senators. Use the official House or Senate directories to verify representation.",
+              )}
             </Empty>
           )}
           <p className="method-note">
-            Member data retrieved {repDate ? date(repDate) : "—"} from the
-            Congress Legislators dataset. Seat tenure is the earliest recorded
-            term for this state and district number; district boundaries can
-            change. New election winners do not take office until their term
-            begins.
+            {t("Member data retrieved ")}
+            {repDate ? date(repDate) : "—"}
+            {t(
+              " from the Congress Legislators dataset. Seat tenure is the earliest recorded term for this state and district number; district boundaries can change. New election winners do not take office until their term begins.",
+            )}
           </p>
           <External href="https://github.com/unitedstates/congress-legislators">
-            Member data source
+            {t("Member data source")}
           </External>
         </Modal>
       )}
@@ -597,15 +627,17 @@ export function VisaData() {
   return (
     <div className="page-shell">
       <PageIntro
-        eyebrow="COMMUNITY VISA DATA"
+        eyebrow={t("COMMUNITY VISA DATA")}
         title={
           <>
-            Visa processing
+            {t("Visa processing")}
             <br />
-            <em>in our community.</em>
+            <em>{t("in our community.")}</em>
           </>
         }
-        text="Compare self-reported timelines by visa category and consular post. These are community reports, not State Department estimates."
+        text={t(
+          "Compare self-reported timelines by visa category and consular post. These are community reports, not State Department estimates.",
+        )}
       />
       <div className="toolbar">
         <div className="segmented">
@@ -614,36 +646,36 @@ export function VisaData() {
             onClick={() => setView("table")}
           >
             <Table2 size={16} />
-            Table view
+            {t("Table view")}
           </button>
           <button
             className={view === "map" ? "selected" : ""}
             onClick={() => setView("map")}
           >
             <MapIcon size={16} />
-            Map view
+            {t("Map view")}
           </button>
         </div>
         <span className="small-copy">
-          Medians in calendar days · Missing dates excluded
+          {t("Medians in calendar days · Missing dates excluded")}
         </span>
       </div>
       <div className="data-filters">
         <label className="field">
-          <span>Consular post</span>
+          <span>{t("Consular post")}</span>
           <input
-            aria-label="Search consular posts"
+            aria-label={t("Search consular posts")}
             type="search"
-            placeholder="Search posts…"
+            placeholder={t("Search posts…")}
             value={postSearch}
             onChange={(e) => setPostSearch(e.target.value)}
           />
           <select
-            aria-label="Select consular post"
+            aria-label={t("Select consular post")}
             value={post}
             onChange={(e) => setPost(e.target.value)}
           >
-            <option value="">All posts</option>
+            <option value="">{t("All posts")}</option>
             {posts
               .filter(
                 (p) =>
@@ -651,21 +683,23 @@ export function VisaData() {
                   p === post,
               )
               .map((p) => (
-                <option key={p}>{p}</option>
+                <option key={p} value={p}>
+                  {p}
+                </option>
               ))}
           </select>
         </label>
         <label className="field">
-          <span>Last confirmed</span>
+          <span>{t("Last confirmed")}</span>
           <select value={days} onChange={(e) => setDays(e.target.value)}>
-            <option value="30">Within 30 days</option>
-            <option value="60">Within 60 days</option>
-            <option value="90">Within 90 days</option>
-            <option value="0">Any time</option>
+            <option value="30">{t("Within 30 days")}</option>
+            <option value="60">{t("Within 60 days")}</option>
+            <option value="90">{t("Within 90 days")}</option>
+            <option value="0">{t("Any time")}</option>
           </select>
         </label>
         <label className="field">
-          <span>Case status</span>
+          <span>{t("Case status")}</span>
           <select
             value={status}
             onChange={(e) => {
@@ -673,36 +707,48 @@ export function VisaData() {
               setMetric(e.target.value === "active" ? "sinceFiling" : "total");
             }}
           >
-            <option value="active">Active cases</option>
-            <option value="closed">Closed cases</option>
+            <option value="active">{t("Active cases")}</option>
+            <option value="closed">{t("Closed cases")}</option>
           </select>
         </label>
         <label className="field">
-          <span>Visa category {view === "map" ? "(required)" : ""}</span>
+          <span>
+            {t("Visa category ")}
+            {view === "map" ? t("(required)") : ""}
+          </span>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
             <option value="">
-              {view === "map" ? "Select a category" : "All visa categories"}
+              {view === "map"
+                ? t("Select a category")
+                : t("All visa categories")}
             </option>
             {visaCategories.map((c) => (
-              <option key={c}>{c}</option>
+              <option key={c} value={c}>
+                {t(c)}
+              </option>
             ))}
           </select>
         </label>
       </div>
       <div className="data-summary">
         <span>
-          <strong>{cases.length}</strong> {status} cases in this view
+          {t(
+            status === "active"
+              ? "{count} active cases in this view"
+              : "{count} closed cases in this view",
+            { count: number(cases.length) },
+          )}
         </span>
         <span>
-          <strong>{new Set(cases.map((c) => c.country)).size}</strong> applicant
-          countries
+          <strong>{new Set(cases.map((c) => c.country)).size}</strong>
+          {t(" applicant countries")}
         </span>
         <span>
-          <strong>{new Set(cases.map((c) => c.post)).size}</strong> consular
-          posts
+          <strong>{new Set(cases.map((c) => c.post)).size}</strong>
+          {t(" consular posts")}
         </span>
       </div>
       {view === "table" ? (
@@ -710,12 +756,12 @@ export function VisaData() {
           <table>
             <thead>
               <tr>
-                <th>Visa category</th>
-                <th>Cases</th>
+                <th>{t("Visa category")}</th>
+                <th>{t("Cases")}</th>
                 {metrics.map((m) => (
                   <th key={m}>
-                    {metricLabels[m]}
-                    <small>median days · sample size</small>
+                    {t(metricLabels[m])}
+                    <small>{t("median days · sample size")}</small>
                   </th>
                 ))}
               </tr>
@@ -739,8 +785,11 @@ export function VisaData() {
                           <td key={m}>
                             {s.median === null
                               ? "—"
-                              : Math.round(s.median).toLocaleString()}
-                            <small>n = {s.sample}</small>
+                              : number(Math.round(s.median))}
+                            <small>
+                              {t("n = ")}
+                              {s.sample}
+                            </small>
                           </td>
                         );
                       })}
@@ -750,11 +799,12 @@ export function VisaData() {
               {!cases.length && (
                 <tr>
                   <td colSpan={metrics.length + 2}>
-                    <Empty title="No cases match these filters yet">
-                      As people add timelines, medians and sample sizes will
-                      appear here.{" "}
-                      <Link to="/account">Add your experience</Link> or broaden
-                      the filters.
+                    <Empty title={t("No cases match these filters yet")}>
+                      {t(
+                        "As people add timelines, medians and sample sizes will appear here.",
+                      )}{" "}
+                      <Link to="/account">{t("Add your experience")}</Link>
+                      {t(" or broaden the filters.")}
                     </Empty>
                   </td>
                 </tr>
@@ -766,21 +816,21 @@ export function VisaData() {
         <div className="map-panel">
           <div className="map-toolbar">
             <label className="inline-field">
-              Shade by
+              {t("Shade by")}
               <select value={shade} onChange={(e) => setShade(e.target.value)}>
-                <option value="count">Number of applicants</option>
-                <option value="median">Median wait</option>
+                <option value="count">{t("Number of applicants")}</option>
+                <option value="median">{t("Median wait")}</option>
               </select>
             </label>
             <label className="inline-field">
-              Metric
+              {t("Metric")}
               <select
                 value={metric}
                 onChange={(e) => setMetric(e.target.value as Metric)}
               >
                 {metrics.map((m) => (
                   <option key={m} value={m}>
-                    {metricLabels[m]}
+                    {t(metricLabels[m])}
                   </option>
                 ))}
               </select>
@@ -794,60 +844,63 @@ export function VisaData() {
               onSelect={setSelected}
             />
           ) : (
-            <Empty title="Choose a visa category to explore the map">
-              Comparing like categories gives the numbers context. Use the visa
-              category filter above.
+            <Empty title={t("Choose a visa category to explore the map")}>
+              {t(
+                "Comparing like categories gives the numbers context. Use the visa category filter above.",
+              )}
             </Empty>
           )}
         </div>
       )}
       <details className="methodology">
         <summary>
-          <Info size={17} /> How to read these numbers
+          <Info size={17} />
+          {t(" How to read these numbers")}
         </summary>
         <p>
-          Cases are grouped by applicant country in the map and visa category in
-          the table. The post filter selects the processing embassy or
-          consulate. A median is the middle reported duration, not a predicted
-          wait. Sample sizes are shown separately for every metric because not
-          everyone has all dates.
+          {t(
+            "Cases are grouped by applicant country in the map and visa category in the table. The post filter selects the processing embassy or consulate. A median is the middle reported duration, not a predicted wait. Sample sizes are shown separately for every metric because not everyone has all dates.",
+          )}
         </p>
         <p>
-          Active cases have no current final decision. Administrative
-          processing, §221(g), and policy-related refusals stay active.
-          Approved, issued, finally refused, and withdrawn cases are closed,
-          unless reopened. Filing to final decision uses the first closing event
-          after the most recent reopening. First-interview metrics exclude
-          future appointments.
+          {t(
+            "Active cases have no current final decision. Administrative processing, §221(g), and policy-related refusals stay active. Approved, issued, finally refused, and withdrawn cases are closed, unless reopened. Filing to final decision uses the first closing event after the most recent reopening. First-interview metrics exclude future appointments.",
+          )}
         </p>
         <p>
-          “Last confirmed” records when the account holder reviewed the
-          timelines, including a confirmation that nothing has changed. It does
-          not imply independent verification. Small samples and self-selection
-          can distort comparisons.
+          {t(
+            "“Last confirmed” records when the account holder reviewed the timelines, including a confirmation that nothing has changed. It does not imply independent verification. Small samples and self-selection can distort comparisons.",
+          )}
         </p>
       </details>
       {selected && (
-        <Modal title="APPLICANT COUNTRY" onClose={() => setSelected(null)}>
-          <h2>{selected.name}</h2>
+        <Modal title={t("APPLICANT COUNTRY")} onClose={() => setSelected(null)}>
+          <h2>{t(selected.name)}</h2>
           <p>
-            {category} · {status} cases · {post || "All posts"}
+            {category} · {t(status)}
+            {t(" cases · ")}
+            {post || t("All posts")}
           </p>
           <div className="country-metrics">
             <strong>{selected.count}</strong>
-            <span>reported applicants</span>
+            <span>{t("reported applicants")}</span>
             <strong>
               {selected.median == null
                 ? "—"
-                : `${Math.round(selected.median)} days`}
+                : t("{days} days", {
+                    days: number(Math.round(selected.median)),
+                  })}
             </strong>
             <span>
-              {metricLabels[metric]} · n={selected.sample || 0}
+              {t(metricLabels[metric])}
+              {t(" · n=")}
+              {selected.sample || 0}
             </span>
           </div>
           <p className="method-note">
-            These are self-reported community timelines, not government
-            processing estimates.
+            {t(
+              "These are self-reported community timelines, not government processing estimates.",
+            )}
           </p>
         </Modal>
       )}

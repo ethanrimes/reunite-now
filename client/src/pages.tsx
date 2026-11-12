@@ -1,3 +1,4 @@
+import { t, number } from "./i18n";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -46,14 +47,15 @@ export function Home() {
       <section className="hero">
         <div className="hero-copy">
           <div className="eyebrow">
-            <span className="mini-line" /> VISA PROCESSING NEEDS TO CHANGE
+            <span className="mini-line" />
+            {t(" VISA PROCESSING NEEDS TO CHANGE")}
           </div>
           <h1>
-            Visa delays
+            {t("Visa delays")}
             <br />
-            keep families
+            {t("keep families")}
             <br />
-            <em>apart.</em>
+            <em>{t("apart.")}</em>
             <svg
               className="hero-underline"
               viewBox="0 0 340 20"
@@ -63,25 +65,29 @@ export function Home() {
             </svg>
           </h1>
           <p>
-            Families need to know where their visa cases stand. We’re asking
-            Congress and the State Department for honest timelines, public
-            accountability, and enough staff to process applications.
+            {t(
+              "Families need to know where their visa cases stand. We’re asking Congress and the State Department for honest timelines, public accountability, and enough staff to process applications.",
+            )}
           </p>
           <div className="hero-actions">
             <Link
               className="button coral"
               to={me.user ? "/account" : "/login?intent=sign"}
             >
-              Sign the petition <ArrowUpRight size={18} />
+              {t("Sign the petition ")}
+              <ArrowUpRight size={18} />
             </Link>
             <a className="text-button" href="#our-demands">
-              What we’re asking for <ArrowRight size={16} />
+              {t("What we’re asking for ")}
+              <ArrowRight size={16} />
             </a>
           </div>
           <div className="hero-footnote">
             <ShieldCheck size={16} />
             <span>
-              Sign with your name or a nickname. Your email stays private.
+              {t(
+                "Sign with your name or a nickname. Your email stays private.",
+              )}
             </span>
           </div>
         </div>
@@ -89,67 +95,73 @@ export function Home() {
           <div className="photo-arch">
             <img
               src="/hero-family.jpg"
-              alt="A family together outdoors, illustrating the everyday moments this campaign is about"
+              alt={t(
+                "A family together outdoors, illustrating the everyday moments this campaign is about",
+              )}
             />
             <div className="photo-shade" />
             <span className="image-label">
-              <span /> THE REASON THIS MATTERS
+              <span />
+              {t(" THE REASON THIS MATTERS")}
             </span>
             <div className="photo-caption">
-              Time together
+              {t("Time together")}
               <br />
-              <em>shouldn’t be this hard.</em>
+              <em>{t("shouldn’t be this hard.")}</em>
             </div>
           </div>
           <div className="circle-stamp">
             <Heart size={25} />
             <span>
-              LESS WAITING
+              {t("LESS WAITING")}
               <br />
-              MORE LIVING
+              {t("MORE LIVING")}
             </span>
           </div>
           <span className="photo-credit">
-            Illustrative photography · Unsplash
+            {t("Illustrative photography · Unsplash")}
           </span>
           <div className="hero-orbit" aria-hidden="true" />
         </div>
       </section>
       <section className="impact-strip">
         <div className="impact-intro">
-          <span className="status-dot" /> Petition support
+          <span className="status-dot" />
+          {t(" Petition support")}
           <br />
-          so far
+          {t("so far")}
         </div>
         <div>
-          <strong>{loading ? "—" : profiles.length.toLocaleString()}</strong>
-          <span>petition signatories</span>
+          <strong>{loading ? "—" : number(profiles.length)}</strong>
+          <span>{t("petition signatories")}</span>
         </div>
         <div>
           <strong>{loading ? "—" : nstates}</strong>
-          <span>US states & territories</span>
+          <span>{t("US states & territories")}</span>
         </div>
         <div>
           <strong>{loading ? "—" : ndistricts}</strong>
-          <span>congressional districts</span>
+          <span>{t("congressional districts")}</span>
         </div>
         <Link to="/coverage">
-          See our reach <ArrowUpRight size={20} />
+          {t("See our reach ")}
+          <ArrowUpRight size={20} />
         </Link>
       </section>
       <section className="demands section" id="our-demands">
         <div className="section-heading">
           <div>
-            <div className="eyebrow">OUR PETITION</div>
+            <div className="eyebrow">{t("OUR PETITION")}</div>
             <h2>
-              Three things
+              {t("Three things")}
               <br />
-              we’re asking for.
+              {t("we’re asking for.")}
             </h2>
           </div>
           <p>
-            We call on Congress and the Department of State to make visa
-            processing transparent, accountable, and adequately resourced.
+            {t(
+              "We call on Congress and the Department of State to make visa processing transparent, accountable, and adequately resourced.",
+            )}
           </p>
         </div>
         <div className="demands-grid">
@@ -159,22 +171,24 @@ export function Home() {
                 <d.icon size={24} />
                 <span>0{i + 1}</span>
               </div>
-              <h3>{d.title}</h3>
-              <p>{d.text}</p>
+              <h3>{t(d.title)}</h3>
+              <p>{t(d.text)}</p>
             </article>
           ))}
         </div>
         <div className="petition-note">
           <span>
-            Our demands build on the{" "}
+            {t("Our demands build on the")}{" "}
             <Link to="/policies/reducing-visa-delays-act">
-              Reducing Visa Delays Act, H.R. 10711
+              {t("Reducing Visa Delays Act, H.R. 10711")}
             </Link>
-            , with additional community calls for measurable progress and humane
-            communication.
+            {t(
+              ", with additional community calls for measurable progress and humane communication.",
+            )}
           </span>
           <Link className="text-button" to="/login?intent=sign">
-            I stand with this petition <ArrowUpRight size={17} />
+            {t("I stand with this petition ")}
+            <ArrowUpRight size={17} />
           </Link>
         </div>
       </section>
@@ -182,69 +196,72 @@ export function Home() {
         <div className="human-art" aria-hidden="true">
           <div className="art-sun" />
           <span className="art-word">
-            Still waiting
+            {t("Still waiting")}
             <br />
-            <em>to come home.</em>
+            <em>{t("to come home.")}</em>
           </span>
           <svg viewBox="0 0 500 200">
             <path d="M-30 170Q80 -30 220 100T530 25M-30 190Q80 -10 220 120T530 45" />
           </svg>
         </div>
         <div>
-          <div className="eyebrow">LIVING WITH THE DELAYS</div>
+          <div className="eyebrow">{t("LIVING WITH THE DELAYS")}</div>
           <h2>
-            What the wait
+            {t("What the wait")}
             <br />
-            has cost us.
+            {t("has cost us.")}
           </h2>
           <p>
-            Missed birthdays, extra flights, a second rent payment. Share what
-            the process has been like for you and what you want officials to
-            understand.
+            {t(
+              "Missed birthdays, extra flights, a second rent payment. Share what the process has been like for you and what you want officials to understand.",
+            )}
           </p>
           <Link to="/stories" className="text-button">
-            Read the stories <ArrowUpRight size={18} />
+            {t("Read the stories ")}
+            <ArrowUpRight size={18} />
           </Link>
         </div>
       </section>
       <section className="section action-preview">
         <div className="section-heading">
           <div>
-            <div className="eyebrow">LEGISLATION & LEGAL CASES</div>
+            <div className="eyebrow">{t("LEGISLATION & LEGAL CASES")}</div>
             <h2>
-              What’s being done
+              {t("What’s being done")}
               <br />
-              about it.
+              {t("about it.")}
             </h2>
           </div>
           <Link to="/policies" className="text-button">
-            Explore policy & action <ArrowUpRight size={18} />
+            {t("Explore policy & action ")}
+            <ArrowUpRight size={18} />
           </Link>
         </div>
         <div className="policy-grid">
           {policies.slice(0, 2).map((p) => (
             <Link key={p.id} to={`/policies/${p.id}`} className="policy-card">
               <div className="card-top">
-                <span className="tag">{p.kind}</span>
+                <span className="tag">{t(p.kind)}</span>
                 <ArrowUpRight size={24} />
               </div>
-              <div className="eyebrow">{p.eyebrow}</div>
-              <h3>{p.title}</h3>
-              <p>{p.summary}</p>
+              <div className="eyebrow">{t(p.eyebrow)}</div>
+              <h3>{t(p.title)}</h3>
+              <p>{t(p.summary)}</p>
               <div className="card-bottom">
                 <span className="status-dot" />
-                {p.status}
+                {t(p.status)}
               </div>
             </Link>
           ))}
         </div>
       </section>
       <section className="join-banner">
-        <span className="eyebrow">SIGN THE PETITION</span>
-        <h2>Help us ask for better.</h2>
-        <p>You don’t need to have a visa case to support this.</p>
+        <span className="eyebrow">{t("SIGN THE PETITION")}</span>
+        <h2>{t("Help us ask for better.")}</h2>
+        <p>{t("You don’t need to have a visa case to support this.")}</p>
         <Link className="button coral" to="/login?intent=sign">
-          Sign the petition <ArrowUpRight size={18} />
+          {t("Sign the petition ")}
+          <ArrowUpRight size={18} />
         </Link>
       </section>
     </>
@@ -258,14 +275,16 @@ export function Policies() {
     (p) =>
       (kind === "All" || p.kind === kind) &&
       (theme === "All" || p.theme === theme) &&
-      `${p.title} ${p.summary}`.toLowerCase().includes(q.toLowerCase()),
+      `${t(p.title)} ${t(p.summary)}`.toLowerCase().includes(q.toLowerCase()),
   );
   return (
     <div className="page-shell">
       <PageIntro
-        eyebrow="POLICY & ACTION"
-        title={<>Policy & legal cases</>}
-        text="Track legislation and lawsuits affecting visa processing. Read the background, check the sources, and find ways to get involved."
+        eyebrow={t("POLICY & ACTION")}
+        title={<>{t("Policy & legal cases")}</>}
+        text={t(
+          "Track legislation and lawsuits affecting visa processing. Read the background, check the sources, and find ways to get involved.",
+        )}
       />
       <div className="toolbar">
         <div className="segmented">
@@ -276,59 +295,62 @@ export function Policies() {
               onClick={() => setKind(x)}
             >
               {x === "All"
-                ? "All initiatives"
+                ? t("All initiatives")
                 : x === "Legal case"
-                  ? "Legal cases"
-                  : x}
+                  ? t("Legal cases")
+                  : t(x)}
             </button>
           ))}
         </div>
         <label className="search">
           <Search size={16} />
           <input
-            aria-label="Search initiatives"
-            placeholder="Search initiatives"
+            aria-label={t("Search initiatives")}
+            placeholder={t("Search initiatives")}
             value={q}
             onChange={(e) => setQ(e.target.value)}
           />
         </label>
         <select
-          aria-label="Filter by advocacy goal"
+          aria-label={t("Filter by advocacy goal")}
           value={theme}
           onChange={(e) => setTheme(e.target.value)}
         >
-          <option>All</option>
-          <option>Transparency</option>
-          <option>Accountability</option>
+          <option value="All">{t("All")}</option>
+          <option value="Transparency">{t("Transparency")}</option>
+          <option value="Accountability">{t("Accountability")}</option>
         </select>
       </div>
       <div className="policy-grid three">
         {items.map((p) => (
           <Link key={p.id} to={`/policies/${p.id}`} className="policy-card">
             <div className="card-top">
-              <span className="tag">{p.kind}</span>
+              <span className="tag">{t(p.kind)}</span>
               <ArrowUpRight />
             </div>
-            <div className="eyebrow">{p.eyebrow}</div>
-            <h3>{p.title}</h3>
-            <p>{p.summary}</p>
+            <div className="eyebrow">{t(p.eyebrow)}</div>
+            <h3>{t(p.title)}</h3>
+            <p>{t(p.summary)}</p>
             <div className="card-bottom">
               <span className="status-dot" />
-              {p.status}
+              {t(p.status)}
             </div>
-            <small>Reviewed {date(p.updated)}</small>
+            <small>
+              {t("Reviewed ")}
+              {date(p.updated)}
+            </small>
           </Link>
         ))}
       </div>
       {!items.length && (
-        <Empty title="No matching initiatives">
-          Try a different search or filter.
+        <Empty title={t("No matching initiatives")}>
+          {t("Try a different search or filter.")}
         </Empty>
       )}
       <p className="method-note">
-        Updates are editorially reviewed snapshots, not a live court docket.
-        Each initiative links to its sources and shows when it was reviewed.
-        Litigation summaries are general information, not legal advice.
+        {t(
+          "Updates are editorially reviewed snapshots, not a live court docket. Each initiative links to its sources and shows when it was reviewed. Litigation summaries are general information, not legal advice.",
+        )}
       </p>
     </div>
   );
@@ -339,45 +361,46 @@ export function PolicyDetail() {
   if (!p)
     return (
       <div className="page-shell">
-        <Empty title="Initiative not found">
-          Return to <Link to="/policies">policy & action</Link>.
+        <Empty title={t("Initiative not found")}>
+          {t("Return to ")}
+          <Link to="/policies">{t("policy & action")}</Link>.
         </Empty>
       </div>
     );
   return (
     <div className="page-shell">
       <Link className="back-link" to="/policies">
-        ← All initiatives
+        {t("← All initiatives")}
       </Link>
-      <PageIntro eyebrow={p.eyebrow} title={p.title} text={p.summary}>
-        <span className="tag">{p.status}</span>
+      <PageIntro eyebrow={t(p.eyebrow)} title={t(p.title)} text={t(p.summary)}>
+        <span className="tag">{t(p.status)}</span>
       </PageIntro>
       <div className="detail-grid">
         <article>
           <section>
-            <h2>Background</h2>
-            <p className="large-copy">{p.background}</p>
+            <h2>{t("Background")}</h2>
+            <p className="large-copy">{t(p.background)}</p>
           </section>
           <section>
-            <h2>Goals</h2>
+            <h2>{t("Goals")}</h2>
             <ul className="check-list">
               {p.goals.map((g) => (
                 <li key={g}>
                   <Check size={18} />
-                  {g}
+                  {t(g)}
                 </li>
               ))}
             </ul>
           </section>
           <section>
-            <h2>Timeline & updates</h2>
+            <h2>{t("Timeline & updates")}</h2>
             <ol className="timeline">
-              {p.timeline.map((t, i) => (
+              {p.timeline.map((entry, i) => (
                 <li key={i}>
-                  <time>{date(t.date)}</time>
+                  <time>{date(entry.date)}</time>
                   <div>
-                    <strong>{t.title}</strong>
-                    <p>{t.text}</p>
+                    <strong>{t(entry.title)}</strong>
+                    <p>{t(entry.text)}</p>
                   </div>
                 </li>
               ))}
@@ -386,22 +409,24 @@ export function PolicyDetail() {
         </article>
         <aside>
           <div className="side-card">
-            <span className="eyebrow">HOW TO HELP</span>
-            <h3>Get involved</h3>
-            <p>{p.contribute}</p>
+            <span className="eyebrow">{t("HOW TO HELP")}</span>
+            <h3>{t("Get involved")}</h3>
+            <p>{t(p.contribute)}</p>
             {p.contact && (
-              <External href={p.contact.url}>{p.contact.label}</External>
+              <External href={p.contact.url}>{t(p.contact.label)}</External>
             )}
           </div>
           <div className="side-card light">
-            <h3>Sources</h3>
+            <h3>{t("Sources")}</h3>
             {p.sources.map((s) => (
               <External key={s.url} href={s.url}>
-                {s.label}
+                {t(s.label)}
               </External>
             ))}
             <small>
-              Reviewed {date(p.updated)}. Recheck sources before acting.
+              {t("Reviewed ")}
+              {date(p.updated)}
+              {t(". Recheck sources before acting.")}
             </small>
           </div>
         </aside>
@@ -421,32 +446,36 @@ export function Stories() {
   return (
     <div className="page-shell">
       <PageIntro
-        eyebrow="OUR STORIES"
+        eyebrow={t("OUR STORIES")}
         title={
           <>
-            Stories from
+            {t("Stories from")}
             <br />
-            <em>people waiting.</em>
+            <em>{t("people waiting.")}</em>
           </>
         }
-        text="What visa delays mean day to day, told by the people dealing with them."
+        text={t(
+          "What visa delays mean day to day, told by the people dealing with them.",
+        )}
       >
         <Link className="button coral" to="/account#story">
-          Share your story <Plus size={18} />
+          {t("Share your story ")}
+          <Plus size={18} />
         </Link>
       </PageIntro>
       <div className="toolbar">
         <span>
-          {stories.length} community{" "}
-          {stories.length === 1 ? "story" : "stories"}
+          {stories.length === 1
+            ? t("1 community story")
+            : t("{count} community stories", { count: number(stories.length) })}
         </span>
         <label className="search">
           <Search size={16} />
           <input
-            aria-label="Search stories"
+            aria-label={t("Search stories")}
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search places, stories, or experiences"
+            placeholder={t("Search places, stories, or experiences")}
           />
         </label>
       </div>
@@ -461,7 +490,7 @@ export function Stories() {
               {s.photos[0] ? (
                 <img
                   src={s.photos[0]}
-                  alt={`Photo shared by ${s.name}`}
+                  alt={t("Photo shared by {name}", { name: s.name })}
                   loading="lazy"
                 />
               ) : (
@@ -472,12 +501,13 @@ export function Stories() {
               <div className="story-shade" />
               <div className="story-overlay">
                 <span className="eyebrow">
-                  {s.country} · {s.name}
+                  {t(s.country)} · {s.name}
                 </span>
                 <h3>{s.title}</h3>
                 <p>{s.summary}</p>
                 <span className="read-story">
-                  Read their story <ArrowUpRight size={18} />
+                  {t("Read their story ")}
+                  <ArrowUpRight size={18} />
                 </span>
               </div>
             </button>
@@ -487,32 +517,43 @@ export function Stories() {
         <div className="story-empty">
           <div className="story-placeholder one">
             <Heart size={60} />
-            <span>Living apart</span>
+            <span>{t("Living apart")}</span>
           </div>
           <div className="story-placeholder two">
             <Clock3 size={60} />
-            <span>Plans on hold</span>
+            <span>{t("Plans on hold")}</span>
           </div>
           <div className="story-invite">
-            <span className="eyebrow">COMMUNITY STORIES</span>
-            <h2>{q ? "No matching stories." : "No stories published yet."}</h2>
+            <span className="eyebrow">{t("COMMUNITY STORIES")}</span>
+            <h2>
+              {q ? t("No matching stories.") : t("No stories published yet.")}
+            </h2>
             <p>
-              You can add photos, describe what happened, and include your visa
-              timeline. Nothing appears here until you choose to publish it.
+              {t(
+                "You can add photos, describe what happened, and include your visa timeline. Nothing appears here until you choose to publish it.",
+              )}
             </p>
             <Link className="text-button" to="/account#story">
-              Share your experience <ArrowUpRight size={18} />
+              {t("Share your experience ")}
+              <ArrowUpRight size={18} />
             </Link>
           </div>
         </div>
       )}
       <p className="method-note">
-        Stories are self-reported and are not independently verified. Sharing
-        here does not send your story to a lawyer, political group, or
-        representative.
+        {t(
+          "Community stories and external sources remain in their original language.",
+        )}{" "}
+        {t(
+          "Stories are self-reported and are not independently verified. Sharing here does not send your story to a lawyer, political group, or representative.",
+        )}
       </p>
       {selected && (
-        <Modal title="A COMMUNITY STORY" wide onClose={() => setSelected(null)}>
+        <Modal
+          title={t("A COMMUNITY STORY")}
+          wide
+          onClose={() => setSelected(null)}
+        >
           <div className="story-modal">
             {selected.photos.length > 0 && (
               <div className="story-photos">
@@ -520,13 +561,16 @@ export function Stories() {
                   <img
                     key={i}
                     src={p}
-                    alt={`Community photo ${i + 1} shared by ${selected.name}`}
+                    alt={t("Photo {count} shared by {name}", {
+                      count: i + 1,
+                      name: selected.name,
+                    })}
                   />
                 ))}
               </div>
             )}
             <span className="eyebrow">
-              {selected.name} · {selected.country}
+              {selected.name} · {t(selected.country)}
             </span>
             <h2>{selected.title}</h2>
             <p className="large-copy">{selected.summary}</p>
@@ -540,17 +584,20 @@ export function Stories() {
             </div>
             {selected.support && (
               <>
-                <h3>The support they’re looking for</h3>
+                <h3>{t("The support they’re looking for")}</h3>
                 <p className="preserve-lines">{selected.support}</p>
               </>
             )}
             {selected.timeline.length > 0 && (
               <>
-                <h3>Their timeline</h3>
+                <h3>{t("Their timeline")}</h3>
                 <Timeline events={selected.timeline} />
               </>
             )}
-            <small>Story last updated {date(selected.updatedAt)}</small>
+            <small>
+              {t("Story last updated ")}
+              {date(selected.updatedAt)}
+            </small>
           </div>
         </Modal>
       )}
@@ -561,115 +608,94 @@ export function DataUse() {
   return (
     <div className="page-shell narrow">
       <PageIntro
-        eyebrow="DATA USE & PRIVACY"
+        eyebrow={t("DATA USE & PRIVACY")}
         title={
           <>
-            How we use
+            {t("How we use")}
             <br />
-            <em>your data.</em>
+            <em>{t("your data.")}</em>
           </>
         }
-        text="Clear information about what you share, what is public, and how to take it back."
+        text={t(
+          "Clear information about what you share, what is public, and how to take it back.",
+        )}
       />
       <div className="privacy-summary">
         <ShieldCheck size={30} />
         <p>
-          Your email is private. Your petition profile and visa timelines are
-          public after you consent. Stories are public only when you choose to
-          publish them.
+          {t(
+            "Your email is private. Your petition profile and visa timelines are public after you consent. Stories are public only when you choose to publish them.",
+          )}
         </p>
       </div>
       <div className="prose">
-        <h2>What other people can see</h2>
+        <h2>{t("What other people can see")}</h2>
         <p>
-          Your chosen name or nickname, legal-status category, country, city, US
-          state and congressional district, optional political affiliation,
-          involvement in the visa process, signature date, and last-confirmed
-          date are public. The applicant names or nicknames, countries, visa
-          categories, posts, relationships, dates, and event notes you enter are
-          also public. Do not include passport numbers, receipt numbers,
-          addresses, birth dates, or documents.
+          {t(
+            "Your chosen name or nickname, legal-status category, country, city, US state and congressional district, optional political affiliation, involvement in the visa process, signature date, and last-confirmed date are public. The applicant names or nicknames, countries, visa categories, posts, relationships, dates, and event notes you enter are also public. Do not include passport numbers, receipt numbers, addresses, birth dates, or documents.",
+          )}
         </p>
         <p>
-          You must have permission to publish information about another person.
-          Use a nickname if identification would be uncomfortable or unsafe. You
-          must be at least 18 to create an account.
+          {t(
+            "You must have permission to publish information about another person. Use a nickname if identification would be uncomfortable or unsafe. You must be at least 18 to create an account.",
+          )}
         </p>
-        <h2>What stays private</h2>
+        <h2>{t("What stays private")}</h2>
         <p>
-          Your email address, sign-in tokens, session details, and reminder
-          preference are not included in public profiles. They are used to
-          operate your account and, if requested, send reminders. We do not sell
-          personal data or use advertising trackers.
+          {t(
+            "Your email address, sign-in tokens, session details, and reminder preference are not included in public profiles. They are used to operate your account and, if requested, send reminders. We do not sell personal data or use advertising trackers.",
+          )}
         </p>
-        <h2>Address lookup</h2>
+        <h2>{t("Address lookup")}</h2>
         <p>
-          When you use district lookup, your address is sent to the US Census
-          Bureau’s geocoding service. Reunite Now does not save the search
-          address or geocoding result. Only the state and congressional district
-          you confirm are saved. Census may process the request under its own
-          policies. You can select your district manually instead.
+          {t(
+            "When you use district lookup, your address is sent to the US Census Bureau’s geocoding service. Reunite Now does not save the search address or geocoding result. Only the state and congressional district you confirm are saved. Census may process the request under its own policies. You can select your district manually instead.",
+          )}
         </p>
-        <h2>Statistics and interpretation</h2>
+        <h2>{t("Statistics and interpretation")}</h2>
         <p>
-          Statistics summarize voluntarily submitted cases. They are not a
-          representative sample, official agency statistics, or a prediction.
-          Each median shows its sample size. Missing dates are excluded from
-          that metric. A future interview is not a completed interview.
-          Administrative processing and policy-related refusals remain active
-          unless a final decision or withdrawal is recorded. An approved or
-          issued case is closed unless subsequently reopened.
+          {t(
+            "Statistics summarize voluntarily submitted cases. They are not a representative sample, official agency statistics, or a prediction. Each median shows its sample size. Missing dates are excluded from that metric. A future interview is not a completed interview. Administrative processing and policy-related refusals remain active unless a final decision or withdrawal is recorded. An approved or issued case is closed unless subsequently reopened.",
+          )}
         </p>
-        <h2>Photos and stories</h2>
+        <h2>{t("Photos and stories")}</h2>
         <p>
-          You control whether your story is published. Only upload photos you
-          have permission to share, including permission from identifiable
-          people. The photo uploader resizes images and re-encodes them to
-          remove embedded metadata. You can unpublish or delete your story from
-          your account.
+          {t(
+            "You control whether your story is published. Only upload photos you have permission to share, including permission from identifiable people. The photo uploader resizes images and re-encodes them to remove embedded metadata. You can unpublish or delete your story from your account.",
+          )}
         </p>
-        <h2>Monthly reminders</h2>
+        <h2>{t("Monthly reminders")}</h2>
         <p>
-          Reminders are optional. When email delivery is enabled, we send at
-          most one reminder per calendar month for accounts with active visa
-          cases that have not been confirmed in at least 30 days. The reminder
-          asks you to add a dated milestone or confirm no change. It never
-          changes a timeline automatically. Turn reminders off at any time in
-          your account.
+          {t(
+            "Reminders are optional. When email delivery is enabled, we send at most one reminder per calendar month for accounts with active visa cases that have not been confirmed in at least 30 days. The reminder asks you to add a dated milestone or confirm no change. It never changes a timeline automatically. Turn reminders off at any time in your account.",
+          )}
         </p>
-        <h2>Export, correct, or delete</h2>
+        <h2>{t("Export, correct, or delete")}</h2>
         <p>
-          Visit your account to edit your profile, download your data, remove a
-          visa case, unpublish your story, or permanently delete your account.
-          Deletion removes your account, signature, case timelines, story
-          photos, sessions, and reminder records from the live database.
-          Aggregate statistics then recalculate without your records.
+          {t(
+            "Visit your account to edit your profile, download your data, remove a visa case, unpublish your story, or permanently delete your account. Deletion removes your account, signature, case timelines, story photos, sessions, and reminder records from the live database. Aggregate statistics then recalculate without your records.",
+          )}
         </p>
         <p>
-          Encrypted Azure database backups expire under the configured retention
-          period of 7 days. Deleted data is not used from backups; any recovery
-          must reapply deletions before reopening the site. Copies independently
-          saved by other visitors, search engines, or external services cannot
-          be recalled. Email delivery providers may retain operational delivery
-          records under their own policies.
+          {t(
+            "Encrypted Azure database backups expire under the configured retention period of 7 days. Deleted data is not used from backups; any recovery must reapply deletions before reopening the site. Copies independently saved by other visitors, search engines, or external services cannot be recalled. Email delivery providers may retain operational delivery records under their own policies.",
+          )}
         </p>
-        <h2>Services that process data</h2>
+        <h2>{t("Services that process data")}</h2>
         <p>
-          Microsoft Azure hosts the application, database, and scheduled work.
-          Azure Communication Services handles email when enabled. Google
-          handles Google sign-in if you choose it. Census handles optional
-          address lookup. Public policy links and contact links take you to
-          external organizations. We do not automatically share submissions with
-          those organizations.
+          {t(
+            "Microsoft Azure hosts the application, database, and scheduled work. Azure Communication Services handles email when enabled. Google handles Google sign-in if you choose it. Census handles optional address lookup. Public policy links and contact links take you to external organizations. We do not automatically share submissions with those organizations.",
+          )}
         </p>
-        <h2>Agreement version</h2>
+        <h2>{t("Agreement version")}</h2>
         <p>
-          November 11, 2026. The version accepted with your signature is
-          recorded. This is an independent advocacy project, not a law firm or
-          government service.
+          {t(
+            "November 11, 2026. The version accepted with your signature is recorded. This is an independent advocacy project, not a law firm or government service.",
+          )}
         </p>
         <Link className="button" to="/account">
-          Manage my data <ArrowUpRight size={18} />
+          {t("Manage my data ")}
+          <ArrowUpRight size={18} />
         </Link>
       </div>
     </div>
@@ -679,57 +705,53 @@ export function About() {
   return (
     <div className="page-shell narrow">
       <PageIntro
-        eyebrow="ABOUT REUNITE NOW"
-        title={<>About Reunite Now</>}
-        text="A project advocating for transparency, accountability, and adequate resources in US visa processing."
+        eyebrow={t("ABOUT REUNITE NOW")}
+        title={<>{t("About Reunite Now")}</>}
+        text={t(
+          "A project advocating for transparency, accountability, and adequate resources in US visa processing.",
+        )}
       />
       <div className="about-statement">
         <Heart size={36} />
         <h2>
-          The process takes too long.
+          {t("The process takes too long.")}
           <br />
-          Getting answers shouldn’t.
+          {t("Getting answers shouldn’t.")}
         </h2>
       </div>
       <div className="prose">
-        <h2>Why we’re here</h2>
+        <h2>{t("Why we’re here")}</h2>
         <p>
-          When a visa process stretches on without clear information, people put
-          their lives on hold. Families plan around unknowns. The costs are
-          emotional, practical, and financial. Reunite Now exists to make those
-          experiences visible and advocate for a system that communicates
-          clearly and has the resources to do its job.
+          {t(
+            "When a visa process stretches on without clear information, people put their lives on hold. Families plan around unknowns. The costs are emotional, practical, and financial. Reunite Now exists to make those experiences visible and advocate for a system that communicates clearly and has the resources to do its job.",
+          )}
         </p>
-        <h2>What we do</h2>
+        <h2>{t("What we do")}</h2>
         <p>
-          We collect petition signatures with geographic context, track
-          legislation and litigation with source links, make room for personal
-          stories, and summarize voluntarily submitted visa timelines. These
-          tools help people see a shared problem and ask for concrete
-          improvements.
+          {t(
+            "We collect petition signatures with geographic context, track legislation and litigation with source links, make room for personal stories, and summarize voluntarily submitted visa timelines. These tools help people see a shared problem and ask for concrete improvements.",
+          )}
         </p>
-        <h2>Who can take part</h2>
+        <h2>{t("Who can take part")}</h2>
         <p>
-          You do not have to be a US citizen or personally involved in a visa
-          case to support this petition. Political affiliation is optional. The
-          project does not endorse candidates, provide legal representation, or
-          promise an outcome for any case.
+          {t(
+            "You do not have to be a US citizen or personally involved in a visa case to support this petition. Political affiliation is optional. The project does not endorse candidates, provide legal representation, or promise an outcome for any case.",
+          )}
         </p>
-        <h2>Project maintainer</h2>
+        <h2>{t("Project maintainer")}</h2>
         <p>
-          The project is maintained by Ethan Rimes. Policy summaries link to
-          their sources so you can read the underlying documents and check for
-          updates.
+          {t(
+            "The project is maintained by Ethan Rimes. Policy summaries link to their sources so you can read the underlying documents and check for updates.",
+          )}
         </p>
         <External href="https://github.com/ethanrimes">
-          Ethan Rimes on GitHub
+          {t("Ethan Rimes on GitHub")}
         </External>
-        <h2>Where signatures go</h2>
+        <h2>{t("Where signatures go")}</h2>
         <p>
-          Signatures demonstrate public support and geographic reach on this
-          website. They are not automatically filed with Congress, a court, or
-          the State Department. Any future petition delivery will be described
-          publicly before it happens.
+          {t(
+            "Signatures demonstrate public support and geographic reach on this website. They are not automatically filed with Congress, a court, or the State Department. Any future petition delivery will be described publicly before it happens.",
+          )}
         </p>
       </div>
     </div>
