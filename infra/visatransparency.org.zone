@@ -1,0 +1,15 @@
+; Reunite Now: Azure website and outbound email DNS records.
+; Cloudflare import: leave Proxy imported DNS records unchecked.
+; No MX records are included; this does not provision an incoming mailbox.
+$ORIGIN visatransparency.org.
+$TTL 300
+
+visatransparency.org. 300 IN A 52.162.107.35 ; cf_tags=cf-proxied:false
+asuid.visatransparency.org. 300 IN TXT "085484C10CBEF3338B9FA8E25F186B0A3C80D79FF1233F397ADAD96C10F33D31"
+www.visatransparency.org. 300 IN CNAME reunite-now-9a04.azurewebsites.net. ; cf_tags=cf-proxied:false
+asuid.www.visatransparency.org. 300 IN TXT "085484C10CBEF3338B9FA8E25F186B0A3C80D79FF1233F397ADAD96C10F33D31"
+visatransparency.org. 300 IN TXT "ms-domain-verification=e9dc47f8-22c6-4e52-8dbc-99431578e4cf"
+visatransparency.org. 300 IN TXT "v=spf1 include:spf.protection.outlook.com -all"
+selector1-azurecomm-prod-net._domainkey.visatransparency.org. 300 IN CNAME selector1-azurecomm-prod-net._domainkey.azurecomm.net. ; cf_tags=cf-proxied:false
+selector2-azurecomm-prod-net._domainkey.visatransparency.org. 300 IN CNAME selector2-azurecomm-prod-net._domainkey.azurecomm.net. ; cf_tags=cf-proxied:false
+_dmarc.visatransparency.org. 300 IN TXT "v=DMARC1; p=none"

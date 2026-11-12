@@ -8,11 +8,38 @@ This guide is for the existing Reunite Now deployment. The application, database
 | --- | --- | --- |
 | Website and database | Deployed on Azure | Attach your domain when purchased |
 | Email sign-in | Azure sender and credentials configured | Receive and use a real sign-in email |
-| Google sign-in | Application code implemented; credentials absent | Create an OAuth client and test login |
+| Google sign-in | Client credentials saved in Azure; authorization redirect verified | Complete a browser sign-in test |
 | Monthly reminders | Daily Azure Logic App installed; manual empty run succeeded | Test delivery to an eligible test account, then verify an unattended run |
 | Branded sender address | Azure-managed address available | Optional: verify your own sending domain |
 
 These are the deployment handoff results, not a promise that credentials or DNS will remain unchanged. Configuration flags alone do not establish successful delivery or sign-in.
+
+## Current domain: visatransparency.org
+
+The purchased domain uses Cloudflare DNS. Azure now has a customer-managed email domain for `visatransparency.org`, engagement tracking disabled, and the `noreply` sender with display name “Reunite Now.” These resources are prepared; DNS verification and activation are still pending. The current Google client includes the new domain callback. Production continues to use the Azure hostname and existing Azure-managed sender until HTTPS and email verification succeed.
+
+### Add the DNS records in Cloudflare
+
+1. Open [Cloudflare Dashboard](https://dash.cloudflare.com/), select **visatransparency.org**, and go to **DNS → Records**.
+2. Select **Import and Export**, then import [`infra/visatransparency.org.zone`](../infra/visatransparency.org.zone).
+3. Uncheck **Proxy imported DNS records** before importing. The A and CNAME records also carry DNS-only tags in the file. Keep these records **DNS only** for Azure certificate issuance and renewal.
+4. Confirm that all nine records were added. There should be one website A record, three CNAME records (`www` and two DKIM selectors), and five TXT records (two App Service ownership records, email ownership, SPF, and DMARC). This adds no MX records or incoming mailbox.
+5. Tell the operator that DNS is saved so the remaining Azure steps below can run. Public DNS and Azure verification must be checked before calling the setup complete.
+
+The generated zone file contains the app's current inbound IP, `52.162.107.35`, and the actual Azure verification tokens. It contains no credentials. Before reusing this file after infrastructure changes, compare it with the current App Service external IP, ownership token, and Email Communication Service verification records. Preserve existing records if other email providers are added later; maintain a single SPF policy rather than adding a second SPF TXT record.
+
+### Remaining Azure activation
+
+After DNS resolves:
+
+1. Add App Service hostname bindings for `visatransparency.org` and `www.visatransparency.org`. Issue and bind App Service Managed Certificates using SNI SSL, then verify trusted HTTPS for both names.
+2. Initiate Email Communication Service verification for Domain, SPF, DKIM, and DKIM2, and inspect the resulting statuses. The zone also adds an initial DMARC `p=none` policy; this is not enforcement or delivery monitoring.
+3. Link the verified custom email domain to `reunite-now-communication`, preserving its existing linked Azure-managed domain. The custom sender is `noreply@visatransparency.org`; sending does not create an inbox at that address.
+4. Configure and verify a canonical redirect for alternate hostnames before promoting both root and `www`.
+5. Once HTTPS and the sender are verified, set App Service `APP_URL=https://visatransparency.org` and `EMAIL_FROM=noreply@visatransparency.org`. Keep the existing Google and Azure email credentials.
+6. Run `python3 scripts/configure-reminders.py` to point the daily reminder job at the new hostname, then verify health, config, Google callback, account saves, and email-link destinations. Sending a delivery test requires an explicitly identified test inbox.
+
+`infra/custom-email.bicep` reproduces the custom email domain and sender without changing Communication Service links or application settings. It does not verify DNS, issue website certificates, or activate the sender. `infra/email.bicep` and `scripts/configure-email.py` describe the original Azure-managed sender and must not be used to overwrite the custom configuration after cutover.
 
 ## Where settings go
 
