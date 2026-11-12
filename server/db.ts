@@ -77,6 +77,7 @@ export async function migrate() {
     `CREATE TABLE IF NOT EXISTS profiles (user_id text PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,data jsonb NOT NULL,signed_at timestamptz NOT NULL DEFAULT now(),updated_at timestamptz NOT NULL DEFAULT now(),consent_version text NOT NULL DEFAULT '2026-11-11')`,
     `CREATE TABLE IF NOT EXISTS stories (user_id text PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,data jsonb NOT NULL,updated_at timestamptz NOT NULL DEFAULT now())`,
     `CREATE TABLE IF NOT EXISTS reminder_deliveries (user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,period text NOT NULL,status text NOT NULL DEFAULT 'pending',claimed_at timestamptz NOT NULL DEFAULT now(),sent_at timestamptz,PRIMARY KEY(user_id,period))`,
+    `CREATE TABLE IF NOT EXISTS reminder_recipient_deliveries (user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,period text NOT NULL,recipient_key text NOT NULL,status text NOT NULL DEFAULT 'pending',claimed_at timestamptz NOT NULL DEFAULT now(),sent_at timestamptz,PRIMARY KEY(user_id,period,recipient_key))`,
     `CREATE INDEX IF NOT EXISTS sessions_user_id ON sessions(user_id)`,
     `CREATE INDEX IF NOT EXISTS sessions_expiry ON sessions(expires_at)`,
   ])

@@ -24,12 +24,17 @@ test("account deletion cascades across profile, story, sessions and reminder led
     "INSERT INTO reminder_deliveries(user_id,period) VALUES($1,$2)",
     ["delete-test", "2026-11"],
   );
+  await db.query(
+    "INSERT INTO reminder_recipient_deliveries(user_id,period,recipient_key) VALUES($1,$2,$3)",
+    ["delete-test", "2026-11", "synthetic-recipient-key"],
+  );
   await db.query("DELETE FROM users WHERE id=$1", ["delete-test"]);
   for (const table of [
     "profiles",
     "stories",
     "sessions",
     "reminder_deliveries",
+    "reminder_recipient_deliveries",
   ])
     assert.equal(
       (

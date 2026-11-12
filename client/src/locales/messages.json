@@ -3788,5 +3788,60 @@
     "es": "Revisa los campos del formulario y los consentimientos obligatorios.",
     "pt": "Confira os campos do formulário e os consentimentos obrigatórios.",
     "tl": "Pakisuri ang mga field sa form at ang mga kinakailangang pahintulot."
+  },
+  "Additional reminder emails": {
+    "es": "Correos adicionales para recordatorios",
+    "pt": "E-mails adicionais para lembretes",
+    "tl": "Mga karagdagang email para sa paalala"
+  },
+  "Reminders go to your sign-in email: {email}.": {
+    "es": "Los recordatorios llegan al correo con el que inicias sesión: {email}.",
+    "pt": "Os lembretes vão para seu e-mail de acesso: {email}.",
+    "tl": "Ipinapadala ang mga paalala sa email na ginagamit mo sa pag-sign in: {email}."
+  },
+  "Add up to 5 other addresses you own or have permission to notify. Each gets a separate email. These addresses stay private.": {
+    "es": "Añade hasta 5 direcciones tuyas o cuyos titulares te hayan dado permiso. Cada una recibe un correo por separado. Estas direcciones son privadas.",
+    "pt": "Adicione até 5 endereços seus ou de pessoas que autorizaram os avisos. Cada um recebe um e-mail separado. Esses endereços ficam privados.",
+    "tl": "Magdagdag ng hanggang 5 email address na sa iyo o may pahintulot kang padalhan ng paalala. Hiwalay ang email sa bawat isa. Mananatiling pribado ang mga address na ito."
+  },
+  "Reminder email {number}": {
+    "es": "Correo para recordatorios {number}",
+    "pt": "E-mail para lembretes {number}",
+    "tl": "Email para sa paalala {number}"
+  },
+  "Remove reminder email {number}": {
+    "es": "Eliminar correo para recordatorios {number}",
+    "pt": "Remover e-mail para lembretes {number}",
+    "tl": "Alisin ang email para sa paalala {number}"
+  },
+  "Add reminder email": {
+    "es": "Añadir correo para recordatorios",
+    "pt": "Adicionar e-mail para lembretes",
+    "tl": "Magdagdag ng email para sa paalala"
+  },
+  "Save your account below to apply reminder changes.": {
+    "es": "Guarda tu cuenta abajo para aplicar los cambios de recordatorios.",
+    "pt": "Salve sua conta abaixo para aplicar as mudanças nos lembretes.",
+    "tl": "I-save ang iyong account sa ibaba upang mailapat ang mga pagbabago sa mga paalala."
+  },
+  "Use a valid email address": {
+    "es": "Introduce una dirección de correo válida",
+    "pt": "Digite um endereço de e-mail válido",
+    "tl": "Gumamit ng wastong email address"
+  },
+  "Add no more than 5 additional reminder emails": {
+    "es": "Añade como máximo 5 correos adicionales para recordatorios",
+    "pt": "Adicione no máximo 5 e-mails adicionais para lembretes",
+    "tl": "Hanggang 5 karagdagang email lamang ang maaaring idagdag para sa mga paalala"
+  },
+  "Your sign-in and reminder email addresses, sign-in tokens, session details, and reminder preferences stay private. They are used to operate your account and send optional reminders. We do not sell personal data or use advertising trackers.": {
+    "es": "Tus direcciones de correo de acceso y de recordatorios, tokens de acceso, datos de sesión y preferencias de recordatorios son privados. Se utilizan para gestionar tu cuenta y enviar recordatorios opcionales. No vendemos datos personales ni usamos rastreadores publicitarios.",
+    "pt": "Seus endereços de e-mail de acesso e de lembretes, tokens de acesso, dados de sessão e preferências de lembretes ficam privados. Eles são usados para manter sua conta e enviar lembretes opcionais. Não vendemos dados pessoais nem usamos rastreadores de publicidade.",
+    "tl": "Mananatiling pribado ang iyong mga email para sa pag-sign in at mga paalala, token sa pag-sign in, detalye ng session, at mga kagustuhan sa paalala. Ginagamit ang mga ito upang patakbuhin ang iyong account at magpadala ng opsyonal na paalala. Hindi kami nagbebenta ng personal na datos o gumagamit ng mga tracker sa advertising."
+  },
+  "Reminders are optional. For active cases not confirmed in at least 30 days, we send at most one reminder per calendar month to each selected address. Your sign-in email receives reminders, and you can add up to 5 other addresses you own or have permission to notify. Each recipient gets a separate email without applicant details or other recipients’ addresses. Add a dated milestone or confirm no change in your account; reminders never update timelines automatically. Edit recipients or turn reminders off in Account.": {
+    "es": "Los recordatorios son opcionales. Para casos activos sin confirmar durante al menos 30 días, enviamos como máximo un recordatorio por mes natural a cada dirección seleccionada. Tu correo de acceso recibe recordatorios y puedes añadir hasta 5 direcciones tuyas o cuyos titulares te hayan dado permiso. Cada destinatario recibe un correo separado, sin datos de solicitantes ni direcciones de otros destinatarios. Añade un hito con fecha o confirma que no hay cambios desde tu cuenta; los recordatorios nunca actualizan las cronologías automáticamente. Edita los destinatarios o desactiva los recordatorios en Cuenta.",
+    "pt": "Os lembretes são opcionais. Para casos ativos sem confirmação há pelo menos 30 dias, enviamos no máximo um lembrete por mês civil a cada endereço selecionado. Seu e-mail de acesso recebe lembretes, e você pode adicionar até 5 endereços seus ou de pessoas que autorizaram os avisos. Cada destinatário recebe um e-mail separado, sem detalhes de solicitantes nem endereços dos demais. Adicione um marco com data ou confirme que nada mudou na sua conta; os lembretes nunca atualizam as cronologias automaticamente. Edite os destinatários ou desative os lembretes em Conta.",
+    "tl": "Opsyonal ang mga paalala. Para sa mga aktibong kasong hindi nakumpirma sa loob ng hindi bababa sa 30 araw, nagpapadala kami ng hanggang isang paalala bawat buwan sa bawat napiling address. Makakatanggap ang iyong email sa pag-sign in, at maaari kang magdagdag ng hanggang 5 address na sa iyo o may pahintulot kang padalhan ng paalala. Hiwalay ang email sa bawat tatanggap at walang detalye ng aplikante o address ng ibang tatanggap. Magdagdag ng pangyayari na may petsa o kumpirmahing walang pagbabago sa iyong account; hindi awtomatikong binabago ng mga paalala ang timeline. Baguhin ang mga tatanggap o ihinto ang mga paalala sa Account."
   }
 }

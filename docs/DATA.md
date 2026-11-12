@@ -1,6 +1,6 @@
 # Data, sources, and interpretation
 
-Profiles and timelines become public only after mandatory petition and public-use consent. Email, authentication records, and reminder preference are never returned by the public endpoints. A public nickname is supported. An address lookup forwards the request to Census and returns only the district/state selection; it does not persist the address or coordinates. Photos are re-encoded in the browser before upload to remove embedded metadata.
+Profiles and timelines become public only after mandatory petition and public-use consent. Sign-in email, additional reminder addresses, authentication records, and reminder preferences are never returned by the public endpoints. A public nickname is supported. An address lookup forwards the request to Census and returns only the district/state selection; it does not persist the address or coordinates. Photos are re-encoded in the browser before upload to remove embedded metadata.
 
 Account deletion removes the user, signature, case timelines, story/photos, sessions, pending login tokens for the email, and reminder ledger. Export provides the user's profile and story. Operational backup limitations are described in OPERATIONS.md and on the data-use page.
 
@@ -22,3 +22,5 @@ Run `npm run data:refresh` and review the changed counts/dates before committing
 ## Publication operations
 
 The author chooses whether a story is published. The first version has no moderation staff or review queue. Establish a monitored reporting contact, removal procedure, and editorial ownership before broad public recruitment. This application does not send stories to politicians or legal teams automatically. No petition delivery to Congress or agencies has occurred.
+
+Reminder recipients are the sign-in address plus up to five additional addresses, normalized and deduplicated. Account owners must own those addresses or have permission to notify them. These addresses remain private and are included in the account owner’s export. Removing an address or turning reminders off stops future eligible sends; a message already in flight may still arrive. Each recipient receives a separate message without applicant details or the other addresses. Additional recipients are notification destinations, not sign-in identities. Deleting the account also removes the per-recipient delivery ledger.

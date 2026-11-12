@@ -52,6 +52,11 @@ test("email authentication, data privacy, ownership, update and deletion", async
     publicConsent: true,
     adultConsent: true,
     reminders: false,
+    reminderEmails: [
+      " BACKUP@EXAMPLE.TEST ",
+      "backup@example.test",
+      "second@example.test",
+    ],
     cases: [
       {
         id: "test-case",
@@ -94,14 +99,41 @@ test("email authentication, data privacy, ownership, update and deletion", async
     400,
   );
   assert.equal((await request("/api/me/profile", "PUT", profile)).status, 200);
+  assert.equal(
+    (
+      await request("/api/me/profile", "PUT", {
+        ...profile,
+        reminderEmails: ["invalid address"],
+      })
+    ).status,
+    400,
+  );
+  assert.equal(
+    (
+      await request("/api/me/profile", "PUT", {
+        ...profile,
+        reminderEmails: Array.from(
+          { length: 6 },
+          (_, index) => `extra${index}@example.test`,
+        ),
+      })
+    ).status,
+    400,
+  );
   const me = await (await request("/api/me")).json();
   assert.equal(me.user.email, email);
+  assert.deepEqual(me.profile.reminderEmails, [
+    "backup@example.test",
+    "second@example.test",
+  ]);
   assert.equal(me.profile.cases[0].events.length, 2);
   const pub = await (await request("/api/public")).json();
   const record = pub.profiles.find((p: any) => p.id === me.user.id);
   assert.equal(record.name, profile.name);
   assert.equal("email" in record, false);
   assert.equal("reminders" in record, false);
+  assert.equal("reminderEmails" in record, false);
+  assert.equal(JSON.stringify(record).includes("backup@example.test"), false);
   const story = {
     title: "Integration test story",
     summary: "This is synthetic test content used only for local verification.",
@@ -130,6 +162,23 @@ test("email authentication, data privacy, ownership, update and deletion", async
   );
   const exported = await (await request("/api/me/export")).json();
   assert.equal(exported.email, email);
+  assert.deepEqual(
+    exported.profile.data.reminderEmails,
+    me.profile.reminderEmails,
+  );
+  assert.equal(
+    (
+      await request("/api/me/profile", "PUT", {
+        ...profile,
+        reminderEmails: [],
+      })
+    ).status,
+    200,
+  );
+  assert.deepEqual(
+    (await (await request("/api/me")).json()).profile.reminderEmails,
+    [],
+  );
   assert.equal(exported.story.title, story.title);
   assert.equal(
     (await request("/api/me", "DELETE", { confirmation: "no" })).status,

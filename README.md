@@ -30,7 +30,7 @@ npm test
 npm run test:integration
 ```
 
-Tests cover timeline calculations, date validation, SQL transactions, deletion cascades, authentication, ownership, consent, public-data filtering, exports, and no-change confirmation. The integration test creates and deletes its own synthetic local account.
+Tests cover timeline calculations, date validation, SQL transactions, deletion cascades, authentication, ownership, consent, public-data filtering, exports, no-change confirmation, and per-recipient reminder deduplication/retries/concurrency. Reminder tests use a fake sender and never send real email. The integration test creates and deletes its own synthetic local account.
 
 ## Hosting
 
@@ -66,6 +66,10 @@ Policy updates are editorial, not an automatic docket feed. Member cards show th
 Public statistics are self-reported, with metric-specific sample sizes and no invented signatories. Public profiles intentionally expose the fields described in the consent form; emails and authentication data remain private. The initial release loads public profiles to calculate aggregates in the browser. Larger deployments should move aggregation to indexed server queries and photo storage to Azure Blob Storage.
 
 Stories publish when their author opts in. There is no staffed moderation queue or automated content screening. Before outreach, establish a monitored contact and moderation process. See [data and privacy](docs/DATA.md).
+
+## Reminder recipients
+
+In Account, enable monthly reminders and add up to five extra email addresses alongside your sign-in address. Only add addresses you own or have permission to notify. Save the account to apply additions or removals. Addresses stay private, appear in your data export, and receive separate messages without applicant details or the other addresses. Turning reminders off stops all recipients. Existing accounts continue using their sign-in email. No new Azure service or credential is required; the application creates the additional delivery ledger on startup.
 
 ## Languages
 
