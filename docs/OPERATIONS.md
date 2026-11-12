@@ -57,3 +57,5 @@ PostgreSQL backups retain up to seven days. Deletion removes the live account an
 No request body logging or third-party analytics is installed. Avoid enabling request capture containing profiles, addresses, or sign-in tokens. Configure Azure alerts for app health, database storage, and WebJob failures as traffic grows.
 
 Run `python3 scripts/verify-live.py` for a read-only API smoke check. Adding `--check-reminders` invokes the real reminder job and can email eligible opted-in users; use it intentionally, not as a read-only check. It prints aggregate results only.
+
+Linux WebJobs require `WEBSITE_SKIP_RUNNING_KUDUAGENT=false` as well as Always On. This is configured by provisioning. See [Microsoft's WebJobs setup](https://learn.microsoft.com/en-us/azure/app-service/quickstart-webjobs).
