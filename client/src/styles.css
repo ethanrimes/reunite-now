@@ -4151,7 +4151,7 @@ small,
   font-size: 12px;
   cursor: pointer;
 }
-@media (min-width: 1281px) {
+@media (min-width: 1500px) {
   .site-header {
     gap: 20px;
     padding-left: 3%;
@@ -4165,7 +4165,7 @@ small,
     gap: 12px;
   }
 }
-@media (max-width: 1280px) {
+@media (max-width: 1499px) {
   .site-header {
     height: 80px;
     gap: 16px;
@@ -4827,7 +4827,9 @@ thead {
   font-size: 13px;
 }
 .button {
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
   transform: none;
 }
 
@@ -4989,7 +4991,9 @@ textarea:focus-visible {
   min-height: 44px;
 }
 @media (max-width: 600px) {
-  .reminder-emails { margin-left: 0; }
+  .reminder-emails {
+    margin-left: 0;
+  }
 }
 .reminder-emails .text-button {
   min-height: 44px;
@@ -5002,6 +5006,270 @@ textarea:focus-visible {
   outline-offset: 3px;
 }
 @media (max-width: 650px) {
-  .reminder-emails input { font-size: 16px; }
-  .language-selector select { min-height: 40px; }
+  .reminder-emails input {
+    font-size: 16px;
+  }
+  .language-selector select {
+    min-height: 40px;
+  }
+}
+
+/* Keep the civic layout, with softer edges and room for controls to open. */
+:root {
+  --radius-control: 6px;
+  --radius-panel: 10px;
+}
+.button,
+.button.coral,
+.button.danger,
+.button.outline,
+.google,
+.search,
+.segmented,
+input,
+select,
+textarea,
+.input-action,
+.input-action button,
+.language-selector select,
+.multi-options,
+.map-help,
+.map-legend,
+.map-location-buttons button {
+  border-radius: var(--radius-control);
+}
+.segmented button {
+  border-radius: 4px;
+}
+.photo-arch,
+.story-card,
+.story-placeholder,
+.story-placeholder.two,
+.story-photos img,
+.side-card,
+.side-card.light,
+.privacy-summary,
+.auth-art,
+.auth-form,
+.account-section,
+.address-lookup,
+.case-editor,
+.table-wrap {
+  border-radius: var(--radius-panel);
+}
+.modal {
+  border-radius: 12px;
+  max-height: calc(100dvh - 40px);
+  scrollbar-gutter: stable;
+}
+.auth-form {
+  width: 100%;
+  padding: clamp(20px, 3vw, 32px);
+  border: 1px solid var(--line);
+}
+.auth-art {
+  background: transparent;
+  min-height: 0;
+  padding: 32px 0;
+}
+.auth-art > .eyebrow {
+  margin: 0 0 24px;
+  text-align: left;
+}
+.auth-art h1 {
+  max-width: 16ch;
+  font-size: clamp(36px, 3.3vw, 44px);
+  text-align: left;
+}
+.auth-art p {
+  max-width: 38ch;
+  margin-top: 20px;
+  font-size: 15px;
+  text-align: left;
+}
+.account-section {
+  padding: clamp(20px, 3vw, 32px);
+  margin-bottom: 24px;
+  border: 1px solid var(--line);
+}
+.hero > *,
+.page-intro > *,
+.detail-grid > *,
+.data-filters > * {
+  min-width: 0;
+}
+.hero {
+  overflow: visible;
+}
+.photo-copy {
+  position: absolute;
+  left: clamp(24px, 3vw, 34px);
+  right: clamp(24px, 3vw, 34px);
+  bottom: 30px;
+}
+.photo-copy .image-label {
+  position: static;
+  display: block;
+  margin-bottom: 12px;
+}
+.photo-copy .photo-caption {
+  position: static;
+  font-size: clamp(26px, 2.6vw, 32px);
+  overflow-wrap: break-word;
+}
+.photo-shade {
+  height: 65%;
+  background: linear-gradient(transparent, rgb(0 0 0 / 80%));
+  opacity: 1;
+}
+.photo-credit {
+  position: static;
+  display: block;
+  margin-top: 10px;
+  text-align: right;
+  line-height: 1.5;
+}
+.site-header {
+  position: relative;
+}
+.site-header nav {
+  align-self: stretch;
+}
+.site-header nav > a {
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+.map-panel {
+  overflow: visible;
+  border-radius: var(--radius-panel);
+}
+.map-toolbar {
+  border-radius: 9px 9px 0 0;
+}
+.map-wrap {
+  overflow: hidden;
+  border-radius: 0 0 9px 9px;
+}
+.multi-options {
+  top: calc(100% + 10px);
+  box-shadow: 0 8px 24px rgb(28 28 28 / 10%);
+}
+.multi-select summary {
+  min-height: 44px;
+  justify-content: center;
+}
+.multi-select summary:focus-visible {
+  outline: 2px solid var(--coral);
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+.search:focus-within,
+.input-action:focus-within {
+  outline: 2px solid var(--coral);
+  outline-offset: 2px;
+}
+.search input:focus-visible,
+.input-action input:focus-visible {
+  outline: none;
+}
+.icon-button,
+.mobile-menu {
+  min-width: 44px;
+  min-height: 44px;
+}
+.leaflet-bar {
+  border-radius: var(--radius-control) !important;
+  overflow: hidden;
+}
+@media (max-width: 1499px) {
+  .site-header nav {
+    top: 100%;
+    max-height: calc(100dvh - 80px);
+    overflow-y: auto;
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 12px 20px rgb(28 28 28 / 5%);
+  }
+  .site-header nav > a {
+    padding: 14px 0;
+  }
+}
+@media (max-width: 950px) {
+  .multi-select:first-of-type .multi-options {
+    left: 0;
+    right: auto;
+  }
+}
+@media (max-width: 650px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+  .toolbar .search {
+    flex-basis: 100%;
+    min-width: 0;
+  }
+  .segmented {
+    flex-wrap: wrap;
+  }
+  .segmented button {
+    min-height: 44px;
+    white-space: normal;
+    line-height: 1.4;
+  }
+  .map-toolbar .multi-select {
+    min-width: 0;
+  }
+  .multi-select summary {
+    font-size: 11px;
+  }
+  .multi-select summary span {
+    font-size: 12px;
+  }
+  .multi-options {
+    min-width: 220px;
+    max-width: calc(100vw - 76px);
+  }
+  .event-editor {
+    grid-template-columns: minmax(0, 1fr) 44px;
+  }
+  .event-editor .field:first-child {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+  .event-editor .field:nth-child(2) {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .event-editor .field:nth-child(3) {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+  .event-editor > .icon-button {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: end;
+  }
+  .event-editor .field > span {
+    font-size: 12px;
+  }
+  .event-editor select,
+  .event-editor input {
+    font-size: 16px;
+    padding: 12px;
+  }
+  .modal-top {
+    gap: 16px;
+  }
+  .modal-top .eyebrow {
+    line-height: 1.5;
+  }
+  .photo-copy {
+    bottom: 24px;
+  }
+  .footer-bottom > div {
+    flex-wrap: wrap;
+    gap: 14px 24px;
+  }
 }
