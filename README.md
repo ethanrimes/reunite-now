@@ -15,6 +15,12 @@ Open http://127.0.0.1:5173. The API runs on port 3001. Development email sign-in
 
 Optional environment settings are listed in `.env.example`. The runtime reads process environment variables; to load a file, use Node's `--env-file` support (for example `NODE_OPTIONS=--env-file=.env npm run dev`). Do not commit `.env` or credentials.
 
+### Preview with sample data
+
+Stop any running dev server, then run `npm run dev:demo`. This adds 840 fictional signatures, varied visa timelines, and eight sample stories to the local maps, statistics, and gallery. A banner identifies the preview. Fixtures are generated in memory, never stored in the database, and never enrolled in emails. Dates are relative to startup so recency filters remain useful. Photos reuse the site's illustrative image; they do not depict the fictional storytellers.
+
+To remove the samples, stop the server and restart with `npm run dev`. Your own local account data is preserved. Demo mode is disabled whenever `NODE_ENV=production`, even if `DEMO_DATA=true` is set. The public Azure site is unaffected by a local preview.
+
 ## Validate
 
 ```sh

@@ -29,6 +29,7 @@ export type Me = {
   story: Story | null;
 };
 type Config = {
+  demoData: boolean;
   emailAuth: boolean;
   googleAuth: boolean;
   devAuth: boolean;
@@ -46,6 +47,7 @@ const Context = createContext<{
 export function DataProvider({ children }: { children: ReactNode }) {
   const [me, setMe] = useState<Me>({ user: null, profile: null, story: null });
   const [config, setConfig] = useState<Config>({
+    demoData: false,
     emailAuth: false,
     googleAuth: false,
     devAuth: false,

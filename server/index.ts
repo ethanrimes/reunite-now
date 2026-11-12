@@ -20,6 +20,7 @@ import { z } from "zod";
 import { db, transaction, migrate } from "./db";
 import { emailReady, sendEmail } from "./email";
 import { sendReminders } from "./reminders";
+import { createDemoData, demoEnabled } from "./demo";
 import {
   profileSchema,
   storySchema,
@@ -30,6 +31,7 @@ import {
 const production = process.env.NODE_ENV === "production";
 const appUrl = process.env.APP_URL || "http://127.0.0.1:5173";
 const devAuth = !production && process.env.DEV_AUTH !== "false";
+const demo = demoEnabled() ? await createDemoData() : null;
 if (production && !process.env.APP_URL?.startsWith("https://"))
   throw new Error("HTTPS APP_URL required");
 const app = express();
@@ -128,6 +130,7 @@ app.get("/api/config", (_req, res) =>
       process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
     ),
     devAuth,
+    demoData: !!demo,
     reminders: emailReady(),
     consentVersion: "2026-11-11",
   }),
@@ -142,12 +145,10 @@ app.post("/api/auth/email", authLimit, async (req, res) => {
     })
     .parse(req.body);
   if (!emailReady() && !devAuth)
-    return void res
-      .status(503)
-      .json({
-        error:
-          "Email sign-in opens once the project’s email service is connected.",
-      });
+    return void res.status(503).json({
+      error:
+        "Email sign-in opens once the project’s email service is connected.",
+    });
   const raw = token();
   await db.query(
     `INSERT INTO login_tokens(token_hash,email,expires_at) VALUES($1,$2,now()+interval '15 minutes')`,
@@ -172,12 +173,9 @@ app.post("/api/auth/verify", authLimit, async (req, res) => {
     [hash(raw)],
   );
   if (!r.rows[0])
-    return void res
-      .status(400)
-      .json({
-        error:
-          "This link has expired or already been used. Request a new link.",
-      });
+    return void res.status(400).json({
+      error: "This link has expired or already been used. Request a new link.",
+    });
   await session(r.rows[0].email, res);
   res.json({ ok: true });
 });
@@ -276,11 +274,9 @@ app.put("/api/me/profile", requireUser, async (req, res) => {
         (f: any) => f.properties.GEOID === `${fips}${data.district}`,
       )
     )
-      return void res
-        .status(400)
-        .json({
-          error: "Choose a valid 119th Congress district for your state.",
-        });
+      return void res.status(400).json({
+        error: "Choose a valid 119th Congress district for your state.",
+      });
   }
   const now = new Date().toISOString();
   data.cases = data.cases.map((c) => ({ ...c, updatedAt: now }));
@@ -343,13 +339,11 @@ app.get("/api/me/export", requireUser, async (_req, res) => {
     [u.id],
   );
   const s = await db.query("SELECT data FROM stories WHERE user_id=$1", [u.id]);
-  res
-    .attachment("reunite-now-data.json")
-    .json({
-      email: u.email,
-      profile: p.rows[0] || null,
-      story: s.rows[0]?.data || null,
-    });
+  res.attachment("reunite-now-data.json").json({
+    email: u.email,
+    profile: p.rows[0] || null,
+    story: s.rows[0]?.data || null,
+  });
 });
 app.delete("/api/me", requireUser, async (req, res) => {
   if (req.body?.confirmation !== "DELETE")
@@ -379,25 +373,32 @@ app.get("/api/public", async (_req, res) => {
       signedAt: r.signed_at,
     };
   });
-  res.json({ profiles, updatedAt: new Date().toISOString() });
+  res.json({
+    profiles: [...profiles, ...(demo?.profiles || [])],
+    updatedAt: new Date().toISOString(),
+  });
 });
 app.get("/api/stories", async (_req, res) => {
   const rows = await db.query(
     `SELECT s.user_id,s.data,s.updated_at,p.data AS profile FROM stories s JOIN profiles p ON s.user_id=p.user_id WHERE s.data->>'publish'='true' AND p.data->>'publicConsent'='true'`,
   );
   res.json({
-    stories: rows.rows.map((r) => {
-      const { rightsConsent, publish, ...story } = storySchema.parse(r.data);
-      return {
-        ...story,
-        id: r.user_id,
-        name: r.profile.name,
-        country: r.profile.country,
-        updatedAt: r.updated_at,
-        timeline:
-          r.profile.cases.find((c: any) => c.id === story.caseId)?.events || [],
-      };
-    }),
+    stories: [
+      ...rows.rows.map((r) => {
+        const { rightsConsent, publish, ...story } = storySchema.parse(r.data);
+        return {
+          ...story,
+          id: r.user_id,
+          name: r.profile.name,
+          country: r.profile.country,
+          updatedAt: r.updated_at,
+          timeline:
+            r.profile.cases.find((c: any) => c.id === story.caseId)?.events ||
+            [],
+        };
+      }),
+      ...(demo?.stories || []),
+    ],
   });
 });
 app.post(
@@ -427,12 +428,10 @@ app.post(
     const data = await r.json();
     const matches = data.result?.addressMatches;
     if (!matches?.length)
-      return void res
-        .status(404)
-        .json({
-          error:
-            "No address match. Try a complete US street address, or choose your district manually.",
-        });
+      return void res.status(404).json({
+        error:
+          "No address match. Try a complete US street address, or choose your district manually.",
+      });
     const match = matches[0];
     const p = new URLSearchParams({
       geometry: `${match.coordinates.x},${match.coordinates.y}`,
@@ -449,11 +448,9 @@ app.post(
     );
     const district = (await d.json()).features?.[0]?.attributes;
     if (!district)
-      return void res
-        .status(404)
-        .json({
-          error: "District could not be determined. Select it manually.",
-        });
+      return void res.status(404).json({
+        error: "District could not be determined. Select it manually.",
+      });
     const geoid = String(district.GEOID);
     res.json({
       state: states.find((s) => s[0] === geoid.slice(0, 2))?.[1],
@@ -482,21 +479,15 @@ app.get("/{*path}", (_req, res) =>
 );
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   if (err instanceof z.ZodError)
-    return void res
-      .status(400)
-      .json({
-        error: err.issues
-          .map((i) => `${i.path.join(".")}: ${i.message}`)
-          .join("; "),
-      });
-  console.error("Request failed", err.code || err.name || "Error");
-  res
-    .status(err.status || 500)
-    .json({
-      error: err.status
-        ? err.message
-        : "Something went wrong. Please try again.",
+    return void res.status(400).json({
+      error: err.issues
+        .map((i) => `${i.path.join(".")}: ${i.message}`)
+        .join("; "),
     });
+  console.error("Request failed", err.code || err.name || "Error");
+  res.status(err.status || 500).json({
+    error: err.status ? err.message : "Something went wrong. Please try again.",
+  });
 });
 await migrate();
 await db.query("DELETE FROM login_tokens WHERE expires_at<now()");

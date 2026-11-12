@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "concurrently -k \"tsx watch server/index.ts\" \"vite --host 127.0.0.1\"",
+    "dev:demo": "DEMO_DATA=true npm run dev",
     "build": "tsc --noEmit && vite build && node scripts/build-server.mjs",
     "start": "node dist/server.js",
     "test": "tsx --test tests/metrics.test.ts tests/storage.test.ts",
