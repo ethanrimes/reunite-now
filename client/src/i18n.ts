@@ -1,10 +1,15 @@
 import messages from "./locales/messages.json";
-export type Language = "en" | "es" | "pt";
-export const languageNames = { en: "English", es: "Español", pt: "Português" };
-export const localeNames = { en: "en-US", es: "es", pt: "pt-BR" };
+export type Language = "en" | "es" | "pt" | "tl";
+export const languageNames = {
+  en: "English",
+  es: "Español",
+  pt: "Português",
+  tl: "Tagalog",
+};
+export const localeNames = { en: "en-US", es: "es", pt: "pt-BR", tl: "fil-PH" };
 export const storageKey = "reunite-now-language";
 export function validLanguage(value: unknown): value is Language {
-  return value === "en" || value === "es" || value === "pt";
+  return value === "en" || value === "es" || value === "pt" || value === "tl";
 }
 function initialLanguage(): Language {
   if (typeof window === "undefined") return "en";
@@ -43,9 +48,9 @@ export function translate(
   values: Record<string, string | number> = {},
 ) {
   const normalized = text.replace(/\s+/g, " ").trim();
-  const entry = (messages as Record<string, { es: string; pt: string }>)[
-    normalized
-  ];
+  const entry = (
+    messages as Record<string, Record<Exclude<Language, "en">, string>>
+  )[normalized];
   const translated = lang === "en" || !entry ? normalized : entry[lang];
   const result = translated.replace(/\{(\w+)\}/g, (match, key) =>
     values[key] === undefined ? match : String(values[key]),
@@ -58,7 +63,10 @@ export function t(text: string, values?: Record<string, string | number>) {
   // API validation errors include internal field paths. Show readable guidance
   // and translated domain rules, without translating or changing submitted data.
   if (language !== "en" && /^\w+(?:\.\w+)*: /.test(text)) {
-    const catalog = messages as Record<string, { es: string; pt: string }>;
+    const catalog = messages as Record<
+      string,
+      Record<Exclude<Language, "en">, string>
+    >;
     const details = text
       .split("; ")
       .map((part) => part.replace(/^.*?: /, ""))
