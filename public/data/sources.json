@@ -1,0 +1,9 @@
+{
+  "retrievedAt": "2026-11-12T03:52:04.224Z",
+  "congress": 119,
+  "states": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/State_County/MapServer/0",
+  "districts": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/4",
+  "world": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson",
+  "representatives": "https://raw.githubusercontent.com/unitedstates/congress-legislators/main/legislators-current.yaml",
+  "note": "Boundaries represent the 119th Congress, not districts for the incoming 120th Congress. Natural Earth boundaries are for visualization, not a position on sovereignty."
+}
