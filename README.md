@@ -32,6 +32,8 @@ The backend stays on Azure: App Service (Node/Express and static React files), P
 
 Infrastructure definitions are under `infra/`; provisioning, email configuration, and packaging scripts are under `scripts/`. See [operations](docs/OPERATIONS.md) before redeploying infrastructure or restoring a database.
 
+To finish Google sign-in, connect your domain, configure a branded Azure sender, and test email and monthly reminders, follow the [integration setup guide](docs/INTEGRATIONS.md). It includes the deployment's exact callback URL, settings, DNS steps, and troubleshooting.
+
 ```sh
 npm run build
 python3 scripts/package.py
