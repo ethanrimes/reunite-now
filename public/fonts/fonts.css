@@ -1,42 +1,98 @@
 @font-face {
-  font-family: 'DM Sans';
+  font-family: "Instrument Sans";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(/fonts/font-0.woff2) format('truetype');
+  src: url(/fonts/instrument-sans-400.woff2) format("woff2");
 }
 @font-face {
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url(/fonts/font-1.woff2) format('truetype');
-}
-@font-face {
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url(/fonts/font-2.woff2) format('truetype');
-}
-@font-face {
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url(/fonts/font-3.woff2) format('truetype');
-}
-@font-face {
-  font-family: 'DM Serif Display';
+  font-family: "Instrument Sans";
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: url(/fonts/font-4.woff2) format('truetype');
+  src: url(/fonts/instrument-sans-400.woff2) format("woff2");
 }
 @font-face {
-  font-family: 'DM Serif Display';
+  font-family: "Instrument Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/fonts/instrument-sans-500.woff2) format("woff2");
+}
+@font-face {
+  font-family: "Instrument Sans";
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/fonts/instrument-sans-500.woff2) format("woff2");
+}
+@font-face {
+  font-family: "Instrument Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/fonts/instrument-sans-600.woff2) format("woff2");
+}
+@font-face {
+  font-family: "Instrument Sans";
+  font-style: italic;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/fonts/instrument-sans-600.woff2) format("woff2");
+}
+@font-face {
+  font-family: "Instrument Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/fonts/instrument-sans-700.woff2) format("woff2");
+}
+@font-face {
+  font-family: "Instrument Sans";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/fonts/instrument-sans-700.woff2) format("woff2");
+}
+@font-face {
+  font-family: "DM Sans";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(/fonts/font-5.woff2) format('truetype');
+  src: url(/fonts/instrument-sans-400.woff2) format("woff2");
+}
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/fonts/instrument-sans-500.woff2) format("woff2");
+}
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/fonts/instrument-sans-600.woff2) format("woff2");
+}
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/fonts/instrument-sans-700.woff2) format("woff2");
+}
+@font-face {
+  font-family: "DM Serif Display";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/instrument-sans-500.woff2) format("woff2");
+}
+@font-face {
+  font-family: "DM Serif Display";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/instrument-sans-500.woff2) format("woff2");
 }

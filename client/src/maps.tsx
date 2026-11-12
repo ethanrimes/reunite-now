@@ -404,9 +404,7 @@ export function Coverage() {
         eyebrow={t("SIGNATURE COVERAGE")}
         title={
           <>
-            {t("Where people")}
-            <br />
-            <em>{t("have signed.")}</em>
+            {t("Where people")} {t("have signed.")}
           </>
         }
         text={t(
@@ -630,9 +628,7 @@ export function VisaData() {
         eyebrow={t("COMMUNITY VISA DATA")}
         title={
           <>
-            {t("Visa processing")}
-            <br />
-            <em>{t("in our community.")}</em>
+            {t("Visa processing")} {t("in our community.")}
           </>
         }
         text={t(
