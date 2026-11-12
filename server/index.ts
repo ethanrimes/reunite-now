@@ -19,6 +19,7 @@ import { Google, generateCodeVerifier, generateState } from "arctic";
 import { z } from "zod";
 import { db, transaction, migrate } from "./db";
 import { emailReady, sendEmail } from "./email";
+import { canonicalHost } from "./canonical";
 import { sendReminders } from "./reminders";
 import { createDemoData, demoEnabled } from "./demo";
 import {
@@ -54,6 +55,7 @@ app.use(
     referrerPolicy: { policy: "no-referrer" },
   }),
 );
+if (production) app.use(canonicalHost(appUrl));
 app.use(compression());
 app.use(express.json({ limit: "7mb" }));
 app.use(cookieParser());
