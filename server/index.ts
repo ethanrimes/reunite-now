@@ -485,9 +485,19 @@ app.post("/api/jobs/reminders", async (req, res) => {
 app.use("/api", (_req, res) =>
   res.status(404).json({ error: "Endpoint not found" }),
 );
-app.use(express.static(path.resolve("dist/public"), { maxAge: "1h" }));
+app.use(
+  express.static(path.resolve("dist/public"), {
+    maxAge: "1h",
+    setHeaders(res, filename) {
+      if (filename.endsWith(".html"))
+        res.setHeader("Cache-Control", "no-cache");
+    },
+  }),
+);
 app.get("/{*path}", (_req, res) =>
-  res.sendFile(path.resolve("dist/public/index.html")),
+  res
+    .set("Cache-Control", "no-cache")
+    .sendFile(path.resolve("dist/public/index.html")),
 );
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   if (err instanceof z.ZodError)
