@@ -30,7 +30,7 @@ import "./styles.css";
 function App() {
   const [menu, setMenu] = useState(false);
   const location = useLocation();
-  const { me, error } = useData();
+  const { me, error, config } = useData();
   useEffect(() => {
     setMenu(false);
     window.scrollTo(0, 0);
@@ -88,6 +88,15 @@ function App() {
           </div>
         </nav>
       </header>
+      {config.demoData && (
+        <div className="demo-banner" role="status">
+          <strong>Local demo</strong>
+          <span>
+            Sample signatures, stories, and visa timelines. These are fictional
+            records.
+          </span>
+        </div>
+      )}
       {error && (
         <div className="site-error">
           We couldn’t load community data. Please refresh to try again. {error}
