@@ -14,7 +14,7 @@ jobs:
       - run: npm test
       - name: API integration
         run: |
-          npx tsx server/index.ts > /tmp/reunite-api.log 2>&1 &
+          node dist/server.js > /tmp/reunite-api.log 2>&1 &
           API_PID=$!
           trap 'kill "$API_PID"' EXIT
           for attempt in $(seq 1 30); do
