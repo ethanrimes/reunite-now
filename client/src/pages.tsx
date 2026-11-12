@@ -46,23 +46,9 @@ export function Home() {
     <>
       <section className="hero">
         <div className="hero-copy">
-          <div className="eyebrow">
-            <span className="mini-line" />
-            {t(" VISA PROCESSING NEEDS TO CHANGE")}
-          </div>
+          <div className="eyebrow">{t(" VISA PROCESSING NEEDS TO CHANGE")}</div>
           <h1>
-            {t("Visa delays")}
-            <br />
-            {t("keep families")}
-            <br />
-            <em>{t("apart.")}</em>
-            <svg
-              className="hero-underline"
-              viewBox="0 0 340 20"
-              aria-hidden="true"
-            >
-              <path d="M4 14Q140 0 332 8M40 18Q200 4 307 16" />
-            </svg>
+            {t("Visa delays")} {t("keep families")} {t("apart.")}
           </h1>
           <p>
             {t(
@@ -105,17 +91,13 @@ export function Home() {
               {t(" THE REASON THIS MATTERS")}
             </span>
             <div className="photo-caption">
-              {t("Time together")}
-              <br />
-              <em>{t("shouldn’t be this hard.")}</em>
+              {t("Time together")} {t("shouldn’t be this hard.")}
             </div>
           </div>
           <div className="circle-stamp">
             <Heart size={25} />
             <span>
-              {t("LESS WAITING")}
-              <br />
-              {t("MORE LIVING")}
+              {t("LESS WAITING")} {t("MORE LIVING")}
             </span>
           </div>
           <span className="photo-credit">
@@ -126,10 +108,7 @@ export function Home() {
       </section>
       <section className="impact-strip">
         <div className="impact-intro">
-          <span className="status-dot" />
-          {t(" Petition support")}
-          <br />
-          {t("so far")}
+          {t(" Petition support")} {t("so far")}
         </div>
         <div>
           <strong>{loading ? "—" : number(profiles.length)}</strong>
@@ -153,9 +132,7 @@ export function Home() {
           <div>
             <div className="eyebrow">{t("OUR PETITION")}</div>
             <h2>
-              {t("Three things")}
-              <br />
-              {t("we’re asking for.")}
+              {t("Three things")} {t("we’re asking for.")}
             </h2>
           </div>
           <p>
@@ -196,20 +173,13 @@ export function Home() {
         <div className="human-art" aria-hidden="true">
           <div className="art-sun" />
           <span className="art-word">
-            {t("Still waiting")}
-            <br />
-            <em>{t("to come home.")}</em>
+            {t("Still waiting")} {t("to come home.")}
           </span>
-          <svg viewBox="0 0 500 200">
-            <path d="M-30 170Q80 -30 220 100T530 25M-30 190Q80 -10 220 120T530 45" />
-          </svg>
         </div>
         <div>
           <div className="eyebrow">{t("LIVING WITH THE DELAYS")}</div>
           <h2>
-            {t("What the wait")}
-            <br />
-            {t("has cost us.")}
+            {t("What the wait")} {t("has cost us.")}
           </h2>
           <p>
             {t(
@@ -227,9 +197,7 @@ export function Home() {
           <div>
             <div className="eyebrow">{t("LEGISLATION & LEGAL CASES")}</div>
             <h2>
-              {t("What’s being done")}
-              <br />
-              {t("about it.")}
+              {t("What’s being done")} {t("about it.")}
             </h2>
           </div>
           <Link to="/policies" className="text-button">
@@ -449,9 +417,7 @@ export function Stories() {
         eyebrow={t("OUR STORIES")}
         title={
           <>
-            {t("Stories from")}
-            <br />
-            <em>{t("people waiting.")}</em>
+            {t("Stories from")} {t("people waiting.")}
           </>
         }
         text={t(
@@ -611,9 +577,7 @@ export function DataUse() {
         eyebrow={t("DATA USE & PRIVACY")}
         title={
           <>
-            {t("How we use")}
-            <br />
-            <em>{t("your data.")}</em>
+            {t("How we use")} {t("your data.")}
           </>
         }
         text={t(
@@ -714,9 +678,7 @@ export function About() {
       <div className="about-statement">
         <Heart size={36} />
         <h2>
-          {t("The process takes too long.")}
-          <br />
-          {t("Getting answers shouldn’t.")}
+          {t("The process takes too long.")} {t("Getting answers shouldn’t.")}
         </h2>
       </div>
       <div className="prose">
