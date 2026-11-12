@@ -55,3 +55,5 @@ Create a Google OAuth web client and configure `GOOGLE_CLIENT_ID` and `GOOGLE_CL
 PostgreSQL backups retain up to seven days. Deletion removes the live account and dependent records, including photos and sessions. A point-in-time database restore can resurrect deleted records. Keep the restored site offline; reconcile users against a snapshot of the current live account IDs and remove restored records no longer present before serving requests. If the current database is unavailable, the implementation has no independent deletion ledger: do not expose an older restore until deletions can be reconciled. Deleting a user is intentionally not an audit-retained personal record.
 
 No request body logging or third-party analytics is installed. Avoid enabling request capture containing profiles, addresses, or sign-in tokens. Configure Azure alerts for app health, database storage, and WebJob failures as traffic grows.
+
+Run `python3 scripts/verify-live.py` for a read-only API smoke check. Adding `--check-reminders` invokes the real reminder job and can email eligible opted-in users; use it intentionally, not as a read-only check. It prints aggregate results only.
