@@ -59,7 +59,7 @@ The app creates its SQL tables on first boot. Build artifacts, deployment packag
 
 ## Current limits
 
-Google client credentials are configured and the authorization redirect is verified; a browser sign-in test remains. The purchased domain, `visatransparency.org`, and its branded Azure email sender are prepared; Cloudflare DNS, HTTPS binding, and the final hostname/sender cutover are pending. Email currently uses the Azure-managed sender domain; end-to-end inbox delivery and an unattended monthly reminder still need a live test. See the current-domain section of the integration guide for the DNS import file and remaining steps.
+The canonical site is `https://visatransparency.org`, with managed HTTPS and redirects from `www` and the Azure hostname. Google client credentials and the branded sender `noreply@visatransparency.org` are configured. The test recipient confirmed sign-in email delivery and a working login link; a full Google account sign-in and an unattended monthly reminder still need verification. See the integration guide for current settings, DNS records, and recovery steps.
 
 Policy updates are editorial, not an automatic docket feed. Member cards show the tracked bill's sponsorship and voting status; they are not a complete historical voting database. Syed v. Trump is marked as needing a current status check. The world map is generalized and omits some small countries; country selections and table statistics still accept them.
 

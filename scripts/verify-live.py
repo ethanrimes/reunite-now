@@ -3,11 +3,13 @@ import argparse
 import json
 import subprocess
 import urllib.request
+import urllib.error
+import urllib.parse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--check-reminders', action='store_true')
 args = parser.parse_args()
-base = 'https://reunite-now-9a04.azurewebsites.net'
+base = 'https://visatransparency.org'
 
 def request(path, secret=None):
     req = urllib.request.Request(base + path)
@@ -22,6 +24,24 @@ assert health['ok'] is True
 config = request('/api/config')
 assert config['devAuth'] is False
 public = request('/api/public')
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+def redirect(path):
+    try:
+        urllib.request.build_opener(NoRedirect).open(base + path, timeout=30)
+    except urllib.error.HTTPError as response:
+        if response.code in (302, 303, 307, 308):
+            return urllib.parse.urlparse(response.headers.get('Location', ''))
+        raise
+    raise AssertionError('Expected a redirect')
+
+if config.get('googleAuth'):
+    target = redirect('/api/auth/google')
+    assert target.hostname == 'accounts.google.com', 'Google sign-in must redirect to Google'
+    assert urllib.parse.parse_qs(target.query).get('redirect_uri') == [base + '/api/auth/google/callback'], 'Google callback must use the canonical hostname'
+
 # Print only aggregate/configuration information, never submitted records.
 print(json.dumps({'health': health, 'authentication': config, 'publicEndpoint': 'reachable'}))
 if args.check_reminders:

@@ -41,17 +41,19 @@ After deployment verify:
 
 ## Email and reminders
 
-`AZURE_COMMUNICATION_CONNECTION_STRING` and `EMAIL_FROM` configure the current Azure-managed sender. The code also supports `AZURE_COMMUNICATION_ENDPOINT` plus managed identity if the necessary email-send role is assigned. Tracking is disabled on the email domain. A custom sender domain later needs DNS verification, SPF, and DKIM in Azure.
+`AZURE_COMMUNICATION_CONNECTION_STRING` and `EMAIL_FROM` configure the verified custom sender `noreply@visatransparency.org`. The custom domain and original Azure-managed domain are both linked to the Communication Service. The code also supports `AZURE_COMMUNICATION_ENDPOINT` plus managed identity if the necessary email-send role is assigned. Tracking is disabled on the email domain. The custom sender has verified ownership, SPF, DKIM, and DKIM2 records in Azure. Cloudflare hosts these records; keep DKIM CNAMEs DNS-only.
 
 The daily job calls `/api/jobs/reminders` with `Bearer CRON_SECRET`. Eligibility is opt-in, at least one active case, and at least 30 days since profile confirmation. A database ledger permits at most one send per calendar month. Each operation has a deterministic Azure operation ID, so retrying a recent pending send reuses it. Pending sends older than 23 hours are skipped for manual reconciliation rather than risk duplicate delivery. Review the `configured`, `sent`, and `failed` fields in the Logic App HTTP action response; skipped entries are not returned as a separate count. Reconcile old pending ledger entries against Azure delivery status. Do not print message payloads or credentials.
 
 Saving an account or pressing “No changes” confirms all cases. Monthly reminders never modify case timelines. Turn off reminders in the account to unsubscribe. Account deletion cascades through the reminder ledger.
 
-Azure accepting a message is not proof of inbox delivery. Verify a sign-in email and reminder with an explicitly authorized test recipient before announcing email availability to a large audience. The scheduler being installed is not evidence of an unattended monthly delivery.
+The designated recipient confirmed receipt and successful use of one sign-in email from the custom sender. Azure accepting a message is not itself proof of inbox delivery. A reminder still needs delivery and unattended-run verification with an explicitly authorized test recipient. The scheduler being installed is not evidence of an unattended monthly delivery.
 
 ## Google and custom domain
 
-Create a Google OAuth web client and configure `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in App Service. Authorized redirect URI: `https://reunite-now-9a04.azurewebsites.net/api/auth/google/callback`. After changing the public hostname, update `APP_URL`, the Google redirect URI, DNS/custom hostname binding, and managed TLS certificate together. The session cookie is secure and same-site in production. Never put OAuth secrets in frontend variables.
+Current canonical origin: `https://visatransparency.org`. Root and `www` have App Service Managed Certificates bound with SNI. The production canonical-host middleware redirects browser GET/HEAD requests while exempting health probes and retaining normal origin checks for writes. After both HTTPS hostnames and the email domain are verified, `python3 scripts/activate-domain.py` applies the URL/sender settings and updates the reminder workflow without sending mail.
+
+Create a Google OAuth web client and configure `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in App Service. Authorized redirect URI: `https://visatransparency.org/api/auth/google/callback`. The old Azure callback remains registered for rollback, while production browser requests redirect to the canonical domain. After changing the public hostname, update `APP_URL`, the Google redirect URI, DNS/custom hostname binding, and managed TLS certificate together. The session cookie is secure and same-site in production. Never put OAuth secrets in frontend variables.
 
 ## Backups and deletion
 
