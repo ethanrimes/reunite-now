@@ -86,12 +86,13 @@ export function Home() {
               )}
             />
             <div className="photo-shade" />
-            <span className="image-label">
-              <span />
-              {t(" THE REASON THIS MATTERS")}
-            </span>
-            <div className="photo-caption">
-              {t("Time together")} {t("shouldn’t be this hard.")}
+            <div className="photo-copy">
+              <span className="image-label">
+                {t(" THE REASON THIS MATTERS")}
+              </span>
+              <div className="photo-caption">
+                {t("Time together")} {t("shouldn’t be this hard.")}
+              </div>
             </div>
           </div>
           <div className="circle-stamp">
