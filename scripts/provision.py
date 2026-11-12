@@ -24,7 +24,7 @@ firewall.write_text(json.dumps({'outboundIps':{'value':ips}}))
 az('deployment','group','create','--resource-group',RG,'--name','reunite-now-firewall','--template-file',str(ROOT/'infra/firewall.bicep'),'--parameters','@'+str(firewall),output=False)
 firewall.unlink()
 settings=private/'app-settings.json'
-settings.write_text(json.dumps({'NODE_ENV':'production','APP_URL':'https://'+app['defaultHostName'],'DATABASE_URL':f'postgresql://reunite_admin:{password}@reunite-now-pg-9a04.postgres.database.azure.com:5432/reunite_now','DB_SSL':'true','CRON_SECRET':secrets.token_urlsafe(48),'DEV_AUTH':'false','WEBSITE_SKIP_RUNNING_KUDUAGENT':'false','SCM_DO_BUILD_DURING_DEPLOYMENT':'false','WEBSITE_RUN_FROM_PACKAGE':'1'}));os.chmod(settings,0o600)
+settings.write_text(json.dumps({'NODE_ENV':'production','APP_URL':'https://'+app['defaultHostName'],'DATABASE_URL':f'postgresql://reunite_admin:{password}@reunite-now-pg-9a04.postgres.database.azure.com:5432/reunite_now','DB_SSL':'true','CRON_SECRET':secrets.token_urlsafe(48),'DEV_AUTH':'false','WEBSITE_SKIP_RUNNING_KUDUAGENT':'true','SCM_DO_BUILD_DURING_DEPLOYMENT':'false','WEBSITE_RUN_FROM_PACKAGE':'1'}));os.chmod(settings,0o600)
 az('webapp','config','appsettings','set','-g',RG,'-n',app['name'],'--settings','@'+str(settings),output=False)
 settings.unlink();params.unlink()
 print(json.dumps({'app':app['name'],'url':'https://'+app['defaultHostName'],'resourceGroup':RG,'database':'reunite-now-pg-9a04','firewall':'App Service outbound IPs only'}))
