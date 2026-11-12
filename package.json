@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "concurrently -k \"tsx watch server/index.ts\" \"vite --host 127.0.0.1\"",
-    "build": "tsc --noEmit && vite build && esbuild server/index.ts --bundle --platform=node --format=esm --packages=external --outfile=dist/server.js",
+    "build": "tsc --noEmit && vite build && node scripts/build-server.mjs",
     "start": "node dist/server.js",
     "test": "tsx --test tests/metrics.test.ts tests/storage.test.ts",
     "data:refresh": "tsx scripts/refresh-data.ts",

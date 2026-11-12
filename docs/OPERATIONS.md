@@ -26,7 +26,7 @@ Deploy email infrastructure after the main template, then run `python3 scripts/c
 
 ## Releases
 
-Run build, unit/storage tests, and the local API integration test. Package with `python3 scripts/package.py`, then zip-deploy using the command in README. The archive includes production dependencies and a scheduled WebJob. No database files or `.env` files are included. Keep the previous deployment ZIP privately if rollback is needed. Use Git commit IDs to identify releases.
+Run build, unit/storage tests, and the local API integration test. Package with `python3 scripts/package.py`, then zip-deploy using the command in README. The archive includes a self-contained server bundle and a scheduled WebJob. No database files or `.env` files are included. Keep the previous deployment ZIP privately if rollback is needed. Use Git commit IDs to identify releases.
 
 After deployment verify:
 

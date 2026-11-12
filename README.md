@@ -35,7 +35,7 @@ Infrastructure definitions are under `infra/`; provisioning, email configuration
 ```sh
 npm run build
 python3 scripts/package.py
-az webapp deploy --resource-group reunite-now-rg --name reunite-now-9a04 --src-path work/reunite-now.zip --type zip
+az webapp deploy --resource-group reunite-now-rg --name reunite-now-9a04 --src-path work/reunite-now.zip --type zip --ignore-stack true
 ```
 
 The app creates its SQL tables on first boot. Build artifacts, deployment packages, local databases, and secrets are excluded from Git.

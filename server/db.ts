@@ -1,5 +1,5 @@
 import { Pool } from "pg";
-import { PGlite } from "@electric-sql/pglite";
+import type { PGlite } from "@electric-sql/pglite";
 import { mkdirSync } from "node:fs";
 export type Queryable = {
   query: <T = Record<string, any>>(
@@ -11,6 +11,7 @@ let lite: PGlite | undefined;
 if (!process.env.DATABASE_URL) {
   if (process.env.NODE_ENV === "production")
     throw new Error("DATABASE_URL is required in production");
+  const { PGlite } = await import("@electric-sql/pglite");
   mkdirSync(".local", { recursive: true });
   lite = new PGlite(
     process.env.TEST_DB === "1" ? "memory://" : ".local/postgres",

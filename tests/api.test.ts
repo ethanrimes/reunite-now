@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 // Integration tests target the local API; no real email is sent.
-const base = "http://127.0.0.1:3001",
+const base = process.env.TEST_API_URL || "http://127.0.0.1:3001",
   origin = "http://127.0.0.1:5173";
 let cookie = "";
 async function request(
