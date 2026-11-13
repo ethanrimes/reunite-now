@@ -3843,5 +3843,670 @@
     "es": "Los recordatorios son opcionales. Para casos activos sin confirmar durante al menos 30 días, enviamos como máximo un recordatorio por mes natural a cada dirección seleccionada. Tu correo de acceso recibe recordatorios y puedes añadir hasta 5 direcciones tuyas o cuyos titulares te hayan dado permiso. Cada destinatario recibe un correo separado, sin datos de solicitantes ni direcciones de otros destinatarios. Añade un hito con fecha o confirma que no hay cambios desde tu cuenta; los recordatorios nunca actualizan las cronologías automáticamente. Edita los destinatarios o desactiva los recordatorios en Cuenta.",
     "pt": "Os lembretes são opcionais. Para casos ativos sem confirmação há pelo menos 30 dias, enviamos no máximo um lembrete por mês civil a cada endereço selecionado. Seu e-mail de acesso recebe lembretes, e você pode adicionar até 5 endereços seus ou de pessoas que autorizaram os avisos. Cada destinatário recebe um e-mail separado, sem detalhes de solicitantes nem endereços dos demais. Adicione um marco com data ou confirme que nada mudou na sua conta; os lembretes nunca atualizam as cronologias automaticamente. Edite os destinatários ou desative os lembretes em Conta.",
     "tl": "Opsyonal ang mga paalala. Para sa mga aktibong kasong hindi nakumpirma sa loob ng hindi bababa sa 30 araw, nagpapadala kami ng hanggang isang paalala bawat buwan sa bawat napiling address. Makakatanggap ang iyong email sa pag-sign in, at maaari kang magdagdag ng hanggang 5 address na sa iyo o may pahintulot kang padalhan ng paalala. Hiwalay ang email sa bawat tatanggap at walang detalye ng aplikante o address ng ibang tatanggap. Magdagdag ng pangyayari na may petsa o kumpirmahing walang pagbabago sa iyong account; hindi awtomatikong binabago ng mga paalala ang timeline. Baguhin ang mga tatanggap o ihinto ang mga paalala sa Account."
+  },
+  "You’re exploring sample data.": {
+    "es": "Estás explorando datos de ejemplo.",
+    "pt": "Você está explorando dados de exemplo.",
+    "tl": "Mga halimbawang datos ang tinitingnan mo."
+  },
+  "To sign the petition or share your own timeline and story, continue to the live site.": {
+    "es": "Para firmar la petición o compartir tu propia cronología e historia, continúa al sitio público.",
+    "pt": "Para assinar a petição ou compartilhar sua própria cronologia e história, continue no site público.",
+    "tl": "Upang lagdaan ang petisyon o ibahagi ang iyong timeline at kuwento, pumunta sa aktuwal na site."
+  },
+  "Continue to the live site": {
+    "es": "Continuar al sitio público",
+    "pt": "Continuar no site público",
+    "tl": "Pumunta sa aktuwal na site"
+  },
+  "Sample data": {
+    "es": "Datos de ejemplo",
+    "pt": "Dados de exemplo",
+    "tl": "Halimbawang datos"
+  },
+  "Exit sample view": {
+    "es": "Salir de la vista de ejemplo",
+    "pt": "Sair da visualização de exemplo",
+    "tl": "Lumabas sa halimbawang view"
+  },
+  "Sources & credits": {
+    "es": "Fuentes y créditos",
+    "pt": "Fontes e créditos",
+    "tl": "Mga sanggunian at pagkilala"
+  },
+  "Explore sample data": {
+    "es": "Explorar datos de ejemplo",
+    "pt": "Explorar dados de exemplo",
+    "tl": "Tingnan ang halimbawang datos"
+  },
+  "Publish wait times by post and visa category.": {
+    "es": "Publicar tiempos de espera por consulado y categoría de visa.",
+    "pt": "Publicar tempos de espera por consulado e categoria de visto.",
+    "tl": "Ilathala ang tagal ng paghihintay ayon sa konsulado at kategorya ng visa."
+  },
+  "Publish monthly figures for each stage, including the time after an interview, with sample sizes and clear definitions so applicants can see where their case stands.": {
+    "es": "Publicar cifras mensuales para cada etapa, incluido el tiempo después de la entrevista, con tamaños de muestra y definiciones claras para que los solicitantes sepan en qué situación está su caso.",
+    "pt": "Publicar números mensais para cada etapa, incluindo o período após a entrevista, com tamanhos de amostra e definições claras para que os solicitantes entendam a situação de seu caso.",
+    "tl": "Maglabas ng buwanang datos sa bawat yugto, kabilang ang panahon matapos ang panayam, na may bilang ng mga kasong sakop at malinaw na depinisyon upang maunawaan ng mga aplikante ang kalagayan ng kanilang kaso."
+  },
+  "Explain the delays—and the plan to fix them.": {
+    "es": "Explicar los retrasos y el plan para resolverlos.",
+    "pt": "Explicar os atrasos e o plano para resolvê-los.",
+    "tl": "Ipaliwanag ang mga pagkaantala at ang planong lutasin ang mga ito."
+  },
+  "Identify the main causes of delays. For training, vetting changes or processing pauses, publish the scope, expected end date, recovery plan and progress against it.": {
+    "es": "Identificar las principales causas de los retrasos. Para capacitaciones, cambios en las verificaciones o pausas, publicar el alcance, la fecha prevista de finalización, el plan de recuperación y los avances.",
+    "pt": "Identificar as principais causas dos atrasos. Para treinamentos, mudanças nas verificações ou pausas, publicar o alcance, a data prevista de término, o plano de recuperação e o progresso.",
+    "tl": "Tukuyin ang pangunahing sanhi ng pagkaantala. Para sa pagsasanay, pagbabago sa pagsusuri o paghinto ng pagproseso, ilathala ang saklaw, inaasahang petsa ng pagtatapos, plano ng pagbawi at progreso."
+  },
+  "Report staffing gaps and fund a plan to close them.": {
+    "es": "Informar sobre la falta de personal y financiar un plan para resolverla.",
+    "pt": "Informar sobre a falta de pessoal e financiar um plano para resolvê-la.",
+    "tl": "Iulat ang kakulangan sa kawani at pondohan ang planong tugunan ito."
+  },
+  "Report staffing needs and actual capacity at each post. Where staff, technology or funding fall short, give Congress a funded plan, deadlines and regular progress reports.": {
+    "es": "Informar las necesidades de personal y la capacidad real de cada consulado. Donde falten personal, tecnología o fondos, presentar al Congreso un plan financiado, plazos e informes periódicos de avances.",
+    "pt": "Informar as necessidades de pessoal e a capacidade real de cada consulado. Onde faltarem pessoal, tecnologia ou recursos, apresentar ao Congresso um plano financiado, prazos e relatórios regulares de progresso.",
+    "tl": "Iulat ang pangangailangan sa kawani at aktuwal na kapasidad ng bawat konsulado. Kung kulang ang kawani, teknolohiya o pondo, magharap sa Kongreso ng planong may pondo, mga takdang petsa at regular na ulat ng progreso."
+  },
+  "A petition to Congress and the Department of State": {
+    "es": "Una petición al Congreso y al Departamento de Estado",
+    "pt": "Uma petição ao Congresso e ao Departamento de Estado",
+    "tl": "Isang petisyon sa Kongreso at Department of State"
+  },
+  "Demand transparency.": {
+    "es": "Exijamos transparencia.",
+    "pt": "Exija transparência.",
+    "tl": "Hilingin ang transparency."
+  },
+  "Bring families together.": {
+    "es": "Reunamos a las familias.",
+    "pt": "Vamos reunir as famílias.",
+    "tl": "Muling pagsamahin ang mga pamilya."
+  },
+  "We demand transparency and accountability for consular visa processing: published wait times, explanations for delays, and a funded plan to end the backlog.": {
+    "es": "Exigimos transparencia y rendición de cuentas en la tramitación consular de visas: tiempos de espera publicados, explicaciones de los retrasos y un plan financiado para acabar con la acumulación de casos.",
+    "pt": "Exigimos transparência e prestação de contas no processamento consular de vistos: tempos de espera publicados, explicações dos atrasos e um plano financiado para eliminar o acúmulo de casos.",
+    "tl": "Hinihiling namin ang transparency at pananagutan sa pagproseso ng visa sa konsulado: inilathalang tagal ng paghihintay, paliwanag sa mga pagkaantala at planong may pondo upang matapos ang naipong mga kaso."
+  },
+  "US citizens: sign to hold Congress accountable and ask your representatives to demand change.": {
+    "es": "Ciudadanos estadounidenses: firmen para exigir cuentas al Congreso y pedir a sus representantes que impulsen cambios.",
+    "pt": "Cidadãos americanos: assinem para cobrar responsabilidade do Congresso e pedir que seus representantes exijam mudanças.",
+    "tl": "Mga mamamayan ng US: lumagda upang panagutin ang Kongreso at hilingin sa inyong mga kinatawan na isulong ang pagbabago."
+  },
+  "Congress must require the State Department to:": {
+    "es": "El Congreso debe exigir al Departamento de Estado que:",
+    "pt": "O Congresso deve exigir que o Departamento de Estado:",
+    "tl": "Dapat hilingin ng Kongreso sa Department of State na:"
+  },
+  "Put your name behind the demand.": {
+    "es": "Respalda esta exigencia con tu firma.",
+    "pt": "Apoie esta exigência com sua assinatura.",
+    "tl": "Ipakita ang suporta sa pamamagitan ng iyong lagda."
+  },
+  "Sign for transparent timelines, accountable decisions and families reunited.": {
+    "es": "Firma por plazos transparentes, decisiones responsables y familias reunidas.",
+    "pt": "Assine por prazos transparentes, decisões responsáveis e famílias reunidas.",
+    "tl": "Lumagda para sa malinaw na mga takdang panahon, pananagutan sa mga desisyon at muling pagsasama ng mga pamilya."
+  },
+  "Expand map": {
+    "es": "Ampliar mapa",
+    "pt": "Ampliar mapa",
+    "tl": "Palakihin ang mapa"
+  },
+  "Loading map…": {
+    "es": "Cargando mapa…",
+    "pt": "Carregando mapa…",
+    "tl": "Nilo-load ang mapa…"
+  },
+  "Show the full map": {
+    "es": "Mostrar el mapa completo",
+    "pt": "Mostrar o mapa completo",
+    "tl": "Ipakita ang buong mapa"
+  },
+  "See where support comes from, across the United States and around the world. Select a US state or district to see its representatives and their parties.": {
+    "es": "Consulta de dónde viene el apoyo, en Estados Unidos y en todo el mundo. Selecciona un estado o distrito estadounidense para ver sus representantes y partidos.",
+    "pt": "Veja de onde vem o apoio, nos Estados Unidos e no mundo. Selecione um estado ou distrito americano para ver seus representantes e partidos.",
+    "tl": "Tingnan kung saan nagmumula ang suporta, sa US at sa buong mundo. Pumili ng estado o distrito sa US upang makita ang mga kinatawan at kanilang partido."
+  },
+  "countries represented": {
+    "es": "países representados",
+    "pt": "países representados",
+    "tl": "mga bansang kinakatawan"
+  },
+  "Map geography": {
+    "es": "Ámbito del mapa",
+    "pt": "Abrangência do mapa",
+    "tl": "Saklaw ng mapa"
+  },
+  "Worldwide signatures": {
+    "es": "Firmas en todo el mundo",
+    "pt": "Assinaturas no mundo",
+    "tl": "Mga lagda sa buong mundo"
+  },
+  "Signatures by country of residence": {
+    "es": "Firmas por país de residencia",
+    "pt": "Assinaturas por país de residência",
+    "tl": "Mga lagda ayon sa bansang tinitirhan"
+  },
+  "US signatures · states, districts & territories": {
+    "es": "Firmas en EE. UU. · estados, distritos y territorios",
+    "pt": "Assinaturas nos EUA · estados, distritos e territórios",
+    "tl": "Mga lagda sa US · mga estado, distrito at teritoryo"
+  },
+  "Citizenship / residency": {
+    "es": "Ciudadanía / residencia",
+    "pt": "Cidadania / residência",
+    "tl": "Pagkamamamayan / paninirahan"
+  },
+  "Visa connection": {
+    "es": "Vínculo con una solicitud de visa",
+    "pt": "Vínculo com um pedido de visto",
+    "tl": "Kaugnayan sa aplikasyon ng visa"
+  },
+  "Applicant or supporting a case": {
+    "es": "Solicitante o persona que apoya un caso",
+    "pt": "Solicitante ou pessoa que apoia um caso",
+    "tl": "Aplikante o sumusuporta sa isang kaso"
+  },
+  "No personal case connection": {
+    "es": "Sin vínculo personal con un caso",
+    "pt": "Sem vínculo pessoal com um caso",
+    "tl": "Walang personal na kaugnayan sa kaso"
+  },
+  "Political affiliation": {
+    "es": "Afiliación política",
+    "pt": "Filiação política",
+    "tl": "Kinabibilangang partidong politikal"
+  },
+  "Boundary source · Natural Earth": {
+    "es": "Fuente de límites · Natural Earth",
+    "pt": "Fonte dos limites · Natural Earth",
+    "tl": "Sanggunian ng hangganan · Natural Earth"
+  },
+  "All sources & credits": {
+    "es": "Todas las fuentes y créditos",
+    "pt": "Todas as fontes e créditos",
+    "tl": "Lahat ng sanggunian at pagkilala"
+  },
+  "Explore visa applicants worldwide": {
+    "es": "Explorar solicitantes de visa en todo el mundo",
+    "pt": "Explorar solicitantes de visto no mundo",
+    "tl": "Tingnan ang mga aplikante ng visa sa buong mundo"
+  },
+  "Signatures are grouped by the signer’s country of residence.": {
+    "es": "Las firmas se agrupan por país de residencia del firmante.",
+    "pt": "As assinaturas são agrupadas pelo país de residência de quem assina.",
+    "tl": "Pinapangkat ang mga lagda ayon sa bansang tinitirhan ng lumagda."
+  },
+  "Visa applicants worldwide": {
+    "es": "Solicitantes de visa en todo el mundo",
+    "pt": "Solicitantes de visto no mundo",
+    "tl": "Mga aplikante ng visa sa buong mundo"
+  },
+  "Scroll to explore": {
+    "es": "Desliza para explorar",
+    "pt": "Role para explorar",
+    "tl": "Mag-scroll upang tumingin"
+  },
+  "Previous items": {
+    "es": "Elementos anteriores",
+    "pt": "Itens anteriores",
+    "tl": "Mga naunang item"
+  },
+  "Next items": {
+    "es": "Elementos siguientes",
+    "pt": "Próximos itens",
+    "tl": "Mga susunod na item"
+  },
+  "The decisions behind the delays.": {
+    "es": "Las decisiones detrás de los retrasos.",
+    "pt": "As decisões por trás dos atrasos.",
+    "tl": "Ang mga desisyon sa likod ng pagkaantala."
+  },
+  "Restrictions, processing changes and court rulings that shaped the wait.": {
+    "es": "Restricciones, cambios en la tramitación y fallos judiciales que han marcado la espera.",
+    "pt": "Restrições, mudanças no processamento e decisões judiciais que marcaram a espera.",
+    "tl": "Mga paghihigpit, pagbabago sa pagproseso at pasya ng hukuman na nakaapekto sa paghihintay."
+  },
+  "Sources checked": {
+    "es": "Fuentes revisadas",
+    "pt": "Fontes verificadas",
+    "tl": "Sinuri ang mga sanggunian"
+  },
+  "Filter policy timeline": {
+    "es": "Filtrar cronología de políticas",
+    "pt": "Filtrar cronologia das políticas",
+    "tl": "Salain ang timeline ng patakaran"
+  },
+  "Newest first": {
+    "es": "Más recientes primero",
+    "pt": "Mais recentes primeiro",
+    "tl": "Pinakabago muna"
+  },
+  "Oldest first": {
+    "es": "Más antiguos primero",
+    "pt": "Mais antigos primeiro",
+    "tl": "Pinakaluma muna"
+  },
+  "Government policy timeline": {
+    "es": "Cronología de políticas gubernamentales",
+    "pt": "Cronologia das políticas governamentais",
+    "tl": "Timeline ng mga patakaran ng pamahalaan"
+  },
+  "Selected documented events, reviewed on the date above. A past pause is not necessarily in force today; follow each source for its scope and updates.": {
+    "es": "Selección de hechos documentados, revisados en la fecha indicada. Una pausa pasada no está necesariamente vigente hoy; consulta cada fuente para conocer su alcance y novedades.",
+    "pt": "Seleção de eventos documentados, revisados na data indicada. Uma pausa anterior não está necessariamente em vigor hoje; consulte cada fonte para conhecer seu alcance e atualizações.",
+    "tl": "Mga piling dokumentadong pangyayari, sinuri sa petsang nakasaad. Ang dating paghinto ay maaaring wala nang bisa ngayon; basahin ang bawat sanggunian para sa saklaw at mga update."
+  },
+  "Make the case for change.": {
+    "es": "Ayuda a impulsar el cambio.",
+    "pt": "Ajude a defender a mudança.",
+    "tl": "Tumulong na isulong ang pagbabago."
+  },
+  "A signature shows support. A timeline documents the wait. A story makes the cost visible.": {
+    "es": "Una firma muestra apoyo. Una cronología documenta la espera. Una historia hace visible el costo.",
+    "pt": "Uma assinatura mostra apoio. Uma cronologia documenta a espera. Uma história torna o custo visível.",
+    "tl": "Ang lagda ay nagpapakita ng suporta. Ang timeline ay nagtatala ng paghihintay. Ang kuwento ay nagpapakita ng epekto nito."
+  },
+  "Action you can support.": {
+    "es": "Acciones que puedes apoyar.",
+    "pt": "Ações que você pode apoiar.",
+    "tl": "Mga pagkilos na maaari mong suportahan."
+  },
+  "Follow the legislation, contact the people working on these cases, and add your voice.": {
+    "es": "Sigue la legislación, contacta a quienes trabajan en estos casos y suma tu voz.",
+    "pt": "Acompanhe a legislação, entre em contato com quem trabalha nesses casos e some sua voz.",
+    "tl": "Subaybayan ang batas, makipag-ugnayan sa mga nagtatrabaho sa mga kasong ito at idagdag ang iyong tinig."
+  },
+  "Actions to support": {
+    "es": "Acciones para apoyar",
+    "pt": "Ações para apoiar",
+    "tl": "Mga pagkilos na susuportahan"
+  },
+  "How to help & latest updates": {
+    "es": "Cómo ayudar y últimas novedades",
+    "pt": "Como ajudar e últimas atualizações",
+    "tl": "Paano tumulong at mga pinakabagong update"
+  },
+  "Maps and representation": {
+    "es": "Mapas y representación",
+    "pt": "Mapas e representação",
+    "tl": "Mga mapa at kinatawan"
+  },
+  "Photography": {
+    "es": "Fotografía",
+    "pt": "Fotografia",
+    "tl": "Potograpiya"
+  },
+  "Typography and software": {
+    "es": "Tipografía y software",
+    "pt": "Tipografia e software",
+    "tl": "Mga font at software"
+  },
+  "Where the information comes from.": {
+    "es": "De dónde viene la información.",
+    "pt": "De onde vem a informação.",
+    "tl": "Saan nagmumula ang impormasyon."
+  },
+  "Policy summaries link to government notices, court documents and organizations working on the cases. Community timelines and stories come from participants.": {
+    "es": "Los resúmenes enlazan a avisos gubernamentales, documentos judiciales y organizaciones que trabajan en los casos. Las cronologías e historias de la comunidad provienen de los participantes.",
+    "pt": "Os resumos incluem links para avisos governamentais, documentos judiciais e organizações que trabalham nos casos. As cronologias e histórias da comunidade vêm dos participantes.",
+    "tl": "May mga link ang mga buod sa mga abiso ng pamahalaan, dokumento ng hukuman at organisasyong nagtatrabaho sa mga kaso. Ang mga timeline at kuwento ng komunidad ay mula sa mga kalahok."
+  },
+  "Policy and court records": {
+    "es": "Políticas y documentos judiciales",
+    "pt": "Políticas e documentos judiciais",
+    "tl": "Mga patakaran at dokumento ng hukuman"
+  },
+  "The photograph illustrates the campaign; it is not a submitted case story. Map boundaries do not imply a position on sovereignty. Sample records in the demo are fictional.": {
+    "es": "La fotografía ilustra la campaña; no es una historia de caso enviada. Los límites del mapa no implican una postura sobre soberanía. Los registros de ejemplo son ficticios.",
+    "pt": "A fotografia ilustra a campanha; não é uma história de caso enviada. Os limites do mapa não implicam uma posição sobre soberania. Os registros de exemplo são fictícios.",
+    "tl": "Larawang pantulong sa kampanya ang litrato; hindi ito isinumiteng kuwento ng kaso. Ang mga hangganan sa mapa ay hindi nagpapahiwatig ng paninindigan sa soberanya. Kathang-isip ang mga halimbawang rekord."
+  },
+  "Processing change": {
+    "es": "Cambio en la tramitación",
+    "pt": "Mudança no processamento",
+    "tl": "Pagbabago sa pagproseso"
+  },
+  "Broader public-charge screening": {
+    "es": "Evaluación más amplia de carga pública",
+    "pt": "Avaliação ampliada de encargo público",
+    "tl": "Mas malawak na pagsusuri sa public charge"
+  },
+  "CLINIC reports that a State Department cable expanded the factors officers consider in public-charge decisions. Those changes are now challenged in court.": {
+    "es": "Según CLINIC, una circular del Departamento de Estado amplió los factores que consideran los funcionarios al decidir sobre carga pública. Esos cambios ahora se impugnan en los tribunales.",
+    "pt": "Segundo a CLINIC, uma circular do Departamento de Estado ampliou os fatores considerados pelos funcionários nas decisões sobre encargo público. Essas mudanças agora são contestadas judicialmente.",
+    "tl": "Ayon sa CLINIC, pinalawak ng isang cable ng Department of State ang mga salik na isinasaalang-alang ng mga opisyal sa public-charge decisions. Hinahamon na ngayon ang mga pagbabagong iyon sa hukuman."
+  },
+  "Challenged in CLINIC v. Rubio": {
+    "es": "Impugnado en CLINIC v. Rubio",
+    "pt": "Contestado em CLINIC v. Rubio",
+    "tl": "Hinahamon sa CLINIC v. Rubio"
+  },
+  "CLINIC analysis": {
+    "es": "Análisis de CLINIC",
+    "pt": "Análise da CLINIC",
+    "tl": "Pagsusuri ng CLINIC"
+  },
+  "Restriction": {
+    "es": "Restricción",
+    "pt": "Restrição",
+    "tl": "Paghihigpit"
+  },
+  "Diversity visa issuance paused": {
+    "es": "Pausa en la emisión de visas de diversidad",
+    "pt": "Pausa na emissão de vistos de diversidade",
+    "tl": "Pansamantalang paghinto sa pag-isyu ng diversity visa"
+  },
+  "The State Department announced a pause on diversity visa issuance for a screening review. Its updated notice says the pause ended under a court order on August 28, 2026.": {
+    "es": "El Departamento de Estado anunció una pausa en la emisión de visas de diversidad para revisar los controles. Su aviso actualizado indica que la pausa terminó por orden judicial el 28 de agosto de 2026.",
+    "pt": "O Departamento de Estado anunciou uma pausa na emissão de vistos de diversidade para revisar os controles. Seu aviso atualizado informa que a pausa terminou por ordem judicial em 28 de agosto de 2026.",
+    "tl": "Inanunsyo ng Department of State ang paghinto sa pag-isyu ng diversity visa para suriin ang screening. Ayon sa na-update nitong abiso, natapos ang paghinto dahil sa utos ng hukuman noong Agosto 28, 2026."
+  },
+  "Pause later vacated": {
+    "es": "Pausa anulada posteriormente",
+    "pt": "Pausa anulada posteriormente",
+    "tl": "Kalaunang pinawalang-bisa ang paghinto"
+  },
+  "State Department notice": {
+    "es": "Aviso del Departamento de Estado",
+    "pt": "Aviso do Departamento de Estado",
+    "tl": "Abiso ng Department of State"
+  },
+  "Entry and visa restrictions expanded": {
+    "es": "Ampliación de restricciones de entrada y visas",
+    "pt": "Ampliação das restrições de entrada e vistos",
+    "tl": "Pinalawak ang mga paghihigpit sa pagpasok at visa"
+  },
+  "Proclamation 10998 imposed full or partial restrictions covering 39 countries and Palestinian Authority travel documents, with exceptions. These restrictions are separate from the later 75-country pause.": {
+    "es": "La Proclamación 10998 impuso restricciones totales o parciales para 39 países y documentos de viaje de la Autoridad Palestina, con excepciones. Son distintas de la posterior pausa de 75 países.",
+    "pt": "A Proclamação 10998 impôs restrições totais ou parciais para 39 países e documentos de viagem da Autoridade Palestina, com exceções. São distintas da posterior pausa para 75 países.",
+    "tl": "Nagpatupad ang Proclamation 10998 ng buo o bahagyang paghihigpit para sa 39 na bansa at mga dokumento sa paglalakbay ng Palestinian Authority, na may mga eksepsiyon. Hiwalay ito sa sumunod na paghinto para sa 75 bansa."
+  },
+  "Separate proclamation restrictions": {
+    "es": "Restricciones de una proclamación distinta",
+    "pt": "Restrições de uma proclamação distinta",
+    "tl": "Hiwalay na mga paghihigpit ng proklamasyon"
+  },
+  "75-country immigrant visa pause begins": {
+    "es": "Comienza la pausa de visas de inmigrante para 75 países",
+    "pt": "Começa a pausa de vistos de imigrante para 75 países",
+    "tl": "Nagsimula ang paghinto ng immigrant visa para sa 75 bansa"
+  },
+  "The State Department stopped issuing immigrant visas to nationals of 75 countries under its public-charge review. The policy did not cover tourist visas.": {
+    "es": "El Departamento de Estado dejó de emitir visas de inmigrante a nacionales de 75 países durante su revisión de carga pública. La política no incluía visas de turista.",
+    "pt": "O Departamento de Estado deixou de emitir vistos de imigrante a cidadãos de 75 países durante sua revisão de encargo público. A política não incluía vistos de turista.",
+    "tl": "Itinigil ng Department of State ang pag-isyu ng immigrant visa sa mga mamamayan ng 75 bansa sa ilalim ng pagsusuri nito sa public charge. Hindi sakop ng patakaran ang tourist visa."
+  },
+  "Vacated August 21, 2026": {
+    "es": "Anulada el 21 de agosto de 2026",
+    "pt": "Anulada em 21 de agosto de 2026",
+    "tl": "Pinawalang-bisa noong Agosto 21, 2026"
+  },
+  "Court ruling": {
+    "es": "Fallo judicial",
+    "pt": "Decisão judicial",
+    "tl": "Pasya ng hukuman"
+  },
+  "Court sets aside the 75-country pause": {
+    "es": "El tribunal anula la pausa de 75 países",
+    "pt": "Tribunal anula a pausa para 75 países",
+    "tl": "Pinawalang-bisa ng hukuman ang paghinto para sa 75 bansa"
+  },
+  "The CLINIC ruling vacated the policy and refusals based solely on it. Cases must receive individual consideration; the ruling does not guarantee a visa.": {
+    "es": "El fallo en CLINIC anuló la política y las denegaciones basadas exclusivamente en ella. Los casos deben recibir consideración individual; el fallo no garantiza una visa.",
+    "pt": "A decisão em CLINIC anulou a política e as recusas baseadas exclusivamente nela. Os casos devem receber análise individual; a decisão não garante um visto.",
+    "tl": "Pinawalang-bisa ng pasya sa CLINIC ang patakaran at mga pagtangging nakabatay lamang dito. Dapat suriin ang bawat kaso nang paisa-isa; hindi ginagarantiya ng pasya ang visa."
+  },
+  "Return to individual adjudication": {
+    "es": "Retorno a la evaluación individual",
+    "pt": "Retorno à análise individual",
+    "tl": "Pagbalik sa indibidwal na paghatol sa kaso"
+  },
+  "CLINIC applicant roadmap": {
+    "es": "Guía de CLINIC para solicitantes",
+    "pt": "Guia da CLINIC para solicitantes",
+    "tl": "Gabay ng CLINIC para sa mga aplikante"
+  },
+  "Diversity visa pause set aside": {
+    "es": "Anulada la pausa de visas de diversidad",
+    "pt": "Anulada a pausa de vistos de diversidade",
+    "tl": "Pinawalang-bisa ang paghinto sa diversity visa"
+  },
+  "The State Department says the diversity visa issuance pause is no longer in effect following the Medani order. Further implementation disputes followed.": {
+    "es": "El Departamento de Estado indica que la pausa de visas de diversidad dejó de estar vigente tras la orden en Medani. Después surgieron nuevas disputas sobre su aplicación.",
+    "pt": "O Departamento de Estado informa que a pausa de vistos de diversidade deixou de vigorar após a ordem em Medani. Seguiram-se novas disputas sobre sua implementação.",
+    "tl": "Ayon sa Department of State, wala nang bisa ang paghinto sa diversity visa matapos ang utos sa Medani. Sumunod ang mga pagtatalo tungkol sa pagpapatupad nito."
+  },
+  "Medani v. Trump": {
+    "es": "Medani v. Trump",
+    "pt": "Medani v. Trump",
+    "tl": "Medani v. Trump"
+  },
+  "Training extends interview cancellations": {
+    "es": "La capacitación prolonga las cancelaciones de entrevistas",
+    "pt": "Treinamento prolonga cancelamentos de entrevistas",
+    "tl": "Pinahaba ng pagsasanay ang pagkansela ng mga panayam"
+  },
+  "NILC reports that the government acknowledged worldwide immigrant visa appointment cancellations through September for public-charge training, without a fixed timetable for reconsidering affected cases.": {
+    "es": "Según NILC, el gobierno reconoció cancelaciones de citas de visa de inmigrante en todo el mundo hasta septiembre por capacitación sobre carga pública, sin un calendario fijo para reconsiderar los casos afectados.",
+    "pt": "Segundo o NILC, o governo reconheceu cancelamentos mundiais de entrevistas de visto de imigrante até setembro por treinamento sobre encargo público, sem um cronograma fixo para reconsiderar os casos afetados.",
+    "tl": "Ayon sa NILC, inamin ng pamahalaan ang pagkansela ng immigrant-visa appointments sa buong mundo hanggang Setyembre para sa public-charge training, na walang tiyak na iskedyul ng muling pagsusuri sa mga apektadong kaso."
+  },
+  "Timetable and progress sought": {
+    "es": "Se piden plazos e informes de avances",
+    "pt": "Solicitação de prazos e relatórios de progresso",
+    "tl": "Hinihingi ang iskedyul at progreso"
+  },
+  "NILC case update": {
+    "es": "Actualización del caso de NILC",
+    "pt": "Atualização do caso pelo NILC",
+    "tl": "Update ng NILC sa kaso"
+  },
+  "Resume processing—with new requirements": {
+    "es": "Reanudar la tramitación con nuevos requisitos",
+    "pt": "Retomar o processamento com novos requisitos",
+    "tl": "Ipagpatuloy ang pagproseso na may bagong mga kinakailangan"
+  },
+  "Public reporting still needed": {
+    "es": "Aún se necesitan informes públicos",
+    "pt": "Ainda são necessários relatórios públicos",
+    "tl": "Kailangan pa rin ng pampublikong pag-uulat"
+  },
+  "Sign for congressional oversight": {
+    "es": "Firma por la supervisión del Congreso",
+    "pt": "Assine pela fiscalização do Congresso",
+    "tl": "Lumagda para sa pangangasiwa ng Kongreso"
+  },
+  "We especially need US citizens to sign and ask their members of Congress to demand answers. Supporters of other citizenships are welcome too.": {
+    "es": "Necesitamos especialmente que los ciudadanos estadounidenses firmen y pidan a sus congresistas que exijan respuestas. También son bienvenidos los simpatizantes de otras nacionalidades.",
+    "pt": "Precisamos especialmente que cidadãos americanos assinem e peçam a seus congressistas que exijam respostas. Apoiadores de outras nacionalidades também são bem-vindos.",
+    "tl": "Lalo naming kailangan ang mga mamamayan ng US na lumagda at hilingin sa kanilang mga kinatawan sa Kongreso na humingi ng sagot. Malugod ding tinatanggap ang mga tagasuporta ng ibang pagkamamamayan."
+  },
+  "Add your visa timeline": {
+    "es": "Añade la cronología de tu visa",
+    "pt": "Adicione a cronologia do seu visto",
+    "tl": "Idagdag ang timeline ng iyong visa"
+  },
+  "Your dates help build a community record of real waits by visa category and consular post. Keep it current, even when nothing has changed.": {
+    "es": "Tus fechas ayudan a documentar las esperas reales por categoría de visa y consulado. Mantenlas actualizadas, incluso cuando nada haya cambiado.",
+    "pt": "Suas datas ajudam a documentar as esperas reais por categoria de visto e consulado. Mantenha-as atualizadas, mesmo quando nada tiver mudado.",
+    "tl": "Nakakatulong ang mga petsa mo sa pagbuo ng tala ng aktuwal na paghihintay ayon sa kategorya ng visa at konsulado. Panatilihing napapanahon ito, kahit walang pagbabago."
+  },
+  "Add a timeline": {
+    "es": "Añadir una cronología",
+    "pt": "Adicionar uma cronologia",
+    "tl": "Magdagdag ng timeline"
+  },
+  "Share your story and photos": {
+    "es": "Comparte tu historia y fotos",
+    "pt": "Compartilhe sua história e fotos",
+    "tl": "Ibahagi ang iyong kuwento at mga larawan"
+  },
+  "Show what the delay means for your family: time apart, missed milestones, travel and extra costs. Share only what you have permission to publish.": {
+    "es": "Muestra lo que el retraso significa para tu familia: separación, momentos perdidos, viajes y gastos adicionales. Comparte solo lo que tengas permiso de publicar.",
+    "pt": "Mostre o que o atraso significa para sua família: tempo separados, momentos perdidos, viagens e custos extras. Compartilhe apenas o que você tem permissão para publicar.",
+    "tl": "Ipakita ang epekto ng pagkaantala sa iyong pamilya: pagkakalayo, mga mahahalagang sandaling hindi nakasama, paglalakbay at dagdag na gastos. Ibahagi lamang ang mayroon kang pahintulot na ilathala."
+  },
+  "5:26-cv-06332 · Northern District of California": {
+    "es": "5:26-cv-06332 · Distrito Norte de California",
+    "pt": "5:26-cv-06332 · Distrito Norte da Califórnia",
+    "tl": "5:26-cv-06332 · Northern District of California"
+  },
+  "Implementation litigation": {
+    "es": "Litigio sobre la aplicación",
+    "pt": "Litígio sobre implementação",
+    "tl": "Paglilitis tungkol sa pagpapatupad"
+  },
+  "Challenging the diversity visa pauses and pursuing compliance with court-ordered processing.": {
+    "es": "Impugnar las pausas de visas de diversidad y exigir el cumplimiento de la tramitación ordenada por el tribunal.",
+    "pt": "Contestar as pausas de vistos de diversidade e buscar o cumprimento do processamento determinado pelo tribunal.",
+    "tl": "Paghahamon sa mga paghinto ng diversity visa at pagsulong ng pagsunod sa pagprosesong iniutos ng hukuman."
+  },
+  "This case concerns FY-2026 diversity visa applicants affected by processing holds. The State Department says its diversity visa issuance pause ended under the August 28 order. Later orders addressed implementation. Counsel lists further filings through November 9; consult those documents for individual eligibility and deadlines.": {
+    "es": "Este caso afecta a solicitantes de visas de diversidad del año fiscal 2026 sujetos a suspensiones. El Departamento de Estado indica que la pausa terminó por la orden del 28 de agosto. Órdenes posteriores abordaron su aplicación. Los abogados publican documentos hasta el 9 de noviembre; consúltalos para conocer requisitos y plazos individuales.",
+    "pt": "Este caso envolve solicitantes de vistos de diversidade do ano fiscal de 2026 afetados por suspensões. O Departamento de Estado informa que a pausa terminou pela ordem de 28 de agosto. Ordens posteriores trataram da implementação. Os advogados publicam documentos até 9 de novembro; consulte-os para verificar elegibilidade e prazos individuais.",
+    "tl": "Tungkol ang kasong ito sa FY-2026 diversity visa applicants na naapektuhan ng paghinto ng pagproseso. Ayon sa Department of State, natapos ang paghinto dahil sa utos noong Agosto 28. Tinalakay ng mga sumunod na utos ang pagpapatupad. May mga dokumentong inilista ang mga abogado hanggang Nobyembre 9; tingnan ang mga ito para sa indibidwal na pagiging kuwalipikado at mga takdang petsa."
+  },
+  "Restore processing for affected diversity visa applicants.": {
+    "es": "Restablecer la tramitación para los solicitantes de visas de diversidad afectados.",
+    "pt": "Restabelecer o processamento para solicitantes de vistos de diversidade afetados.",
+    "tl": "Ibalik ang pagproseso para sa apektadong diversity visa applicants."
+  },
+  "Seek compliance with court orders and reporting on implementation.": {
+    "es": "Exigir el cumplimiento de las órdenes judiciales e informes sobre su aplicación.",
+    "pt": "Buscar o cumprimento das ordens judiciais e relatórios sobre sua implementação.",
+    "tl": "Isulong ang pagsunod sa mga utos ng hukuman at pag-uulat sa pagpapatupad."
+  },
+  "Preliminary relief granted": {
+    "es": "Concedida una medida provisional",
+    "pt": "Concedida medida provisória",
+    "tl": "Ipinagkaloob ang paunang lunas"
+  },
+  "The State Department confirms that the diversity visa issuance pause is no longer in effect following the court order.": {
+    "es": "El Departamento de Estado confirma que la pausa de visas de diversidad ya no está vigente tras la orden judicial.",
+    "pt": "O Departamento de Estado confirma que a pausa de vistos de diversidade não está mais em vigor após a ordem judicial.",
+    "tl": "Kinukumpirma ng Department of State na wala nang bisa ang paghinto sa diversity visa matapos ang utos ng hukuman."
+  },
+  "Enforcement order": {
+    "es": "Orden de cumplimiento",
+    "pt": "Ordem de cumprimento",
+    "tl": "Utos sa pagpapatupad"
+  },
+  "The court addressed compliance with its earlier order to resume ordinary adjudication.": {
+    "es": "El tribunal abordó el cumplimiento de su orden anterior de reanudar la evaluación ordinaria.",
+    "pt": "O tribunal tratou do cumprimento de sua ordem anterior de retomar a análise ordinária.",
+    "tl": "Tinalakay ng hukuman ang pagsunod sa nauna nitong utos na ipagpatuloy ang karaniwang paghatol sa kaso."
+  },
+  "Further order listed by counsel": {
+    "es": "Los abogados publican otra orden",
+    "pt": "Advogados publicam outra ordem",
+    "tl": "Karagdagang utos na inilista ng mga abogado"
+  },
+  "Counsel links a November 9 order and the preceding request for clarification. Read the documents for the current scope of relief.": {
+    "es": "Los abogados enlazan una orden del 9 de noviembre y la solicitud de aclaración anterior. Lee los documentos para conocer el alcance actual de las medidas.",
+    "pt": "Os advogados incluem links para uma ordem de 9 de novembro e o pedido anterior de esclarecimento. Leia os documentos para conhecer o alcance atual das medidas.",
+    "tl": "May link ang mga abogado sa utos noong Nobyembre 9 at sa naunang kahilingan para sa paglilinaw. Basahin ang mga dokumento para sa kasalukuyang saklaw ng lunas."
+  },
+  "Court order · GovInfo": {
+    "es": "Orden judicial · GovInfo",
+    "pt": "Ordem judicial · GovInfo",
+    "tl": "Utos ng hukuman · GovInfo"
+  },
+  "Counsel’s updates and filings": {
+    "es": "Novedades y documentos de los abogados",
+    "pt": "Atualizações e documentos dos advogados",
+    "tl": "Mga update at dokumento ng mga abogado"
+  },
+  "Affected applicants can share information through class counsel’s linked page. Earlier processing windows have passed; ask counsel about your circumstances rather than assuming enrollment or visa issuance is available.": {
+    "es": "Los solicitantes afectados pueden compartir información en la página enlazada de los abogados de la clase. Los períodos anteriores ya pasaron; consulta tu situación con los abogados en lugar de asumir que es posible inscribirse u obtener una visa.",
+    "pt": "Solicitantes afetados podem compartilhar informações pela página dos advogados da ação coletiva. Os períodos anteriores já passaram; consulte os advogados sobre sua situação em vez de presumir que é possível se inscrever ou obter um visto.",
+    "tl": "Maaaring magbahagi ng impormasyon ang mga apektadong aplikante sa naka-link na pahina ng class counsel. Lumipas na ang mga naunang panahon ng pagproseso; magtanong sa mga abogado tungkol sa iyong kalagayan sa halip na ipalagay na bukas ang pagpapatala o pag-isyu ng visa."
+  },
+  "US Census Bureau · state and congressional district boundaries": {
+    "es": "Oficina del Censo de EE. UU. · límites estatales y de distritos electorales",
+    "pt": "Censo dos EUA · limites estaduais e distritos eleitorais",
+    "tl": "US Census Bureau · mga hangganan ng estado at distritong pangkongreso"
+  },
+  "US Census Bureau · state boundaries": {
+    "es": "Oficina del Censo de EE. UU. · límites estatales",
+    "pt": "Censo dos EUA · limites estaduais",
+    "tl": "US Census Bureau · mga hangganan ng estado"
+  },
+  "Natural Earth · 1:50m country data": {
+    "es": "Natural Earth · datos de países a escala 1:50m",
+    "pt": "Natural Earth · dados de países na escala 1:50m",
+    "tl": "Natural Earth · datos ng mga bansa sa iskalang 1:50m"
+  },
+  "Natural Earth · country boundaries and public-domain license": {
+    "es": "Natural Earth · límites de países y licencia de dominio público",
+    "pt": "Natural Earth · limites de países e licença de domínio público",
+    "tl": "Natural Earth · hangganan ng mga bansa at lisensiyang public domain"
+  },
+  "Congress Legislators · membership and terms": {
+    "es": "Congress Legislators · miembros y mandatos",
+    "pt": "Congress Legislators · membros e mandatos",
+    "tl": "Congress Legislators · mga kasapi at termino"
+  },
+  "Biographical Directory of Congress": {
+    "es": "Directorio biográfico del Congreso",
+    "pt": "Diretório biográfico do Congresso",
+    "tl": "Talambuhay ng mga kasapi ng Kongreso"
+  },
+  "US Census Geocoder · address lookup": {
+    "es": "Geocodificador del Censo de EE. UU. · búsqueda de direcciones",
+    "pt": "Geocodificador do Censo dos EUA · busca de endereços",
+    "tl": "US Census Geocoder · paghahanap gamit ang address"
+  },
+  "Landing-page family photograph · Unsplash": {
+    "es": "Fotografía familiar de la portada · Unsplash",
+    "pt": "Fotografia da família na página inicial · Unsplash",
+    "tl": "Larawan ng pamilya sa pangunahing pahina · Unsplash"
+  },
+  "Unsplash license": {
+    "es": "Licencia de Unsplash",
+    "pt": "Licença do Unsplash",
+    "tl": "Lisensiya ng Unsplash"
+  },
+  "Instrument Sans · Google Fonts": {
+    "es": "Instrument Sans · Google Fonts",
+    "pt": "Instrument Sans · Google Fonts",
+    "tl": "Instrument Sans · Google Fonts"
+  },
+  "Instrument Sans · SIL Open Font License": {
+    "es": "Instrument Sans · licencia SIL Open Font",
+    "pt": "Instrument Sans · licença SIL Open Font",
+    "tl": "Instrument Sans · lisensiyang SIL Open Font"
+  },
+  "Lucide icons · ISC license": {
+    "es": "Iconos Lucide · licencia ISC",
+    "pt": "Ícones Lucide · licença ISC",
+    "tl": "Mga icon ng Lucide · lisensiyang ISC"
+  },
+  "Leaflet · BSD license": {
+    "es": "Leaflet · licencia BSD",
+    "pt": "Leaflet · licença BSD",
+    "tl": "Leaflet · lisensiyang BSD"
+  },
+  "React · MIT license": {
+    "es": "React · licencia MIT",
+    "pt": "React · licença MIT",
+    "tl": "React · lisensiyang MIT"
+  },
+  "Vite · MIT license": {
+    "es": "Vite · licencia MIT",
+    "pt": "Vite · licença MIT",
+    "tl": "Vite · lisensiyang MIT"
+  },
+  "Not provided": {
+    "es": "Sin indicar",
+    "pt": "Não informado",
+    "tl": "Hindi ibinigay"
+  },
+  "CLINIC reports that a new cable directed posts to resume adjudication while requiring public-charge training and an applicant worksheet. Its later guidance describes interviews resuming under the new requirements.": {
+    "es": "Según CLINIC, una nueva circular ordenó reanudar las evaluaciones con capacitación sobre carga pública y un formulario para solicitantes. Su guía posterior describe la reanudación de entrevistas bajo los nuevos requisitos.",
+    "pt": "Segundo a CLINIC, uma nova circular determinou a retomada das análises com treinamento sobre encargo público e um formulário para solicitantes. Sua orientação posterior descreve entrevistas sendo retomadas sob os novos requisitos.",
+    "tl": "Ayon sa CLINIC, inatasan ng bagong cable ang mga konsulado na ipagpatuloy ang paghatol sa kaso, kasama ang public-charge training at worksheet ng aplikante. Inilalarawan ng sumunod nitong gabay ang pagpapatuloy ng mga panayam sa ilalim ng bagong mga kinakailangan."
   }
 }

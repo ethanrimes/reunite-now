@@ -165,4 +165,58 @@ export const policies: Policy[] = [
     contribute:
       "Use counsel’s official contact page for current status and participation questions. Reunite Now does not collect legal fees, enroll plaintiffs, or send stories to the legal team.",
   },
+  {
+    id: "medani-v-trump",
+    kind: "Legal case",
+    title: "Medani v. Trump",
+    eyebrow: "5:26-cv-06332 · Northern District of California",
+    status: "Implementation litigation",
+    theme: "Accountability",
+    summary:
+      "Challenging the diversity visa pauses and pursuing compliance with court-ordered processing.",
+    background:
+      "This case concerns FY-2026 diversity visa applicants affected by processing holds. The State Department says its diversity visa issuance pause ended under the August 28 order. Later orders addressed implementation. Counsel lists further filings through November 9; consult those documents for individual eligibility and deadlines.",
+    goals: [
+      "Restore processing for affected diversity visa applicants.",
+      "Seek compliance with court orders and reporting on implementation.",
+    ],
+    updated: "2026-11-12",
+    timeline: [
+      {
+        date: "2026-08-28",
+        title: "Preliminary relief granted",
+        text: "The State Department confirms that the diversity visa issuance pause is no longer in effect following the court order.",
+      },
+      {
+        date: "2026-09-10",
+        title: "Enforcement order",
+        text: "The court addressed compliance with its earlier order to resume ordinary adjudication.",
+      },
+      {
+        date: "2026-11-09",
+        title: "Further order listed by counsel",
+        text: "Counsel links a November 9 order and the preceding request for clarification. Read the documents for the current scope of relief.",
+      },
+    ],
+    sources: [
+      {
+        label: "Court order · GovInfo",
+        url: "https://www.govinfo.gov/content/pkg/USCOURTS-cand-5_26-cv-06332/pdf/USCOURTS-cand-5_26-cv-06332-1.pdf",
+      },
+      {
+        label: "State Department notice",
+        url: "https://travel.state.gov/en/newsroom/visas/2025/diversity-visa-issuance-updated-guidance.html",
+      },
+      {
+        label: "Counsel’s updates and filings",
+        url: "https://redeaglelaw.com/medani-v-trump",
+      },
+    ],
+    contact: {
+      label: "medani@redeaglelaw.com",
+      url: "mailto:medani@redeaglelaw.com",
+    },
+    contribute:
+      "Affected applicants can share information through class counsel’s linked page. Earlier processing windows have passed; ask counsel about your circumstances rather than assuming enrollment or visa issuance is available.",
+  },
 ];

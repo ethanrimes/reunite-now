@@ -1,3 +1,4 @@
+import { previewMode } from "./preview";
 import {
   createContext,
   useContext,
@@ -15,6 +16,10 @@ export async function api<T = any>(
   url: string,
   options: RequestInit = {},
 ): Promise<T> {
+  if (previewMode && (options.method || "GET").toUpperCase() !== "GET")
+    throw new Error(
+      "Sample data is read-only. Open the live site to sign or edit your account.",
+    );
   const r = await fetch(`/api${url}`, {
     ...options,
     headers: { "Content-Type": "application/json", ...options.headers },
@@ -59,6 +64,24 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState("");
   async function refresh() {
     try {
+      if (previewMode) {
+        const sample = await api<{
+          profiles: PublicProfile[];
+          stories: PublicStory[];
+        }>("/demo");
+        setMe({ user: null, profile: null, story: null });
+        setConfig({
+          demoData: true,
+          emailAuth: false,
+          googleAuth: false,
+          devAuth: false,
+          reminders: false,
+        });
+        setProfiles(sample.profiles);
+        setStories(sample.stories);
+        setError("");
+        return;
+      }
       const [m, c, p, s] = await Promise.all([
         api<Me>("/me"),
         api<Config>("/config"),

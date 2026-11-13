@@ -2,6 +2,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import ts from "typescript";
+import { policyEvents, participation } from "../shared/campaign";
+import { policies } from "../shared/policies";
 import messages from "../client/src/locales/messages.json";
 import {
   translate,
@@ -31,6 +33,8 @@ test("Spanish, Portuguese, and Tagalog catalogs cover interface strings and pres
   }
   for (const name of [
     "main",
+    "campaign",
+    "sources",
     "pages",
     "account",
     "maps",
@@ -107,4 +111,30 @@ test("translation interpolation, fallback, and locale selection", () => {
   unsubscribe();
   setLanguage("en");
   assert.equal(changes, 3);
+});
+
+// These strings are passed dynamically to t(), so the JSX literal scan cannot see them.
+test("campaign events and participation copy have all three translations", () => {
+  const keys = [
+    ...policyEvents.flatMap((e) => [
+      e.kind,
+      e.title,
+      e.text,
+      e.status,
+      e.source.label,
+    ]),
+    ...participation.flatMap((p) => [p.title, p.text, p.action]),
+    ...policies.flatMap((p) => [
+      p.title,
+      p.status,
+      p.summary,
+      p.background,
+      ...p.goals,
+      ...p.timeline.flatMap((e) => [e.title, e.text]),
+      ...p.sources.map((s) => s.label),
+      p.contribute,
+    ]),
+  ];
+  for (const key of keys)
+    assert.ok(key in messages, `Missing translation: ${key}`);
 });

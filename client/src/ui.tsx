@@ -64,26 +64,34 @@ export function Modal({
   children,
   onClose,
   wide = false,
+  fullscreen = false,
 }: {
   title: string;
   children: ReactNode;
   onClose: () => void;
   wide?: boolean;
+  fullscreen?: boolean;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     const el = ref.current!;
+    const previousFocus = document.activeElement as HTMLElement | null;
     el.showModal();
     const old = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = old;
+      el.close();
+      previousFocus?.focus();
     };
   }, []);
   return (
     <dialog
       ref={ref}
-      className={wide ? "modal wide" : "modal"}
+      aria-label={title}
+      className={
+        fullscreen ? "modal map-fullscreen" : wide ? "modal wide" : "modal"
+      }
       onCancel={onClose}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();

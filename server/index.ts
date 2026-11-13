@@ -364,6 +364,23 @@ app.delete("/api/me", requireUser, async (req, res) => {
   res.clearCookie("rn_session", cookieOptions);
   res.json({ ok: true });
 });
+// Dedicated read-only fixtures. Never mix these records into production statistics.
+let previewCache:
+  { day: string; data: ReturnType<typeof createDemoData> } | undefined;
+app.get("/api/demo", async (_req, res) => {
+  const day = new Date().toISOString().slice(0, 10);
+  if (!previewCache || previewCache.day !== day)
+    previewCache = { day, data: createDemoData() };
+  try {
+    const data = await previewCache.data;
+    res
+      .set("Cache-Control", "public, max-age=300")
+      .json({ ...data, sample: true });
+  } catch (error) {
+    previewCache = undefined;
+    throw error;
+  }
+});
 app.get("/api/public", async (_req, res) => {
   const rows = await db.query(
     `SELECT user_id,data,updated_at,signed_at FROM profiles WHERE data->>'signed'='true' AND data->>'publicConsent'='true'`,
@@ -485,6 +502,10 @@ app.post("/api/jobs/reminders", async (req, res) => {
 app.use("/api", (_req, res) =>
   res.status(404).json({ error: "Endpoint not found" }),
 );
+app.use("/demo", (_req, res, next) => {
+  res.set("X-Robots-Tag", "noindex, nofollow");
+  next();
+});
 app.use(
   express.static(path.resolve("dist/public"), {
     maxAge: "1h",

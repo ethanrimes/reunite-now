@@ -1,6 +1,6 @@
 import { t } from "./i18n";
 import { LanguageSelector, useLanguage } from "./language";
-import React, { useEffect, useState, lazy, Suspense } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import {
   BrowserRouter,
@@ -10,7 +10,7 @@ import {
   Link,
   useLocation,
 } from "react-router-dom";
-import { ArrowUpRight, Menu, X, Heart, MoveUpRight } from "lucide-react";
+import { ArrowUpRight, MoveUpRight } from "lucide-react";
 import { DataProvider, useData } from "./api";
 import { Home, Policies, PolicyDetail, Stories, DataUse, About } from "./pages";
 const Coverage = lazy(() =>
@@ -28,16 +28,50 @@ const Login = lazy(() =>
 const Verify = lazy(() =>
   import("./account").then((m) => ({ default: m.Verify })),
 );
+import { BrandMark } from "./brand";
+import { Sources } from "./sources";
+import { previewMode } from "./preview";
 import "./styles.css";
+import "./campaign.css";
+function PreviewGate() {
+  return (
+    <div className="page-shell preview-gate">
+      <h1>{t("You’re exploring sample data.")}</h1>
+      <p>
+        {t(
+          "To sign the petition or share your own timeline and story, continue to the live site.",
+        )}
+      </p>
+      <a className="button" href="/login?intent=sign">
+        {t("Continue to the live site")}
+      </a>
+    </div>
+  );
+}
 function App() {
   useLanguage();
-  const [menu, setMenu] = useState(false);
   const location = useLocation();
   const { me, error, config } = useData();
   useEffect(() => {
-    setMenu(false);
     window.scrollTo(0, 0);
-  }, [location.pathname]);
+    if (!location.hash) return;
+    const reveal = () => {
+      const target = document.getElementById(
+        decodeURIComponent(location.hash.slice(1)),
+      );
+      if (target) {
+        target.scrollIntoView({ block: "start" });
+        observer.disconnect();
+      }
+    };
+    const observer = new MutationObserver(reveal);
+    observer.observe(document.getElementById("main")!, {
+      childList: true,
+      subtree: true,
+    });
+    reveal();
+    return () => observer.disconnect();
+  }, [location.pathname, location.hash]);
   return (
     <>
       <a className="skip-link" href="#main">
@@ -54,7 +88,7 @@ function App() {
       <header className="site-header">
         <Link className="brand" to="/" aria-label={t("Reunite Now home")}>
           <span className="brand-mark">
-            <Heart size={21} />
+            <BrandMark />
           </span>
           <span>
             {t("reunite")}
@@ -62,15 +96,7 @@ function App() {
           </span>
         </Link>
         <LanguageSelector />
-        <button
-          className="mobile-menu icon-button"
-          aria-expanded={menu}
-          aria-label={t("Toggle navigation")}
-          onClick={() => setMenu(!menu)}
-        >
-          {menu ? <X /> : <Menu />}
-        </button>
-        <nav aria-label={t("Main navigation")} className={menu ? "open" : ""}>
+        <nav aria-label={t("Main navigation")}>
           <NavLink to="/policies">{t("Policy & action")}</NavLink>
           <NavLink to="/stories">{t("Our stories")}</NavLink>
           <NavLink to="/coverage">{t("Signature map")}</NavLink>
@@ -97,14 +123,19 @@ function App() {
           </div>
         </nav>
       </header>
-      {config.demoData && (
+      {(previewMode || config.demoData) && (
         <div className="demo-banner" role="status">
-          <strong>{t("Local demo")}</strong>
+          <strong>{previewMode ? t("Sample data") : t("Local demo")}</strong>
           <span>
             {t(
               "Sample signatures, stories, and visa timelines. These are fictional records.",
             )}
           </span>
+          {previewMode && (
+            <a href={location.pathname + location.search}>
+              {t("Exit sample view")}
+            </a>
+          )}
         </div>
       )}
       {error && (
@@ -130,9 +161,19 @@ function App() {
             <Route path="/visa-data" element={<VisaData />} />
             <Route path="/data-use" element={<DataUse />} />
             <Route path="/about" element={<About />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/auth/verify" element={<Verify />} />
-            <Route path="/account" element={<Account />} />
+            <Route path="/sources" element={<Sources />} />
+            <Route
+              path="/login"
+              element={previewMode ? <PreviewGate /> : <Login />}
+            />
+            <Route
+              path="/auth/verify"
+              element={previewMode ? <PreviewGate /> : <Verify />}
+            />
+            <Route
+              path="/account"
+              element={previewMode ? <PreviewGate /> : <Account />}
+            />
             <Route
               path="*"
               element={
@@ -151,7 +192,7 @@ function App() {
         <div className="footer-top">
           <Link className="brand" to="/">
             <span className="brand-mark">
-              <Heart size={21} />
+              <BrandMark />
             </span>
             <span>
               {t("reunite")}
@@ -174,6 +215,8 @@ function App() {
           <div>
             <Link to="/data-use">{t("Privacy & data use")}</Link>
             <Link to="/about">{t("Our purpose")}</Link>
+            <Link to="/sources">{t("Sources & credits")}</Link>
+            {!previewMode && <a href="/demo">{t("Explore sample data")}</a>}
             <a
               href="https://github.com/ethanrimes"
               target="_blank"
@@ -194,7 +237,7 @@ function App() {
 }
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={previewMode ? "/demo" : undefined}>
       <DataProvider>
         <App />
       </DataProvider>
