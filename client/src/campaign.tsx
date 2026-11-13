@@ -1,94 +1,13 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  ArrowLeft,
-  ArrowRight,
-  ArrowUpRight,
-  PenLine,
-  Camera,
-  CalendarDays,
-} from "lucide-react";
-import { t, languageDirection } from "./i18n";
-import { useLanguage } from "./language";
-import { date, External } from "./ui";
+import { ArrowUpRight, PenLine, Camera, CalendarDays } from "lucide-react";
+import { t } from "./i18n";
+import { ScrollRail } from "./scroll-rail";
+import { date } from "./ui";
+import { PolicyTimeline } from "./policy-timeline";
 import { policies } from "../../shared/policies";
 import { participation, policyEvents, reviewedAt } from "../../shared/campaign";
 
-export function ScrollRail({
-  title,
-  children,
-  id,
-}: {
-  title: string;
-  children: ReactNode;
-  id: string;
-}) {
-  const rtl = languageDirection(useLanguage()) === "rtl";
-  const ref = useRef<HTMLDivElement>(null);
-  const [edges, setEdges] = useState({ start: true, end: false });
-  useEffect(() => {
-    const el = ref.current!;
-    const update = () =>
-      setEdges({
-        start: Math.abs(el.scrollLeft) < 4,
-        end: Math.abs(el.scrollLeft) + el.clientWidth >= el.scrollWidth - 4,
-      });
-    const observer = new ResizeObserver(update);
-    observer.observe(el);
-    el.addEventListener("scroll", update, { passive: true });
-    update();
-    return () => {
-      observer.disconnect();
-      el.removeEventListener("scroll", update);
-    };
-  }, [children, rtl]);
-  const move = (direction: number) => {
-    const el = ref.current!;
-    el.scrollBy({
-      left: direction * (rtl ? -1 : 1) * el.clientWidth * 0.8,
-      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-        ? "auto"
-        : "smooth",
-    });
-  };
-  return (
-    <>
-      <div className="rail-controls">
-        <span>{t("Scroll to explore")}</span>
-        <button
-          type="button"
-          className="icon-button"
-          aria-label={t("Previous items")}
-          aria-controls={id}
-          disabled={edges.start}
-          onClick={() => move(-1)}
-        >
-          {rtl ? <ArrowRight size={18} /> : <ArrowLeft size={18} />}
-        </button>
-        <button
-          type="button"
-          className="icon-button"
-          aria-label={t("Next items")}
-          aria-controls={id}
-          disabled={edges.end}
-          onClick={() => move(1)}
-        >
-          {rtl ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}
-        </button>
-      </div>
-      <div
-        ref={ref}
-        id={id}
-        className="scroll-rail"
-        role="region"
-        aria-label={title}
-        tabIndex={0}
-      >
-        {children}
-      </div>
-    </>
-  );
-}
 export function GovernmentTimeline() {
   const [filter, setFilter] = useState("All");
   const [newest, setNewest] = useState(true);
@@ -135,21 +54,7 @@ export function GovernmentTimeline() {
           {newest ? t("Newest first") : t("Oldest first")} ↕
         </button>
       </div>
-      <ScrollRail
-        id="government-events"
-        title={t("Government policy timeline")}
-      >
-        {events.map((event) => (
-          <article className="event-card" key={event.date}>
-            <time dateTime={event.date}>{date(event.date)}</time>
-            <span className="event-kind">{t(event.kind)}</span>
-            <h3>{t(event.title)}</h3>
-            <p>{t(event.text)}</p>
-            <span className="event-status">{t(event.status)}</span>
-            <External href={event.source.url}>{t(event.source.label)}</External>
-          </article>
-        ))}
-      </ScrollRail>
+      <PolicyTimeline key={`${filter}-${newest}`} events={events} />
       <p className="method-note">
         {t(
           "Selected documented events, reviewed on the date above. A past pause is not necessarily in force today; follow each source for its scope and updates.",
