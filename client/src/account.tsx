@@ -309,6 +309,7 @@ function VisaEditor({
         <div className="form-grid">
           <Field label={t("Applicant name or nickname *")}>
             <input
+              dir="auto"
               required
               maxLength={100}
               value={value.applicantName}
@@ -629,6 +630,7 @@ function StoryEditor() {
         <div className="form-grid">
           <Field label={t("Story title *")}>
             <input
+              dir="auto"
               minLength={8}
               maxLength={120}
               required
@@ -656,6 +658,7 @@ function StoryEditor() {
           hint={t("Shown on your story card (20–240 characters).")}
         >
           <textarea
+            dir="auto"
             required
             minLength={20}
             maxLength={240}
@@ -666,6 +669,7 @@ function StoryEditor() {
         </Field>
         <Field label={t("Your story *")}>
           <textarea
+            dir="auto"
             required
             minLength={60}
             maxLength={12000}
@@ -708,6 +712,7 @@ function StoryEditor() {
         </fieldset>
         <Field label={t("Support you’re looking for (optional)")}>
           <textarea
+            dir="auto"
             maxLength={2000}
             value={story.support}
             onChange={(e) => set("support", e.target.value)}
@@ -1024,6 +1029,7 @@ export function Account() {
             <Field label={t("Name or nickname *")}>
               <div className="input-action">
                 <input
+                  dir="auto"
                   required
                   minLength={2}
                   maxLength={80}
@@ -1103,6 +1109,7 @@ export function Account() {
             </Field>
             <Field label={t("City *")}>
               <input
+                dir="auto"
                 required
                 minLength={2}
                 maxLength={100}

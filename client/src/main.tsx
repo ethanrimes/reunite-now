@@ -34,6 +34,7 @@ import { previewMode } from "./preview";
 import "./styles.css";
 import "./campaign.css";
 import "./refinements.css";
+import "./languages.css";
 function PreviewGate() {
   return (
     <div className="page-shell preview-gate">
@@ -87,7 +88,12 @@ function App() {
         </Link>
       </div>
       <header className="site-header">
-        <Link className="brand" to="/" aria-label={t("Reunite Now home")}>
+        <Link
+          dir="ltr"
+          className="brand"
+          to="/"
+          aria-label={t("Reunite Now home")}
+        >
           <span className="brand-mark">
             <BrandMark />
           </span>
@@ -191,7 +197,7 @@ function App() {
       </main>
       <footer>
         <div className="footer-top">
-          <Link className="brand" to="/">
+          <Link dir="ltr" className="brand" to="/">
             <span className="brand-mark">
               <BrandMark />
             </span>

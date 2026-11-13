@@ -1,0 +1,63 @@
+/* Use installed script-aware fonts without adding a third-party font request. */
+html:lang(ar) {
+  font-family: Tahoma, Arial, sans-serif;
+}
+html:lang(bn) {
+  font-family:
+    "Noto Sans Bengali", "Bangla Sangam MN", "Nirmala UI", sans-serif;
+}
+html:lang(zh-Hant) {
+  font-family: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+}
+:is(html:lang(ar), html:lang(bn), html:lang(zh-Hant)) :is(h1, h2, h3, h4, em) {
+  font-family: inherit;
+  font-style: normal;
+  letter-spacing: normal;
+  line-height: 1.4;
+}
+:is(html:lang(ar), html:lang(bn), html:lang(zh-Hant))
+  :is(.eyebrow, .event-kind, .petition-tag, .tag) {
+  letter-spacing: normal;
+}
+/* Keep the brand and technical input values in their original direction. */
+.brand {
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-family: "Instrument Sans", Arial, sans-serif;
+}
+input:is([type="email"], [type="url"], [type="date"]),
+code {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+html[dir="rtl"] .policy-context {
+  border-radius: 8px 0 0 8px;
+}
+/* Leaflet positions tiles and controls in physical pixel coordinates. */
+.leaflet-container {
+  direction: ltr;
+}
+html[dir="rtl"] .leaflet-tooltip {
+  direction: rtl;
+  text-align: start;
+  font-family: Tahoma, Arial, sans-serif;
+}
+html[dir="rtl"] :is(.map-help, .map-legend, .map-reset) {
+  direction: rtl;
+}
+.language-selector select {
+  min-width: 105px;
+}
+/* Long translated labels wrap within the page instead of clipping. */
+:is(html:lang(ar), html:lang(bn), html:lang(zh-Hant)) .site-header nav {
+  flex-wrap: wrap;
+  row-gap: 10px;
+}
+:is(html:lang(ar), html:lang(bn), html:lang(zh-Hant)) .button {
+  white-space: normal;
+}
+@media (max-width: 600px) {
+  :is(html:lang(ar), html:lang(bn)) .hero-copy h1 {
+    font-size: clamp(30px, 8vw, 38px);
+  }
+}

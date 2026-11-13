@@ -1,15 +1,36 @@
 import messages from "./locales/messages.json";
-export type Language = "en" | "es" | "pt" | "tl";
+import arabic from "./locales/ar.json";
+import bengali from "./locales/bn.json";
+import traditionalChinese from "./locales/zh-Hant.json";
+const additionalCatalogs: Record<string, Record<string, string>> = {
+  ar: arabic,
+  bn: bengali,
+  "zh-Hant": traditionalChinese,
+};
+export type Language = "en" | "es" | "pt" | "tl" | "ar" | "bn" | "zh-Hant";
 export const languageNames = {
   en: "English",
   es: "Español",
   pt: "Português",
   tl: "Tagalog",
+  ar: "العربية",
+  bn: "বাংলা",
+  "zh-Hant": "繁體中文",
 };
-export const localeNames = { en: "en-US", es: "es", pt: "pt-BR", tl: "fil-PH" };
+export const localeNames: Record<Language, string> = {
+  en: "en-US",
+  es: "es",
+  pt: "pt-BR",
+  tl: "fil-PH",
+  ar: "ar",
+  bn: "bn",
+  "zh-Hant": "zh-Hant",
+};
+export const languageDirection = (value: Language) =>
+  value === "ar" ? "rtl" : "ltr";
 export const storageKey = "reunite-now-language";
 export function validLanguage(value: unknown): value is Language {
-  return value === "en" || value === "es" || value === "pt" || value === "tl";
+  return typeof value === "string" && Object.hasOwn(languageNames, value);
 }
 function initialLanguage(): Language {
   if (typeof window === "undefined") return "en";
@@ -48,10 +69,13 @@ export function translate(
   values: Record<string, string | number> = {},
 ) {
   const normalized = text.replace(/\s+/g, " ").trim();
-  const entry = (
-    messages as Record<string, Record<Exclude<Language, "en">, string>>
-  )[normalized];
-  const translated = lang === "en" || !entry ? normalized : entry[lang];
+  const entry = (messages as Record<string, Partial<Record<Language, string>>>)[
+    normalized
+  ];
+  const translated =
+    lang === "en"
+      ? normalized
+      : (additionalCatalogs[lang]?.[normalized] ?? entry?.[lang] ?? normalized);
   const result = translated.replace(/\{(\w+)\}/g, (match, key) =>
     values[key] === undefined ? match : String(values[key]),
   );
@@ -65,7 +89,7 @@ export function t(text: string, values?: Record<string, string | number>) {
   if (language !== "en" && /^\w+(?:\.\w+)*: /.test(text)) {
     const catalog = messages as Record<
       string,
-      Record<Exclude<Language, "en">, string>
+      Partial<Record<Language, string>>
     >;
     const details = text
       .split("; ")
@@ -94,7 +118,8 @@ export function t(text: string, values?: Record<string, string | number>) {
 export const number = (value: number) => value.toLocaleString(getLocale());
 function updateDocument() {
   if (typeof document === "undefined") return;
-  document.documentElement.lang = language === "pt" ? "pt-BR" : language;
+  document.documentElement.lang = localeNames[language];
+  document.documentElement.dir = languageDirection(language);
   document.title = `Reunite Now — ${t("Visa processing needs to change.")}`;
 }
 updateDocument();

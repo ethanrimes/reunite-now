@@ -5,6 +5,9 @@ import ts from "typescript";
 import { policyEvents, participation } from "../shared/campaign";
 import { policies } from "../shared/policies";
 import messages from "../client/src/locales/messages.json";
+import arabic from "../client/src/locales/ar.json";
+import bengali from "../client/src/locales/bn.json";
+import traditionalChinese from "../client/src/locales/zh-Hant.json";
 import {
   translate,
   setLanguage,
@@ -12,15 +15,37 @@ import {
   getLocale,
   subscribeLanguage,
   validLanguage,
+  languageDirection,
+  languageNames,
 } from "../client/src/i18n";
 
-test("Spanish, Portuguese, and Tagalog catalogs cover interface strings and preserve placeholders", () => {
+test("All language catalogs cover interface strings and preserve placeholders", () => {
   const catalog = messages as Record<
     string,
     { es: string; pt: string; tl: string }
   >;
   const placeholders = (s: string) =>
     [...s.matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort();
+  const additions: Record<string, Record<string, string>> = {
+    ar: arabic,
+    bn: bengali,
+    "zh-Hant": traditionalChinese,
+  };
+  for (const [language, translations] of Object.entries(additions)) {
+    assert.deepEqual(
+      Object.keys(translations).sort(),
+      Object.keys(catalog).sort(),
+      `${language}: key coverage`,
+    );
+    for (const [english, translation] of Object.entries(translations)) {
+      assert.ok(translation.trim(), `${language}: ${english}`);
+      assert.deepEqual(
+        placeholders(translation),
+        placeholders(english),
+        `${language}: ${english}`,
+      );
+    }
+  }
   for (const [english, translations] of Object.entries(catalog)) {
     for (const language of ["es", "pt", "tl"] as const) {
       assert.ok(translations[language].trim(), `${language}: ${english}`);
@@ -110,13 +135,27 @@ test("translation interpolation, fallback, and locale selection", () => {
   assert.equal(getLanguage(), "tl");
   assert.equal(getLocale(), "fil-PH");
   assert.equal(changes, 3);
+  for (const lang of ["ar", "bn", "zh-Hant"] as const) {
+    assert.equal(validLanguage(lang), true);
+    setLanguage(lang);
+    assert.equal(getLanguage(), lang);
+    assert.equal(getLocale(), lang);
+    assert.notEqual(translate("Sign the petition", lang), "Sign the petition");
+    assert.equal(translate("My personal story", lang), "My personal story");
+    assert.ok(translate("{count} selected", lang, { count: 3 }).includes("3"));
+    assert.equal(languageDirection(lang), lang === "ar" ? "rtl" : "ltr");
+  }
+  assert.equal(validLanguage("zh"), false);
+  assert.equal(validLanguage("toString"), false);
+  assert.equal(Object.keys(languageNames).length, 7);
+  assert.equal(changes, 6);
   unsubscribe();
   setLanguage("en");
-  assert.equal(changes, 3);
+  assert.equal(changes, 6);
 });
 
 // These strings are passed dynamically to t(), so the JSX literal scan cannot see them.
-test("campaign events and participation copy have all three translations", () => {
+test("campaign events and participation copy are included in every catalog", () => {
   const keys = [
     ...policyEvents.flatMap((e) => [
       e.kind,
@@ -139,4 +178,32 @@ test("campaign events and participation copy have all three translations", () =>
   ];
   for (const key of keys)
     assert.ok(key in messages, `Missing translation: ${key}`);
+});
+
+// Direction must also reset when a reader returns from Arabic to another language.
+test("language changes update document language, direction and title", () => {
+  const original = Object.getOwnPropertyDescriptor(globalThis, "document");
+  const document = { documentElement: { lang: "", dir: "" }, title: "" };
+  Object.defineProperty(globalThis, "document", {
+    value: document,
+    configurable: true,
+  });
+  try {
+    for (const lang of ["ar", "bn", "zh-Hant", "en"] as const) {
+      setLanguage(lang);
+      assert.equal(
+        document.documentElement.lang,
+        lang === "en" ? "en-US" : lang,
+      );
+      assert.equal(document.documentElement.dir, lang === "ar" ? "rtl" : "ltr");
+      assert.equal(
+        document.title,
+        `Reunite Now — ${translate("Visa processing needs to change.", lang)}`,
+      );
+    }
+  } finally {
+    if (original) Object.defineProperty(globalThis, "document", original);
+    else Reflect.deleteProperty(globalThis, "document");
+    setLanguage("en");
+  }
 });

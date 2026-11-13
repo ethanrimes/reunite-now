@@ -575,17 +575,17 @@ export function Coverage() {
       <div className="mini-stats">
         <div>
           <Users />
-          <strong>{filtered.length}</strong>
+          <strong>{number(filtered.length)}</strong>
           <span>{t("signatures in this view")}</span>
         </div>
         <div>
           <MapPin />
           <strong>
-            {
+            {number(
               new Set(
                 filtered.map((p) => (kind === "world" ? p.country : p.state)),
-              ).size
-            }
+              ).size,
+            )}
           </strong>
           <span>
             {kind === "world"
@@ -596,7 +596,9 @@ export function Coverage() {
         <div>
           <Globe2 />
           <strong>
-            {matching.filter((p) => p.country !== "United States").length}
+            {number(
+              matching.filter((p) => p.country !== "United States").length,
+            )}
           </strong>
           <span>{t("supporters outside the US")}</span>
         </div>
@@ -710,7 +712,7 @@ export function Coverage() {
         >
           <h2>{t(selected.name)}</h2>
           <p>
-            {selected.count}{" "}
+            {number(selected.count)}{" "}
             {selected.count === 1 ? t("signature") : t("signatures")}{" "}
             {t("with the selected filters")}
           </p>
@@ -943,16 +945,16 @@ export function VisaData() {
         </span>
         <span>
           <strong>
-            {
+            {number(
               new Set(
                 cases.map((c) => c.nationality).filter((n): n is string => !!n),
-              ).size
-            }
+              ).size,
+            )}
           </strong>
           {t(" confirmed nationalities")}
         </span>
         <span>
-          <strong>{new Set(cases.map((c) => c.post)).size}</strong>
+          <strong>{number(new Set(cases.map((c) => c.post)).size)}</strong>
           {t(" consular posts")}
         </span>
       </div>
@@ -983,7 +985,7 @@ export function VisaData() {
                   return (
                     <tr key={v}>
                       <th>{v}</th>
-                      <td>{vc.length}</td>
+                      <td>{number(vc.length)}</td>
                       {metrics.map((m) => {
                         const s = summarize(vc, m);
                         return (
@@ -993,7 +995,7 @@ export function VisaData() {
                               : number(Math.round(s.median))}
                             <small>
                               {t("n = ")}
-                              {s.sample}
+                              {number(s.sample)}
                             </small>
                           </td>
                         );
@@ -1097,7 +1099,7 @@ export function VisaData() {
             {post || t("All posts")}
           </p>
           <div className="country-metrics">
-            <strong>{selected.count}</strong>
+            <strong>{number(selected.count)}</strong>
             <span>{t("reported applicants")}</span>
             <strong>
               {selected.median == null
@@ -1109,7 +1111,7 @@ export function VisaData() {
             <span>
               {t(metricLabels[metric])}
               {t(" · n=")}
-              {selected.sample || 0}
+              {number(selected.sample || 0)}
             </span>
           </div>
           <p className="method-note">

@@ -7,8 +7,8 @@
 .address-results {
   position: absolute;
   z-index: 1100;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   top: 100%;
   list-style: none;
   padding: 0.4rem;
@@ -22,7 +22,7 @@
 }
 .address-results button {
   width: 100%;
-  text-align: left;
+  text-align: start;
   border: 0;
   background: transparent;
   padding: 0.85rem;
@@ -63,7 +63,7 @@
   flex-wrap: wrap;
 }
 .policy-context {
-  border-left: 3px solid #9a7041;
+  border-inline-start: 3px solid #9a7041;
   background: #f7f3e9;
   padding: 1rem 1.2rem;
   margin: 1rem 0;
@@ -79,7 +79,8 @@
 }
 .reminder-help {
   position: relative;
-  margin: 0.3rem 0 1rem 2rem;
+  margin: 0.3rem 0 1rem;
+  margin-inline-start: 2rem;
   max-width: 620px;
 }
 .reminder-help summary {
@@ -168,7 +169,7 @@
   margin-top: 0.2rem;
 }
 .vote-row > div:last-child {
-  text-align: right;
+  text-align: end;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -221,7 +222,7 @@
   margin-bottom: 0.6rem;
 }
 .bill-record a {
-  margin-right: 1rem;
+  margin-inline-end: 1rem;
 }
 .bill-record p {
   overflow-wrap: anywhere;
@@ -249,10 +250,10 @@
     gap: 0.5rem;
   }
   .reminder-help {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
   .member-votes {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
   .rep-card {
     grid-template-columns: 1fr;
