@@ -81,11 +81,7 @@ export function Home() {
           </div>
           <div className="hero-footnote">
             <ShieldCheck size={16} />
-            <span>
-              {t(
-                "Sign with your name or a nickname. Your email stays private.",
-              )}
-            </span>
+            <span>{t("Sign with your name. Your email stays private.")}</span>
           </div>
         </div>
         <div className="hero-visual">
@@ -578,12 +574,12 @@ export function DataUse() {
         <h2>{t("What other people can see")}</h2>
         <p>
           {t(
-            "Your chosen name or nickname, legal-status category, country, city, US state and congressional district, optional political affiliation, involvement in the visa process, signature date, and last-confirmed date are public. The applicant names or nicknames, countries, visa categories, posts, relationships, dates, and event notes you enter are also public. Do not include passport numbers, receipt numbers, addresses, birth dates, or documents.",
+            "Your name, legal-status category, country, city, US state and congressional district, optional political affiliation, involvement in the visa process, signature date, and last-confirmed date are public. The applicant names or nicknames, countries, visa categories, posts, relationships, dates, and event notes you enter are also public. Do not include passport numbers, receipt numbers, addresses, birth dates, or documents.",
           )}
         </p>
         <p>
           {t(
-            "You must have permission to publish information about another person. Use a nickname if identification would be uncomfortable or unsafe. You must be at least 18 to create an account.",
+            "Sign the petition using your own name. You must have permission to publish information about another person. Visa applicants may use a nickname in their case details. You must be at least 18 to create an account.",
           )}
         </p>
         <h2>{t("What stays private")}</h2>

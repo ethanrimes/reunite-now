@@ -7,7 +7,6 @@ import {
   ShieldCheck,
   Plus,
   Trash2,
-  Shuffle,
   Check,
   Download,
   LogOut,
@@ -962,7 +961,7 @@ export function Account() {
                 "Edit your profile, update visa timelines, or confirm that nothing has changed.",
               )
             : t(
-                "Complete your public petition profile. You can use a nickname, and your email always stays private.",
+                "Complete your public petition profile using your own name. Your email always stays private.",
               )
         }
       >
@@ -1026,31 +1025,19 @@ export function Account() {
             <span className="tag">{t("Public after signing")}</span>
           </div>
           <div className="form-grid">
-            <Field label={t("Name or nickname *")}>
-              <div className="input-action">
-                <input
-                  dir="auto"
-                  required
-                  minLength={2}
-                  maxLength={80}
-                  autoComplete="nickname"
-                  value={form.name}
-                  onChange={(e) => set("name", e.target.value)}
-                />
-                <button
-                  type="button"
-                  aria-label={t("Generate a random nickname")}
-                  title={t("Generate a nickname")}
-                  onClick={() =>
-                    set(
-                      "name",
-                      `${["Hopeful", "Kind", "Brave", "Patient", "Steady"][Math.floor(Math.random() * 5)]} ${["River", "Cedar", "Robin", "Horizon", "Willow"][Math.floor(Math.random() * 5)]} ${Math.floor(Math.random() * 9000) + 1000}`,
-                    )
-                  }
-                >
-                  <Shuffle size={17} />
-                </button>
-              </div>
+            <Field
+              label={t("Your name *")}
+              hint={t("Enter your own name to sign the petition.")}
+            >
+              <input
+                dir="auto"
+                required
+                minLength={2}
+                maxLength={80}
+                autoComplete="name"
+                value={form.name}
+                onChange={(e) => set("name", e.target.value)}
+              />
             </Field>
             <Field
               label={t("Email · private")}
@@ -1289,7 +1276,7 @@ export function Account() {
                 {t("data use agreement")}
               </Link>{" "}
               {t(
-                "and understand that my name or nickname, profile, location, legal status, optional affiliation, and submitted visa timelines will be publicly accessible. My email stays private. *",
+                "and understand that my name, profile, location, legal status, optional affiliation, and submitted visa timelines will be publicly accessible. My email stays private. *",
               )}
             </span>
           </label>
