@@ -17,8 +17,9 @@ import {
 } from "lucide-react";
 import {
   filterSignatures,
-  mapGeometry,
-  pacificLongitude,
+  usMapBounds,
+  usInsets,
+  usMapProjector,
 } from "../../shared/coverage";
 import { Link } from "react-router-dom";
 import { useData } from "./api";
@@ -156,32 +157,33 @@ function GeoMap({
           [-56, -180],
           [80, 180],
         ]
-      : [
-          [-18, 140],
-          [73, 300],
-        ];
+      : (usMapBounds.map((point) => [...point]) as L.LatLngBoundsExpression);
+  const fitPadding: L.PointExpression = kind === "world" ? [35, 35] : [18, 35];
   const reset = () =>
-    map.current?.fitBounds(bounds, { padding: [35, 35], animate: false });
+    map.current?.fitBounds(bounds, { padding: fitPadding, animate: false });
   useEffect(() => {
     const m = L.map(root.current!, {
       zoomControl: false,
       scrollWheelZoom: false,
-      minZoom: 0.5,
+      crs: kind === "world" ? L.CRS.EPSG3857 : L.CRS.Simple,
+      minZoom: kind === "world" ? 0.5 : 1,
       maxZoom: 10,
-      zoomSnap: 0.25,
+      zoomSnap: kind === "world" ? 0.25 : 0,
       attributionControl: true,
     });
     map.current = m;
-    m.fitBounds(bounds, { padding: [35, 35] });
-    m.attributionControl.addAttribution(
-      '<a href="https://www.naturalearthdata.com/about/terms-of-use/" target="_blank" rel="noreferrer">Natural Earth</a>',
-    );
+    m.fitBounds(bounds, { padding: fitPadding });
+    if (kind === "world")
+      m.attributionControl.addAttribution(
+        '<a href="https://www.naturalearthdata.com/about/terms-of-use/" target="_blank" rel="noreferrer">Natural Earth</a>',
+      );
     if (kind !== "world")
       m.attributionControl.addAttribution(
         '<a href="https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html" target="_blank" rel="noreferrer">US Census · 119th Congress</a>',
       );
     const observer = new ResizeObserver(() => {
       m.invalidateSize();
+      m.fitBounds(bounds, { padding: fitPadding, animate: false });
       setCompact(root.current!.clientWidth < 600);
     });
     observer.observe(root.current!);
@@ -205,29 +207,45 @@ function GeoMap({
     const layers = L.layerGroup().addTo(m);
     setError("");
     setReady(false);
-    Promise.all([geography("world"), geography(kind)])
-      .then(([world, data]) => {
+    Promise.all([
+      geography(kind === "world" ? "world" : "states"),
+      geography(kind),
+    ])
+      .then(([base, data]) => {
         if (canceled) return;
-        // Self-hosted land polygons over a water-colored canvas; no external map tiles.
-        for (const offset of kind === "world" ? [0] : [-360, 0, 360]) {
-          L.geoJSON(
-            {
-              ...world,
-              features: world.features.map((f) => ({
-                ...f,
-                geometry: mapGeometry(f.geometry, (lng) => lng + offset),
-              })),
-            } as GeoJSON.FeatureCollection,
-            {
-              interactive: false,
-              style: {
-                fillColor: "#f5f3e9",
+        // Only the world view uses geographic context. US geometry is a compact diagram.
+        const project = kind === "world" ? null : usMapProjector(base);
+        if (project) {
+          for (const inset of usInsets) {
+            const [left, bottom, right, top] = inset.box;
+            L.rectangle(
+              [
+                [bottom, left],
+                [top, right],
+              ],
+              {
+                interactive: false,
+                color: "#c6cdd1",
+                weight: 1,
+                fillColor: "#f3f5f5",
                 fillOpacity: 1,
-                color: "#8da6a7",
-                weight: 0.65,
               },
-            },
-          ).addTo(layers);
+            ).addTo(layers);
+            const label = document.createElement("span");
+            label.textContent = compact
+              ? inset.short
+              : right - left < 10
+                ? inset.short
+                : t(inset.name);
+            L.tooltip({
+              permanent: true,
+              direction: "center",
+              className: "us-inset-label",
+            })
+              .setLatLng([top - 1, (left + right) / 2])
+              .setContent(label)
+              .addTo(layers);
+          }
         }
         const value = (r: Region) => (shade === "median" ? r.median : r.count);
         const max = Math.max(
@@ -294,10 +312,9 @@ function GeoMap({
           });
         const features = data.features.map((f) => ({
           ...f,
-          geometry:
-            kind === "world"
-              ? f.geometry
-              : mapGeometry(f.geometry, pacificLongitude),
+          geometry: project
+            ? project(f.geometry, String(f.properties?.GEOID).slice(0, 2))
+            : f.geometry,
         }));
         const layer = L.geoJSON(
           { ...data, features } as GeoJSON.FeatureCollection,
@@ -324,43 +341,6 @@ function GeoMap({
             },
           },
         ).addTo(layers);
-        if (kind !== "world") {
-          const places: [string, number, number, number, number][] = [
-            ["02", 64, -153, 8, -6],
-            ["15", 20.7, -157, 8, 0],
-            ["60", -14.3, -170.7, 8, 0],
-            ["66", 13.4, 144.8, 8, 16],
-            ["69", 17, 145.6, 8, -18],
-            ["72", 18.2, -66.4, -88, -18],
-            ["78", 18.3, -64.8, -70, 16],
-          ];
-          for (const [fips, lat, lng, dx, dy] of places) {
-            if (kind === "districts" && ["02", "15"].includes(fips)) continue;
-            const key = kind === "states" ? fips : `${fips}98`;
-            const r = regions[key];
-            if (!r) continue;
-            const label = document.createElement("span");
-            label.textContent = `${compact ? states.find((s) => s[0] === fips)?.[1] || t(r.name) : t(r.name)} · ${number(r.count)}`;
-            const marker = L.circleMarker([lat, pacificLongitude(lng)], {
-              radius: 5,
-              color: "#24485e",
-              weight: 1.5,
-              fillColor: fill(r),
-              fillOpacity: 1,
-            });
-            marker.bindTooltip(label, {
-              permanent: true,
-              interactive: true,
-              direction: "right",
-              offset: [dx, dy],
-              className: "territory-label",
-            });
-            marker.on("click", () => onSelect(r));
-            marker.getTooltip()?.on("click", () => onSelect(r));
-            accessible(marker, r);
-            marker.addTo(layers);
-          }
-        }
         setReady(true);
       })
       .catch((e) => {
@@ -372,7 +352,7 @@ function GeoMap({
     };
   }, [kind, regions, shade, measure, onSelect, language, compact]);
   return (
-    <div className="map-wrap">
+    <div className={`map-wrap ${kind === "world" ? "" : "us-diagram"}`}>
       <div
         ref={root}
         className="geo-map"
@@ -684,6 +664,13 @@ export function Coverage() {
         <GeoMap kind={kind} regions={regions} onSelect={setSelected} />
       </MapPanel>
       {repError && kind !== "world" && <p role="alert">{t(repError)}</p>}
+      {kind !== "world" && (
+        <p className="method-note">
+          {t(
+            "Alaska, Hawaii, and US territories are repositioned and resized for readability.",
+          )}
+        </p>
+      )}
       <div className="map-sources">
         <External
           href={

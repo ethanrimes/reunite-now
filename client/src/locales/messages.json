@@ -5303,5 +5303,10 @@
     "es": "Proceso de visa de visitante",
     "pt": "Processo de visto de visitante",
     "tl": "Proseso ng visitor visa"
+  },
+  "Alaska, Hawaii, and US territories are repositioned and resized for readability.": {
+    "es": "Alaska, Hawái y los territorios de EE. UU. se reubican y cambian de tamaño para facilitar la lectura.",
+    "pt": "Alasca, Havaí e os territórios dos EUA são reposicionados e redimensionados para facilitar a leitura.",
+    "tl": "Inililipat at binabago ang laki ng Alaska, Hawaii, at mga teritoryo ng U.S. para mas madaling mabasa."
   }
 }
