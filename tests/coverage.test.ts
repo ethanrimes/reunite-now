@@ -1,9 +1,11 @@
 import test from "node:test";
+import { readFileSync } from "node:fs";
 import assert from "node:assert/strict";
 import {
   filterSignatures,
-  mapGeometry,
-  pacificLongitude,
+  usMapBounds,
+  usInsets,
+  usMapProjector,
 } from "../shared/coverage";
 import { isPreviewPath } from "../client/src/preview";
 import type { PublicProfile } from "../shared/schema";
@@ -58,36 +60,58 @@ test("signature filters intersect all dimensions and retain unspecified parties"
   );
   assert.equal(profiles.length, 4);
 });
-test("Pacific view keeps dateline geometry connected without modifying source coordinates", () => {
-  const shape: GeoJSON.Geometry = {
-    type: "GeometryCollection",
-    geometries: [
-      {
-        type: "Polygon",
-        coordinates: [
-          [
-            [179, 52],
-            [-179, 52],
-            [-179, 53],
-            [179, 52],
-          ],
-        ],
-      },
+test("US inset layout keeps every state and district inside its box without changing source data", () => {
+  const states = JSON.parse(
+    readFileSync("public/data/states.json", "utf8"),
+  ) as GeoJSON.FeatureCollection;
+  const districts = JSON.parse(
+    readFileSync("public/data/districts.json", "utf8"),
+  ) as GeoJSON.FeatureCollection;
+  const project = usMapProjector(states);
+  const source = JSON.stringify([states, districts]);
+  function positions(g: GeoJSON.Geometry): number[][] {
+    if (g.type === "GeometryCollection") return g.geometries.flatMap(positions);
+    const walk = (c: any): number[][] =>
+      typeof c[0] === "number" ? [c] : c.flatMap(walk);
+    return walk(g.coordinates);
+  }
+  for (const feature of [...states.features, ...districts.features]) {
+    const code = String(feature.properties!.GEOID).slice(0, 2);
+    const inset = usInsets.find((i) => i.state === code);
+    const [west, south, east, north] = inset?.box || [
+      usMapBounds[0][1],
+      usMapBounds[0][0],
+      usMapBounds[1][1],
+      usMapBounds[1][0],
+    ];
+    const transformed = positions(project(feature.geometry, code));
+    assert.ok(transformed.length > 0);
+    for (const [x, y] of transformed) {
+      assert.ok(Number.isFinite(x) && Number.isFinite(y));
+      assert.ok(
+        x >= west && x <= east && y >= south && y <= north,
+        `Region ${feature.properties!.GEOID} escaped its display bounds: ${x}, ${y}`,
+      );
+    }
+  }
+  assert.equal(JSON.stringify([states, districts]), source);
+  const alaska: GeoJSON.LineString = {
+    type: "LineString",
+    coordinates: [
+      [179, 52],
+      [-179, 52],
     ],
   };
-  const snapshot = JSON.stringify(shape);
-  const shifted = mapGeometry(
-    shape,
-    pacificLongitude,
-  ) as GeoJSON.GeometryCollection;
-  const ring = (shifted.geometries[0] as GeoJSON.Polygon).coordinates[0];
-  assert.deepEqual(
-    ring.map((p) => p[0]),
-    [179, 181, 181, 179],
+  const acrossDateline = positions(project(alaska, "02"));
+  assert.ok(
+    Math.abs(acrossDateline[0][0] - acrossDateline[1][0]) < 2,
+    "Alaska stays connected across the dateline",
   );
-  assert.equal(JSON.stringify(shape), snapshot);
-  assert.equal(pacificLongitude(-66), 294);
-  assert.equal(pacificLongitude(145), 145);
+  const pr = usInsets.find((i) => i.state === "72")!;
+  assert.ok(
+    pr.box[0] > 30 && pr.box[3] < 0,
+    "Puerto Rico occupies a southeast inset",
+  );
 });
 test("sample routes use a distinct prefix", () => {
   for (const path of ["/demo", "/demo/", "/demo/coverage", "/demo/account"])

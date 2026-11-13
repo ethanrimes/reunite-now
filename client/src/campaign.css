@@ -607,3 +607,55 @@
     font-size: 11px;
   }
 }
+
+/* The US coverage view is a diagram, not a world basemap. */
+.map-wrap.us-diagram .geo-map {
+  background: #fbfcfa;
+}
+.leaflet-tooltip.us-inset-label {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  color: #52616b;
+  font:
+    600 11px/1.4 "Instrument Sans",
+    Arial,
+    sans-serif;
+}
+.leaflet-tooltip.us-inset-label::before {
+  display: none;
+}
+.us-diagram {
+  display: flex;
+  flex-direction: column;
+}
+.us-diagram .map-legend {
+  position: static;
+  justify-content: flex-end;
+  border: 0;
+  border-top: 1px solid #e3e7e7;
+  border-radius: 0;
+  padding: 9px 16px;
+  background: #fff;
+  flex-shrink: 0;
+}
+.map-fullscreen .us-diagram .geo-map {
+  flex: 1;
+  height: auto;
+}
+@media (max-width: 650px) {
+  .us-diagram .geo-map {
+    height: 320px;
+  }
+}
+.us-diagram .map-reset {
+  top: 10px;
+  right: 10px;
+  left: auto;
+}
+.us-diagram .map-help {
+  top: 12px;
+  left: 55px;
+  max-width: calc(100% - 120px);
+}
