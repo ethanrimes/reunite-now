@@ -61,3 +61,13 @@ html[dir="rtl"] :is(.map-help, .map-legend, .map-reset) {
     font-size: clamp(30px, 8vw, 38px);
   }
 }
+/* Two occupied columns avoid reserving an extra grid gap on narrow phones. */
+@media (max-width: 420px) {
+  .site-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 12px;
+  }
+  .site-header .language-selector {
+    grid-column: 2;
+  }
+}
