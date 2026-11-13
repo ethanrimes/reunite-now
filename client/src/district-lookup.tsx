@@ -329,7 +329,7 @@ export function DistrictLookup({
       </div>
       <div aria-live="polite">
         {message && <Notice>{t(message)}</Notice>}
-        {confirmed && <p className="small-copy">{confirmed}</p>}
+        {confirmed && !query && <p className="small-copy">{confirmed}</p>}
       </div>
       {match && (
         <div className="district-result">
