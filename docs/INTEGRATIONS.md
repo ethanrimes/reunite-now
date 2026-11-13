@@ -4,27 +4,27 @@ This guide is for the existing Reunite Now deployment. The application, database
 
 ## New-domain migration
 
-The move to `visatransparencypetition.org` is being prepared. See [the migration runbook](DOMAIN-MIGRATION.md) for verified infrastructure, pending Google/DNS steps, activation, and rollback. The current settings below remain in effect until cutover.
+The canonical site and sender use `visatransparencypetition.org`. See [the migration runbook](DOMAIN-MIGRATION.md) for verified infrastructure, remaining end-to-end tests, and rollback.
 
 ## What is already set up
 
 | Integration | Current state | Remaining work |
 | --- | --- | --- |
-| Website and database | Azure App Service with root and www HTTPS bindings for visatransparency.org | Monitor health and certificate renewal |
-| Email sign-in | Custom sender verified; test recipient confirmed inbox receipt and a working sign-in link on the new domain | Monitor delivery as usage grows |
+| Website and database | Azure App Service with root and www HTTPS bindings for visatransparencypetition.org | Monitor health and certificate renewal |
+| Email sign-in | New sender verified and configured | Test delivery and sign-in on the new domain |
 | Google sign-in | Client credentials saved in Azure; authorization redirect verified | Complete a browser sign-in test |
 | Monthly reminders | Daily Azure Logic App enabled at 16:00 UTC; endpoint uses the custom domain | Test delivery to an eligible test account, then verify an unattended run |
-| Branded sender address | noreply@visatransparency.org; linked to Azure Communication Services; test delivery confirmed | Maintain DNS authentication records |
+| Branded sender address | noreply@visatransparencypetition.org; linked to Azure Communication Services | Test delivery and maintain DNS authentication records |
 
 These are the deployment handoff results, not a promise that credentials or DNS will remain unchanged. Configuration flags alone do not establish successful delivery or sign-in.
 
-## Current domain: visatransparency.org
+## Current domain: visatransparencypetition.org
 
-The purchased domain uses Cloudflare DNS. The root and `www` hostnames are bound to App Service with managed SNI certificates. The canonical application URL is `https://visatransparency.org`; browser GET/HEAD requests on alternate hostnames redirect there, while the health probe remains available directly. API writes retain their origin checks.
+The canonical origin is `https://visatransparencypetition.org`. Root and `www` use managed SNI certificates, and browser requests on the previous domain and other alternate hosts redirect to the canonical origin. The new sender `noreply@visatransparencypetition.org` has verified Domain, SPF, DKIM, and DKIM2 records and is linked to Azure Communication Services. The user confirmed that the Google callback was saved. Complete a browser Google sign-in and an email delivery test; neither was exercised during this migration. See [the migration runbook](DOMAIN-MIGRATION.md) for the new domain DNS and rollback.
 
-The customer-managed email domain has verified Domain, SPF, DKIM, and DKIM2 records, engagement tracking disabled, and the `noreply` sender with display name “Reunite Now.” It is linked alongside the original Azure-managed domain. App Service uses `EMAIL_FROM=noreply@visatransparency.org`. The daily reminder workflow points to the new domain. Google credentials are configured and the new callback is registered; finish a browser sign-in and Google's public branding/verification steps separately.
+### Previous domain recovery instructions
 
-The following DNS and activation instructions are retained for recovery and future changes. The records have already been imported. A single sign-in test was accepted by Azure, and the designated test recipient confirmed inbox receipt and successful login on the custom domain. Google reached its sign-in screen for the custom domain; completing a Google account login remains a separate check. An unattended reminder delivery has not been verified.
+The following records and sender describe `visatransparency.org` and are retained for rollback. They are not the current production sender.
 
 ### Add the DNS records in Cloudflare
 
@@ -44,8 +44,8 @@ After DNS resolves:
 2. Initiate Email Communication Service verification for Domain, SPF, DKIM, and DKIM2, and inspect the resulting statuses. The zone also adds an initial DMARC `p=none` policy; this is not enforcement or delivery monitoring.
 3. Link the verified custom email domain to `reunite-now-communication`, preserving its existing linked Azure-managed domain. The custom sender is `noreply@visatransparency.org`; sending does not create an inbox at that address.
 4. The application now redirects alternate hostnames to the configured `APP_URL` in production. Confirm it preserves deep links and query strings; `/api/health` remains exempt for Azure probes, and writes keep their normal origin checks.
-5. Once HTTPS and the sender are verified, run `python3 scripts/activate-domain.py`. It gates activation on trusted HTTPS/database health, verified sender records, the domain link, and existing credentials; changes only `APP_URL` and `EMAIL_FROM`; and updates the reminder workflow. It sends no email. App Service restarts after the settings change.
-6. Wait for the restart, then run `python3 scripts/verify-live.py` and verify browser account saves and email-link destinations. If `APP_URL` or `CRON_SECRET` changes outside the activation script, rerun `python3 scripts/configure-reminders.py`. Sending a delivery test requires an explicitly identified test inbox.
+5. Once HTTPS and the sender are verified, run `python3 scripts/activate-domain.py --domain visatransparency.org`. It gates activation on trusted HTTPS/database health, verified sender records, the domain link, and existing credentials; changes only `APP_URL` and `EMAIL_FROM`; and updates the reminder workflow. It sends no email. App Service restarts after the settings change.
+6. Wait for the restart, then run `python3 scripts/verify-live.py --base-url https://visatransparency.org` and verify browser account saves and email-link destinations. If `APP_URL` or `CRON_SECRET` changes outside the activation script, rerun `python3 scripts/configure-reminders.py`. Sending a delivery test requires an explicitly identified test inbox.
 
 `infra/custom-email.bicep` reproduces the custom email domain and sender without changing Communication Service links or application settings. It does not verify DNS, issue website certificates, or activate the sender. `infra/email.bicep` and `scripts/configure-email.py` describe the original Azure-managed sender and must not be used to overwrite the custom configuration after cutover.
 
@@ -55,7 +55,7 @@ Open [Azure Portal](https://portal.azure.com), select subscription `9a04b64b-af1
 
 | Setting | Value or purpose |
 | --- | --- |
-| `APP_URL` | Currently `https://visatransparency.org`; use the canonical HTTPS origin with no trailing slash |
+| `APP_URL` | Currently `https://visatransparencypetition.org`; use the canonical HTTPS origin with no trailing slash |
 | `GOOGLE_CLIENT_ID` | OAuth web client ID from Google |
 | `GOOGLE_CLIENT_SECRET` | Matching Google client secret; server only |
 | `AZURE_COMMUNICATION_CONNECTION_STRING` | Already configured; keep the existing value |
@@ -75,7 +75,7 @@ Google credentials are already configured. These steps describe recreating or up
 4. In **Clients**, create a **Web application** OAuth client named “Reunite Now production.” Add this exact **Authorized redirect URI**:
 
    ```text
-   https://visatransparency.org/api/auth/google/callback
+   https://visatransparencypetition.org/api/auth/google/callback
    ```
 
    For your future domain, add `https://YOUR-DOMAIN/api/auth/google/callback`. Replace `YOUR-DOMAIN` with the exact hostname you will use, including `www` if applicable. This application uses server redirects, so it does not need Authorized JavaScript origins. See [Google's OAuth client and redirect setup](https://developers.google.com/identity/openid-connect/openid-connect).
@@ -119,10 +119,10 @@ To roll back a hostname cutover, restore the old `APP_URL`, retain its Google ca
 Email already uses **reunite-now-communication**, linked to **reunite-now-email**. The configured sender is:
 
 ```text
-noreply@visatransparency.org
+noreply@visatransparencypetition.org
 ```
 
-From `/login` on `https://visatransparency.org`, request a link to an inbox you control. Check inbox and spam, verify the sender and destination hostname, and open the link within 15 minutes. Confirm that it signs you in and that reusing the same link fails. The production response must not expose a development preview link. This test creates an account, but does not sign the petition until you submit the required registration form.
+From `/login` on `https://visatransparencypetition.org`, request a link to an inbox you control. Check inbox and spam, verify the sender and destination hostname, and open the link within 15 minutes. Confirm that it signs you in and that reusing the same link fails. The production response must not expose a development preview link. This test creates an account, but does not sign the petition until you submit the required registration form.
 
 ### Optional: send from your own domain
 
@@ -174,7 +174,7 @@ Run the read-only check for the canonical hostname:
 python3 scripts/verify-live.py
 ```
 
-That script targets `https://visatransparency.org` and also verifies the Google authorization redirect and callback hostname. After a future domain cutover, update the script base URL and test browser login and saving on the new canonical hostname. Expected flags are `devAuth: false`, `emailAuth: true`, `reminders: true`, and `googleAuth: true` once Google is configured. These flags indicate settings are present, not provider validation.
+That script targets `https://visatransparencypetition.org` and also verifies the Google authorization redirect and callback hostname. After a future domain cutover, update the script base URL and test browser login and saving on the new canonical hostname. Expected flags are `devAuth: false`, `emailAuth: true`, `reminders: true`, and `googleAuth: true` once Google is configured. These flags indicate settings are present, not provider validation.
 
 | Symptom | Check |
 | --- | --- |

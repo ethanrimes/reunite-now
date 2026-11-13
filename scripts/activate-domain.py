@@ -14,7 +14,7 @@ SUB = '9a04b64b-af19-4519-be50-56ec2acbd855'
 RG = 'reunite-now-rg'
 APP = 'reunite-now-9a04'
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('--domain', default='visatransparency.org', help='Canonical website hostname; register its Google callback before activation.')
+parser.add_argument('--domain', default='visatransparencypetition.org', help='Canonical website hostname; register its Google callback before activation.')
 parser.add_argument('--sender-domain', help='Verified Azure sender domain; defaults to the website domain.')
 parser.add_argument('--check-only', action='store_true', help='Verify HTTPS and sender prerequisites without changing settings.')
 args = parser.parse_args()

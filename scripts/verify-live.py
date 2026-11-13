@@ -8,7 +8,7 @@ import urllib.parse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--check-reminders', action='store_true')
-parser.add_argument('--base-url', default='https://visatransparency.org')
+parser.add_argument('--base-url', default='https://visatransparencypetition.org')
 args = parser.parse_args()
 base = args.base_url.rstrip('/')
 if urllib.parse.urlparse(base).scheme != 'https':
