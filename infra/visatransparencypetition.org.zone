@@ -1,0 +1,13 @@
+; Reunite Now: visatransparencypetition.org
+; Import into Cloudflare. Keep website and DKIM records DNS-only.
+$ORIGIN visatransparencypetition.org.
+$TTL 300
+@ 300 IN A 52.162.107.35 ; cf_tags=cf-proxied:false
+www 300 IN CNAME reunite-now-9a04.azurewebsites.net. ; cf_tags=cf-proxied:false
+asuid 300 IN TXT "085484C10CBEF3338B9FA8E25F186B0A3C80D79FF1233F397ADAD96C10F33D31"
+asuid.www 300 IN TXT "085484C10CBEF3338B9FA8E25F186B0A3C80D79FF1233F397ADAD96C10F33D31"
+@ 300 IN TXT "ms-domain-verification=f057b370-6654-4b52-8f62-ff1d582cb5d8"
+@ 300 IN TXT "v=spf1 include:spf.protection.outlook.com -all"
+selector1-azurecomm-prod-net._domainkey 300 IN CNAME selector1-azurecomm-prod-net._domainkey.azurecomm.net. ; cf_tags=cf-proxied:false
+selector2-azurecomm-prod-net._domainkey 300 IN CNAME selector2-azurecomm-prod-net._domainkey.azurecomm.net. ; cf_tags=cf-proxied:false
+_dmarc 300 IN TXT "v=DMARC1; p=none"

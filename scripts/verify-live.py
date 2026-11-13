@@ -8,8 +8,11 @@ import urllib.parse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--check-reminders', action='store_true')
+parser.add_argument('--base-url', default='https://visatransparency.org')
 args = parser.parse_args()
-base = 'https://visatransparency.org'
+base = args.base_url.rstrip('/')
+if urllib.parse.urlparse(base).scheme != 'https':
+    raise SystemExit('Use a trusted HTTPS URL for production checks.')
 
 def request(path, secret=None):
     req = urllib.request.Request(base + path)

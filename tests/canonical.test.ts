@@ -9,7 +9,7 @@ import { canonicalHost } from "../server/canonical";
 test("canonical redirects preserve browser routes, protect the destination, and leave probes and writes alone", async () => {
   const app = express();
   app.set("trust proxy", 1);
-  app.use(canonicalHost("https://visatransparency.org"));
+  app.use(canonicalHost("https://visatransparencypetition.org"));
   app.use((_req, res) => res.sendStatus(204));
   const server = app.listen(0, "127.0.0.1");
   await once(server, "listening");
@@ -51,12 +51,21 @@ test("canonical redirects preserve browser routes, protect the destination, and 
   try {
     let result = await request(
       "/login?intent=sign",
-      "www.visatransparency.org",
+      "www.visatransparencypetition.org",
     );
     assert.equal(result.status, 308);
+    for (const legacy of ["visatransparency.org", "www.visatransparency.org"]) {
+      const redirected = await request("/visa-data?view=map", legacy);
+      assert.equal(redirected.status, 308);
+      assert.equal(
+        redirected.headers.get("location"),
+        "https://visatransparencypetition.org/visa-data?view=map",
+      );
+    }
+
     assert.equal(
       result.headers.get("location"),
-      "https://visatransparency.org/login?intent=sign",
+      "https://visatransparencypetition.org/login?intent=sign",
     );
     result = await request(
       "/api/auth/google",
@@ -64,21 +73,21 @@ test("canonical redirects preserve browser routes, protect the destination, and 
     );
     assert.equal(
       result.headers.get("location"),
-      "https://visatransparency.org/api/auth/google",
+      "https://visatransparencypetition.org/api/auth/google",
     );
     result = await request(
       "//untrusted.example/path",
-      "www.visatransparency.org",
+      "www.visatransparencypetition.org",
     );
     assert.equal(
       new URL(result.headers.get("location")!).hostname,
-      "visatransparency.org",
+      "visatransparencypetition.org",
     );
     result = await request(
       "/account",
-      "www.visatransparency.org",
+      "www.visatransparencypetition.org",
       "GET",
-      "visatransparency.org",
+      "visatransparencypetition.org",
     );
     assert.equal(
       result.status,
@@ -86,7 +95,7 @@ test("canonical redirects preserve browser routes, protect the destination, and 
       "forwarded host cannot suppress canonical redirects",
     );
     assert.equal(
-      (await request("/coverage", "VISATRANSPARENCY.ORG")).status,
+      (await request("/coverage", "VISATRANSPARENCYPETITION.ORG")).status,
       204,
     );
     assert.equal((await request("/api/health", "localhost")).status, 204);
@@ -95,12 +104,18 @@ test("canonical redirects preserve browser routes, protect the destination, and 
       204,
     );
     assert.equal(
-      (await request("/api/me/profile", "www.visatransparency.org", "PUT"))
-        .status,
+      (
+        await request(
+          "/api/me/profile",
+          "www.visatransparencypetition.org",
+          "PUT",
+        )
+      ).status,
       204,
     );
     assert.equal(
-      (await request("/about", "www.visatransparency.org", "HEAD")).status,
+      (await request("/about", "www.visatransparencypetition.org", "HEAD"))
+        .status,
       308,
     );
   } finally {
