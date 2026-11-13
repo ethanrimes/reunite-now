@@ -1060,5 +1060,7 @@
   "K-1 visa process": "إجراءات تأشيرة K-1",
   "Diversity visa process": "إجراءات تأشيرة التنوع",
   "Visitor visa process": "إجراءات تأشيرة الزوار",
-  "Alaska, Hawaii, and US territories are repositioned and resized for readability.": "أُعيد تموضع ألاسكا وهاواي والأقاليم الأمريكية وتغيير أحجامها لتسهيل القراءة."
+  "Alaska, Hawaii, and US territories are repositioned and resized for readability.": "أُعيد تموضع ألاسكا وهاواي والأقاليم الأمريكية وتغيير أحجامها لتسهيل القراءة.",
+  "Hover, tap, or focus on an event to read what changed.": "مرّر المؤشر فوق حدث أو اضغط عليه أو ركّز عليه لمعرفة ما تغيّر.",
+  "Close event details": "إغلاق تفاصيل الحدث"
 }

@@ -1060,5 +1060,7 @@
   "confirmed nationalities": "নিশ্চিত করা আবেদনকারীর জাতীয়তা",
   "K-1 visa process": "K-1 ভিসা প্রক্রিয়া",
   "The map groups cases by confirmed applicant nationality. Older entries without a confirmed nationality remain in the table but are excluded from the map. The post filter selects the processing embassy or consulate. Medians describe reported durations, not predictions; each metric shows its own sample size.": "মানচিত্রে নিশ্চিত করা আবেদনকারীর জাতীয়তা অনুযায়ী মামলা সাজানো হয়েছে। জাতীয়তা নিশ্চিত করা হয়নি—এমন পুরোনো তথ্য সারণিতে থাকবে, তবে মানচিত্রে দেখানো হবে না। পোস্ট ফিল্টারে প্রক্রিয়াকরণকারী দূতাবাস বা কনস্যুলেট বেছে নিন। মধ্যমা রিপোর্ট করা সময়ের হিসাব, পূর্বাভাস নয়; প্রতিটি পরিমাপের নমুনার আকার আলাদা করে দেখানো হয়।",
-  "Alaska, Hawaii, and US territories are repositioned and resized for readability.": "সহজে পড়ার সুবিধার জন্য আলাস্কা, হাওয়াই ও যুক্তরাষ্ট্রের অঞ্চলগুলোর অবস্থান ও আকার পরিবর্তন করা হয়েছে।"
+  "Alaska, Hawaii, and US territories are repositioned and resized for readability.": "সহজে পড়ার সুবিধার জন্য আলাস্কা, হাওয়াই ও যুক্তরাষ্ট্রের অঞ্চলগুলোর অবস্থান ও আকার পরিবর্তন করা হয়েছে।",
+  "Hover, tap, or focus on an event to read what changed.": "কী পরিবর্তন হয়েছে তা দেখতে কোনো ইভেন্টে হোভার করুন, ট্যাপ করুন বা ফোকাস করুন।",
+  "Close event details": "ইভেন্টের বিবরণ বন্ধ করুন"
 }

@@ -5308,5 +5308,15 @@
     "es": "Alaska, Hawái y los territorios de EE. UU. se reubican y cambian de tamaño para facilitar la lectura.",
     "pt": "Alasca, Havaí e os territórios dos EUA são reposicionados e redimensionados para facilitar a leitura.",
     "tl": "Inililipat at binabago ang laki ng Alaska, Hawaii, at mga teritoryo ng U.S. para mas madaling mabasa."
+  },
+  "Hover, tap, or focus on an event to read what changed.": {
+    "es": "Pasa el cursor, toca o enfoca un evento para ver qué cambió.",
+    "pt": "Passe o cursor, toque ou foque em um evento para ver o que mudou.",
+    "tl": "I-hover, i-tap, o i-focus ang isang event para makita kung ano ang nagbago."
+  },
+  "Close event details": {
+    "es": "Cerrar detalles del evento",
+    "pt": "Fechar detalhes do evento",
+    "tl": "Isara ang mga detalye ng event"
   }
 }
