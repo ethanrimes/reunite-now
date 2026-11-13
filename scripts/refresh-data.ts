@@ -36,7 +36,7 @@ await geo(
   "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/4",
 );
 const worldUrl =
-  "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson";
+  "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_countries.geojson";
 const world = await (await get(worldUrl)).json();
 await writeFile("public/data/world.json", JSON.stringify(world));
 const countryNames = new Set<string>(
@@ -142,6 +142,7 @@ await writeFile(
       districts:
         "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/4",
       world: worldUrl,
+      worldRetrievedAt: now,
       representatives: legislatorsUrl,
       note: "Boundaries represent the 119th Congress, not districts for the incoming 120th Congress. Natural Earth boundaries are for visualization, not a position on sovereignty.",
     },

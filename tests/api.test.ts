@@ -211,3 +211,23 @@ test("homepage and deep-link HTML revalidate after releases", async () => {
     assert.equal(response.headers.get("cache-control"), "no-cache");
   }
 });
+
+test("sample API is isolated, read-only, and excludes private account fields", async () => {
+  const r = await request("/api/demo");
+  assert.equal(r.status, 200);
+  const data = await r.json();
+  assert.equal(data.sample, true);
+  assert.equal(
+    (await request("/demo/coverage")).headers.get("X-Robots-Tag"),
+    "noindex, nofollow",
+  );
+  assert.equal(data.profiles.length, 840);
+  assert.equal(data.stories.length, 8);
+  for (const p of data.profiles) {
+    assert.ok(p.id.startsWith("demo-"));
+    assert.equal("email" in p, false);
+    assert.equal("reminderEmails" in p, false);
+    assert.equal("reminders" in p, false);
+  }
+  assert.equal((await request("/api/demo", "POST", {})).status, 404);
+});

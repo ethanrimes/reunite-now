@@ -18,23 +18,24 @@ import {
 } from "lucide-react";
 import { useData } from "./api";
 import { PageIntro, External, Modal, Timeline, Empty, date } from "./ui";
+import { GovernmentTimeline, Participate, SupportActions } from "./campaign";
 import { policies } from "../../shared/policies";
 import type { PublicStory } from "../../shared/schema";
 const demands = [
   {
     icon: Eye,
-    title: "Publish the full wait.",
-    text: "Publish complete, understandable visa processing times by consular post and visa category. Explain the delays, including the time after an interview.",
+    title: "Publish wait times by post and visa category.",
+    text: "Publish monthly figures for each stage, including the time after an interview, with sample sizes and clear definitions so applicants can see where their case stands.",
   },
   {
     icon: ChartNoAxesCombined,
-    title: "Explain what’s causing delays.",
-    text: "Give Congress and the public clear reporting on staffing, technology, and the effect of vetting policies. Set measurable goals and report progress.",
+    title: "Explain the delays—and the plan to fix them.",
+    text: "Identify the main causes of delays. For training, vetting changes or processing pauses, publish the scope, expected end date, recovery plan and progress against it.",
   },
   {
     icon: Users,
-    title: "Staff the system properly.",
-    text: "Build and fund a practical staffing and modernization plan so consular teams can move cases forward and families can plan their lives.",
+    title: "Report staffing gaps and fund a plan to close them.",
+    text: "Report staffing needs and actual capacity at each post. Where staff, technology or funding fall short, give Congress a funded plan, deadlines and regular progress reports.",
   },
 ];
 export function Home() {
@@ -46,13 +47,22 @@ export function Home() {
     <>
       <section className="hero">
         <div className="hero-copy">
-          <div className="eyebrow">{t(" VISA PROCESSING NEEDS TO CHANGE")}</div>
+          <div className="petition-tag">
+            {t("A petition to Congress and the Department of State")}
+          </div>
           <h1>
-            {t("Visa delays")} {t("keep families")} {t("apart.")}
+            {t("Demand transparency.")}
+            <br />
+            {t("Bring families together.")}
           </h1>
           <p>
             {t(
-              "Families need to know where their visa cases stand. We’re asking Congress and the State Department for honest timelines, public accountability, and enough staff to process applications.",
+              "We demand transparency and accountability for consular visa processing: published wait times, explanations for delays, and a funded plan to end the backlog.",
+            )}
+          </p>
+          <p className="hero-citizen-ask">
+            {t(
+              "US citizens: sign to hold Congress accountable and ask your representatives to demand change.",
             )}
           </p>
           <div className="hero-actions">
@@ -87,9 +97,6 @@ export function Home() {
             />
             <div className="photo-shade" />
             <div className="photo-copy">
-              <span className="image-label">
-                {t(" THE REASON THIS MATTERS")}
-              </span>
               <div className="photo-caption">
                 {t("Time together")} {t("shouldn’t be this hard.")}
               </div>
@@ -101,9 +108,9 @@ export function Home() {
               {t("LESS WAITING")} {t("MORE LIVING")}
             </span>
           </div>
-          <span className="photo-credit">
+          <Link className="photo-credit" to="/sources#photography">
             {t("Illustrative photography · Unsplash")}
-          </span>
+          </Link>
           <div className="hero-orbit" aria-hidden="true" />
         </div>
       </section>
@@ -131,10 +138,7 @@ export function Home() {
       <section className="demands section" id="our-demands">
         <div className="section-heading">
           <div>
-            <div className="eyebrow">{t("OUR PETITION")}</div>
-            <h2>
-              {t("Three things")} {t("we’re asking for.")}
-            </h2>
+            <h2>{t("Congress must require the State Department to:")}</h2>
           </div>
           <p>
             {t(
@@ -170,64 +174,16 @@ export function Home() {
           </Link>
         </div>
       </section>
-      <section className="human-section">
-        <div className="human-art" aria-hidden="true">
-          <div className="art-sun" />
-          <span className="art-word">
-            {t("Still waiting")} {t("to come home.")}
-          </span>
-        </div>
-        <div>
-          <div className="eyebrow">{t("LIVING WITH THE DELAYS")}</div>
-          <h2>
-            {t("What the wait")} {t("has cost us.")}
-          </h2>
-          <p>
-            {t(
-              "Missed birthdays, extra flights, a second rent payment. Share what the process has been like for you and what you want officials to understand.",
-            )}
-          </p>
-          <Link to="/stories" className="text-button">
-            {t("Read the stories ")}
-            <ArrowUpRight size={18} />
-          </Link>
-        </div>
-      </section>
-      <section className="section action-preview">
-        <div className="section-heading">
-          <div>
-            <div className="eyebrow">{t("LEGISLATION & LEGAL CASES")}</div>
-            <h2>
-              {t("What’s being done")} {t("about it.")}
-            </h2>
-          </div>
-          <Link to="/policies" className="text-button">
-            {t("Explore policy & action ")}
-            <ArrowUpRight size={18} />
-          </Link>
-        </div>
-        <div className="policy-grid">
-          {policies.slice(0, 2).map((p) => (
-            <Link key={p.id} to={`/policies/${p.id}`} className="policy-card">
-              <div className="card-top">
-                <span className="tag">{t(p.kind)}</span>
-                <ArrowUpRight size={24} />
-              </div>
-              <div className="eyebrow">{t(p.eyebrow)}</div>
-              <h3>{t(p.title)}</h3>
-              <p>{t(p.summary)}</p>
-              <div className="card-bottom">
-                <span className="status-dot" />
-                {t(p.status)}
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
+      <Participate />
+      <GovernmentTimeline />
+      <SupportActions />
       <section className="join-banner">
-        <span className="eyebrow">{t("SIGN THE PETITION")}</span>
-        <h2>{t("Help us ask for better.")}</h2>
-        <p>{t("You don’t need to have a visa case to support this.")}</p>
+        <h2>{t("Put your name behind the demand.")}</h2>
+        <p>
+          {t(
+            "Sign for transparent timelines, accountable decisions and families reunited.",
+          )}
+        </p>
         <Link className="button coral" to="/login?intent=sign">
           {t("Sign the petition ")}
           <ArrowUpRight size={18} />
