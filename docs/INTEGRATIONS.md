@@ -2,6 +2,10 @@
 
 This guide is for the existing Reunite Now deployment. The application, database, email service, and reminder scheduler run on Azure. Google is only needed for Google sign-in; Render is not needed.
 
+## New-domain migration
+
+The move to `visatransparencypetition.org` is being prepared. See [the migration runbook](DOMAIN-MIGRATION.md) for verified infrastructure, pending Google/DNS steps, activation, and rollback. The current settings below remain in effect until cutover.
+
 ## What is already set up
 
 | Integration | Current state | Remaining work |
