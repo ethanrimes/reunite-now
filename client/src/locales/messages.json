@@ -179,11 +179,6 @@
     "pt": "O que pedimos",
     "tl": "Ano ang hinihiling namin"
   },
-  "Sign with your name or a nickname. Your email stays private.": {
-    "es": "Firma con tu nombre o un apodo. Tu correo sigue siendo privado.",
-    "pt": "Assine com seu nome ou um apelido. Seu e-mail continua privado.",
-    "tl": "Gamitin ang iyong pangalan o palayaw sa paglagda. Mananatiling pribado ang iyong email."
-  },
   "A family together outdoors, illustrating the everyday moments this campaign is about": {
     "es": "Una familia al aire libre, como ejemplo de los momentos cotidianos que motivan esta campaña",
     "pt": "Uma família ao ar livre, ilustrando os momentos do dia a dia que motivam esta campanha",
@@ -628,16 +623,6 @@
     "es": "Lo que pueden ver otras personas",
     "pt": "O que outras pessoas podem ver",
     "tl": "Ano ang makikita ng ibang tao"
-  },
-  "Your chosen name or nickname, legal-status category, country, city, US state and congressional district, optional political affiliation, involvement in the visa process, signature date, and last-confirmed date are public. The applicant names or nicknames, countries, visa categories, posts, relationships, dates, and event notes you enter are also public. Do not include passport numbers, receipt numbers, addresses, birth dates, or documents.": {
-    "es": "Son públicos tu nombre o apodo, categoría de estatus legal, país, ciudad, estado y distrito congresional de EE. UU., afiliación política opcional, participación en el proceso de visas, fecha de firma y última confirmación. También son públicos los nombres o apodos de solicitantes, países, categorías de visa, consulados, relaciones, fechas y notas que introduzcas. No incluyas números de pasaporte o expediente, direcciones, fechas de nacimiento ni documentos.",
-    "pt": "São públicos seu nome ou apelido, categoria de situação legal, país, cidade, estado e distrito congressional dos EUA, filiação política opcional, envolvimento no processo de vistos, data da assinatura e última confirmação. Também são públicos os nomes ou apelidos dos solicitantes, países, categorias de visto, consulados, relações, datas e notas que você inserir. Não inclua números de passaporte ou processo, endereços, datas de nascimento nem documentos.",
-    "tl": "Pampubliko ang iyong pangalan o palayaw, kategorya ng legal na katayuan, bansa, lungsod, estado at distritong pangkongreso sa US, opsyonal na partidong pampolitika, pagkakasangkot sa proseso ng visa, petsa ng paglagda, at huling pagkumpirma. Pampubliko rin ang mga pangalan o palayaw ng aplikante, bansa, kategorya ng visa, konsulado, relasyon, petsa, at talang ilalagay mo. Huwag maglagay ng numero ng pasaporte o resibo, tirahan, petsa ng kapanganakan, o mga dokumento."
-  },
-  "You must have permission to publish information about another person. Use a nickname if identification would be uncomfortable or unsafe. You must be at least 18 to create an account.": {
-    "es": "Debes tener permiso para publicar información de otra persona. Usa un apodo si identificarla resulta incómodo o inseguro. Debes tener al menos 18 años para crear una cuenta.",
-    "pt": "Você precisa de autorização para publicar informações de outra pessoa. Use um apelido se a identificação causar desconforto ou risco. É preciso ter pelo menos 18 anos para criar uma conta.",
-    "tl": "Kailangan mo ng pahintulot upang ilathala ang impormasyon ng ibang tao. Gumamit ng palayaw kung ang pagkakakilanlan ay maaaring makailang o magdulot ng panganib. Kailangan mong hindi bababa sa 18 taong gulang upang gumawa ng account."
   },
   "What stays private": {
     "es": "Lo que se mantiene privado",
@@ -1204,11 +1189,6 @@
     "pt": "Edite seu perfil, atualize as cronologias ou confirme que não houve mudanças.",
     "tl": "Baguhin ang iyong profile, i-update ang mga timeline, o kumpirmahing walang pagbabago."
   },
-  "Complete your public petition profile. You can use a nickname, and your email always stays private.": {
-    "es": "Completa tu perfil público de la petición. Puedes usar un apodo y tu correo siempre será privado.",
-    "pt": "Complete seu perfil público da petição. Você pode usar um apelido e seu e-mail será sempre privado.",
-    "tl": "Kumpletuhin ang iyong pampublikong profile para sa petisyon. Maaari kang gumamit ng palayaw, at mananatiling pribado ang iyong email."
-  },
   "Log out": {
     "es": "Cerrar sesión",
     "pt": "Sair",
@@ -1243,21 +1223,6 @@
     "es": "Públicos después de firmar",
     "pt": "Públicos após assinar",
     "tl": "Pampubliko pagkatapos lumagda"
-  },
-  "Name or nickname *": {
-    "es": "Nombre o apodo *",
-    "pt": "Nome ou apelido *",
-    "tl": "Pangalan o palayaw *"
-  },
-  "Generate a random nickname": {
-    "es": "Generar un apodo aleatorio",
-    "pt": "Gerar um apelido aleatório",
-    "tl": "Bumuo ng random na palayaw"
-  },
-  "Generate a nickname": {
-    "es": "Generar un apodo",
-    "pt": "Gerar um apelido",
-    "tl": "Bumuo ng palayaw"
   },
   "Email · private": {
     "es": "Correo · privado",
@@ -1423,11 +1388,6 @@
     "es": "He leído el",
     "pt": "Li o",
     "tl": "Nabasa ko ang"
-  },
-  "and understand that my name or nickname, profile, location, legal status, optional affiliation, and submitted visa timelines will be publicly accessible. My email stays private. *": {
-    "es": "y entiendo que mi nombre o apodo, perfil, ubicación, estatus legal, afiliación opcional y cronologías enviadas serán públicos. Mi correo sigue siendo privado. *",
-    "pt": "e entendo que meu nome ou apelido, perfil, localização, situação legal, filiação opcional e cronologias enviadas serão públicos. Meu e-mail continua privado. *",
-    "tl": "at nauunawaan kong magiging pampubliko ang aking pangalan o palayaw, profile, lokasyon, legal na katayuan, opsyonal na partidong pampolitika, at mga isinumiteng timeline ng visa. Mananatiling pribado ang aking email. *"
   },
   "I am at least 18 and have permission to publish information about any other applicants I add. *": {
     "es": "Tengo al menos 18 años y permiso para publicar información de los demás solicitantes que añada. *",
@@ -5318,5 +5278,40 @@
     "es": "Cerrar detalles del evento",
     "pt": "Fechar detalhes do evento",
     "tl": "Isara ang mga detalye ng event"
+  },
+  "Sign with your name. Your email stays private.": {
+    "es": "Firma con tu nombre. Tu correo electrónico se mantiene privado.",
+    "pt": "Assine com seu nome. Seu e-mail permanece privado.",
+    "tl": "Lumagda gamit ang sarili mong pangalan. Mananatiling pribado ang email mo."
+  },
+  "Complete your public petition profile using your own name. Your email always stays private.": {
+    "es": "Completa tu perfil público de la petición con tu nombre. Tu correo electrónico siempre se mantiene privado.",
+    "pt": "Complete seu perfil público da petição usando seu próprio nome. Seu e-mail permanece sempre privado.",
+    "tl": "Kumpletuhin ang pampublikong profile mo para sa petisyon gamit ang sarili mong pangalan. Mananatiling pribado ang email mo sa lahat ng oras."
+  },
+  "Your name *": {
+    "es": "Tu nombre *",
+    "pt": "Seu nome *",
+    "tl": "Pangalan mo *"
+  },
+  "Enter your own name to sign the petition.": {
+    "es": "Ingresa tu propio nombre para firmar la petición.",
+    "pt": "Digite seu próprio nome para assinar a petição.",
+    "tl": "Ilagay ang sarili mong pangalan para lumagda sa petisyon."
+  },
+  "and understand that my name, profile, location, legal status, optional affiliation, and submitted visa timelines will be publicly accessible. My email stays private. *": {
+    "es": "y entiendo que mi nombre, perfil, ubicación, situación legal, afiliación política opcional y cronologías de visa que envíe serán de acceso público. Mi correo electrónico se mantiene privado. *",
+    "pt": "e entendo que meu nome, perfil, localização, situação legal, afiliação política opcional e cronologias de visto enviadas ficarão disponíveis publicamente. Meu e-mail permanece privado. *",
+    "tl": "at nauunawaan kong makikita ng publiko ang pangalan, profile, lokasyon, legal na katayuan, opsyonal na pagkakaugnay sa politika, at mga isusumiteng timeline ng visa ko. Mananatiling pribado ang email ko. *"
+  },
+  "Your name, legal-status category, country, city, US state and congressional district, optional political affiliation, involvement in the visa process, signature date, and last-confirmed date are public. The applicant names or nicknames, countries, visa categories, posts, relationships, dates, and event notes you enter are also public. Do not include passport numbers, receipt numbers, addresses, birth dates, or documents.": {
+    "es": "Tu nombre, categoría de situación legal, país, ciudad, estado de EE. UU. y distrito congresional, afiliación política opcional, participación en el proceso de visa, fecha de firma y fecha de última confirmación son públicos. También son públicos los nombres o apodos de los solicitantes, países, categorías de visa, puestos consulares, relaciones, fechas y notas sobre eventos que ingreses. No incluyas números de pasaporte, números de recibo, direcciones, fechas de nacimiento ni documentos.",
+    "pt": "Seu nome, categoria de situação legal, país, cidade, estado dos EUA e distrito congressional, afiliação política opcional, participação no processo de visto, data da assinatura e data da última confirmação são públicos. Os nomes ou apelidos dos solicitantes, países, categorias de visto, postos consulares, relacionamentos, datas e notas sobre eventos que você inserir também são públicos. Não inclua números de passaporte, números de recibo, endereços, datas de nascimento ou documentos.",
+    "tl": "Pampubliko ang pangalan mo, kategorya ng legal na katayuan, bansa, lungsod, estado sa US at congressional district, opsyonal na pagkakaugnay sa politika, pakikilahok sa proseso ng visa, petsa ng paglagda, at petsa ng huling pagkumpirma. Pampubliko rin ang mga pangalan o palayaw ng mga aplikante, bansa, kategorya ng visa, mga himpilan ng embahada o konsulado, relasyon, petsa, at mga tala tungkol sa mga pangyayaring ilalagay mo. Huwag maglagay ng mga numero ng pasaporte, numero ng resibo, address, petsa ng kapanganakan, o mga dokumento."
+  },
+  "Sign the petition using your own name. You must have permission to publish information about another person. Visa applicants may use a nickname in their case details. You must be at least 18 to create an account.": {
+    "es": "Firma la petición con tu propio nombre. Debes tener permiso para publicar información sobre otra persona. Los solicitantes de visa pueden usar un apodo en los detalles de su caso. Debes tener al menos 18 años para crear una cuenta.",
+    "pt": "Assine a petição usando seu próprio nome. Você precisa ter permissão para publicar informações sobre outra pessoa. Solicitantes de visto podem usar um apelido nos detalhes do caso. É necessário ter pelo menos 18 anos para criar uma conta.",
+    "tl": "Lagdaan ang petisyon gamit ang sarili mong pangalan. Kailangan mong may pahintulot para maglathala ng impormasyon tungkol sa ibang tao. Maaaring gumamit ng palayaw ang mga aplikante ng visa sa mga detalye ng kanilang kaso. Dapat ay 18 taong gulang ka man lang para gumawa ng account."
   }
 }

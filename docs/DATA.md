@@ -1,6 +1,6 @@
 # Data, sources, and interpretation
 
-Profiles and timelines become public only after mandatory petition and public-use consent. Sign-in email, additional reminder addresses, authentication records, and reminder preferences are never returned by the public endpoints. A public nickname is supported. An address lookup forwards the request to Census and returns only the district/state selection; it does not persist the address or coordinates. Photos are re-encoded in the browser before upload to remove embedded metadata.
+Profiles and timelines become public only after mandatory petition and public-use consent. Sign-in email, additional reminder addresses, authentication records, and reminder preferences are never returned by the public endpoints. Petition signers must provide their own name. Random name generation is not offered. Names are self-reported; the application does not verify legal identity. Nicknames remain supported for visa applicants in case details. An address lookup forwards the request to Census and returns only the district/state selection; it does not persist the address or coordinates. Photos are re-encoded in the browser before upload to remove embedded metadata.
 
 Account deletion removes the user, signature, case timelines, story/photos, sessions, pending login tokens for the email, and reminder ledger. Export provides the user's profile and story. Operational backup limitations are described in OPERATIONS.md and on the data-use page.
 
