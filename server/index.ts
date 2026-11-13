@@ -19,11 +19,13 @@ import { Google, generateCodeVerifier, generateState } from "arctic";
 import { z } from "zod";
 import { db, transaction, migrate } from "./db";
 import { emailReady, sendEmail } from "./email";
+import { mapsRouter, mapsReady, districtAt } from "./maps";
 import { canonicalHost } from "./canonical";
 import { sendReminders } from "./reminders";
 import { createDemoData, demoEnabled } from "./demo";
 import {
   profileSchema,
+  profileWriteSchema,
   storySchema,
   states,
   type Profile,
@@ -134,7 +136,8 @@ app.get("/api/config", (_req, res) =>
     devAuth,
     demoData: !!demo,
     reminders: emailReady(),
-    consentVersion: "2026-11-11",
+    maps: mapsReady(),
+    consentVersion: "2026-11-12",
   }),
 );
 app.post("/api/auth/email", authLimit, async (req, res) => {
@@ -265,7 +268,7 @@ app.get("/api/me", async (req, res) => {
   });
 });
 app.put("/api/me/profile", requireUser, async (req, res) => {
-  const data = profileSchema.parse(req.body);
+  const data = profileWriteSchema.parse(req.body);
   data.reminderEmails = data.reminderEmails.filter(
     (email) => email !== res.locals.user.email.trim().toLowerCase(),
   );
@@ -430,8 +433,10 @@ app.get("/api/stories", async (_req, res) => {
     ],
   });
 });
+app.use("/api/maps", mapsRouter(requireUser));
 app.post(
   "/api/district-lookup",
+  requireUser,
   rateLimit({ windowMs: 60000, limit: 10 }),
   async (req, res) => {
     const { address } = z
@@ -462,30 +467,7 @@ app.post(
           "No address match. Try a complete US street address, or choose your district manually.",
       });
     const match = matches[0];
-    const p = new URLSearchParams({
-      geometry: `${match.coordinates.x},${match.coordinates.y}`,
-      geometryType: "esriGeometryPoint",
-      inSR: "4326",
-      spatialRel: "esriSpatialRelIntersects",
-      outFields: "GEOID,STATE,CD119,NAME",
-      returnGeometry: "false",
-      f: "json",
-    });
-    const d = await fetch(
-      `https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/4/query?${p}`,
-      { signal: AbortSignal.timeout(15000) },
-    );
-    const district = (await d.json()).features?.[0]?.attributes;
-    if (!district)
-      return void res.status(404).json({
-        error: "District could not be determined. Select it manually.",
-      });
-    const geoid = String(district.GEOID);
-    res.json({
-      state: states.find((s) => s[0] === geoid.slice(0, 2))?.[1],
-      district: geoid.slice(2),
-      congress: 119,
-    });
+    res.json(await districtAt(match.coordinates.y, match.coordinates.x));
   },
 );
 app.post("/api/jobs/reminders", async (req, res) => {

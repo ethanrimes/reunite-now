@@ -138,6 +138,8 @@ export async function createDemoData(now = new Date()) {
       applicantName: `${firstNames[(index + 4) % firstNames.length]} (fictional)`,
       relationship: sequence ? "Child" : "Spouse / partner",
       country,
+      nationality: country,
+      role: "Other relationship to the applicant",
       post,
       category,
       updatedAt: timestamp(index < 8 ? index : Math.floor(random() * 115)),

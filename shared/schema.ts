@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { caseRoles, rolesFor, relationshipsFor } from "./visa-workflow";
 export const legalStatuses = [
   "US citizen",
   "Permanent resident",
@@ -35,6 +36,8 @@ export const eventTypes = [
   "NOA1",
   "NOA2",
   "At NVC",
+  "At KCC",
+  "Visa application submitted",
   "Documentarily qualified",
   "In transit",
   "Ready",
@@ -143,12 +146,25 @@ export const caseSchema = z
       "Other",
     ]),
     country: z.string().min(2).max(100),
+    nationality: z.string().min(2).max(100).optional(),
+    role: z.enum(caseRoles).optional(),
     category: z.enum(visaCategories),
     post: z.string().trim().min(2).max(120),
     events: z.array(eventSchema).min(1).max(100),
     updatedAt: z.string().optional(),
   })
   .superRefine((v, c) => {
+    if (
+      v.role &&
+      (!rolesFor(v.category, false).includes(v.role) ||
+        !relationshipsFor(v.category, v.role).includes(v.relationship))
+    )
+      c.addIssue({
+        code: "custom",
+        path: ["relationship"],
+        message:
+          "Choose a relationship that matches your role and visa category",
+      });
     const ids = v.events.map((e) => e.id);
     if (new Set(ids).size !== ids.length)
       c.addIssue({
@@ -226,6 +242,35 @@ export const profileSchema = z
         message: "Case IDs must be unique",
       });
   });
+// Keep historical profiles readable; stronger requirements apply when a member saves.
+export const profileWriteSchema = profileSchema.superRefine((p, c) => {
+  if (p.personallyInvolved && !p.cases.length)
+    c.addIssue({
+      code: "custom",
+      path: ["cases"],
+      message: "Add at least one visa case when you are personally involved",
+    });
+  if (!p.personallyInvolved && p.cases.length)
+    c.addIssue({
+      code: "custom",
+      path: ["cases"],
+      message: "Choose personally involved to include visa cases",
+    });
+  p.cases.forEach((v, i) => {
+    if (!v.role)
+      c.addIssue({
+        code: "custom",
+        path: ["cases", i, "role"],
+        message: "Choose your role for each visa case",
+      });
+    if (!v.nationality)
+      c.addIssue({
+        code: "custom",
+        path: ["cases", i, "nationality"],
+        message: "Confirm the applicant nationality for each visa case",
+      });
+  });
+});
 export const storySchema = z.object({
   title: z.string().trim().min(8).max(120),
   summary: z.string().trim().min(20).max(240),

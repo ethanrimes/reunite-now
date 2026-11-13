@@ -10,7 +10,7 @@ export const metricLabels = {
 export type Metric = keyof typeof metricLabels;
 export function orderedEvents(v: VisaCase, now = new Date()) {
   return [...v.events]
-    .filter((e) => e.date <= now.toISOString().slice(0, 10))
+    .filter((e) => !!e.date && e.date <= now.toISOString().slice(0, 10))
     .sort((a, b) => a.date.localeCompare(b.date));
 }
 export function caseStatus(v: VisaCase, now = new Date()): "active" | "closed" {

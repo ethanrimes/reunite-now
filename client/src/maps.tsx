@@ -1,3 +1,4 @@
+import { MemberVotes } from "./legislation";
 import { t, number } from "./i18n";
 import { useState, useEffect, useRef, useMemo, type ReactNode } from "react";
 import L from "leaflet";
@@ -670,6 +671,14 @@ export function Coverage() {
             onChange={setParties}
           />
         </div>
+        {kind !== "world" && (
+          <p className="map-click-hint">
+            <Info size={17} />
+            {t(
+              "Click a state or congressional district to see your representatives, their relevant votes, and bill sponsorships.",
+            )}
+          </p>
+        )}
         <GeoMap kind={kind} regions={regions} onSelect={setSelected} />
       </MapPanel>
       {repError && kind !== "world" && <p role="alert">{t(repError)}</p>}
@@ -741,21 +750,7 @@ export function Coverage() {
                     {t("Official office & contact")}
                   </External>
                   {r.phone && <p>{r.phone}</p>}
-                  <h4>{t("Tracked legislation")}</h4>
-                  <p>{t("H.R. 10711 · Reducing Visa Delays Act")}</p>
-                  <span className="tag">
-                    {r.name.includes("Subramanyam")
-                      ? t("Bill sponsor")
-                      : t("No recorded floor vote")}
-                  </span>
-                  <p className="small-copy">
-                    {t(
-                      "The tracked record shows introduction and committee referral, not a floor vote. Sponsorship and voting are different actions. This is not a rating of this member’s position.",
-                    )}
-                  </p>
-                  <External href="https://www.congress.gov/bill/119th-congress/house-bill/10711/all-actions">
-                    {t("Official actions & votes")}
-                  </External>
+                  <MemberVotes memberId={r.id} />
                   <External href={r.source}>
                     {t("Congressional biography")}
                   </External>
@@ -818,9 +813,11 @@ export function VisaData() {
   });
   const regions = useMemo(() => {
     const r: Record<string, Region> = {};
-    for (const country of new Set(cases.map((c) => c.country))) {
+    for (const country of new Set(
+      cases.map((c) => c.nationality).filter((n): n is string => !!n),
+    )) {
       const s = summarize(
-        cases.filter((c) => c.country === country),
+        cases.filter((c) => c.nationality === country),
         metric,
       );
       r[country] = { key: country, name: country, ...s };
@@ -945,8 +942,14 @@ export function VisaData() {
           )}
         </span>
         <span>
-          <strong>{new Set(cases.map((c) => c.country)).size}</strong>
-          {t(" applicant countries")}
+          <strong>
+            {
+              new Set(
+                cases.map((c) => c.nationality).filter((n): n is string => !!n),
+              ).size
+            }
+          </strong>
+          {t(" confirmed nationalities")}
         </span>
         <span>
           <strong>{new Set(cases.map((c) => c.post)).size}</strong>
@@ -1071,7 +1074,7 @@ export function VisaData() {
         </summary>
         <p>
           {t(
-            "Cases are grouped by applicant country in the map and visa category in the table. The post filter selects the processing embassy or consulate. A median is the middle reported duration, not a predicted wait. Sample sizes are shown separately for every metric because not everyone has all dates.",
+            "The map groups cases by confirmed applicant nationality. Older entries without a confirmed nationality remain in the table but are excluded from the map. The post filter selects the processing embassy or consulate. Medians describe reported durations, not predictions; each metric shows its own sample size.",
           )}
         </p>
         <p>

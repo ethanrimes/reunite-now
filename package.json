@@ -11,10 +11,11 @@
     "dev:demo": "DEMO_DATA=true npm run dev",
     "build": "tsc --noEmit && vite build && node scripts/build-server.mjs",
     "start": "node dist/server.js",
-    "test": "tsx --test tests/metrics.test.ts tests/storage.test.ts tests/i18n.test.ts tests/canonical.test.ts tests/reminders.test.ts tests/coverage.test.ts",
+    "test": "tsx --test tests/metrics.test.ts tests/storage.test.ts tests/i18n.test.ts tests/canonical.test.ts tests/reminders.test.ts tests/coverage.test.ts tests/visa-workflow.test.ts",
     "data:refresh": "tsx scripts/refresh-data.ts",
     "reminders": "tsx server/reminders-cli.ts",
-    "test:integration": "tsx --test tests/api.test.ts"
+    "test:integration": "tsx --test tests/api.test.ts",
+    "data:legislation": "python3 scripts/refresh-legislation.py"
   },
   "dependencies": {
     "@azure/communication-email": "^1.1.0",
