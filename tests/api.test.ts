@@ -63,6 +63,8 @@ test("email authentication, data privacy, ownership, update and deletion", async
         applicantName: "Test applicant",
         relationship: "Spouse / partner",
         country: "Colombia",
+        nationality: "Colombia",
+        role: "Petitioner",
         category: "K-1",
         post: "Bogotá",
         events: [
@@ -72,6 +74,35 @@ test("email authentication, data privacy, ownership, update and deletion", async
       },
     ],
   };
+  for (const invalid of [
+    { ...profile, cases: [] },
+    { ...profile, personallyInvolved: false },
+    {
+      ...profile,
+      cases: [{ ...profile.cases[0], role: "Applicant", relationship: "Self" }],
+    },
+    { ...profile, cases: [{ ...profile.cases[0], nationality: undefined }] },
+  ])
+    assert.equal(
+      (await request("/api/me/profile", "PUT", invalid)).status,
+      400,
+    );
+  assert.equal(
+    (
+      await request(
+        "/api/maps/suggest",
+        "POST",
+        { query: "1600 Pennsylvania" },
+        false,
+      )
+    ).status,
+    401,
+  );
+  assert.equal(
+    (await request("/api/maps/district", "POST", { lat: 999, lon: 0 })).status,
+    400,
+  );
+  assert.equal((await request("/api/maps/tiles/3/999/1")).status, 400);
   assert.equal(
     (await request("/api/me/profile", "PUT", profile, false)).status,
     401,

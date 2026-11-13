@@ -1,5 +1,8 @@
 import { t } from "./i18n";
 import { PageIntro, External, date } from "./ui";
+import { legislation } from "../../shared/legislation";
+import postsDirectory from "../../shared/posts.json";
+import { pauseSource } from "../../shared/visa-workflow";
 import { policies } from "../../shared/policies";
 import { policyEvents, reviewedAt } from "../../shared/campaign";
 export const credits = [
@@ -72,7 +75,33 @@ export const credits = [
   },
 ];
 export function Sources() {
-  const sources = new Map<string, string>();
+  const sources = new Map<string, string>([
+    [postsDirectory.source, "Official post directory"],
+    [pauseSource, "State Department update"],
+    ["https://learn.microsoft.com/en-us/azure/azure-maps/", "Azure Maps"],
+    [
+      "https://privacy.microsoft.com/privacystatement",
+      "Microsoft privacy statement",
+    ],
+    [
+      "https://travel.state.gov/content/travel/en/us-visas/immigrate/the-immigrant-visa-process.html",
+      "Immigrant visa process",
+    ],
+    [
+      "https://travel.state.gov/content/travel/en/us-visas/immigrate/family-immigration/nonimmigrant-visa-for-a-fiance-k-1.html",
+      "K-1 visa process",
+    ],
+    [
+      "https://travel.state.gov/content/travel/en/us-visas/immigrate/diversity-visa-program-entry/diversity-visa-if-you-are-selected.html",
+      "Diversity visa process",
+    ],
+    [
+      "https://travel.state.gov/content/travel/en/us-visas/tourism-visit/visitor.html",
+      "Visitor visa process",
+    ],
+  ]);
+  for (const vote of legislation.votes)
+    sources.set(vote.url, `${vote.chamber} · ${vote.date} · ${vote.roll}`);
   for (const event of policyEvents)
     sources.set(event.source.url, event.source.label);
   for (const policy of policies)

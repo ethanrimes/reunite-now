@@ -37,6 +37,8 @@ test("Spanish, Portuguese, and Tagalog catalogs cover interface strings and pres
     "sources",
     "pages",
     "account",
+    "district-lookup",
+    "legislation",
     "maps",
     "ui",
     "language",

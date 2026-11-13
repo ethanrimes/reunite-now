@@ -203,17 +203,23 @@ export function SupportActions() {
         </Link>
       </div>
       <ScrollRail id="support-actions" title={t("Actions to support")}>
-        {policies.map((policy) => (
-          <article className="support-card" key={policy.id}>
-            <span className="tag">{t(policy.kind)}</span>
-            <h3>{t(policy.title)}</h3>
-            <p>{t(policy.summary)}</p>
-            <span className="event-status">{t(policy.status)}</span>
-            <Link className="text-button" to={`/policies/${policy.id}`}>
-              {t("How to help & latest updates")} <ArrowUpRight size={17} />
-            </Link>
-          </article>
-        ))}
+        {policies
+          .filter(
+            (policy) =>
+              !policy.status.startsWith("Historical") &&
+              !policy.status.startsWith("Enacted"),
+          )
+          .map((policy) => (
+            <article className="support-card" key={policy.id}>
+              <span className="tag">{t(policy.kind)}</span>
+              <h3>{t(policy.title)}</h3>
+              <p>{t(policy.summary)}</p>
+              <span className="event-status">{t(policy.status)}</span>
+              <Link className="text-button" to={`/policies/${policy.id}`}>
+                {t("How to help & latest updates")} <ArrowUpRight size={17} />
+              </Link>
+            </article>
+          ))}
       </ScrollRail>
     </section>
   );

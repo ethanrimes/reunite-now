@@ -184,3 +184,19 @@ That script targets `https://visatransparency.org` and also verifies the Google 
 | Reminder run sends zero | Opt-in, active case, profile confirmation age, and existing monthly delivery ledger |
 
 Before public outreach, confirm both login methods work, a real message arrives, the canonical hostname supports account saves, and the reminder schedule is enabled. Record inbox delivery and unattended reminder results separately from configuration checks. For deployment and database recovery, see [Operations](OPERATIONS.md).
+
+## Address suggestions and street maps (Azure Maps)
+
+Configured November 12, 2026 in the existing Azure resource group:
+
+- Account: `reunite-now-maps`, Gen2 / G2, global.
+- Local/shared-key authentication is disabled. No Maps key is embedded in the browser.
+- App Service's existing system-assigned identity has **Azure Maps Search and Render Data Reader**, scoped only to that Maps account.
+- App setting `AZURE_MAPS_CLIENT_ID` holds the account's **unique client ID**, not an application secret. This setting is already installed in production.
+- For local development, sign in with `az login`, use an identity with the same data-reader role, then run `AZURE_MAPS_CLIENT_ID=<account unique ID> npm run dev:demo`. The configured developer identity already has the role on this account. Do not commit access tokens or subscription keys.
+
+The signed-in browser calls the same-origin Express API. Azure's `DefaultAzureCredential` uses managed identity in App Service and the developer's Azure CLI locally. `/api/maps/suggest` is authenticated, rate-limited and debounced; `/api/maps/district` uses Census TIGER point intersection. Tiles are proxied, and map attribution is requested for the visible viewport. Addresses and coordinates are transient and not written to our database. Azure Maps (including its mapping providers) and Census receive the requests; their own policies apply. Do not add request-body logging to these routes.
+
+If recreating this integration: create a Gen2 Maps account, enable App Service managed identity, grant the scoped data-reader role, and put the Maps account's `properties.uniqueId` in `AZURE_MAPS_CLIENT_ID`. Allow time for role propagation. Confirm an address suggestion, district, road tiles, and district overlay after deployment. A full-address Census fallback and manual state/district selection remain available when suggestions fail. Azure Maps is metered; review its usage in Azure Cost Management alongside the existing app budget.
+
+No Google Maps, Google Places, or separate geocoding subscription is needed. Existing Google sign-in, Azure email delivery, and reminder scheduling are unchanged. No additional credentials are pending for this feature.

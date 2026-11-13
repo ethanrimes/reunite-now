@@ -1,3 +1,4 @@
+import { BillRecord, LegislativeScope } from "./legislation";
 import { t, number } from "./i18n";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -195,12 +196,17 @@ export function Home() {
 export function Policies() {
   const [kind, setKind] = useState("All");
   const [theme, setTheme] = useState("All");
+  const [period, setPeriod] = useState("All");
   const [q, setQ] = useState("");
   const items = policies.filter(
     (p) =>
       (kind === "All" || p.kind === kind) &&
       (theme === "All" || p.theme === theme) &&
-      `${t(p.title)} ${t(p.summary)}`.toLowerCase().includes(q.toLowerCase()),
+      (period === "All" ||
+        (period === "Historical") === p.status.startsWith("Historical")) &&
+      `${t(p.title)} ${p.eyebrow} ${t(p.summary)}`
+        .toLowerCase()
+        .includes(q.toLowerCase()),
   );
   return (
     <div className="page-shell">
@@ -242,10 +248,22 @@ export function Policies() {
           onChange={(e) => setTheme(e.target.value)}
         >
           <option value="All">{t("All")}</option>
-          <option value="Transparency">{t("Transparency")}</option>
-          <option value="Accountability">{t("Accountability")}</option>
+          {[...new Set(policies.map((p) => p.theme))].map((x) => (
+            <option key={x} value={x}>
+              {t(x)}
+            </option>
+          ))}
         </select>
       </div>
+      <label className="period-filter">
+        {t("Congressional period")}
+        <select value={period} onChange={(e) => setPeriod(e.target.value)}>
+          <option value="All">{t("All")}</option>
+          <option value="Current">{t("Current Congress & legal cases")}</option>
+          <option value="Historical">{t("Historical legislation")}</option>
+        </select>
+      </label>
+      <LegislativeScope />
       <div className="policy-grid three">
         {items.map((p) => (
           <Link key={p.id} to={`/policies/${p.id}`} className="policy-card">
@@ -317,6 +335,7 @@ export function PolicyDetail() {
               ))}
             </ul>
           </section>
+          <BillRecord topicId={p.id} />
           <section>
             <h2>{t("Timeline & updates")}</h2>
             <ol className="timeline">
@@ -570,7 +589,7 @@ export function DataUse() {
         <h2>{t("Address lookup")}</h2>
         <p>
           {t(
-            "When you use district lookup, your address is sent to the US Census Bureau’s geocoding service. Reunite Now does not save the search address or geocoding result. Only the state and congressional district you confirm are saved. Census may process the request under its own policies. You can select your district manually instead.",
+            "District lookup sends address searches to Azure Maps and its mapping providers, and coordinates or full-address fallback requests to the US Census Bureau. Reunite Now does not retain the search address, coordinates, or results. Only the confirmed state and district are saved. These providers process requests under their own privacy policies. You can select your district manually instead.",
           )}
         </p>
         <h2>{t("Statistics and interpretation")}</h2>

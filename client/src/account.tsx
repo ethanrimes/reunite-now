@@ -28,6 +28,18 @@ import {
   type VisaEvent,
   type Story,
 } from "../../shared/schema";
+import {
+  rolesFor,
+  relationshipsFor,
+  milestonesFor,
+  applyTemplate,
+  milestoneLabel,
+  mayHavePauseHistory,
+  pauseSource,
+  type CaseRole,
+} from "../../shared/visa-workflow";
+import postsDirectory from "../../shared/posts.json";
+import { DistrictLookup } from "./district-lookup";
 import countries from "../../shared/countries.json";
 import { caseStatus } from "../../shared/metrics";
 export function Login() {
@@ -229,10 +241,17 @@ function newCase(): VisaCase {
     id: crypto.randomUUID(),
     applicantName: "",
     relationship: "Spouse / partner",
+    role: "Petitioner",
+    nationality: "",
     country: "",
     category: "K-1",
     post: "",
-    events: [{ id: crypto.randomUUID(), type: "Filed", date: "", note: "" }],
+    events: milestonesFor("K-1").map((type) => ({
+      id: crypto.randomUUID(),
+      type,
+      date: "",
+      note: "",
+    })),
   };
 }
 function VisaEditor({
@@ -248,6 +267,28 @@ function VisaEditor({
   citizen: boolean;
   index: number;
 }) {
+  const roleOptions = rolesFor(value.category, citizen);
+  const relationshipOptions = relationshipsFor(
+    value.category,
+    value.role,
+    citizen,
+  );
+  const adjust = (category: VisaCase["category"], role = value.role) => {
+    const validRole =
+      role && rolesFor(category, citizen).includes(role) ? role : undefined;
+    const options = relationshipsFor(category, validRole, citizen);
+    const next =
+      category === value.category
+        ? value
+        : applyTemplate(value, category, () => crypto.randomUUID());
+    onChange({
+      ...next,
+      role: validRole,
+      relationship: (options.includes(value.relationship)
+        ? value.relationship
+        : options[0] || "Other") as VisaCase["relationship"],
+    });
+  };
   const set = (key: keyof VisaCase, v: any) => onChange({ ...value, [key]: v });
   const editEvent = (id: string, key: keyof VisaEvent, v: string) =>
     set(
@@ -274,32 +315,71 @@ function VisaEditor({
               onChange={(e) => set("applicantName", e.target.value)}
             />
           </Field>
-          <Field label={t("Relationship to you *")}>
+          <Field label={t("Visa category *")}>
             <select
+              value={value.category}
+              onChange={(e) => adjust(e.target.value as VisaCase["category"])}
+            >
+              {visaCategories.map((c) => (
+                <option key={c} value={c}>
+                  {t(c)}
+                </option>
+              ))}
+            </select>
+          </Field>
+          <Field label={t("I am the… *")}>
+            <select
+              required
+              value={value.role || ""}
+              onChange={(e) =>
+                adjust(value.category, e.target.value as CaseRole)
+              }
+            >
+              <option value="">{t("Choose your role")}</option>
+              {roleOptions.map((role) => (
+                <option key={role} value={role}>
+                  {t(role)}
+                </option>
+              ))}
+            </select>
+          </Field>
+          <Field
+            label={t("The applicant is my… *")}
+            hint={t(
+              "For your own application, choose Applicant. For a self-petition, also choose Applicant.",
+            )}
+          >
+            <select
+              required
               value={value.relationship}
               onChange={(e) => set("relationship", e.target.value)}
             >
-              {[
-                "Self",
-                "Spouse / partner",
-                "Child",
-                "Parent",
-                "Sibling",
-                "Other",
-              ]
-                .filter((r) => !citizen || r !== "Self")
-                .map((r) => (
-                  <option key={r} value={r}>
-                    {t(r)}
-                  </option>
-                ))}
+              {!relationshipOptions.includes(value.relationship) && (
+                <option value="">{t("Choose a relationship")}</option>
+              )}
+              {relationshipOptions.map((r) => (
+                <option key={r} value={r}>
+                  {t(r)}
+                </option>
+              ))}
             </select>
           </Field>
-          <Field label={t("Applicant country *")}>
+          <Field
+            label={t("Applicant nationality (citizenship) *")}
+            hint={t(
+              "Choose the nationality used for this visa application, not the country of residence. Existing entries need confirmation.",
+            )}
+          >
             <select
               required
-              value={value.country}
-              onChange={(e) => set("country", e.target.value)}
+              value={value.nationality || ""}
+              onChange={(e) =>
+                onChange({
+                  ...value,
+                  nationality: e.target.value,
+                  country: e.target.value,
+                })
+              }
             >
               <option value="">{t("Choose a country")}</option>
               {countries.map((c) => (
@@ -309,89 +389,33 @@ function VisaEditor({
               ))}
             </select>
           </Field>
-          <Field label={t("Visa category *")}>
-            <select
-              value={value.category}
-              onChange={(e) => set("category", e.target.value)}
-            >
-              {visaCategories.map((c) => (
-                <option key={c} value={c}>
-                  {t(c)}
-                </option>
-              ))}
-            </select>
-          </Field>
           <Field
             label={t("Processing embassy / consular post *")}
             hint={t(
-              "Use the city name, for example Bogotá or London. If not assigned, enter Not assigned.",
+              "Select the assigned post, or Not assigned. A listing does not mean this post currently processes your visa category.",
             )}
           >
-            <input
+            <select
               required
-              list="posts"
-              minLength={2}
-              maxLength={120}
               value={value.post}
               onChange={(e) => set("post", e.target.value)}
-            />
-            <datalist id="posts">
-              {[
-                "Abu Dhabi",
-                "Accra",
-                "Addis Ababa",
-                "Amman",
-                "Ankara",
-                "Bangkok",
-                "Beirut",
-                "Bogotá",
-                "Buenos Aires",
-                "Cairo",
-                "Casablanca",
-                "Chennai",
-                "Ciudad Juárez",
-                "Dhaka",
-                "Doha",
-                "Dubai",
-                "Frankfurt",
-                "Guangzhou",
-                "Ho Chi Minh City",
-                "Hong Kong",
-                "Islamabad",
-                "Jakarta",
-                "Johannesburg",
-                "Kathmandu",
-                "Kingston",
-                "Lagos",
-                "Lima",
-                "London",
-                "Manila",
-                "Montreal",
-                "Mumbai",
-                "Nairobi",
-                "New Delhi",
-                "Paris",
-                "Port-au-Prince",
-                "Riyadh",
-                "San José",
-                "San Salvador",
-                "Santo Domingo",
-                "São Paulo",
-                "Seoul",
-                "Singapore",
-                "Sydney",
-                "Taipei",
-                "Tbilisi",
-                "Tegucigalpa",
-                "Tokyo",
-                "Yerevan",
-                "Not assigned",
-              ].map((p) => (
-                <option key={p} value={p}>
-                  {t(p)}
+            >
+              <option value="">{t("Choose a post")}</option>
+              <option value="Not assigned">{t("Not assigned")}</option>
+              {value.post &&
+                value.post !== "Not assigned" &&
+                !postsDirectory.posts.includes(value.post) && (
+                  <option value={value.post}>{value.post}</option>
+                )}
+              {postsDirectory.posts.map((post) => (
+                <option key={post} value={post}>
+                  {post}
                 </option>
               ))}
-            </datalist>
+            </select>
+            <a href={postsDirectory.source} target="_blank" rel="noreferrer">
+              {t("Official post directory")}
+            </a>
           </Field>
         </div>
         <div className="timeline-editor-title">
@@ -403,6 +427,46 @@ function VisaEditor({
             "Add milestones you know. You can record multiple interviews and future interview appointments. A §221(g) or policy-related refusal stays active; choose “Final refusal” only for a final denial. Use “Reopened” if a closed case resumes.",
           )}
         </p>
+        <p className="small-copy">
+          {t(
+            "Suggested rows are not completed events. Fill in known dates and remove steps that have not happened or do not apply. At least one dated milestone is required.",
+          )}
+        </p>
+        {mayHavePauseHistory(value.category, value.nationality || "") && (
+          <aside className="policy-context">
+            <strong>
+              {t("Did the 2026 issuance pause affect this case?")}
+            </strong>
+            <p>
+              {t(
+                "This nationality was on the 75-country list. That pause is no longer in effect. Nationality alone does not establish an impact: exceptions applied. Add a refusal only if it happened to this applicant.",
+              )}
+            </p>
+            <a href={pauseSource} target="_blank" rel="noreferrer">
+              {t("State Department update")}
+            </a>
+            <button
+              type="button"
+              className="button outline small"
+              disabled={value.events.some(
+                (e) => e.type === "Policy-related refusal",
+              )}
+              onClick={() =>
+                set("events", [
+                  ...value.events,
+                  {
+                    id: crypto.randomUUID(),
+                    type: "Policy-related refusal",
+                    date: "",
+                    note: "",
+                  },
+                ])
+              }
+            >
+              {t("Add a policy-related refusal")}
+            </button>
+          </aside>
+        )}
         <div className="event-list">
           {value.events.map((e) => (
             <div className="event-editor" key={e.id}>
@@ -413,7 +477,7 @@ function VisaEditor({
                 >
                   {eventTypes.map((eventType) => (
                     <option key={eventType} value={eventType}>
-                      {t(eventType)}
+                      {t(milestoneLabel(value.category, eventType))}
                     </option>
                   ))}
                 </select>
@@ -795,11 +859,11 @@ function StoryEditor() {
 export function Account() {
   const { me, loading, config, refresh } = useData();
   const nav = useNavigate();
-  const [form, setForm] = useState<Profile>(emptyProfile);
+  const [form, setForm] = useState<Profile>(() => ({
+    ...emptyProfile,
+    cases: [newCase()],
+  }));
   const [districts, setDistricts] = useState<any[]>([]);
-  const [address, setAddress] = useState("");
-  const [lookBusy, setLookBusy] = useState(false);
-  const [lookupMessage, setLookupMessage] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
@@ -833,7 +897,13 @@ export function Account() {
     setError("");
     setMessage("");
     try {
-      await api("/me/profile", { method: "PUT", body: JSON.stringify(form) });
+      await api("/me/profile", {
+        method: "PUT",
+        body: JSON.stringify({
+          ...form,
+          cases: form.personallyInvolved ? form.cases : [],
+        }),
+      });
       await refresh();
       setMessage(
         me.profile
@@ -844,25 +914,6 @@ export function Account() {
       setError((e as Error).message);
     } finally {
       setBusy(false);
-    }
-  }
-  async function lookup() {
-    setLookBusy(true);
-    setLookupMessage("");
-    try {
-      const r = await api("/district-lookup", {
-        method: "POST",
-        body: JSON.stringify({ address }),
-      });
-      setForm((p) => ({ ...p, state: r.state, district: r.district }));
-      setAddress("");
-      setLookupMessage(
-        `Found ${r.state}-${r.district} in the 119th Congress. Your search address has been cleared. Review the result before saving.`,
-      );
-    } catch (e) {
-      setLookupMessage((e as Error).message);
-    } finally {
-      setLookBusy(false);
     }
   }
   if (loading)
@@ -1104,44 +1155,33 @@ export function Account() {
             )}
           </div>
           {form.country === "United States" && (
-            <details className="address-lookup">
-              <summary>
-                {t("Not sure of your district? Look it up by address.")}
-              </summary>
-              <p>
-                {t(
-                  "Your address is sent to the US Census Bureau to find your district. This application does not retain your address or search results. Only the state and district you confirm are saved.",
-                )}
-              </p>
-              <div className="input-action">
-                <input
-                  aria-label={t("Address for district lookup")}
-                  value={address}
-                  autoComplete="off"
-                  placeholder={t("Full street address, city, state, ZIP")}
-                  onChange={(e) => setAddress(e.target.value)}
-                />
-                <button
-                  type="button"
-                  disabled={lookBusy || address.length < 8}
-                  onClick={lookup}
-                >
-                  {lookBusy ? t("Looking up…") : t("Find district")}
-                </button>
-              </div>
-              {lookupMessage && <Notice>{t(lookupMessage)}</Notice>}
-            </details>
+            <DistrictLookup
+              onConfirm={(state, district) =>
+                setForm((p) => ({ ...p, state, district }))
+              }
+            />
           )}
           <fieldset className="involvement">
             <legend>
               {t("Are you personally involved in a visa process? *")}
             </legend>
+            <p className="small-copy">
+              {t(
+                "Choose Yes if you are applying for a visa, petitioning for someone, or following a family member’s or another person’s case with their permission. You will need to add at least one timeline below.",
+              )}
+            </p>
             <label>
               <input
                 type="radio"
                 name="involved"
                 checked={form.personallyInvolved}
-                onChange={() => set("personallyInvolved", true)}
+                onChange={() =>
+                  setForm((p) => ({
+                    ...p,
+                    personallyInvolved: true,
+                    cases: p.cases.length ? p.cases : [newCase()],
+                  }))
+                }
               />
               {t("Yes — for me or someone relevant to me")}
             </label>
@@ -1156,49 +1196,60 @@ export function Account() {
             </label>
           </fieldset>
         </section>
-        <section className="account-section">
-          <div className="section-heading">
-            <div>
-              <span className="eyebrow">{t("VISA TIMELINES")}</span>
-              <h2>{t("Your visa cases")}</h2>
-            </div>
-            <span className="tag">{t("Optional · public")}</span>
-          </div>
-          <p>
+        {!form.personallyInvolved && (me.profile?.cases.length || 0) > 0 && (
+          <Notice>
             {t(
-              "Add yourself or someone relevant to you. US citizens can add applicants other than themselves. Use nicknames and only share another person’s details with their permission.",
+              "Saving as a supporter will remove your submitted visa timelines. Choose Yes to keep them. Your signature and story will remain.",
             )}
-          </p>
-          {form.cases.map((c, i) => (
-            <VisaEditor
-              key={c.id}
-              index={i}
-              citizen={form.legalStatus === "US citizen"}
-              value={c}
-              onChange={(v) =>
-                set(
-                  "cases",
-                  form.cases.map((x) => (x.id === v.id ? v : x)),
-                )
-              }
-              onRemove={() =>
-                set(
-                  "cases",
-                  form.cases.filter((x) => x.id !== c.id),
-                )
-              }
-            />
-          ))}
-          <button
-            type="button"
-            className="button outline"
-            disabled={form.cases.length >= 20}
-            onClick={() => set("cases", [...form.cases, newCase()])}
-          >
-            <Plus size={18} />
-            {t("Add a visa applicant")}
-          </button>
-        </section>
+          </Notice>
+        )}
+        {form.personallyInvolved && (
+          <section className="account-section">
+            <div className="section-heading">
+              <div>
+                <span className="eyebrow">{t("VISA TIMELINES")}</span>
+                <h2>{t("Your visa cases")}</h2>
+              </div>
+              <span className="tag">
+                {t("Required when involved · public")}
+              </span>
+            </div>
+            <p>
+              {t(
+                "Add yourself or someone relevant to you. US citizens can add applicants other than themselves. Use nicknames and only share another person’s details with their permission.",
+              )}
+            </p>
+            {form.cases.map((c, i) => (
+              <VisaEditor
+                key={c.id}
+                index={i}
+                citizen={form.legalStatus === "US citizen"}
+                value={c}
+                onChange={(v) =>
+                  set(
+                    "cases",
+                    form.cases.map((x) => (x.id === v.id ? v : x)),
+                  )
+                }
+                onRemove={() =>
+                  set(
+                    "cases",
+                    form.cases.filter((x) => x.id !== c.id),
+                  )
+                }
+              />
+            ))}
+            <button
+              type="button"
+              className="button outline"
+              disabled={form.cases.length >= 20}
+              onClick={() => set("cases", [...form.cases, newCase()])}
+            >
+              <Plus size={18} />
+              {t("Add a visa applicant")}
+            </button>
+          </section>
+        )}
         <section className="account-section consent-section">
           <span className="eyebrow">{t("CONSENT & PREFERENCES")}</span>
           <h2>
@@ -1280,6 +1331,20 @@ export function Account() {
               </small>
             </span>
           </label>
+          <details className="reminder-help">
+            <summary
+              title={t(
+                "A fresh update, including “no change”, tells us a case is still waiting. This keeps our community estimates current. On the visa data page, readers can filter to cases confirmed in the last 30, 60, or 90 days. Reminders are optional and never change your timeline automatically.",
+              )}
+            >
+              {t("Why do we ask you to check in?")}
+            </summary>
+            <p>
+              {t(
+                "A fresh update, including “no change”, tells us a case is still waiting. This keeps our community estimates current. On the visa data page, readers can filter to cases confirmed in the last 30, 60, or 90 days. Reminders are optional and never change your timeline automatically.",
+              )}
+            </p>
+          </details>
           {form.reminders && (
             <fieldset className="reminder-emails">
               <legend>{t("Additional reminder emails")}</legend>

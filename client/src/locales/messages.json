@@ -4508,5 +4508,800 @@
     "es": "Según CLINIC, una nueva circular ordenó reanudar las evaluaciones con capacitación sobre carga pública y un formulario para solicitantes. Su guía posterior describe la reanudación de entrevistas bajo los nuevos requisitos.",
     "pt": "Segundo a CLINIC, uma nova circular determinou a retomada das análises com treinamento sobre encargo público e um formulário para solicitantes. Sua orientação posterior descreve entrevistas sendo retomadas sob os novos requisitos.",
     "tl": "Ayon sa CLINIC, inatasan ng bagong cable ang mga konsulado na ipagpatuloy ang paghatol sa kaso, kasama ang public-charge training at worksheet ng aplikante. Inilalarawan ng sumunod nitong gabay ang pagpapatuloy ng mga panayam sa ilalim ng bagong mga kinakailangan."
+  },
+  "Congressional period": {
+    "es": "Período del Congreso",
+    "pt": "Período do Congresso",
+    "tl": "Panahon ng Kongreso"
+  },
+  "Current Congress & legal cases": {
+    "es": "Congreso actual y litigios",
+    "pt": "Congresso atual e processos judiciais",
+    "tl": "Kasalukuyang Kongreso at mga kaso sa hukuman"
+  },
+  "Historical legislation": {
+    "es": "Legislación histórica",
+    "pt": "Legislação histórica",
+    "tl": "Mga naunang panukalang batas"
+  },
+  "I am the… *": {
+    "es": "Soy… *",
+    "pt": "Eu sou… *",
+    "tl": "Ako ang… *"
+  },
+  "Choose your role": {
+    "es": "Elige tu función",
+    "pt": "Escolha seu papel",
+    "tl": "Piliin ang iyong papel"
+  },
+  "The applicant is my… *": {
+    "es": "La persona solicitante es mi… *",
+    "pt": "A pessoa solicitante é meu/minha… *",
+    "tl": "Ang aplikante ay aking… *"
+  },
+  "For your own application, choose Applicant. For a self-petition, also choose Applicant.": {
+    "es": "Para tu propia solicitud, incluida una autopetición, elige Solicitante.",
+    "pt": "Para sua própria solicitação, inclusive uma autopetição, escolha Solicitante.",
+    "tl": "Para sa sarili mong aplikasyon o self-petition, piliin ang Aplikante."
+  },
+  "Choose a relationship": {
+    "es": "Elige la relación",
+    "pt": "Escolha o parentesco",
+    "tl": "Piliin ang relasyon"
+  },
+  "Applicant nationality (citizenship) *": {
+    "es": "Nacionalidad (ciudadanía) del solicitante *",
+    "pt": "Nacionalidade (cidadania) do solicitante *",
+    "tl": "Nasyonalidad (pagkamamamayan) ng aplikante *"
+  },
+  "Choose the nationality used for this visa application, not the country of residence. Existing entries need confirmation.": {
+    "es": "Elige la nacionalidad usada en esta solicitud, no el país de residencia. Confirma los datos anteriores.",
+    "pt": "Escolha a nacionalidade usada nesta solicitação, não o país de residência. Confirme os dados anteriores.",
+    "tl": "Piliin ang nasyonalidad na ginamit sa aplikasyon, hindi ang bansang tinitirhan. Kailangang kumpirmahin ang mga dating tala."
+  },
+  "Select the assigned post, or Not assigned. A listing does not mean this post currently processes your visa category.": {
+    "es": "Elige la sede asignada o Sin asignar. Su inclusión no indica que tramite actualmente tu categoría.",
+    "pt": "Escolha o posto designado ou Não designado. A inclusão não indica que ele processe sua categoria atualmente.",
+    "tl": "Piliin ang nakatalagang tanggapan o Wala pang itinalaga. Hindi nangangahulugang kasalukuyan nitong pinoproseso ang iyong kategorya."
+  },
+  "Choose a post": {
+    "es": "Elige una sede",
+    "pt": "Escolha um posto",
+    "tl": "Pumili ng tanggapan"
+  },
+  "Not assigned": {
+    "es": "Sin asignar",
+    "pt": "Não designado",
+    "tl": "Wala pang itinalaga"
+  },
+  "Official post directory": {
+    "es": "Directorio oficial de sedes",
+    "pt": "Diretório oficial de postos",
+    "tl": "Opisyal na direktoryo ng mga tanggapan"
+  },
+  "Suggested rows are not completed events. Fill in known dates and remove steps that have not happened or do not apply. At least one dated milestone is required.": {
+    "es": "Las filas sugeridas no son hechos confirmados. Completa las fechas conocidas y elimina pasos pendientes o no aplicables. Se requiere al menos un hito con fecha.",
+    "pt": "As linhas sugeridas não são eventos concluídos. Preencha datas conhecidas e remova etapas pendentes ou não aplicáveis. É necessário ao menos um marco com data.",
+    "tl": "Hindi pa kumpirmadong pangyayari ang mga mungkahing hanay. Ilagay ang alam na petsa at alisin ang hindi pa nangyari o hindi naaangkop. Kailangan ng kahit isang hakbang na may petsa."
+  },
+  "Did the 2026 issuance pause affect this case?": {
+    "es": "¿Afectó a este caso la pausa de emisión de 2026?",
+    "pt": "A pausa na emissão de 2026 afetou este caso?",
+    "tl": "Naapektuhan ba ang kasong ito ng paghinto ng pag-isyu noong 2026?"
+  },
+  "This nationality was on the 75-country list. That pause is no longer in effect. Nationality alone does not establish an impact: exceptions applied. Add a refusal only if it happened to this applicant.": {
+    "es": "Esta nacionalidad figuraba en la lista de 75 países. La pausa ya no está vigente. La nacionalidad por sí sola no demuestra un impacto: había excepciones. Añade una negativa solo si le ocurrió a esta persona.",
+    "pt": "Esta nacionalidade estava na lista de 75 países. A pausa não está mais em vigor. A nacionalidade por si só não comprova impacto: havia exceções. Adicione uma recusa apenas se ela ocorreu com este solicitante.",
+    "tl": "Kasama ang nasyonalidad na ito sa listahan ng 75 bansa. Wala na ang paghinto. Hindi sapat ang nasyonalidad upang matiyak ang epekto: may mga eksepsiyon. Magdagdag lamang ng pagtanggi kung nangyari ito sa aplikante."
+  },
+  "State Department update": {
+    "es": "Actualización del Departamento de Estado",
+    "pt": "Atualização do Departamento de Estado",
+    "tl": "Update ng Department of State"
+  },
+  "Add a policy-related refusal": {
+    "es": "Añadir negativa relacionada con una política",
+    "pt": "Adicionar recusa relacionada a uma política",
+    "tl": "Magdagdag ng pagtanggi dahil sa patakaran"
+  },
+  "Choose Yes if you are applying for a visa, petitioning for someone, or following a family member’s or another person’s case with their permission. You will need to add at least one timeline below.": {
+    "es": "Elige Sí si solicitas una visa, presentas una petición por alguien o sigues su caso con su permiso. Deberás añadir al menos una cronología abajo.",
+    "pt": "Escolha Sim se solicita um visto, apresenta uma petição por alguém ou acompanha o caso de outra pessoa com sua permissão. Será necessário adicionar ao menos uma cronologia abaixo.",
+    "tl": "Piliin ang Oo kung aplikante ka, naghahain para sa iba, o sumusubaybay sa kaso ng iba nang may pahintulot. Kailangan mong magdagdag ng kahit isang timeline sa ibaba."
+  },
+  "Saving as a supporter will remove your submitted visa timelines. Choose Yes to keep them. Your signature and story will remain.": {
+    "es": "Guardar como simpatizante eliminará las cronologías enviadas. Elige Sí para conservarlas. Tu firma e historia permanecerán.",
+    "pt": "Salvar como apoiador removerá as cronologias enviadas. Escolha Sim para mantê-las. Sua assinatura e história permanecerão.",
+    "tl": "Aalisin ang mga isinumiteng timeline kapag nag-save bilang tagasuporta. Piliin ang Oo para mapanatili ang mga ito. Mananatili ang lagda at kuwento mo."
+  },
+  "Required when involved · public": {
+    "es": "Obligatorio si participas · público",
+    "pt": "Obrigatório se envolvido · público",
+    "tl": "Kailangan kung kasali · pampubliko"
+  },
+  "Why do we ask you to check in?": {
+    "es": "¿Por qué pedimos una actualización?",
+    "pt": "Por que pedimos uma atualização?",
+    "tl": "Bakit namin hinihiling na mag-update ka?"
+  },
+  "A fresh update, including “no change”, tells us a case is still waiting. This keeps our community estimates current. On the visa data page, readers can filter to cases confirmed in the last 30, 60, or 90 days. Reminders are optional and never change your timeline automatically.": {
+    "es": "Una actualización, incluso «sin cambios», confirma que el caso sigue esperando y mantiene las estimaciones al día. En los datos de visas se pueden filtrar casos confirmados en los últimos 30, 60 o 90 días. Los recordatorios son opcionales y nunca modifican automáticamente tu cronología.",
+    "pt": "Uma atualização, mesmo «sem mudanças», confirma que o caso continua aguardando e mantém as estimativas atuais. Nos dados de vistos, é possível filtrar casos confirmados nos últimos 30, 60 ou 90 dias. Lembretes são opcionais e nunca alteram sua cronologia automaticamente.",
+    "tl": "Ang update, kahit “walang pagbabago”, ay nagpapatunay na naghihintay pa ang kaso. Pinapanatili nitong napapanahon ang mga pagtataya. Sa datos ng visa, maaaring salain ang mga kasong kinumpirma sa nakaraang 30, 60, o 90 araw. Opsiyonal ang paalala at hindi nito awtomatikong binabago ang timeline."
+  },
+  "Click a state or congressional district to see your representatives, their relevant votes, and bill sponsorships.": {
+    "es": "Haz clic en un estado o distrito para ver a tus representantes, sus votos relevantes y los proyectos que patrocinan.",
+    "pt": "Clique em um estado ou distrito para ver seus representantes, votos relevantes e projetos que patrocinam.",
+    "tl": "I-click ang estado o distrito para makita ang mga kinatawan, kaugnay nilang boto, at mga panukalang itinataguyod."
+  },
+  "What is included in this review?": {
+    "es": "¿Qué incluye esta revisión?",
+    "pt": "O que esta revisão inclui?",
+    "tl": "Ano ang kasama sa pagsusuring ito?"
+  },
+  "Reviewed November 12, 2026: 22 bills across 17 initiatives, covering consular capacity, wait-time transparency, family reunification, visa-number backlogs, restrictions, and fees. Current proposals are shown alongside selected predecessors from the 116th–118th Congresses.": {
+    "es": "Revisado el 12 de noviembre de 2026: 22 proyectos en 17 iniciativas sobre capacidad consular, transparencia, reunificación familiar, cupos de visas, restricciones y tasas. Se incluyen propuestas actuales y antecedentes de los Congresos 116.º a 118.º.",
+    "pt": "Revisado em 12 de novembro de 2026: 22 projetos em 17 iniciativas sobre capacidade consular, transparência, reunificação familiar, cotas de vistos, restrições e taxas. Inclui propostas atuais e antecedentes dos Congressos 116º a 118º.",
+    "tl": "Sinuri noong Nobyembre 12, 2026: 22 panukala sa 17 inisyatiba tungkol sa kapasidad ng konsulado, transparency, muling pagsasama ng pamilya, pila sa bilang ng visa, mga paghihigpit at bayarin. Kasama ang kasalukuyang panukala at piling naunang bersiyon sa ika-116 hanggang ika-118 Kongreso."
+  },
+  "Six passage or concurrence roll calls are included. This is a sourced, curated record, not every immigration bill, amendment, procedural vote, or member statement. Sponsorship is separate from voting; a missing vote is not opposition.": {
+    "es": "Se incluyen seis votaciones nominales de aprobación o conformidad. Es una selección documentada, no todos los proyectos, enmiendas, votos de procedimiento o declaraciones sobre inmigración. Patrocinar no es votar; la ausencia de voto no significa oposición.",
+    "pt": "Inclui seis votações nominais de aprovação ou concordância. É uma seleção documentada, não todos os projetos, emendas, votos de procedimento ou declarações sobre imigração. Patrocinar não é votar; a ausência de voto não significa oposição.",
+    "tl": "Kasama ang anim na roll call sa pagpasa o pagsang-ayon. Piling rekord itong may sanggunian, hindi lahat ng panukala, susog, boto sa pamamaraan, o pahayag sa imigrasyon. Magkaiba ang pagtataguyod at pagboto; hindi pagtutol ang kawalan ng boto."
+  },
+  "Official bill names and congressional action text are shown in their original English. Summaries and interface labels follow your selected language.": {
+    "es": "Los nombres oficiales y las actuaciones del Congreso se muestran en inglés original. Los resúmenes y controles usan tu idioma.",
+    "pt": "Os nomes oficiais e as ações do Congresso aparecem no inglês original. Resumos e controles usam seu idioma.",
+    "tl": "Nasa orihinal na Ingles ang opisyal na pangalan at aksiyon ng Kongreso. Nasa piniling wika ang buod at mga label."
+  },
+  "Official legislative record": {
+    "es": "Registro legislativo oficial",
+    "pt": "Registro legislativo oficial",
+    "tl": "Opisyal na rekord ng batas"
+  },
+  "Roll call": {
+    "es": "Votación nominal",
+    "pt": "Votação nominal",
+    "tl": "Roll call"
+  },
+  "No recorded floor vote in this reviewed bill record.": {
+    "es": "No consta votación nominal del pleno en este registro revisado.",
+    "pt": "Não consta votação nominal em plenário neste registro revisado.",
+    "tl": "Walang nakatalang indibidwal na boto sa plenaryo sa sinuring rekord."
+  },
+  "All official actions & votes": {
+    "es": "Todas las actuaciones y votos oficiales",
+    "pt": "Todas as ações e votos oficiais",
+    "tl": "Lahat ng opisyal na aksiyon at boto"
+  },
+  "Sponsors & cosponsors": {
+    "es": "Patrocinadores y copatrocinadores",
+    "pt": "Patrocinadores e copatrocinadores",
+    "tl": "Mga sponsor at cosponsor"
+  },
+  "These votes cover the whole legislative package. They do not establish a member’s position on the visa provision alone.": {
+    "es": "Estos votos abarcan todo el paquete legislativo. No establecen la postura individual sobre la disposición de visas.",
+    "pt": "Esses votos abrangem todo o pacote legislativo. Não estabelecem a posição individual sobre a disposição de vistos.",
+    "tl": "Saklaw ng mga botong ito ang buong batas. Hindi nito tinitiyak ang posisyon sa probisyon ng visa lamang."
+  },
+  "The Senate’s December 2, 2020 voice vote on amended H.R. 1044 has no individual roll-call positions. S. 386 is a separate bill; do not attribute that voice vote to it.": {
+    "es": "La votación oral del Senado del 2 de diciembre de 2020 sobre H.R. 1044 enmendado no registra votos individuales. S. 386 es otro proyecto; esa votación no le corresponde.",
+    "pt": "A votação por voz do Senado de 2 de dezembro de 2020 sobre H.R. 1044 emendado não registra votos individuais. S. 386 é outro projeto; aquela votação não corresponde a ele.",
+    "tl": "Walang indibidwal na tala ang voice vote ng Senado noong Disyembre 2, 2020 sa binagong H.R. 1044. Ibang panukala ang S. 386; huwag iugnay rito ang botong iyon."
+  },
+  "Relevant voting history": {
+    "es": "Historial de votos relevantes",
+    "pt": "Histórico de votos relevantes",
+    "tl": "Kaugnay na kasaysayan ng pagboto"
+  },
+  "Votes are matched by congressional member ID, including service in a previous chamber. “Not listed” means the member has no entry in that roll call; it is not a vote against the bill.": {
+    "es": "Los votos se vinculan por identificador del miembro, incluso si antes servía en otra cámara. «No figura» indica ausencia en esa lista, no un voto contrario.",
+    "pt": "Os votos são vinculados pelo identificador do membro, inclusive se antes servia em outra câmara. «Não consta» indica ausência na lista, não um voto contrário.",
+    "tl": "Itinutugma ang boto sa ID ng miyembro, kasama ang dating serbisyo sa kabilang kapulungan. Ang “Wala sa tala” ay kawalan ng entry sa roll call, hindi boto laban sa panukala."
+  },
+  "Vote on the whole package": {
+    "es": "Voto sobre todo el paquete",
+    "pt": "Voto sobre todo o pacote",
+    "tl": "Boto sa buong batas"
+  },
+  "Verify vote": {
+    "es": "Verificar voto",
+    "pt": "Verificar voto",
+    "tl": "Suriin ang boto"
+  },
+  "Sponsorship and bills without recorded votes": {
+    "es": "Patrocinio y proyectos sin votos registrados",
+    "pt": "Patrocínio e projetos sem votos registrados",
+    "tl": "Pagtataguyod at mga panukalang walang naitalang boto"
+  },
+  "Sponsorship is a legislative action, not a vote. Absence from the sponsor list does not establish a member’s position.": {
+    "es": "El patrocinio es una actuación legislativa, no un voto. No figurar en la lista no establece una postura.",
+    "pt": "O patrocínio é uma ação legislativa, não um voto. Não constar na lista não estabelece uma posição.",
+    "tl": "Aksiyon sa batas ang pagtataguyod, hindi isang boto. Hindi matutukoy ang posisyon mula sa kawalan sa listahan ng sponsor."
+  },
+  "Selected address": {
+    "es": "Dirección seleccionada",
+    "pt": "Endereço selecionado",
+    "tl": "Napiling address"
+  },
+  "Selected address and congressional districts": {
+    "es": "Dirección seleccionada y distritos",
+    "pt": "Endereço selecionado e distritos",
+    "tl": "Napiling address at mga distrito"
+  },
+  "US Census boundaries": {
+    "es": "Límites del Censo de EE. UU.",
+    "pt": "Limites do Censo dos EUA",
+    "tl": "Mga hangganan mula sa US Census"
+  },
+  "119th Congress": {
+    "es": "119.º Congreso",
+    "pt": "119º Congresso",
+    "tl": "Ika-119 na Kongreso"
+  },
+  "Hide district boundaries": {
+    "es": "Ocultar límites de distritos",
+    "pt": "Ocultar limites dos distritos",
+    "tl": "Itago ang mga hangganan ng distrito"
+  },
+  "Show district boundaries": {
+    "es": "Mostrar límites de distritos",
+    "pt": "Mostrar limites dos distritos",
+    "tl": "Ipakita ang mga hangganan ng distrito"
+  },
+  "Review the address and district before confirming. Boundaries are for the 119th Congress; future election maps may differ.": {
+    "es": "Revisa la dirección y el distrito antes de confirmar. Los límites corresponden al 119.º Congreso; pueden cambiar para futuras elecciones.",
+    "pt": "Revise o endereço e o distrito antes de confirmar. Os limites são do 119º Congresso; podem mudar em futuras eleições.",
+    "tl": "Suriin ang address at distrito bago kumpirmahin. Para sa ika-119 na Kongreso ang mga hangganan; maaaring iba ang mapa sa susunod na halalan."
+  },
+  "District selected: {district}. Search details have been cleared.": {
+    "es": "Distrito elegido: {district}. Se borraron los datos de búsqueda.",
+    "pt": "Distrito escolhido: {district}. Os dados da busca foram apagados.",
+    "tl": "Napiling distrito: {district}. Nabura na ang detalye ng paghahanap."
+  },
+  "Use this district": {
+    "es": "Usar este distrito",
+    "pt": "Usar este distrito",
+    "tl": "Gamitin ang distritong ito"
+  },
+  "Processing capacity": {
+    "es": "Capacidad de procesamiento",
+    "pt": "Capacidade de processamento",
+    "tl": "Kapasidad sa pagproseso"
+  },
+  "Family reunification": {
+    "es": "Reunificación familiar",
+    "pt": "Reunificação familiar",
+    "tl": "Muling pagsasama ng pamilya"
+  },
+  "Visa availability": {
+    "es": "Disponibilidad de visas",
+    "pt": "Disponibilidade de vistos",
+    "tl": "Pagkakaroon ng mga visa"
+  },
+  "Fees & oversight": {
+    "es": "Tasas y supervisión",
+    "pt": "Taxas e supervisão",
+    "tl": "Bayarin at pangangasiwa"
+  },
+  "Historical · not enacted": {
+    "es": "Histórico · no promulgado",
+    "pt": "Histórico · não aprovado como lei",
+    "tl": "Nauna · hindi naging batas"
+  },
+  "Enacted · implementation watch": {
+    "es": "Promulgado · seguimiento de aplicación",
+    "pt": "Promulgado · acompanhamento da implementação",
+    "tl": "Naging batas · sinusubaybayan ang pagpapatupad"
+  },
+  "Compare the proposed changes with the needs of applicants and their families.": {
+    "es": "Compara los cambios propuestos con las necesidades de solicitantes y familias.",
+    "pt": "Compare as mudanças propostas com as necessidades de solicitantes e famílias.",
+    "tl": "Ihambing ang mga mungkahing pagbabago sa pangangailangan ng aplikante at pamilya."
+  },
+  "Introduced": {
+    "es": "Presentado",
+    "pt": "Apresentado",
+    "tl": "Inihain"
+  },
+  "Read the original bill and its subsequent actions in the official record.": {
+    "es": "Lee el proyecto original y sus actuaciones posteriores en el registro oficial.",
+    "pt": "Leia o projeto original e suas ações posteriores no registro oficial.",
+    "tl": "Basahin ang orihinal na panukala at sumunod na aksiyon sa opisyal na rekord."
+  },
+  "Latest recorded action": {
+    "es": "Última actuación registrada",
+    "pt": "Última ação registrada",
+    "tl": "Pinakahuling naitalang aksiyon"
+  },
+  "The proposal remains in committee in the reviewed record.": {
+    "es": "La propuesta sigue en comisión según el registro revisado.",
+    "pt": "A proposta continua em comissão segundo o registro revisado.",
+    "tl": "Nasa komite pa ang panukala ayon sa sinuring rekord."
+  },
+  "GovInfo · official bill record": {
+    "es": "GovInfo · registro oficial",
+    "pt": "GovInfo · registro oficial",
+    "tl": "GovInfo · opisyal na rekord"
+  },
+  "Ask your representatives about the visa provisions, their position, and the next steps. Inclusion here is not an endorsement of every provision.": {
+    "es": "Pregunta a tus representantes sobre las disposiciones de visas, su postura y los próximos pasos. Incluirlo aquí no respalda todas sus disposiciones.",
+    "pt": "Pergunte aos representantes sobre as disposições de vistos, sua posição e os próximos passos. A inclusão aqui não endossa todas as disposições.",
+    "tl": "Tanungin ang mga kinatawan tungkol sa probisyon ng visa, posisyon nila, at susunod na hakbang. Hindi pag-endorso sa lahat ng probisyon ang pagkakasama rito."
+  },
+  "The congressional session has ended. A new bill is needed for the proposal to advance.": {
+    "es": "La sesión del Congreso terminó. Se necesita un nuevo proyecto para avanzar.",
+    "pt": "A sessão do Congresso terminou. É necessário um novo projeto para avançar.",
+    "tl": "Natapos na ang sesyon ng Kongreso. Kailangan ng bagong panukala upang umusad."
+  },
+  "Ask your representatives whether they support reintroducing these proposals.": {
+    "es": "Pregunta si tus representantes apoyan volver a presentar estas propuestas.",
+    "pt": "Pergunte se seus representantes apoiam reapresentar estas propostas.",
+    "tl": "Tanungin kung sinusuportahan ng mga kinatawan ang muling paghahain ng mga panukalang ito."
+  },
+  "Review the visa-related provision separately from the wider legislation.": {
+    "es": "Revisa la disposición de visas por separado del resto de la ley.",
+    "pt": "Revise a disposição de vistos separadamente do restante da lei.",
+    "tl": "Suriin nang hiwalay ang probisyon ng visa mula sa kabuuang batas."
+  },
+  "Enacted. Check agency guidance for implementation.": {
+    "es": "Promulgado. Consulta las instrucciones de la agencia sobre su aplicación.",
+    "pt": "Promulgado. Consulte as orientações da agência sobre a implementação.",
+    "tl": "Naging batas. Tingnan ang gabay ng ahensiya sa pagpapatupad."
+  },
+  "Petitioner": {
+    "es": "Peticionario/a",
+    "pt": "Peticionário/a",
+    "tl": "Petitioner"
+  },
+  "Applicant": {
+    "es": "Solicitante",
+    "pt": "Solicitante",
+    "tl": "Aplikante"
+  },
+  "Other relationship to the applicant": {
+    "es": "Otra relación con el solicitante",
+    "pt": "Outra relação com o solicitante",
+    "tl": "Ibang relasyon sa aplikante"
+  },
+  "DS-160 submitted": {
+    "es": "DS-160 enviado",
+    "pt": "DS-160 enviado",
+    "tl": "Naisumite ang DS-160"
+  },
+  "DS-260 submitted": {
+    "es": "DS-260 enviado",
+    "pt": "DS-260 enviado",
+    "tl": "Naisumite ang DS-260"
+  },
+  "Petition / application filed": {
+    "es": "Petición / solicitud presentada",
+    "pt": "Petição / solicitação apresentada",
+    "tl": "Naihain ang petisyon / aplikasyon"
+  },
+  "At KCC": {
+    "es": "En el KCC",
+    "pt": "No KCC",
+    "tl": "Nasa KCC"
+  },
+  "Visa application submitted": {
+    "es": "Solicitud de visa enviada",
+    "pt": "Solicitação de visto enviada",
+    "tl": "Naisumite ang aplikasyon ng visa"
+  },
+  "Choose a relationship that matches your role and visa category": {
+    "es": "Elige una relación compatible con tu función y categoría de visa",
+    "pt": "Escolha uma relação compatível com seu papel e categoria de visto",
+    "tl": "Pumili ng relasyong tugma sa papel at kategorya ng visa"
+  },
+  "Add at least one visa case when you are personally involved": {
+    "es": "Añade al menos un caso si participas personalmente",
+    "pt": "Adicione ao menos um caso se estiver pessoalmente envolvido",
+    "tl": "Magdagdag ng kahit isang kaso kung personal kang kasali"
+  },
+  "Choose personally involved to include visa cases": {
+    "es": "Selecciona participación personal para incluir casos",
+    "pt": "Selecione envolvimento pessoal para incluir casos",
+    "tl": "Piliing personal na kasali upang magsama ng mga kaso"
+  },
+  "Choose your role for each visa case": {
+    "es": "Elige tu función en cada caso",
+    "pt": "Escolha seu papel em cada caso",
+    "tl": "Piliin ang papel mo sa bawat kaso"
+  },
+  "Confirm the applicant nationality for each visa case": {
+    "es": "Confirma la nacionalidad en cada caso",
+    "pt": "Confirme a nacionalidade em cada caso",
+    "tl": "Kumpirmahin ang nasyonalidad sa bawat kaso"
+  },
+  "Street map could not load. You can still confirm the Census district below.": {
+    "es": "No se pudo cargar el mapa. Aún puedes confirmar el distrito del Censo abajo.",
+    "pt": "Não foi possível carregar o mapa. Você ainda pode confirmar o distrito do Censo abaixo.",
+    "tl": "Hindi ma-load ang mapa. Maaari mo pa ring kumpirmahin ang distrito ng Census sa ibaba."
+  },
+  "District boundaries could not load. Try again.": {
+    "es": "No se cargaron los límites. Inténtalo de nuevo.",
+    "pt": "Os limites não carregaram. Tente novamente.",
+    "tl": "Hindi ma-load ang mga hangganan. Subukan muli."
+  },
+  "No address suggestions. Try a complete address, then use Find district.": {
+    "es": "Sin sugerencias. Escribe una dirección completa y pulsa Buscar distrito.",
+    "pt": "Sem sugestões. Digite um endereço completo e use Buscar distrito.",
+    "tl": "Walang mungkahing address. Ilagay ang kumpletong address at gamitin ang Hanapin ang distrito."
+  },
+  "Address suggestions are unavailable. Enter a full address or select your district manually.": {
+    "es": "Las sugerencias no están disponibles. Escribe la dirección completa o elige el distrito manualmente.",
+    "pt": "As sugestões estão indisponíveis. Digite o endereço completo ou escolha o distrito manualmente.",
+    "tl": "Hindi magagamit ang mga mungkahi. Ilagay ang buong address o piliin nang manu-mano ang distrito."
+  },
+  "The map service is temporarily unavailable. Please try again.": {
+    "es": "El servicio de mapas no está disponible temporalmente. Inténtalo de nuevo.",
+    "pt": "O serviço de mapas está temporariamente indisponível. Tente novamente.",
+    "tl": "Pansamantalang hindi magagamit ang mapa. Subukan muli."
+  },
+  "Yea": {
+    "es": "A favor",
+    "pt": "A favor",
+    "tl": "Pabor"
+  },
+  "Aye": {
+    "es": "A favor",
+    "pt": "A favor",
+    "tl": "Pabor"
+  },
+  "Nay": {
+    "es": "En contra",
+    "pt": "Contra",
+    "tl": "Tutol"
+  },
+  "Not Voting": {
+    "es": "No votó",
+    "pt": "Não votou",
+    "tl": "Hindi bumoto"
+  },
+  "Present": {
+    "es": "Presente",
+    "pt": "Presente",
+    "tl": "Naroroon"
+  },
+  "Not listed": {
+    "es": "No figura",
+    "pt": "Não consta",
+    "tl": "Wala sa tala"
+  },
+  "Sponsor": {
+    "es": "Patrocinador",
+    "pt": "Patrocinador",
+    "tl": "Sponsor"
+  },
+  "Cosponsor": {
+    "es": "Copatrocinador",
+    "pt": "Copatrocinador",
+    "tl": "Cosponsor"
+  },
+  "Not a listed sponsor": {
+    "es": "No figura como patrocinador",
+    "pt": "Não consta como patrocinador",
+    "tl": "Wala sa listahan ng sponsor"
+  },
+  "Roll call above": {
+    "es": "Votación nominal arriba",
+    "pt": "Votação nominal acima",
+    "tl": "Roll call sa itaas"
+  },
+  "No individual roll call in this review": {
+    "es": "Sin votación individual en esta revisión",
+    "pt": "Sem votação individual nesta revisão",
+    "tl": "Walang indibidwal na roll call sa pagsusuring ito"
+  },
+  "Allow eligible holders of certain work and other nonimmigrant visas to renew inside the United States, avoiding an overseas consular trip.": {
+    "es": "Permitir a titulares elegibles de ciertas visas renovar dentro de Estados Unidos, evitando un viaje consular al extranjero.",
+    "pt": "Permitir que titulares elegíveis de certos vistos renovem nos Estados Unidos, evitando uma viagem consular ao exterior.",
+    "tl": "Payagan ang kwalipikadong may hawak ng ilang visa na mag-renew sa loob ng US upang maiwasan ang paglalakbay sa konsulado sa ibang bansa."
+  },
+  "Limit blanket diversity-visa pauses, require notice and public explanations, and protect selectees from specified pause-related losses of eligibility.": {
+    "es": "Limitar pausas generales de visas de diversidad, exigir avisos y explicaciones públicas y proteger a seleccionados ante ciertas pérdidas de elegibilidad.",
+    "pt": "Limitar pausas gerais de vistos de diversidade, exigir avisos e explicações públicas e proteger selecionados contra certas perdas de elegibilidade.",
+    "tl": "Limitahan ang malawakang paghinto ng diversity visa, humingi ng abiso at paliwanag, at protektahan ang napili laban sa ilang pagkawala ng pagiging kwalipikado."
+  },
+  "Recapture unused immigrant visas, change family visa limits, and protect families affected by long queues and age-outs.": {
+    "es": "Recuperar visas no utilizadas, cambiar límites familiares y proteger a familias afectadas por largas colas y límites de edad.",
+    "pt": "Recuperar vistos não utilizados, alterar limites familiares e proteger famílias afetadas por longas filas e limites de idade.",
+    "tl": "Ibalik ang hindi nagamit na visa, baguhin ang limitasyon sa family visa, at protektahan ang pamilyang apektado ng mahabang pila at paglampas sa takdang edad."
+  },
+  "Limit the use of broad entry restrictions and strengthen nondiscrimination protections and congressional oversight.": {
+    "es": "Limitar restricciones amplias de entrada y reforzar la no discriminación y la supervisión del Congreso.",
+    "pt": "Limitar restrições amplas de entrada e reforçar a não discriminação e a supervisão do Congresso.",
+    "tl": "Limitahan ang malawakang paghihigpit sa pagpasok at palakasin ang proteksiyon laban sa diskriminasyon at pangangasiwa ng Kongreso."
+  },
+  "A broad immigration package with legal-visa backlog relief, higher per-country caps, age-out protections, and proposed processing resources. Its enforcement provisions also deserve review.": {
+    "es": "Paquete amplio con alivio de atrasos, mayores cupos por país, protección por edad y recursos de procesamiento. También deben revisarse sus disposiciones de control migratorio.",
+    "pt": "Pacote amplo com redução de atrasos, maiores cotas por país, proteção por idade e recursos de processamento. As disposições de fiscalização também merecem análise.",
+    "tl": "Malawak na pakete na may lunas sa backlog, mas mataas na limitasyon bawat bansa, proteksiyon sa edad, at pondo sa pagproseso. Dapat ding suriin ang mga probisyon sa pagpapatupad ng batas."
+  },
+  "Recapture unused immigrant visas for nurses and physicians, with provisions for accompanying family members and expedited processing.": {
+    "es": "Recuperar visas para enfermeros y médicos, con disposiciones para familiares acompañantes y procesamiento acelerado.",
+    "pt": "Recuperar vistos para enfermeiros e médicos, com disposições para familiares acompanhantes e processamento acelerado.",
+    "tl": "Ibalik ang hindi nagamit na visa para sa nars at doktor, kasama ang probisyon para sa pamilya at mabilis na pagproseso."
+  },
+  "Create a temporary family-visit visa route, including for some relatives waiting for an immigrant visa, subject to eligibility and sponsorship conditions.": {
+    "es": "Crear una vía de visita familiar temporal, incluso para algunos familiares en espera de visa de inmigrante, sujeta a requisitos de elegibilidad y patrocinio.",
+    "pt": "Criar uma via de visita familiar temporária, inclusive para alguns familiares aguardando visto de imigrante, sujeita a requisitos de elegibilidade e patrocínio.",
+    "tl": "Gumawa ng pansamantalang family-visit visa, kasama ang ilang kamag-anak na naghihintay ng immigrant visa, ayon sa kondisyon ng pagiging kwalipikado at sponsor."
+  },
+  "Expand case-by-case discretion for certain relatives of US citizens facing immigration barriers. This is family-unity relief, not a general visa wait-time deadline.": {
+    "es": "Ampliar la discreción caso por caso para ciertos familiares de ciudadanos con barreras migratorias. Es alivio para la unidad familiar, no un plazo general para visas.",
+    "pt": "Ampliar a discricionariedade caso a caso para certos familiares de cidadãos com barreiras migratórias. É proteção à união familiar, não um prazo geral para vistos.",
+    "tl": "Palawakin ang pagpapasya bawat kaso para sa ilang kamag-anak ng US citizen na may hadlang sa imigrasyon. Lunas ito para sa pamilya, hindi pangkalahatang deadline sa visa."
+  },
+  "Proposed interview-waiver expansion, remote-interview pilots, and responses to excessive interview waits. The 118th Congress ended without enactment.": {
+    "es": "Proponía más exenciones de entrevista, pruebas de entrevistas remotas y medidas contra esperas excesivas. No fue promulgado en el 118.º Congreso.",
+    "pt": "Propunha mais dispensas de entrevista, testes de entrevistas remotas e medidas contra esperas excessivas. Não virou lei no 118º Congresso.",
+    "tl": "Iminungkahi ang mas malawak na interview waiver, pilotong remote interview, at tugon sa mahabang paghihintay. Hindi naging batas sa ika-118 Kongreso."
+  },
+  "Proposed reporting and personnel reassignment at posts with excessive visitor-visa waits. The 118th Congress ended without enactment.": {
+    "es": "Proponía informes y reasignación de personal en sedes con esperas excesivas para visas de visitante. No fue promulgado en el 118.º Congreso.",
+    "pt": "Propunha relatórios e redistribuição de pessoal em postos com esperas excessivas para vistos de visitante. Não virou lei no 118º Congresso.",
+    "tl": "Iminungkahi ang pag-uulat at paglilipat ng kawani sa mga tanggapang may sobrang tagal na visitor visa. Hindi naging batas sa ika-118 Kongreso."
+  },
+  "Proposed electronic delivery of visa communications and required domestic-violence information. The 118th Congress ended without enactment.": {
+    "es": "Proponía comunicaciones electrónicas y entrega de información obligatoria sobre violencia doméstica. No fue promulgado en el 118.º Congreso.",
+    "pt": "Propunha comunicações eletrônicas e envio de informações obrigatórias sobre violência doméstica. Não virou lei no 118º Congresso.",
+    "tl": "Iminungkahi ang elektronikong paghahatid ng komunikasyon sa visa at impormasyon sa karahasan sa tahanan. Hindi naging batas sa ika-118 Kongreso."
+  },
+  "Proposed changes to employment and family per-country limits and related employment-visa safeguards. The 118th Congress ended without enactment.": {
+    "es": "Proponía cambios a los límites por país y garantías de visas de empleo. No fue promulgado en el 118.º Congreso.",
+    "pt": "Propunha mudanças nos limites por país e garantias de vistos de emprego. Não virou lei no 118º Congresso.",
+    "tl": "Iminungkahi ang pagbabago sa limitasyon bawat bansa at proteksiyon sa employment visa. Hindi naging batas sa ika-118 Kongreso."
+  },
+  "Historical per-country cap reform. The House passed H.R. 1044; the Senate passed an amended version by voice vote. The versions were not reconciled into law.": {
+    "es": "Reforma histórica de límites por país. La Cámara aprobó H.R. 1044 y el Senado una versión enmendada mediante voto oral. No se conciliaron para convertirse en ley.",
+    "pt": "Reforma histórica de limites por país. A Câmara aprovou H.R. 1044 e o Senado uma versão emendada por voto de voz. As versões não foram conciliadas em lei.",
+    "tl": "Naunang reporma sa limitasyon bawat bansa. Ipinasa ng House ang H.R. 1044 at ng Senado ang binagong bersiyon sa voice vote. Hindi napag-isa ang mga bersiyon upang maging batas."
+  },
+  "The earlier NO BAN Act passed the House in 2021 but did not become law. Its recorded vote provides historical context for the current proposal.": {
+    "es": "El NO BAN Act anterior pasó la Cámara en 2021, pero no se convirtió en ley. Su voto ofrece contexto para la propuesta actual.",
+    "pt": "O NO BAN Act anterior passou na Câmara em 2021, mas não virou lei. Seu voto oferece contexto para a proposta atual.",
+    "tl": "Ipinasa ng House ang naunang NO BAN Act noong 2021 ngunit hindi naging batas. Nagbibigay ng konteksto ang botong iyon sa kasalukuyang panukala."
+  },
+  "Public Law 119-21 created a nonimmigrant visa integrity fee with a statutory initial floor of $250. Track implementation separately from enactment; this is not a fee-payment instruction.": {
+    "es": "La Ley Pública 119-21 creó una tasa de integridad para visas no inmigrantes con mínimo inicial de $250. Distingue su aplicación de su promulgación; esto no es una instrucción de pago.",
+    "pt": "A Lei Pública 119-21 criou uma taxa de integridade para vistos não imigrantes com mínimo inicial de $250. Distinga implementação de promulgação; isto não é instrução de pagamento.",
+    "tl": "Lumikha ang Public Law 119-21 ng visa integrity fee na may paunang minimum na $250. Magkaiba ang pagiging batas at pagpapatupad; hindi ito tagubilin sa pagbabayad."
+  },
+  "The FY2026 defense authorization law includes a sense of Congress on modernizing and integrating consular information systems (§5120). This is not an enforceable processing deadline.": {
+    "es": "La ley de autorización de defensa de 2026 expresa la posición del Congreso sobre modernizar e integrar sistemas consulares (§5120). No establece un plazo exigible de procesamiento.",
+    "pt": "A lei de autorização de defesa de 2026 expressa a posição do Congresso sobre modernizar e integrar sistemas consulares (§5120). Não estabelece um prazo obrigatório de processamento.",
+    "tl": "Kasama sa batas sa depensa para sa FY2026 ang pananaw ng Kongreso sa pagmodernisa at pagsasama ng mga sistemang konsular (§5120). Hindi ito deadline na maipatutupad sa pagproseso."
+  },
+  "Address suggestions and street maps use Azure Maps and its mapping providers. Census identifies the district. Reunite Now does not save the search address, coordinates, or results; only the state and district you confirm are saved.": {
+    "es": "Las sugerencias y mapas usan Azure Maps y sus proveedores. El Censo identifica el distrito. Reunite Now no guarda la dirección, coordenadas ni resultados; solo el estado y distrito confirmados.",
+    "pt": "Sugestões e mapas usam Azure Maps e seus fornecedores. O Censo identifica o distrito. Reunite Now não salva endereço, coordenadas ou resultados; apenas estado e distrito confirmados.",
+    "tl": "Gumagamit ang mga mungkahi at mapa ng Azure Maps at mga provider nito. Census ang tumutukoy sa distrito. Hindi iniimbak ng Reunite Now ang address, coordinate, o resulta; estado at distritong kinumpirma mo lamang."
+  },
+  "District lookup sends address searches to Azure Maps and its mapping providers, and coordinates or full-address fallback requests to the US Census Bureau. Reunite Now does not retain the search address, coordinates, or results. Only the confirmed state and district are saved. These providers process requests under their own privacy policies. You can select your district manually instead.": {
+    "es": "La búsqueda envía direcciones a Azure Maps y sus proveedores, y coordenadas o consultas de dirección completa al Censo de EE. UU. Reunite Now no retiene direcciones, coordenadas ni resultados; solo estado y distrito confirmados. Los proveedores tienen sus propias políticas de privacidad. Puedes elegir el distrito manualmente.",
+    "pt": "A busca envia endereços ao Azure Maps e seus fornecedores, e coordenadas ou consultas de endereço completo ao Censo dos EUA. Reunite Now não retém endereços, coordenadas ou resultados; apenas estado e distrito confirmados. Os fornecedores têm suas próprias políticas de privacidade. Você pode escolher o distrito manualmente.",
+    "tl": "Ipinapadala ang address sa Azure Maps at mga provider nito, at coordinate o buong address sa US Census Bureau. Hindi iniimbak ng Reunite Now ang address, coordinate, o resulta; ang kinumpirmang estado at distrito lamang. May sariling patakaran sa privacy ang mga provider. Maaari mong piliin nang manu-mano ang distrito."
+  },
+  "Azure Maps": {
+    "es": "Azure Maps",
+    "pt": "Azure Maps",
+    "tl": "Azure Maps"
+  },
+  "Domestic Visa Renewal Modernization Act": {
+    "es": "Domestic Visa Renewal Modernization Act",
+    "pt": "Domestic Visa Renewal Modernization Act",
+    "tl": "Domestic Visa Renewal Modernization Act"
+  },
+  "H.R. 10715 · Congress.gov": {
+    "es": "H.R. 10715 · Congress.gov",
+    "pt": "H.R. 10715 · Congress.gov",
+    "tl": "H.R. 10715 · Congress.gov"
+  },
+  "Diversity Visa Protection and Modernization Act": {
+    "es": "Diversity Visa Protection and Modernization Act",
+    "pt": "Diversity Visa Protection and Modernization Act",
+    "tl": "Diversity Visa Protection and Modernization Act"
+  },
+  "H.R. 9457 · Congress.gov": {
+    "es": "H.R. 9457 · Congress.gov",
+    "pt": "H.R. 9457 · Congress.gov",
+    "tl": "H.R. 9457 · Congress.gov"
+  },
+  "Reuniting Families Act": {
+    "es": "Reuniting Families Act",
+    "pt": "Reuniting Families Act",
+    "tl": "Reuniting Families Act"
+  },
+  "H.R. 6565 · Congress.gov": {
+    "es": "H.R. 6565 · Congress.gov",
+    "pt": "H.R. 6565 · Congress.gov",
+    "tl": "H.R. 6565 · Congress.gov"
+  },
+  "S. 3419 · Congress.gov": {
+    "es": "S. 3419 · Congress.gov",
+    "pt": "S. 3419 · Congress.gov",
+    "tl": "S. 3419 · Congress.gov"
+  },
+  "NO BAN Act": {
+    "es": "NO BAN Act",
+    "pt": "NO BAN Act",
+    "tl": "NO BAN Act"
+  },
+  "H.R. 924 · Congress.gov": {
+    "es": "H.R. 924 · Congress.gov",
+    "pt": "H.R. 924 · Congress.gov",
+    "tl": "H.R. 924 · Congress.gov"
+  },
+  "S. 398 · Congress.gov": {
+    "es": "S. 398 · Congress.gov",
+    "pt": "S. 398 · Congress.gov",
+    "tl": "S. 398 · Congress.gov"
+  },
+  "DIGNIDAD (Dignity) Act of 2025": {
+    "es": "DIGNIDAD (Dignity) Act of 2025",
+    "pt": "DIGNIDAD (Dignity) Act of 2025",
+    "tl": "DIGNIDAD (Dignity) Act of 2025"
+  },
+  "H.R. 4393 · Congress.gov": {
+    "es": "H.R. 4393 · Congress.gov",
+    "pt": "H.R. 4393 · Congress.gov",
+    "tl": "H.R. 4393 · Congress.gov"
+  },
+  "Healthcare Workforce Resilience Act": {
+    "es": "Healthcare Workforce Resilience Act",
+    "pt": "Healthcare Workforce Resilience Act",
+    "tl": "Healthcare Workforce Resilience Act"
+  },
+  "S. 2759 · Congress.gov": {
+    "es": "S. 2759 · Congress.gov",
+    "pt": "S. 2759 · Congress.gov",
+    "tl": "S. 2759 · Congress.gov"
+  },
+  "H.R. 5283 · Congress.gov": {
+    "es": "H.R. 5283 · Congress.gov",
+    "pt": "H.R. 5283 · Congress.gov",
+    "tl": "H.R. 5283 · Congress.gov"
+  },
+  "Temporary Family Visitation Act": {
+    "es": "Temporary Family Visitation Act",
+    "pt": "Temporary Family Visitation Act",
+    "tl": "Temporary Family Visitation Act"
+  },
+  "S. 3440 · Congress.gov": {
+    "es": "S. 3440 · Congress.gov",
+    "pt": "S. 3440 · Congress.gov",
+    "tl": "S. 3440 · Congress.gov"
+  },
+  "H.R. 6670 · Congress.gov": {
+    "es": "H.R. 6670 · Congress.gov",
+    "pt": "H.R. 6670 · Congress.gov",
+    "tl": "H.R. 6670 · Congress.gov"
+  },
+  "American Families United Act": {
+    "es": "American Families United Act",
+    "pt": "American Families United Act",
+    "tl": "American Families United Act"
+  },
+  "H.R. 2366 · Congress.gov": {
+    "es": "H.R. 2366 · Congress.gov",
+    "pt": "H.R. 2366 · Congress.gov",
+    "tl": "H.R. 2366 · Congress.gov"
+  },
+  "Visa Processing Improvement Act": {
+    "es": "Visa Processing Improvement Act",
+    "pt": "Visa Processing Improvement Act",
+    "tl": "Visa Processing Improvement Act"
+  },
+  "S. 2632 · Congress.gov": {
+    "es": "S. 2632 · Congress.gov",
+    "pt": "S. 2632 · Congress.gov",
+    "tl": "S. 2632 · Congress.gov"
+  },
+  "Visitor Visa Wait Time Reduction Act": {
+    "es": "Visitor Visa Wait Time Reduction Act",
+    "pt": "Visitor Visa Wait Time Reduction Act",
+    "tl": "Visitor Visa Wait Time Reduction Act"
+  },
+  "H.R. 5127 · Congress.gov": {
+    "es": "H.R. 5127 · Congress.gov",
+    "pt": "H.R. 5127 · Congress.gov",
+    "tl": "H.R. 5127 · Congress.gov"
+  },
+  "Visa Processing Improvement and Paperwork Reduction Act": {
+    "es": "Visa Processing Improvement and Paperwork Reduction Act",
+    "pt": "Visa Processing Improvement and Paperwork Reduction Act",
+    "tl": "Visa Processing Improvement and Paperwork Reduction Act"
+  },
+  "H.R. 9545 · Congress.gov": {
+    "es": "H.R. 9545 · Congress.gov",
+    "pt": "H.R. 9545 · Congress.gov",
+    "tl": "H.R. 9545 · Congress.gov"
+  },
+  "Immigration Visa Efficiency and Security Act of 2023": {
+    "es": "Immigration Visa Efficiency and Security Act of 2023",
+    "pt": "Immigration Visa Efficiency and Security Act of 2023",
+    "tl": "Immigration Visa Efficiency and Security Act of 2023"
+  },
+  "H.R. 6542 · Congress.gov": {
+    "es": "H.R. 6542 · Congress.gov",
+    "pt": "H.R. 6542 · Congress.gov",
+    "tl": "H.R. 6542 · Congress.gov"
+  },
+  "Fairness for High-Skilled Immigrants Act of 2020": {
+    "es": "Fairness for High-Skilled Immigrants Act of 2020",
+    "pt": "Fairness for High-Skilled Immigrants Act of 2020",
+    "tl": "Fairness for High-Skilled Immigrants Act of 2020"
+  },
+  "H.R. 1044 · Congress.gov": {
+    "es": "H.R. 1044 · Congress.gov",
+    "pt": "H.R. 1044 · Congress.gov",
+    "tl": "H.R. 1044 · Congress.gov"
+  },
+  "S. 386 · Congress.gov": {
+    "es": "S. 386 · Congress.gov",
+    "pt": "S. 386 · Congress.gov",
+    "tl": "S. 386 · Congress.gov"
+  },
+  "H.R. 1333 · Congress.gov": {
+    "es": "H.R. 1333 · Congress.gov",
+    "pt": "H.R. 1333 · Congress.gov",
+    "tl": "H.R. 1333 · Congress.gov"
+  },
+  "H.R. 1 · Congress.gov": {
+    "es": "H.R. 1 · Congress.gov",
+    "pt": "H.R. 1 · Congress.gov",
+    "tl": "H.R. 1 · Congress.gov"
+  },
+  "National Defense Authorization Act for Fiscal Year 2026": {
+    "es": "National Defense Authorization Act for Fiscal Year 2026",
+    "pt": "National Defense Authorization Act for Fiscal Year 2026",
+    "tl": "National Defense Authorization Act for Fiscal Year 2026"
+  },
+  "S. 1071 · Congress.gov": {
+    "es": "S. 1071 · Congress.gov",
+    "pt": "S. 1071 · Congress.gov",
+    "tl": "S. 1071 · Congress.gov"
+  },
+  "Visa integrity fee · Public Law 119-21": {
+    "es": "Tasa de integridad de visa · Ley Pública 119-21",
+    "pt": "Taxa de integridade do visto · Lei Pública 119-21",
+    "tl": "Visa integrity fee · Public Law 119-21"
+  },
+  "confirmed nationalities": {
+    "es": "nacionalidades confirmadas",
+    "pt": "nacionalidades confirmadas",
+    "tl": "kinumpirmang nasyonalidad"
+  },
+  "The map groups cases by confirmed applicant nationality. Older entries without a confirmed nationality remain in the table but are excluded from the map. The post filter selects the processing embassy or consulate. Medians describe reported durations, not predictions; each metric shows its own sample size.": {
+    "es": "El mapa agrupa por nacionalidad confirmada. Los datos antiguos sin confirmación permanecen en la tabla, pero no en el mapa. El filtro de sede selecciona el consulado. Las medianas describen duraciones, no predicciones; cada métrica muestra su muestra.",
+    "pt": "O mapa agrupa por nacionalidade confirmada. Dados antigos sem confirmação permanecem na tabela, mas não no mapa. O filtro de posto seleciona o consulado. Medianas descrevem durações, não previsões; cada métrica mostra sua amostra.",
+    "tl": "Pinapangkat ng mapa ayon sa kinumpirmang nasyonalidad. Nananatili sa talahanayan ang lumang tala na hindi pa kinumpirma, ngunit wala sa mapa. Pinipili ng post filter ang konsulado. Tagal ang inilalarawan ng median, hindi hula; may sariling bilang ng sample ang bawat sukatan."
+  },
+  "Microsoft privacy statement": {
+    "es": "Privacidad de Microsoft",
+    "pt": "Privacidade da Microsoft",
+    "tl": "Patakaran sa privacy ng Microsoft"
+  },
+  "Immigrant visa process": {
+    "es": "Proceso de visa de inmigrante",
+    "pt": "Processo de visto de imigrante",
+    "tl": "Proseso ng immigrant visa"
+  },
+  "K-1 visa process": {
+    "es": "Proceso de visa K-1",
+    "pt": "Processo de visto K-1",
+    "tl": "Proseso ng K-1 visa"
+  },
+  "Diversity visa process": {
+    "es": "Proceso de visa de diversidad",
+    "pt": "Processo de visto de diversidade",
+    "tl": "Proseso ng diversity visa"
+  },
+  "Visitor visa process": {
+    "es": "Proceso de visa de visitante",
+    "pt": "Processo de visto de visitante",
+    "tl": "Proseso ng visitor visa"
   }
 }

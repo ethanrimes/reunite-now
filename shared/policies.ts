@@ -1,3 +1,4 @@
+import { additionalPolicies } from "./legislation";
 export type Policy = {
   id: string;
   kind: "Legislation" | "Legal case";
@@ -219,4 +220,5 @@ export const policies: Policy[] = [
     contribute:
       "Affected applicants can share information through class counsel’s linked page. Earlier processing windows have passed; ask counsel about your circumstances rather than assuming enrollment or visa issuance is available.",
   },
+  ...additionalPolicies,
 ];
