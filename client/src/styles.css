@@ -131,7 +131,7 @@ textarea {
   resize: vertical;
 }
 select {
-  padding-right: 28px;
+  padding-inline-end: 28px;
 }
 input[type="checkbox"],
 input[type="radio"] {
@@ -161,7 +161,7 @@ table {
 th,
 td {
   padding: 23px;
-  text-align: left;
+  text-align: start;
   border-bottom: 1px solid var(--line);
 }
 th {
@@ -304,7 +304,7 @@ th small {
   align-items: center;
   gap: 5px;
   color: #6a6a64;
-  margin-left: 16px;
+  margin-inline-start: 16px;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -364,15 +364,15 @@ th small {
   position: absolute;
   bottom: 24px;
   height: 2px;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   background: var(--green);
 }
 .nav-account {
   display: flex;
   align-items: center;
   gap: 21px;
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 .login-link {
   font-size: 11px;
@@ -417,7 +417,7 @@ th small {
 .hero-underline {
   position: absolute;
   bottom: -13px;
-  left: 0;
+  inset-inline-start: 0;
   width: 290px;
   height: 20px;
   fill: none;
@@ -472,7 +472,7 @@ th small {
 }
 .image-label {
   position: absolute;
-  left: 34px;
+  inset-inline-start: 34px;
   bottom: 140px;
   display: flex;
   align-items: center;
@@ -490,7 +490,7 @@ th small {
 .photo-caption {
   position: absolute;
   bottom: 36px;
-  left: 34px;
+  inset-inline-start: 34px;
   color: #f4f3f0;
   font-family: "Instrument Sans", Arial, sans-serif;
   font-size: 36px;
@@ -503,7 +503,7 @@ th small {
   height: 103px;
   border-radius: 2px;
   background: var(--lime);
-  left: -40px;
+  inset-inline-start: -40px;
   top: 58px;
   display: flex;
   flex-direction: column;
@@ -522,7 +522,7 @@ th small {
 }
 .photo-credit {
   position: absolute;
-  right: 20px;
+  inset-inline-end: 20px;
   bottom: -23px;
   color: #1c1c1c;
   font-size: 8px;
@@ -536,7 +536,7 @@ th small {
   height: 520px;
   transform: rotate(-36deg);
   top: 40px;
-  left: -40px;
+  inset-inline-start: -40px;
 }
 .impact-strip {
   display: flex;
@@ -550,7 +550,7 @@ th small {
 }
 .impact-strip > div {
   flex: 1;
-  border-left: 1px solid var(--line);
+  border-inline-start: 1px solid var(--line);
   padding: 0 35px;
   display: flex;
   flex-direction: column;
@@ -558,7 +558,7 @@ th small {
 }
 .impact-strip > div:first-child {
   border: 0;
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 .impact-strip strong {
   font-family: "Instrument Sans", Arial, sans-serif;
@@ -648,7 +648,7 @@ th small {
   text-decoration: underline;
 }
 .petition-note > .text-button {
-  margin-left: auto;
+  margin-inline-start: auto;
   white-space: nowrap;
   font-size: 11px;
 }
@@ -686,7 +686,7 @@ th small {
   height: 180px;
   border-radius: 2px;
   position: absolute;
-  right: -35px;
+  inset-inline-end: -35px;
   top: -45px;
 }
 .art-word {
@@ -703,8 +703,8 @@ th small {
 .human-art svg {
   position: absolute;
   bottom: 0;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   fill: none;
   stroke: #f4f3f0;
   stroke-width: 2;
@@ -802,7 +802,7 @@ footer {
 .footer-cta {
   font-family: "Instrument Sans", Arial, sans-serif;
   font-size: 27px;
-  margin-left: auto;
+  margin-inline-start: auto;
   display: flex;
   gap: 25px;
   align-items: center;
@@ -899,7 +899,7 @@ footer {
   border: 1px solid var(--line);
   padding: 0 14px;
   border-radius: 2px;
-  margin-left: auto;
+  margin-inline-start: auto;
   background: #ffffff;
   width: 320px;
 }
@@ -959,15 +959,16 @@ footer {
   margin: 20px 0;
 }
 .timeline li {
-  padding: 0 0 32px 25px;
+  padding: 0 0 32px;
+  padding-inline-start: 25px;
   position: relative;
-  border-left: 1px solid #e3e2dc;
-  margin-left: 5px;
+  border-inline-start: 1px solid #e3e2dc;
+  margin-inline-start: 5px;
 }
 .timeline li:before {
   content: "";
   position: absolute;
-  left: -5px;
+  inset-inline-start: -5px;
   top: 5px;
   border-radius: 2px;
   width: 9px;
@@ -993,7 +994,7 @@ footer {
   margin-top: 8px;
 }
 .timeline .tag {
-  margin-left: 10px;
+  margin-inline-start: 10px;
 }
 .side-card {
   background: var(--green);
@@ -1048,7 +1049,7 @@ footer {
   border-radius: 2px;
   overflow: hidden;
   position: relative;
-  text-align: left;
+  text-align: start;
   padding: 0;
   background: #1c1c1c;
   color: white;
@@ -1070,8 +1071,8 @@ footer {
 .story-overlay {
   position: absolute;
   bottom: 0;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   padding: 26px;
 }
 .story-overlay h3 {
@@ -1252,11 +1253,11 @@ footer {
   display: flex;
   align-items: center;
   gap: 17px;
-  border-right: 1px solid var(--line);
+  border-inline-end: 1px solid var(--line);
   padding: 0 30px;
 }
 .mini-stats > div:first-child {
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 .mini-stats > div:last-child {
   border: 0;
@@ -1289,10 +1290,10 @@ footer {
 .multi-select {
   position: relative;
   min-width: 190px;
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 .multi-select + .multi-select {
-  margin-left: 0;
+  margin-inline-start: 0;
 }
 .multi-select summary {
   font-size: 11px;
@@ -1312,7 +1313,7 @@ footer {
 .multi-options {
   position: absolute;
   top: 50px;
-  right: 0;
+  inset-inline-end: 0;
   min-width: 230px;
   padding: 17px;
   background: var(--white);
@@ -1499,7 +1500,7 @@ footer {
 }
 .data-summary strong {
   font-size: 18px;
-  margin-right: 5px;
+  margin-inline-end: 5px;
 }
 .table-wrap {
   overflow: auto;
@@ -1543,7 +1544,7 @@ thead {
 }
 .methodology summary:after {
   content: "+";
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 .methodology p {
   font-size: 13px;
@@ -1758,7 +1759,7 @@ thead {
 .input-action button {
   padding: 0 16px;
   border: 0;
-  border-left: 1px solid var(--line);
+  border-inline-start: 1px solid var(--line);
   background: #f4f3f0;
   color: var(--green);
   white-space: nowrap;
@@ -1803,7 +1804,7 @@ thead {
   list-style: none;
 }
 .case-editor > summary > svg {
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 .case-number {
   font-size: 12px;
@@ -1868,8 +1869,8 @@ thead {
   margin: 15px 0 23px;
 }
 .petition-statement {
-  border-left: 3px solid #e3e2dc;
-  padding-left: 18px;
+  border-inline-start: 3px solid #e3e2dc;
+  padding-inline-start: 18px;
   color: var(--green);
   font-family: "Instrument Sans", Arial, sans-serif;
   font-size: 22px !important;
@@ -1962,7 +1963,7 @@ thead {
 .photo-previews button {
   position: absolute;
   top: 3px;
-  right: 3px;
+  inset-inline-end: 3px;
   background: var(--white);
 }
 .upload-control {
@@ -2002,7 +2003,7 @@ thead {
 .skip-link {
   position: absolute;
   top: -80px;
-  left: 10px;
+  inset-inline-start: 10px;
   z-index: 100;
   background: var(--green);
   color: white;
@@ -2097,14 +2098,14 @@ thead {
   }
   .mobile-menu {
     display: flex;
-    margin-left: auto;
+    margin-inline-start: auto;
   }
   .site-header nav {
     display: none;
     position: absolute;
     z-index: 50;
-    left: 0;
-    right: 0;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
     top: 112px;
     background: var(--cream);
     padding: 20px 6%;
@@ -2145,17 +2146,17 @@ thead {
   }
   .photo-caption {
     font-size: 29px;
-    left: 25px;
+    inset-inline-start: 25px;
   }
   .image-label {
-    left: 25px;
+    inset-inline-start: 25px;
     bottom: 120px;
     font-size: 7px;
   }
   .circle-stamp {
     width: 85px;
     height: 85px;
-    left: -25px;
+    inset-inline-start: -25px;
     top: 45px;
   }
   .hero-copy > p {
@@ -2294,7 +2295,7 @@ thead {
     gap: 6px;
   }
   .announcement a {
-    margin-left: 4px;
+    margin-inline-start: 4px;
     font-size: 8px;
   }
   .site-header {
@@ -2347,7 +2348,7 @@ thead {
     border-radius: 2px;
   }
   .circle-stamp {
-    left: 0;
+    inset-inline-start: 0;
     top: 35px;
   }
   .photo-caption {
@@ -2376,7 +2377,7 @@ thead {
     border: 0;
   }
   .impact-intro .status-dot {
-    margin-right: 10px;
+    margin-inline-end: 10px;
   }
   .impact-intro br {
     display: none;
@@ -2393,7 +2394,7 @@ thead {
     grid-row: 2;
   }
   .impact-strip > div:nth-child(2) {
-    padding-left: 0;
+    padding-inline-start: 0;
     border: 0;
   }
   .impact-strip span {
@@ -2445,7 +2446,7 @@ thead {
     font-size: 11px;
   }
   .petition-note > .text-button {
-    margin-left: 0;
+    margin-inline-start: 0;
     font-size: 12px;
   }
   .human-section {
@@ -2501,7 +2502,7 @@ thead {
   }
   .footer-top p {
     font-size: 10px;
-    margin-left: auto;
+    margin-inline-start: auto;
   }
   .footer-cta {
     width: 100%;
@@ -2815,7 +2816,7 @@ thead {
   .timeline-editor-title span {
     font-size: 9px;
     max-width: 100px;
-    text-align: right;
+    text-align: end;
   }
   .event-editor {
     gap: 10px;
@@ -3040,8 +3041,8 @@ h2 em {
   grid-template-columns: 1.07fr 1fr;
   background: #f4f3f0;
   max-width: none;
-  padding-left: max(8%, calc((100% - 1240px) / 2));
-  padding-right: max(6%, calc((100% - 1240px) / 2));
+  padding-inline-start: max(8%, calc((100% - 1240px) / 2));
+  padding-inline-end: max(6%, calc((100% - 1240px) / 2));
 }
 .hero h1 {
   font-size: clamp(58px, 5.5vw, 84px);
@@ -3111,7 +3112,7 @@ h2 em {
   display: none;
 }
 .photo-credit {
-  right: 0;
+  inset-inline-end: 0;
   font-size: 8px;
   bottom: -22px;
 }
@@ -3200,7 +3201,7 @@ h2 em {
 .art-sun {
   background: #1c1c1c;
   opacity: 0.5;
-  right: -65px;
+  inset-inline-end: -65px;
   top: -65px;
   width: 250px;
   height: 250px;
@@ -3689,7 +3690,7 @@ input:disabled {
   color: #1c1c1c;
   font-size: 18px !important;
   font-weight: 400;
-  border-left-color: #e3e2dc;
+  border-inline-start-color: #e3e2dc;
   line-height: 1.7 !important;
 }
 .checkbox {
@@ -3785,8 +3786,8 @@ input:disabled {
     gap: 24px;
   }
   .hero {
-    padding-left: 6%;
-    padding-right: 6%;
+    padding-inline-start: 6%;
+    padding-inline-end: 6%;
     gap: 42px;
   }
   .hero h1 {
@@ -3895,11 +3896,11 @@ input:disabled {
   }
   .photo-caption {
     font-size: 28px;
-    left: 24px;
+    inset-inline-start: 24px;
     bottom: 25px;
   }
   .image-label {
-    left: 24px;
+    inset-inline-start: 24px;
     bottom: 105px;
   }
   .hero-footnote {
@@ -4154,8 +4155,8 @@ small,
 @media (min-width: 1500px) {
   .site-header {
     gap: 20px;
-    padding-left: 3%;
-    padding-right: 3%;
+    padding-inline-start: 3%;
+    padding-inline-end: 3%;
   }
   .site-header nav {
     gap: 14px;
@@ -4171,18 +4172,18 @@ small,
     gap: 16px;
   }
   .site-header > .language-selector {
-    margin-left: auto;
+    margin-inline-start: auto;
   }
   .mobile-menu {
     display: flex;
-    margin-left: 0;
+    margin-inline-start: 0;
   }
   .site-header nav {
     display: none;
     position: absolute;
     z-index: 50;
-    left: 0;
-    right: 0;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
     top: 113px;
     padding: 20px 6%;
     background: white;
@@ -4210,8 +4211,8 @@ small,
 @media (max-width: 420px) {
   .site-header {
     gap: 8px;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-inline-start: 12px;
+    padding-inline-end: 12px;
   }
   .site-header .brand {
     font-size: 22px;
@@ -4911,11 +4912,11 @@ textarea:focus-visible {
 }
 
 .notice {
-  border-left: 2px solid #1c1c1c;
+  border-inline-start: 2px solid #1c1c1c;
 }
 .notice.error {
   border-color: #8f2d22;
-  border-left-color: #8f2d22;
+  border-inline-start-color: #8f2d22;
 }
 .modal-top {
   border-bottom-color: #1c1c1c;
@@ -4992,7 +4993,7 @@ textarea:focus-visible {
 }
 @media (max-width: 600px) {
   .reminder-emails {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
 }
 .reminder-emails .text-button {
@@ -5074,18 +5075,18 @@ textarea,
 }
 .auth-art > .eyebrow {
   margin: 0 0 24px;
-  text-align: left;
+  text-align: start;
 }
 .auth-art h1 {
   max-width: 16ch;
   font-size: clamp(36px, 3.3vw, 44px);
-  text-align: left;
+  text-align: start;
 }
 .auth-art p {
   max-width: 38ch;
   margin-top: 20px;
   font-size: 15px;
-  text-align: left;
+  text-align: start;
 }
 .account-section {
   padding: clamp(20px, 3vw, 32px);
@@ -5103,8 +5104,8 @@ textarea,
 }
 .photo-copy {
   position: absolute;
-  left: clamp(24px, 3vw, 34px);
-  right: clamp(24px, 3vw, 34px);
+  inset-inline-start: clamp(24px, 3vw, 34px);
+  inset-inline-end: clamp(24px, 3vw, 34px);
   bottom: 30px;
 }
 .photo-copy .image-label {
@@ -5126,7 +5127,7 @@ textarea,
   position: static;
   display: block;
   margin-top: 10px;
-  text-align: right;
+  text-align: end;
   line-height: 1.5;
 }
 .site-header {
@@ -5196,8 +5197,8 @@ textarea,
 }
 @media (max-width: 950px) {
   .multi-select:first-of-type .multi-options {
-    left: 0;
-    right: auto;
+    inset-inline-start: 0;
+    inset-inline-end: auto;
   }
 }
 @media (max-width: 650px) {

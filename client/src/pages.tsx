@@ -124,11 +124,11 @@ export function Home() {
           <span>{t("petition signatories")}</span>
         </div>
         <div>
-          <strong>{loading ? "—" : nstates}</strong>
+          <strong>{loading ? "—" : number(nstates)}</strong>
           <span>{t("US states & territories")}</span>
         </div>
         <div>
-          <strong>{loading ? "—" : ndistricts}</strong>
+          <strong>{loading ? "—" : number(ndistricts)}</strong>
           <span>{t("congressional districts")}</span>
         </div>
         <Link to="/coverage">
@@ -445,8 +445,8 @@ export function Stories() {
                 <span className="eyebrow">
                   {t(s.country)} · {s.name}
                 </span>
-                <h3>{s.title}</h3>
-                <p>{s.summary}</p>
+                <h3 dir="auto">{s.title}</h3>
+                <p dir="auto">{s.summary}</p>
                 <span className="read-story">
                   {t("Read their story ")}
                   <ArrowUpRight size={18} />
@@ -514,9 +514,13 @@ export function Stories() {
             <span className="eyebrow">
               {selected.name} · {t(selected.country)}
             </span>
-            <h2>{selected.title}</h2>
-            <p className="large-copy">{selected.summary}</p>
-            <p className="preserve-lines">{selected.body}</p>
+            <h2 dir="auto">{selected.title}</h2>
+            <p className="large-copy" dir="auto">
+              {selected.summary}
+            </p>
+            <p className="preserve-lines" dir="auto">
+              {selected.body}
+            </p>
             <div className="tags">
               {selected.impacts.map((x) => (
                 <span className="tag" key={x}>
@@ -527,7 +531,9 @@ export function Stories() {
             {selected.support && (
               <>
                 <h3>{t("The support they’re looking for")}</h3>
-                <p className="preserve-lines">{selected.support}</p>
+                <p className="preserve-lines" dir="auto">
+                  {selected.support}
+                </p>
               </>
             )}
             {selected.timeline.length > 0 && (

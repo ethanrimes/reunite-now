@@ -3,6 +3,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { api, useData } from "./api";
 import { t } from "./i18n";
+import { useLanguage } from "./language";
 import { Notice } from "./ui";
 type Suggestion = { label: string; lat: number; lon: number };
 type Match = Suggestion & { state: string; district: string };
@@ -15,6 +16,7 @@ function AddressMap({
   overlay: boolean;
   enabled: boolean;
 }) {
+  const language = useLanguage();
   const node = useRef<HTMLDivElement>(null),
     map = useRef<L.Map | null>(null),
     layer = useRef<L.GeoJSON | null>(null);
@@ -93,7 +95,7 @@ function AddressMap({
       map.current = null;
       layer.current = null;
     };
-  }, [match.lat, match.lon, enabled]);
+  }, [match.lat, match.lon, enabled, language]);
   useEffect(() => {
     let active = true;
     const m = map.current;
@@ -124,7 +126,7 @@ function AddressMap({
     return () => {
       active = false;
     };
-  }, [overlay, match]);
+  }, [overlay, match, language]);
   return (
     <div className="address-map-wrap">
       <div

@@ -8,7 +8,8 @@ import {
   Camera,
   CalendarDays,
 } from "lucide-react";
-import { t } from "./i18n";
+import { t, languageDirection } from "./i18n";
+import { useLanguage } from "./language";
 import { date, External } from "./ui";
 import { policies } from "../../shared/policies";
 import { participation, policyEvents, reviewedAt } from "../../shared/campaign";
@@ -22,14 +23,15 @@ export function ScrollRail({
   children: ReactNode;
   id: string;
 }) {
+  const rtl = languageDirection(useLanguage()) === "rtl";
   const ref = useRef<HTMLDivElement>(null);
   const [edges, setEdges] = useState({ start: true, end: false });
   useEffect(() => {
     const el = ref.current!;
     const update = () =>
       setEdges({
-        start: el.scrollLeft < 4,
-        end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 4,
+        start: Math.abs(el.scrollLeft) < 4,
+        end: Math.abs(el.scrollLeft) + el.clientWidth >= el.scrollWidth - 4,
       });
     const observer = new ResizeObserver(update);
     observer.observe(el);
@@ -39,11 +41,11 @@ export function ScrollRail({
       observer.disconnect();
       el.removeEventListener("scroll", update);
     };
-  }, [children]);
+  }, [children, rtl]);
   const move = (direction: number) => {
     const el = ref.current!;
     el.scrollBy({
-      left: direction * el.clientWidth * 0.8,
+      left: direction * (rtl ? -1 : 1) * el.clientWidth * 0.8,
       behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
         ? "auto"
         : "smooth",
@@ -61,7 +63,7 @@ export function ScrollRail({
           disabled={edges.start}
           onClick={() => move(-1)}
         >
-          <ArrowLeft size={18} />
+          {rtl ? <ArrowRight size={18} /> : <ArrowLeft size={18} />}
         </button>
         <button
           type="button"
@@ -71,7 +73,7 @@ export function ScrollRail({
           disabled={edges.end}
           onClick={() => move(1)}
         >
-          <ArrowRight size={18} />
+          {rtl ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}
         </button>
       </div>
       <div
