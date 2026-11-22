@@ -5598,5 +5598,10 @@
     "es": "Selecciona un territorio para ver quién lo representa en el Congreso.",
     "pt": "Selecione um território para ver quem o representa no Congresso.",
     "tl": "Pumili ng teritoryo para makita ang kinatawan nito sa Kongreso."
+  },
+  "GitHub profile for {handle}": {
+    "es": "Perfil de GitHub de {handle}",
+    "pt": "Perfil de {handle} no GitHub",
+    "tl": "Profile ni {handle} sa GitHub"
   }
 }

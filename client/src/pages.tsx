@@ -704,6 +704,11 @@ export function About() {
             "Ethan Kallett maintains Reunite Now. He is a U.S. citizen who has been personally affected by visa delays.",
           )}
         </p>
+        <p>
+          <External href="https://github.com/ethanrimes">
+            {t("GitHub profile for {handle}", { handle: "@ethanrimes" })}
+          </External>
+        </p>
         <h2>{t("Where signatures go")}</h2>
         <p>
           {t(
