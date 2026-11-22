@@ -1,7 +1,7 @@
 import { ScrollRail } from "./scroll-rail";
 import { BillRecord } from "./legislation";
 import { t, number } from "./i18n";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   ArrowRight,
@@ -18,8 +18,17 @@ import {
   MapPin,
   Check,
 } from "lucide-react";
-import { useData } from "./api";
-import { PageIntro, External, Modal, Timeline, Empty, date } from "./ui";
+import { api, useData } from "./api";
+import { previewMode } from "./preview";
+import {
+  PageIntro,
+  External,
+  Modal,
+  Timeline,
+  Empty,
+  Notice,
+  date,
+} from "./ui";
 import { GovernmentTimeline, Participate, SupportActions } from "./campaign";
 import { policies } from "../../shared/policies";
 import { consentVersion, type PublicStory } from "../../shared/schema";
@@ -377,7 +386,30 @@ export function PolicyDetail() {
   );
 }
 export function Stories() {
-  const { stories } = useData();
+  const {
+    stories: sampleStories,
+    loading: sampleLoading,
+    error: sampleError,
+  } = useData();
+  const [published, setPublished] = useState<PublicStory[] | null>(null);
+  const [storyError, setStoryError] = useState(false);
+  useEffect(() => {
+    if (previewMode) return;
+    const request = new AbortController();
+    api<{ stories: PublicStory[] }>("/stories", { signal: request.signal })
+      .then(({ stories }) => {
+        if (!request.signal.aborted) setPublished(stories);
+      })
+      .catch(() => {
+        if (!request.signal.aborted) setStoryError(true);
+      });
+    return () => request.abort();
+  }, []);
+  const stories = previewMode ? sampleStories : (published ?? []);
+  const loading = previewMode
+    ? sampleLoading
+    : published === null && !storyError;
+  const failed = previewMode ? !!sampleError : storyError;
   const [selected, setSelected] = useState<PublicStory | null>(null);
   const [q, setQ] = useState("");
   const items = stories.filter((s) =>
@@ -405,9 +437,13 @@ export function Stories() {
       </PageIntro>
       <div className="toolbar">
         <span>
-          {stories.length === 1
-            ? t("1 community story")
-            : t("{count} community stories", { count: number(stories.length) })}
+          {loading || failed
+            ? null
+            : stories.length === 1
+              ? t("1 community story")
+              : t("{count} community stories", {
+                  count: number(stories.length),
+                })}
         </span>
         <label className="search">
           <Search size={16} />
@@ -419,7 +455,13 @@ export function Stories() {
           />
         </label>
       </div>
-      {items.length ? (
+      {failed ? (
+        <Notice tone="error">
+          {t("Something went wrong. Please try again.")}
+        </Notice>
+      ) : loading ? (
+        <p role="status">{t("Loading…")}</p>
+      ) : items.length ? (
         <div className="story-grid">
           {items.map((s) => (
             <button

@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import type { QueryResult } from "pg";
 import {
   coordinator,
   db,
@@ -104,16 +105,27 @@ export async function routed<T>(
   for (;;) {
     const client = await coordinator.connect();
     let pending = false;
+    let discard = false;
     try {
-      await client.query("BEGIN");
-      await client.query(
-        exclusive
-          ? "SELECT pg_advisory_xact_lock(721590112)"
-          : "SELECT pg_advisory_xact_lock_shared(721590112)",
+      const lock = exclusive
+        ? "pg_advisory_xact_lock"
+        : "pg_advisory_xact_lock_shared";
+      // Send separate statements in one PostgreSQL message. At READ COMMITTED
+      // the journal query gets its snapshot after the preceding lock is acquired.
+      const results = await client.query<{
+        user_id: string;
+        destination: Region;
+      }>(
+        `BEGIN ISOLATION LEVEL READ COMMITTED;
+         SELECT ${lock}(721590112);
+         SELECT user_id,destination FROM account_moves`,
       );
-      const moves = (
-        await client.query("SELECT user_id,destination FROM account_moves")
-      ).rows;
+      // pg returns one result per statement for a multi-statement simple query.
+      const [, , journal] = results as unknown as QueryResult<{
+        user_id: string;
+        destination: Region;
+      }>[];
+      const moves = journal.rows;
       pending = moves.length > 0 && !exclusive;
       if (!pending) {
         for (const move of moves)
@@ -124,10 +136,12 @@ export async function routed<T>(
       }
       await client.query("ROLLBACK");
     } catch (error) {
-      await client.query("ROLLBACK").catch(() => {});
+      await client.query("ROLLBACK").catch(() => {
+        discard = true;
+      });
       throw error;
     } finally {
-      client.release();
+      client.release(discard);
     }
     if (pending) await routed(true, async () => {});
   }

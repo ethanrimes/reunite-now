@@ -82,16 +82,14 @@ export function DataProvider({ children }: { children: ReactNode }) {
         setError("");
         return;
       }
-      const [m, c, p, s] = await Promise.all([
+      const [m, c, p] = await Promise.all([
         api<Me>("/me"),
         api<Config>("/config"),
         api<{ profiles: PublicProfile[] }>("/public"),
-        api<{ stories: PublicStory[] }>("/stories"),
       ]);
       setMe(m);
       setConfig(c);
       setProfiles(p.profiles);
-      setStories(s.stories);
       setError("");
     } catch (e) {
       setError((e as Error).message);

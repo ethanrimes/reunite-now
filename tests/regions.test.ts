@@ -168,13 +168,34 @@ test("two regional databases preserve sessions, visibility, private records and 
     200,
   );
   await checkPublic();
-  // A crash can leave the destination committed and the source still present.
-  await pools.eu.query("INSERT INTO account_moves VALUES($1,'eu')", [a.id]);
-  await pools.eu.query("INSERT INTO users(id,email) VALUES($1,$2)", [
-    a.id,
-    euEmail,
-  ]);
-  await checkPublic();
+  // A request already waiting on the routing lock must see a transfer
+  // journal entry committed by the lock holder, even in a batched SQL message.
+  const writer = await pools.eu.connect();
+  let reader: ReturnType<typeof checkPublic> | undefined;
+  try {
+    await writer.query("BEGIN");
+    await writer.query("SELECT pg_advisory_xact_lock(721590112)");
+    reader = checkPublic();
+    void reader.catch(() => {});
+    for (let i = 0; ; i++) {
+      const { rows } = await writer.query(
+        "SELECT 1 FROM pg_locks WHERE locktype='advisory' AND objid=721590112 AND NOT granted",
+      );
+      if (rows.length) break;
+      assert.ok(i < 200, "public request never reached the routing lock");
+      await new Promise((resolve) => setTimeout(resolve, 15));
+    }
+    await writer.query("INSERT INTO account_moves VALUES($1,'eu')", [a.id]);
+    await writer.query("INSERT INTO users(id,email) VALUES($1,$2)", [
+      a.id,
+      euEmail,
+    ]);
+    await writer.query("COMMIT");
+  } finally {
+    await writer.query("ROLLBACK");
+    writer.release();
+  }
+  await reader;
   assert.equal((await me(eu)).storageRegion, "eu");
   assert.equal(
     (

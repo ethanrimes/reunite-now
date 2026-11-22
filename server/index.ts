@@ -102,18 +102,6 @@ const cookieOptions = {
   sameSite: "lax" as const,
   path: "/",
 };
-async function currentUser(req: Request) {
-  const raw = req.cookies.rn_session;
-  if (!raw || typeof raw !== "string") return null;
-  return (
-    (
-      await db.query(
-        `SELECT u.id,u.email,s.created_at AS authenticated_at FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.expires_at>now()`,
-        [hash(raw)],
-      )
-    ).rows[0] || null
-  );
-}
 function detectedRegion(req: Request) {
   // App Service overwrites Client-IP at its ingress. Development uses the socket peer.
   return regionForIP(
@@ -127,32 +115,31 @@ function accountRoute(
   handler: Handler,
   { optional = false, exclusive = false } = {},
 ): Handler {
-  return (req, res) =>
-    routed(exclusive, async () => {
-      const raw = req.cookies.rn_session;
-      const r =
-        typeof raw === "string" &&
-        raw &&
-        (dual
-          ? await locate(
-              "SELECT 1 FROM sessions WHERE token_hash=$1 AND expires_at>now()",
-              [hash(raw)],
-            )
-          : region());
-      if (!r)
-        return optional
-          ? res.json({ user: null })
-          : res.status(401).json({ error: "Please sign in to continue" });
-      return inRegion(r, async () => {
-        const u = await currentUser(req);
-        if (!u)
-          return optional
-            ? res.json({ user: null })
-            : res.status(401).json({ error: "Please sign in to continue" });
-        res.locals.user = u;
-        return handler(req, res);
-      });
+  return async (req, res) => {
+    const noSession = () =>
+      optional
+        ? res.json({ user: null })
+        : res.status(401).json({ error: "Please sign in to continue" });
+    const raw = req.cookies.rn_session;
+    if (typeof raw !== "string" || !raw) return noSession();
+    const tokenHash = hash(raw);
+    return routed(exclusive, async () => {
+      const matches = (
+        await acrossRegions(async () => {
+          const result = await db.query<{ id: string; email: string }>(
+            `SELECT u.id,u.email FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.expires_at>now()`,
+            [tokenHash],
+          );
+          return result.rows.map((user) => ({ user, storage: region() }));
+        })
+      ).flat();
+      if (matches.length > 1) throw new Error("Conflicting regional identity");
+      const match = matches[0];
+      if (!match) return noSession();
+      res.locals.user = match.user;
+      return inRegion(match.storage, () => handler(req, res));
     });
+  };
 }
 async function session(email: string, res: Response) {
   const uid = randomUUID();
@@ -335,12 +322,12 @@ app.get(
   accountRoute(
     async (_req, res) => {
       const u = res.locals.user;
-      const p = await db.query(
-        `SELECT data,updated_at,signed_at FROM profiles WHERE user_id=$1`,
-        [u.id],
-      );
-      const s = await db.query(`SELECT data FROM stories WHERE user_id=$1`, [
-        u.id,
+      const [p, s] = await Promise.all([
+        db.query(
+          `SELECT data,updated_at,signed_at FROM profiles WHERE user_id=$1`,
+          [u.id],
+        ),
+        db.query(`SELECT data FROM stories WHERE user_id=$1`, [u.id]),
       ]);
       res.json({
         user: {
