@@ -5,6 +5,8 @@ import {
   relationshipsFor,
   milestonesFor,
   applyTemplate,
+  addPauseSteps,
+  pauseSteps,
   mayHavePauseHistory,
 } from "../shared/visa-workflow";
 import {
@@ -26,7 +28,7 @@ const base: VisaCase = {
   category: "K-1",
   post: "Bogota",
   relationship: "Spouse / partner",
-  events: [{ id: "filed", type: "Filed", date: "2025-01-01", note: "" }],
+  events: [{ id: "filed", type: "Filed", date: "2025-01-01" }],
 };
 test("role and visa category constrain relationships without restricting a relative helping an applicant", () => {
   assert.deepEqual(relationshipsFor("IR-5", "Petitioner"), ["Parent"]);
@@ -63,18 +65,17 @@ test("templates distinguish petition, nonimmigrant and KCC routes and preserve e
     ...base,
     events: [
       ...base.events,
-      { id: "blank", type: "NOA1" as const, date: "", note: "" },
+      { id: "blank", type: "NOA1" as const, date: "" },
       {
-        id: "note",
+        id: "interview",
         type: "Interview" as const,
-        date: "",
-        note: "Appointment pending",
+        date: "2026-02-12",
       },
     ],
   };
   const result = applyTemplate(v, "DV", () => String(++n));
   assert.deepEqual(result.events[0], v.events[0]);
-  assert.ok(result.events.some((e) => e.id === "note"));
+  assert.ok(result.events.some((e) => e.id === "interview"));
   assert.ok(!result.events.some((e) => e.id === "blank"));
   assert.equal(
     caseStatus({
@@ -83,7 +84,6 @@ test("templates distinguish petition, nonimmigrant and KCC routes and preserve e
         id: type,
         type,
         date: "",
-        note: "",
       })),
     }),
     "active",
@@ -98,7 +98,7 @@ test("legacy profiles stay readable but saving requires involvement, role and co
     name: "Sample User",
     legalStatus: "US citizen",
     country: "Colombia",
-    city: "Bogota",
+
     personallyInvolved: true,
     signed: true,
     publicConsent: true,
@@ -153,5 +153,33 @@ test("vote records use official IDs and distinguish absence, abstention and spon
     !legislation.votes.some(
       (v) => v.bill === "116-hr-1044" && v.chamber === "Senate",
     ),
+  );
+});
+
+test("pause template inserts only missing steps and keeps recorded facts", () => {
+  const events = [
+    "Filed",
+    "Interview",
+    "Approved",
+    "Visa issued",
+    "Policy-related refusal",
+  ].map((type, i) => ({
+    type: type as VisaCase["events"][number]["type"],
+    id: String(i),
+    date: i === 1 ? "2026-02-05" : "",
+  }));
+  const updated = addPauseSteps(events, () => crypto.randomUUID());
+  assert.deepEqual(
+    updated.map((e) => e.type),
+    ["Filed", ...pauseSteps, "Approved", "Visa issued"],
+  );
+  assert.equal(updated[1], events[1]);
+  assert.deepEqual(
+    addPauseSteps(updated, () => crypto.randomUUID()),
+    updated,
+  );
+  assert.deepEqual(
+    addPauseSteps([], () => crypto.randomUUID()).map((e) => e.type),
+    pauseSteps,
   );
 });

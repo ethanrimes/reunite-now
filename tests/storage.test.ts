@@ -45,6 +45,34 @@ test("account deletion cascades across profile, story, sessions and reminder led
       0,
     );
 });
+test("migration removes the residence city from existing records and preserves their contents and timestamps", async () => {
+  const id = "legacy-city";
+  const original = {
+    name: "Test signer",
+    state: "CA",
+    district: "05",
+    cases: [{ post: "Mexico City" }],
+  };
+  await db.query("INSERT INTO users(id,email) VALUES($1,$2)", [
+    id,
+    "legacy@example.test",
+  ]);
+  const {
+    rows: [before],
+  } = await db.query(
+    "INSERT INTO profiles(user_id,data) VALUES($1,$2) RETURNING signed_at,updated_at,consent_version",
+    [id, JSON.stringify({ ...original, city: "Old residence" })],
+  );
+  await migrate();
+  await migrate();
+  const {
+    rows: [after],
+  } = await db.query(
+    "SELECT signed_at,updated_at,consent_version,data FROM profiles WHERE user_id=$1",
+    [id],
+  );
+  assert.deepEqual(after, { ...before, data: original });
+});
 test("transaction rolls back partial updates", async () => {
   await assert.rejects(
     transaction(async (q) => {

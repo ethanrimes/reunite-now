@@ -5,8 +5,14 @@ import { api, useData } from "./api";
 import { t } from "./i18n";
 import { useLanguage } from "./language";
 import { Notice } from "./ui";
-type Suggestion = { label: string; lat: number; lon: number };
-type Match = Suggestion & { state: string; district: string };
+type Suggestion = { label: string; lat?: number; lon?: number };
+type Match = {
+  label: string;
+  lat: number;
+  lon: number;
+  state: string;
+  district: string;
+};
 function AddressMap({
   match,
   overlay,
@@ -176,8 +182,9 @@ export function DistrictLookup({
   useEffect(() => {
     const controller = new AbortController();
     const version = ++generation.current;
-    if (!open || query.trim().length < 4 || !config.maps || match) {
+    if (!open || query.trim().length < 4 || match) {
       setSuggestions([]);
+      setBusy(false);
       return;
     }
     const timer = setTimeout(async () => {
@@ -215,15 +222,20 @@ export function DistrictLookup({
     setSuggestions([]);
     setMessage("");
     try {
-      const r = await api(s ? "/maps/district" : "/district-lookup", {
+      const located =
+        s && typeof s.lat === "number" && typeof s.lon === "number";
+      const r = await api(located ? "/maps/district" : "/district-lookup", {
         method: "POST",
         body: JSON.stringify(
-          s ? { lat: s.lat, lon: s.lon } : { address: query },
+          located ? { lat: s.lat, lon: s.lon } : { address: s?.label || query },
         ),
       });
       if (version === generation.current) {
-        setMatch({ ...r, label: s?.label || query });
-        setQuery(s?.label || query);
+        if (s) {
+          confirmDistrict(r.state, r.district);
+          return;
+        }
+        setMatch({ ...r, label: query });
         setOverlay(false);
       }
     } catch (e) {
@@ -240,6 +252,15 @@ export function DistrictLookup({
     setMessage("");
     setBusy(false);
   }
+  function confirmDistrict(state: string, district: string) {
+    onConfirm(state, district);
+    setConfirmed(
+      t("District selected: {district}. Search details have been cleared.", {
+        district: `${state}-${district}`,
+      }),
+    );
+    clear();
+  }
   return (
     <details
       className="address-lookup"
@@ -254,9 +275,13 @@ export function DistrictLookup({
         {t("Not sure of your district? Look it up by address.")}
       </summary>
       <p>
-        {t(
-          "Address suggestions and street maps use Azure Maps and its mapping providers. Census identifies the district. Reunite Now does not save the search address, coordinates, or results; only the state and district you confirm are saved.",
-        )}
+        {config.maps
+          ? t(
+              "Address suggestions and street maps use Azure Maps and its mapping providers. Census identifies the district. Reunite Now does not save the search address, coordinates, or results; only the state and district you confirm are saved.",
+            )
+          : t(
+              "Address suggestions use Photon with OpenStreetMap data. Census identifies the district. Only your confirmed state and district are saved.",
+            )}
       </p>
       <div className="address-search">
         <div className="input-action">
@@ -271,9 +296,11 @@ export function DistrictLookup({
             }
             autoComplete="off"
             value={query}
-            placeholder={t("Full street address, city, state, ZIP")}
+            placeholder={t("Street address and ZIP code")}
             onChange={(e) => {
               generation.current++;
+              setBusy(false);
+              setMessage("");
               setQuery(e.target.value);
               setMatch(null);
               setActive(-1);
@@ -289,6 +316,8 @@ export function DistrictLookup({
                 setActive((a) => Math.max(0, a - 1));
               }
               if (e.key === "Escape") {
+                generation.current++;
+                setBusy(false);
                 setSuggestions([]);
                 setActive(-1);
               }
@@ -311,7 +340,7 @@ export function DistrictLookup({
           <ul id="address-results" role="listbox" className="address-results">
             {suggestions.map((s, i) => (
               <li
-                key={`${s.lat}-${s.lon}-${i}`}
+                key={`${s.label}-${i}`}
                 id={`address-result-${i}`}
                 role="option"
                 aria-selected={active === i}
@@ -351,7 +380,13 @@ export function DistrictLookup({
             </button>
           </div>
           <p>{match.label}</p>
-          <AddressMap match={match} overlay={overlay} enabled={!!config.maps} />
+          {(config.maps || overlay) && (
+            <AddressMap
+              match={match}
+              overlay={overlay}
+              enabled={!!config.maps}
+            />
+          )}
           <p className="small-copy">
             {t(
               "Review the address and district before confirming. Boundaries are for the 119th Congress; future election maps may differ.",
@@ -360,16 +395,7 @@ export function DistrictLookup({
           <button
             className="button small"
             type="button"
-            onClick={() => {
-              onConfirm(match.state, match.district);
-              setConfirmed(
-                t(
-                  "District selected: {district}. Search details have been cleared.",
-                  { district: `${match.state}-${match.district}` },
-                ),
-              );
-              clear();
-            }}
+            onClick={() => confirmDistrict(match.state, match.district)}
           >
             {t("Use this district")}
           </button>

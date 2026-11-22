@@ -1,6 +1,12 @@
 import { t } from "./i18n";
 import { useState, useEffect, useRef, type FormEvent } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  Navigate,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import {
   ArrowUpRight,
   Mail,
@@ -22,6 +28,8 @@ import {
   visaCategories,
   eventTypes,
   reminderEmailSchema,
+  profileSections,
+  type ProfileSection,
   type Profile,
   type VisaCase,
   type VisaEvent,
@@ -30,11 +38,13 @@ import {
 import {
   rolesFor,
   relationshipsFor,
-  milestonesFor,
   applyTemplate,
   milestoneLabel,
+  milestonesFor,
   mayHavePauseHistory,
   pauseSource,
+  pauseSteps,
+  addPauseSteps,
   type CaseRole,
 } from "../../shared/visa-workflow";
 import postsDirectory from "../../shared/posts.json";
@@ -219,38 +229,40 @@ export function Verify() {
     </div>
   );
 }
+type DraftCase = Omit<VisaCase, "category"> & {
+  category: VisaCase["category"] | "";
+};
+type ProfileForm = Omit<Profile, "cases" | "legalStatus"> & {
+  cases: DraftCase[];
+  legalStatus: Profile["legalStatus"] | "";
+};
 const emptyProfile = {
   name: "",
-  legalStatus: "US citizen",
+  legalStatus: "",
   country: "United States",
-  city: "",
+
   state: "",
   district: "",
   politicalAffiliation: "",
-  personallyInvolved: true,
+  personallyInvolved: false,
   signed: false,
   publicConsent: false,
   adultConsent: false,
   reminders: false,
   reminderEmails: [],
   cases: [],
-} as unknown as Profile;
-function newCase(): VisaCase {
+} as unknown as ProfileForm;
+function newCase(): DraftCase {
   return {
     id: crypto.randomUUID(),
     applicantName: "",
     relationship: "Spouse / partner",
-    role: "Petitioner",
+    role: undefined,
     nationality: "",
     country: "",
-    category: "K-1",
+    category: "",
     post: "",
-    events: milestonesFor("K-1").map((type) => ({
-      id: crypto.randomUUID(),
-      type,
-      date: "",
-      note: "",
-    })),
+    events: [],
   };
 }
 function VisaEditor({
@@ -258,30 +270,52 @@ function VisaEditor({
   onChange,
   onRemove,
   citizen,
+  signerName,
   index,
 }: {
-  value: VisaCase;
-  onChange: (v: VisaCase) => void;
+  signerName: string;
+  value: DraftCase;
+  onChange: (v: DraftCase) => void;
   onRemove: () => void;
   citizen: boolean;
   index: number;
 }) {
-  const roleOptions = rolesFor(value.category, citizen);
+  const roleOptions = rolesFor("", citizen).filter(
+    (r) => r !== "Other relationship to the applicant" || value.role === r,
+  );
+  const routeSteps = milestonesFor(value.category);
+  const routeSpecific = [
+    "NOA1",
+    "NOA2",
+    "At NVC",
+    "At KCC",
+    "Documentarily qualified",
+    "In transit",
+    "Ready",
+  ];
+  const milestoneOptions = eventTypes.filter(
+    (type) =>
+      !value.category ||
+      value.category === "Other" ||
+      !routeSpecific.includes(type) ||
+      routeSteps.includes(type),
+  );
   const relationshipOptions = relationshipsFor(
     value.category,
     value.role,
     citizen,
   );
-  const adjust = (category: VisaCase["category"], role = value.role) => {
+  const adjust = (category: DraftCase["category"], role = value.role) => {
     const validRole =
       role && rolesFor(category, citizen).includes(role) ? role : undefined;
     const options = relationshipsFor(category, validRole, citizen);
     const next =
-      category === value.category
+      !category || category === value.category
         ? value
         : applyTemplate(value, category, () => crypto.randomUUID());
     onChange({
       ...next,
+      category,
       role: validRole,
       relationship: (options.includes(value.relationship)
         ? value.relationship
@@ -300,74 +334,94 @@ function VisaEditor({
         <span className="case-number">
           {String(index + 1).padStart(2, "0")}
         </span>
-        <strong>{value.applicantName || t("New visa applicant")}</strong>
+        <strong>
+          {(value.role === "Applicant" ? signerName : value.applicantName) ||
+            t("New visa applicant")}
+        </strong>
         <span className="tag">{t(caseStatus(value))}</span>
         <ChevronDown size={18} />
       </summary>
       <div className="case-body">
         <div className="form-grid">
-          <Field label={t("Applicant name or nickname *")}>
-            <input
-              dir="auto"
-              required
-              maxLength={100}
-              value={value.applicantName}
-              onChange={(e) => set("applicantName", e.target.value)}
-            />
-          </Field>
-          <Field label={t("Visa category *")}>
-            <select
-              value={value.category}
-              onChange={(e) => adjust(e.target.value as VisaCase["category"])}
-            >
-              {visaCategories.map((c) => (
-                <option key={c} value={c}>
-                  {t(c)}
-                </option>
-              ))}
-            </select>
-          </Field>
-          <Field label={t("I am the… *")}>
+          <Field label={t("Choose your role")}>
             <select
               required
               value={value.role || ""}
               onChange={(e) =>
-                adjust(value.category, e.target.value as CaseRole)
+                adjust(
+                  rolesFor(value.category, citizen).includes(
+                    e.target.value as CaseRole,
+                  )
+                    ? value.category
+                    : "",
+                  e.target.value as CaseRole,
+                )
               }
             >
               <option value="">{t("Choose your role")}</option>
               {roleOptions.map((role) => (
                 <option key={role} value={role}>
-                  {t(role)}
+                  {role === "Applicant"
+                    ? t("I am applying for this visa")
+                    : role === "Petitioner"
+                      ? t("I am sponsoring the applicant")
+                      : t(role)}
                 </option>
               ))}
             </select>
           </Field>
-          <Field
-            label={t("The applicant is my… *")}
-            hint={t(
-              "For your own application, choose Applicant. For a self-petition, also choose Applicant.",
-            )}
-          >
+          <Field label={t("Visa category *")}>
             <select
               required
-              value={value.relationship}
-              onChange={(e) => set("relationship", e.target.value)}
+              value={value.category}
+              onChange={(e) => adjust(e.target.value as VisaCase["category"])}
             >
-              {!relationshipOptions.includes(value.relationship) && (
-                <option value="">{t("Choose a relationship")}</option>
-              )}
-              {relationshipOptions.map((r) => (
-                <option key={r} value={r}>
-                  {t(r)}
-                </option>
-              ))}
+              <option value="">{t("Choose a visa category")}</option>
+              {visaCategories
+                .filter(
+                  (c) =>
+                    !value.role || rolesFor(c, citizen).includes(value.role),
+                )
+                .map((c) => (
+                  <option key={c} value={c}>
+                    {t(c)}
+                  </option>
+                ))}
             </select>
           </Field>
+          {value.role && value.role !== "Applicant" && (
+            <Field label={t("Applicant name or nickname *")}>
+              <input
+                dir="auto"
+                required
+                maxLength={100}
+                value={value.applicantName}
+                onChange={(e) => set("applicantName", e.target.value)}
+              />
+            </Field>
+          )}
+          {value.role && value.role !== "Applicant" && (
+            <Field label={t("The applicant is my… *")}>
+              <select
+                required
+                value={value.relationship}
+                onChange={(e) => set("relationship", e.target.value)}
+              >
+                {!relationshipOptions.includes(value.relationship) && (
+                  <option value="">{t("Choose a relationship")}</option>
+                )}
+                {relationshipOptions.map((r) => (
+                  <option key={r} value={r}>
+                    {t(r)}
+                  </option>
+                ))}
+              </select>
+            </Field>
+          )}
           <Field
             label={t("Applicant nationality (citizenship) *")}
             hint={t(
-              "Choose the nationality used for this visa application, not the country of residence. Existing entries need confirmation.",
+              "Choose the nationality used for this visa application, not the country of residence.",
             )}
           >
             <select
@@ -389,12 +443,7 @@ function VisaEditor({
               ))}
             </select>
           </Field>
-          <Field
-            label={t("Processing embassy / consular post *")}
-            hint={t(
-              "Select the assigned post, or Not assigned. A listing does not mean this post currently processes your visa category.",
-            )}
-          >
+          <Field label={t("Processing embassy / consular post *")}>
             <select
               required
               value={value.post}
@@ -413,23 +462,14 @@ function VisaEditor({
                 </option>
               ))}
             </select>
-            <a href={postsDirectory.source} target="_blank" rel="noreferrer">
-              {t("Official post directory")}
-            </a>
           </Field>
         </div>
         <div className="timeline-editor-title">
           <h4>{t("Visa timeline")}</h4>
-          <span>{t("Dates and notes will be public")}</span>
         </div>
-        <p className="small-copy">
+        <p>
           {t(
-            "Add milestones you know. You can record multiple interviews and future interview appointments. A §221(g) or policy-related refusal stays active; choose “Final refusal” only for a final denial. Use “Reopened” if a closed case resumes.",
-          )}
-        </p>
-        <p className="small-copy">
-          {t(
-            "Suggested rows are not completed events. Fill in known dates and remove steps that have not happened or do not apply. At least one dated milestone is required.",
+            "Delete any milestone you haven’t reached yet. Enter a date for at least one milestone.",
           )}
         </p>
         {mayHavePauseHistory(value.category, value.nationality || "") && (
@@ -442,28 +482,29 @@ function VisaEditor({
                 "This nationality was on the 75-country list. That pause is no longer in effect. Nationality alone does not establish an impact: exceptions applied. Add a refusal only if it happened to this applicant.",
               )}
             </p>
-            <a href={pauseSource} target="_blank" rel="noreferrer">
-              {t("State Department update")}
+            <a
+              className="source-link"
+              href={pauseSource}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {t("State Department update")}{" "}
+              <ArrowUpRight size={15} aria-hidden="true" />
             </a>
             <button
               type="button"
               className="button outline small"
-              disabled={value.events.some(
-                (e) => e.type === "Policy-related refusal",
+              disabled={pauseSteps.every((type) =>
+                value.events.some((e) => e.type === type),
               )}
               onClick={() =>
-                set("events", [
-                  ...value.events,
-                  {
-                    id: crypto.randomUUID(),
-                    type: "Policy-related refusal",
-                    date: "",
-                    note: "",
-                  },
-                ])
+                set(
+                  "events",
+                  addPauseSteps(value.events, () => crypto.randomUUID()),
+                )
               }
             >
-              {t("Add a policy-related refusal")}
+              {t("Add pause-related milestones")}
             </button>
           </aside>
         )}
@@ -475,7 +516,10 @@ function VisaEditor({
                   value={e.type}
                   onChange={(x) => editEvent(e.id, "type", x.target.value)}
                 >
-                  {eventTypes.map((eventType) => (
+                  {(milestoneOptions.includes(e.type)
+                    ? milestoneOptions
+                    : [...milestoneOptions, e.type]
+                  ).map((eventType) => (
                     <option key={eventType} value={eventType}>
                       {t(milestoneLabel(value.category, eventType))}
                     </option>
@@ -485,28 +529,19 @@ function VisaEditor({
               <Field label={t("Date")}>
                 <input
                   type="date"
-                  required
+                  required={value.events.length === 1}
                   value={e.date}
                   max={
-                    e.type === "Interview"
+                    e.type === "Interview" || e.type === "Reinterview"
                       ? undefined
                       : new Date().toISOString().slice(0, 10)
                   }
                   onChange={(x) => editEvent(e.id, "date", x.target.value)}
                 />
               </Field>
-              <Field label={t("Note (optional)")}>
-                <input
-                  value={e.note}
-                  maxLength={1000}
-                  placeholder={t("No case numbers or private details")}
-                  onChange={(x) => editEvent(e.id, "note", x.target.value)}
-                />
-              </Field>
               <button
                 type="button"
                 className="icon-button danger-text"
-                disabled={value.events.length === 1}
                 aria-label={t("Remove milestone")}
                 onClick={() =>
                   set(
@@ -531,7 +566,6 @@ function VisaEditor({
                   id: crypto.randomUUID(),
                   type: "Interview",
                   date: "",
-                  note: "",
                 },
               ])
             }
@@ -577,11 +611,11 @@ function StoryEditor() {
   const [story, setStory] = useState<Story>(
     me.story || {
       title: "",
-      summary: "",
+
       body: "",
       impacts: [],
       support: "",
-      caseId: "",
+
       photos: [],
       publish: false,
       rightsConsent: false as true,
@@ -638,34 +672,7 @@ function StoryEditor() {
               placeholder={t("What would you like people to understand?")}
             />
           </Field>
-          <Field label={t("Link a visa timeline")}>
-            <select
-              value={story.caseId}
-              onChange={(e) => set("caseId", e.target.value)}
-            >
-              <option value="">{t("No linked timeline")}</option>
-              {me.profile?.cases.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.applicantName} · {c.category}
-                </option>
-              ))}
-            </select>
-          </Field>
         </div>
-        <Field
-          label={t("Short introduction *")}
-          hint={t("Shown on your story card (20–240 characters).")}
-        >
-          <textarea
-            dir="auto"
-            required
-            minLength={20}
-            maxLength={240}
-            value={story.summary}
-            onChange={(e) => set("summary", e.target.value)}
-            rows={2}
-          />
-        </Field>
         <Field label={t("Your story *")}>
           <textarea
             dir="auto"
@@ -763,7 +770,10 @@ function StoryEditor() {
                     4 - story.photos.length,
                   );
                   const photos = await Promise.all(files.map(processPhoto));
-                  set("photos", [...story.photos, ...photos]);
+                  setStory((current) => ({
+                    ...current,
+                    photos: [...current.photos, ...photos],
+                  }));
                 } catch (e) {
                   setError((e as Error).message);
                 } finally {
@@ -836,11 +846,11 @@ function StoryEditor() {
                 await refresh();
                 setStory({
                   title: "",
-                  summary: "",
+
                   body: "",
                   impacts: [],
                   support: "",
-                  caseId: "",
+
                   photos: [],
                   publish: false,
                   rightsConsent: false as true,
@@ -860,12 +870,46 @@ function StoryEditor() {
     </section>
   );
 }
+export function ThankYou() {
+  const { loading, me } = useData();
+  if (loading) return <div className="page-shell">{t("Loading…")}</div>;
+  if (!me.profile) return <Navigate to="/account" replace />;
+  return (
+    <div className="page-shell narrow">
+      <PageIntro
+        eyebrow={t("SIGN THE PETITION")}
+        title={t("Thank you for signing.")}
+        text={t(
+          "Your signature has been added. You can now share how visa delays have affected you and your family.",
+        )}
+      >
+        <Link className="button coral" to="/account#story">
+          {t("Share your experience")} <ArrowUpRight size={18} />
+        </Link>
+        <Link className="text-button" to="/account">
+          {t("Your account")}
+        </Link>
+      </PageIntro>
+    </div>
+  );
+}
 export function Account() {
   const { me, loading, config, refresh } = useData();
   const nav = useNavigate();
-  const [form, setForm] = useState<Profile>(() => ({
+  const { hash } = useLocation();
+  const tab =
+    hash === "#story"
+      ? "story"
+      : hash === "#cases"
+        ? "cases"
+        : hash === "#settings"
+          ? "settings"
+          : "profile";
+  const signing = !me.profile;
+  const [invalidFields, setInvalidFields] = useState<string[]>([]);
+  const [form, setForm] = useState<ProfileForm>(() => ({
     ...emptyProfile,
-    cases: [newCase()],
+    cases: [],
   }));
   const [districts, setDistricts] = useState<any[]>([]);
   const [error, setError] = useState("");
@@ -881,7 +925,7 @@ export function Account() {
         ...me.profile,
         reminderEmails: me.profile.reminderEmails || [],
       });
-  }, [me.profile]);
+  }, [me.user?.id, me.profile?.signedAt]);
   useEffect(() => {
     fetch("/data/districts.json")
       .then((r) => r.json())
@@ -891,29 +935,96 @@ export function Account() {
       );
   }, []);
   useEffect(() => {
-    if (window.location.hash === "#story" && me.profile)
-      setTimeout(() => document.getElementById("story")?.scrollIntoView(), 100);
-  }, [me.profile?.signedAt]);
+    setError("");
+    setMessage("");
+    setInvalidFields([]);
+  }, [tab]);
   const set = (k: keyof Profile, v: any) => setForm((p) => ({ ...p, [k]: v }));
   async function save(e: FormEvent) {
     e.preventDefault();
-    setBusy(true);
+    if (busy || (!signing && tab === "story")) return;
     setError("");
     setMessage("");
-    try {
-      await api("/me/profile", {
-        method: "PUT",
-        body: JSON.stringify({
-          ...form,
-          cases: form.personallyInvolved ? form.cases : [],
+    setInvalidFields([]);
+    const el = e.currentTarget as HTMLFormElement;
+    const invalid = Array.from(
+      el.querySelectorAll<HTMLInputElement | HTMLSelectElement>(
+        "input:invalid,select:invalid,textarea:invalid",
+      ),
+    );
+    if (invalid.length) {
+      setInvalidFields(
+        invalid.map((input) => {
+          const label =
+            input.closest("label")?.querySelector("span")?.textContent ||
+            input.name;
+          return [label, input.validationMessage].filter(Boolean).join(" — ");
         }),
-      });
-      await refresh();
-      setMessage(
-        me.profile
-          ? "Your information and timelines are up to date."
-          : "Your signature has been added. Thank you.",
       );
+      invalid[0].closest("details")?.setAttribute("open", "");
+      invalid[0].focus();
+      invalid[0].reportValidity();
+      return;
+    }
+    if ((signing || tab === "cases") && form.personallyInvolved) {
+      if (!form.cases.length) {
+        setError("Add at least one visa case when you are personally involved");
+        return;
+      }
+      const missing = form.cases.findIndex(
+        (c) => !c.events.some((event) => event.date),
+      );
+      if (missing !== -1) {
+        setError(
+          t("Visa case {number} needs at least one dated milestone.", {
+            number: missing + 1,
+          }),
+        );
+        return;
+      }
+    }
+    setBusy(true);
+    try {
+      const values = {
+        ...form,
+        cases: form.personallyInvolved
+          ? form.cases.map((c) => ({
+              ...c,
+              applicantName:
+                c.role === "Applicant"
+                  ? (me.profile?.name ?? form.name)
+                  : c.applicantName,
+              events: c.events.filter((event) => event.date),
+            }))
+          : [],
+      };
+      const section = tab as ProfileSection;
+      const payload = signing
+        ? values
+        : Object.fromEntries(
+            profileSections[section].map((key) => [key, values[key]]),
+          );
+      const result = await api(
+        signing ? "/me/profile" : "/me/profile/" + section,
+        {
+          method: signing ? "PUT" : "PATCH",
+          body: JSON.stringify(payload),
+        },
+      );
+      await refresh();
+      if (signing) nav("/thank-you", { replace: true });
+      else {
+        // Use the stored values for this tab while retaining edits made during the request.
+        setForm((current) => ({
+          ...current,
+          ...Object.fromEntries(
+            profileSections[section]
+              .filter((key) => current[key] === form[key])
+              .map((key) => [key, result.fields[key]]),
+          ),
+        }));
+        setMessage("Changes saved.");
+      }
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -978,6 +1089,26 @@ export function Account() {
         </button>
       </PageIntro>
       {me.profile && (
+        <nav className="account-tabs" aria-label={t("Your account")}>
+          {(
+            [
+              ["profile", t("Profile details")],
+              ["cases", t("Visa process")],
+              ["story", t("Share your experience")],
+              ["settings", t("Configuration")],
+            ] as const
+          ).map(([key, label]) => (
+            <Link
+              key={key}
+              to={key === "profile" ? "/account" : "/account#" + key}
+              aria-current={tab === key ? "page" : undefined}
+            >
+              {label}
+            </Link>
+          ))}
+        </nav>
+      )}
+      {me.profile && tab === "cases" && me.profile.personallyInvolved && (
         <div className="account-confirm">
           <div>
             <Check size={22} />
@@ -1013,438 +1144,494 @@ export function Account() {
           </button>
         </div>
       )}
-      {error && <Notice tone="error">{t(error)}</Notice>}
-      {message && <Notice tone="success">{t(message)}</Notice>}
-      <form onSubmit={save}>
-        <section className="account-section">
-          <div className="section-heading">
-            <div>
-              <span className="eyebrow">{t("YOUR PUBLIC PROFILE")}</span>
-              <h2>{t("Profile details")}</h2>
-            </div>
-            <span className="tag">{t("Public after signing")}</span>
-          </div>
-          <div className="form-grid">
-            <Field
-              label={t("Your name *")}
-              hint={t("Enter your own name to sign the petition.")}
-            >
-              <input
-                dir="auto"
-                required
-                minLength={2}
-                maxLength={80}
-                autoComplete="name"
-                value={form.name}
-                onChange={(e) => set("name", e.target.value)}
-              />
-            </Field>
-            <Field
-              label={t("Email · private")}
-              hint={t(
-                "Verified through your sign-in method. This is your unique account email.",
-              )}
-            >
-              <input disabled type="email" value={me.user.email} />
-            </Field>
-            <Field label={t("Legal status *")}>
-              <select
-                value={form.legalStatus}
-                onChange={(e) => set("legalStatus", e.target.value)}
-              >
-                {legalStatuses.map((s) => (
-                  <option key={s} value={s}>
-                    {t(s)}
-                  </option>
-                ))}
-              </select>
-            </Field>
-            <Field label={t("Political affiliation · optional")}>
-              <select
-                value={form.politicalAffiliation}
-                onChange={(e) => set("politicalAffiliation", e.target.value)}
-              >
-                <option value="">{t("Prefer not to say")}</option>
-                {["Democratic", "Independent", "Republican", "Other"].map(
-                  (p) => (
-                    <option key={p} value={p}>
-                      {t(p)}
-                    </option>
-                  ),
-                )}
-              </select>
-            </Field>
-            <Field label={t("Country of residence *")}>
-              <select
-                required
-                value={form.country}
-                onChange={(e) => {
-                  setForm((p) => ({
-                    ...p,
-                    country: e.target.value,
-                    state: "",
-                    district: "",
-                  }));
-                }}
-              >
-                {countries.map((c) => (
-                  <option key={c} value={c}>
-                    {t(c)}
-                  </option>
-                ))}
-              </select>
-            </Field>
-            <Field label={t("City *")}>
-              <input
-                dir="auto"
-                required
-                minLength={2}
-                maxLength={100}
-                autoComplete="address-level2"
-                value={form.city}
-                onChange={(e) => set("city", e.target.value)}
-              />
-            </Field>
-            {form.country === "United States" && (
-              <>
-                <Field label={t("State or territory *")}>
-                  <select
+      {tab !== "story" && message && (
+        <Notice tone="success">{t(message)}</Notice>
+      )}
+      {(signing || tab !== "story") && (
+        <form noValidate onSubmit={save}>
+          {(signing || tab === "profile") && (
+            <section className="account-section">
+              <div className="section-heading">
+                <div>
+                  <span className="eyebrow">{t("YOUR PUBLIC PROFILE")}</span>
+                  <h2>{t("Profile details")}</h2>
+                </div>
+                <span className="tag">{t("Public after signing")}</span>
+              </div>
+              <div className="form-grid">
+                <Field
+                  label={t("Your real name *")}
+                  hint={t("Enter your own name to sign the petition.")}
+                >
+                  <input
+                    dir="auto"
                     required
-                    value={form.state}
-                    onChange={(e) =>
-                      setForm((p) => ({
-                        ...p,
-                        state: e.target.value,
-                        district: "",
-                      }))
-                    }
-                  >
-                    <option value="">{t("Select a state")}</option>
-                    {states.map((s) => (
-                      <option key={s[1]} value={s[1]}>
-                        {s[2]}
-                      </option>
-                    ))}
-                  </select>
+                    minLength={1}
+                    maxLength={80}
+                    autoComplete="name"
+                    value={form.name}
+                    onChange={(e) => set("name", e.target.value)}
+                  />
                 </Field>
                 <Field
-                  label={t("Congressional district *")}
-                  hint={t("119th Congress · 00 means an at-large district.")}
+                  label={t("Email · private")}
+                  hint={t(
+                    "Verified through your sign-in method. This is your unique account email.",
+                  )}
                 >
+                  <input disabled type="email" value={me.user.email} />
+                </Field>
+                <Field label={t("U.S. citizenship or immigration status *")}>
                   <select
+                    value={form.legalStatus}
                     required
-                    value={form.district}
-                    onChange={(e) => set("district", e.target.value)}
+                    onChange={(e) => {
+                      const legalStatus = e.target
+                        .value as Profile["legalStatus"];
+                      setForm((p) => ({
+                        ...p,
+                        legalStatus,
+                        politicalAffiliation:
+                          legalStatus === "US citizen"
+                            ? p.politicalAffiliation
+                            : "",
+                        cases: me.profile
+                          ? p.cases
+                          : p.cases.map((c) =>
+                              legalStatus === "US citizen" &&
+                              c.role === "Applicant"
+                                ? {
+                                    ...c,
+                                    role: undefined,
+                                    relationship: "Other",
+                                  }
+                                : c,
+                            ),
+                      }));
+                    }}
                   >
-                    <option value="">{t("Select your district")}</option>
-                    {districtOptions.map((d) => (
-                      <option key={d} value={d}>
-                        {form.state}-{d}
-                        {d === "00" ? t(" (at-large)") : ""}
+                    <option value="">{t("Select your status")}</option>
+                    {legalStatuses.map((s) => (
+                      <option key={s} value={s}>
+                        {s === "Other"
+                          ? t(
+                              "Other (for example, a U.S. nonimmigrant visa holder or a foreign citizen living abroad)",
+                            )
+                          : t(s)}
                       </option>
                     ))}
                   </select>
                 </Field>
-              </>
-            )}
-          </div>
-          {form.country === "United States" && (
-            <DistrictLookup
-              onConfirm={(state, district) =>
-                setForm((p) => ({ ...p, state, district }))
-              }
-            />
-          )}
-          <fieldset className="involvement">
-            <legend>
-              {t("Are you personally involved in a visa process? *")}
-            </legend>
-            <p className="small-copy">
-              {t(
-                "Choose Yes if you are applying for a visa, petitioning for someone, or following a family member’s or another person’s case with their permission. You will need to add at least one timeline below.",
-              )}
-            </p>
-            <label>
-              <input
-                type="radio"
-                name="involved"
-                checked={form.personallyInvolved}
-                onChange={() =>
-                  setForm((p) => ({
-                    ...p,
-                    personallyInvolved: true,
-                    cases: p.cases.length ? p.cases : [newCase()],
-                  }))
-                }
-              />
-              {t("Yes — for me or someone relevant to me")}
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="involved"
-                checked={!form.personallyInvolved}
-                onChange={() => set("personallyInvolved", false)}
-              />
-              {t("No — I’m here to support")}
-            </label>
-          </fieldset>
-        </section>
-        {!form.personallyInvolved && (me.profile?.cases.length || 0) > 0 && (
-          <Notice>
-            {t(
-              "Saving as a supporter will remove your submitted visa timelines. Choose Yes to keep them. Your signature and story will remain.",
-            )}
-          </Notice>
-        )}
-        {form.personallyInvolved && (
-          <section className="account-section">
-            <div className="section-heading">
-              <div>
-                <span className="eyebrow">{t("VISA TIMELINES")}</span>
-                <h2>{t("Your visa cases")}</h2>
-              </div>
-              <span className="tag">
-                {t("Required when involved · public")}
-              </span>
-            </div>
-            <p>
-              {t(
-                "Add yourself or someone relevant to you. US citizens can add applicants other than themselves. Use nicknames and only share another person’s details with their permission.",
-              )}
-            </p>
-            {form.cases.map((c, i) => (
-              <VisaEditor
-                key={c.id}
-                index={i}
-                citizen={form.legalStatus === "US citizen"}
-                value={c}
-                onChange={(v) =>
-                  set(
-                    "cases",
-                    form.cases.map((x) => (x.id === v.id ? v : x)),
-                  )
-                }
-                onRemove={() =>
-                  set(
-                    "cases",
-                    form.cases.filter((x) => x.id !== c.id),
-                  )
-                }
-              />
-            ))}
-            <button
-              type="button"
-              className="button outline"
-              disabled={form.cases.length >= 20}
-              onClick={() => set("cases", [...form.cases, newCase()])}
-            >
-              <Plus size={18} />
-              {t("Add a visa applicant")}
-            </button>
-          </section>
-        )}
-        <section className="account-section consent-section">
-          <span className="eyebrow">{t("CONSENT & PREFERENCES")}</span>
-          <h2>
-            {me.profile ? t("Review and save") : t("Confirm your signature")}
-          </h2>
-          <p className="petition-statement">
-            {t(
-              "I support transparent visa processing times, meaningful accountability for the Department of State, and the staffing and resources needed to reduce unnecessary delays.",
-            )}
-          </p>
-          <label className="checkbox">
-            <input
-              type="checkbox"
-              required
-              checked={form.signed}
-              onChange={(e) => set("signed", e.target.checked)}
-            />
-            <span>{t("I sign the Reunite Now petition. *")}</span>
-          </label>
-          <label className="checkbox">
-            <input
-              type="checkbox"
-              required
-              checked={form.publicConsent}
-              onChange={(e) => set("publicConsent", e.target.checked)}
-            />
-            <span>
-              {t("I have read the")}{" "}
-              <Link to="/data-use" target="_blank">
-                {t("data use agreement")}
-              </Link>{" "}
-              {t(
-                "and understand that my name, profile, location, legal status, optional affiliation, and submitted visa timelines will be publicly accessible. My email stays private. *",
-              )}
-            </span>
-          </label>
-          <label className="checkbox">
-            <input
-              type="checkbox"
-              required
-              checked={form.adultConsent}
-              onChange={(e) => set("adultConsent", e.target.checked)}
-            />
-            <span>
-              {t(
-                "I am at least 18 and have permission to publish information about any other applicants I add. *",
-              )}
-            </span>
-          </label>
-          <label className="checkbox">
-            <input
-              type="checkbox"
-              checked={form.reminders}
-              onChange={(e) =>
-                setForm((profile) => ({
-                  ...profile,
-                  reminders: e.target.checked,
-                  reminderEmails: e.target.checked
-                    ? profile.reminderEmails
-                    : profile.reminderEmails.filter(
-                        (email) => reminderEmailSchema.safeParse(email).success,
-                      ),
-                }))
-              }
-            />
-            <span>
-              {t(
-                "Send me an optional monthly reminder to update active visa timelines or confirm no change.",
-              )}
-              <small>
-                {t(
-                  "At most once per month after 30 days without a check-in. Unsubscribe here anytime.",
-                )}{" "}
-                {config.reminders
-                  ? ""
-                  : t(
-                      "Email delivery is pending setup; your preference will be saved.",
-                    )}
-              </small>
-            </span>
-          </label>
-          <details className="reminder-help">
-            <summary
-              title={t(
-                "A fresh update, including “no change”, tells us a case is still waiting. This keeps our community estimates current. On the visa data page, readers can filter to cases confirmed in the last 30, 60, or 90 days. Reminders are optional and never change your timeline automatically.",
-              )}
-            >
-              {t("Why do we ask you to check in?")}
-            </summary>
-            <p>
-              {t(
-                "A fresh update, including “no change”, tells us a case is still waiting. This keeps our community estimates current. On the visa data page, readers can filter to cases confirmed in the last 30, 60, or 90 days. Reminders are optional and never change your timeline automatically.",
-              )}
-            </p>
-          </details>
-          {form.reminders && (
-            <fieldset className="reminder-emails">
-              <legend>{t("Additional reminder emails")}</legend>
-              <p className="small-copy">
-                {t("Reminders go to your sign-in email: {email}.", {
-                  email: me.user?.email || "",
-                })}
-              </p>
-              <p className="small-copy">
-                {t(
-                  "Add up to 5 other addresses you own or have permission to notify. Each gets a separate email. These addresses stay private.",
+                {form.legalStatus === "US citizen" && (
+                  <Field label={t("Political affiliation · optional")}>
+                    <select
+                      value={form.politicalAffiliation}
+                      onChange={(e) =>
+                        set("politicalAffiliation", e.target.value)
+                      }
+                    >
+                      <option value="">{t("Prefer not to say")}</option>
+                      {["Democratic", "Independent", "Republican", "Other"].map(
+                        (p) => (
+                          <option key={p} value={p}>
+                            {t(p)}
+                          </option>
+                        ),
+                      )}
+                    </select>
+                  </Field>
                 )}
-              </p>
-              {form.reminderEmails.map((email, index) => (
-                <div className="reminder-email-row" key={index}>
-                  <Field
-                    label={t("Reminder email {number}", { number: index + 1 })}
+                <Field label={t("Country of residence *")}>
+                  <select
+                    required
+                    value={form.country}
+                    onChange={(e) => {
+                      setForm((p) => ({
+                        ...p,
+                        country: e.target.value,
+
+                        state: "",
+                        district: "",
+                      }));
+                    }}
                   >
+                    {countries.map((c) => (
+                      <option key={c} value={c}>
+                        {t(c)}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+                {form.country === "United States" && (
+                  <>
+                    <Field label={t("State or territory *")}>
+                      <select
+                        required
+                        value={form.state}
+                        onChange={(e) =>
+                          setForm((p) => ({
+                            ...p,
+                            state: e.target.value,
+                            district: "",
+                          }))
+                        }
+                      >
+                        <option value="">{t("Select a state")}</option>
+                        {states.map((s) => (
+                          <option key={s[1]} value={s[1]}>
+                            {s[2]}
+                          </option>
+                        ))}
+                      </select>
+                    </Field>
+                    <Field
+                      label={t("Congressional district *")}
+                      hint={t(
+                        "119th Congress · 00 means an at-large district.",
+                      )}
+                    >
+                      <select
+                        required
+                        value={form.district}
+                        onChange={(e) => set("district", e.target.value)}
+                      >
+                        <option value="">{t("Select your district")}</option>
+                        {districtOptions.map((d) => (
+                          <option key={d} value={d}>
+                            {form.state}-{d}
+                            {d === "00" ? t(" (at-large)") : ""}
+                          </option>
+                        ))}
+                      </select>
+                    </Field>
+                  </>
+                )}
+              </div>
+              {form.country === "United States" && (
+                <DistrictLookup
+                  onConfirm={(state, district) =>
+                    setForm((p) => ({ ...p, state, district }))
+                  }
+                />
+              )}
+            </section>
+          )}
+          {(signing || tab === "cases") && (
+            <>
+              <section className="account-section">
+                <fieldset className="involvement">
+                  <legend>
+                    {t(
+                      "Are you applying for a U.S. visa or sponsoring an applicant? *",
+                    )}
+                  </legend>
+                  <label>
                     <input
-                      type="email"
-                      autoComplete="off"
-                      maxLength={254}
-                      required
-                      value={email}
-                      onChange={(event) =>
+                      type="radio"
+                      name="involved"
+                      checked={form.personallyInvolved}
+                      onChange={() =>
+                        setForm((p) => ({
+                          ...p,
+                          personallyInvolved: true,
+                          cases: p.cases.length ? p.cases : [newCase()],
+                        }))
+                      }
+                    />
+                    {t("Yes — I am an applicant or sponsor")}
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name="involved"
+                      checked={!form.personallyInvolved}
+                      onChange={() => set("personallyInvolved", false)}
+                    />
+                    {t("No — I’m here to support")}
+                  </label>
+                </fieldset>
+              </section>
+              {!form.personallyInvolved &&
+                (me.profile?.cases.length || 0) > 0 && (
+                  <Notice>
+                    {t(
+                      "Saving as a supporter will remove your submitted visa timelines. Choose Yes to keep them. Your signature and story will remain.",
+                    )}
+                  </Notice>
+                )}
+              {form.personallyInvolved && (
+                <section className="account-section">
+                  <div className="section-heading">
+                    <div>
+                      <span className="eyebrow">{t("VISA TIMELINES")}</span>
+                      <h2>{t("Your visa cases")}</h2>
+                    </div>
+                    <span className="tag">{t("Public")}</span>
+                  </div>
+                  {form.cases.map((c, i) => (
+                    <VisaEditor
+                      key={c.id}
+                      index={i}
+                      signerName={me.profile?.name ?? form.name}
+                      citizen={
+                        (me.profile?.legalStatus ?? form.legalStatus) ===
+                        "US citizen"
+                      }
+                      value={c}
+                      onChange={(v) =>
                         set(
-                          "reminderEmails",
-                          form.reminderEmails.map((value, i) =>
-                            i === index ? event.target.value : value,
-                          ),
+                          "cases",
+                          form.cases.map((x) => (x.id === v.id ? v : x)),
+                        )
+                      }
+                      onRemove={() =>
+                        set(
+                          "cases",
+                          form.cases.filter((x) => x.id !== c.id),
                         )
                       }
                     />
-                  </Field>
+                  ))}
                   <button
                     type="button"
-                    className="icon-button"
-                    aria-label={t("Remove reminder email {number}", {
-                      number: index + 1,
-                    })}
-                    onClick={() =>
-                      set(
-                        "reminderEmails",
-                        form.reminderEmails.filter((_, i) => i !== index),
-                      )
-                    }
+                    className="button outline"
+                    disabled={form.cases.length >= 20}
+                    onClick={() => set("cases", [...form.cases, newCase()])}
                   >
-                    <Trash2 size={18} />
+                    <Plus size={18} />
+                    {t("Add a visa applicant")}
                   </button>
-                </div>
-              ))}
-              {form.reminderEmails.length < 5 && (
-                <button
-                  type="button"
-                  className="text-button"
-                  onClick={() =>
-                    set("reminderEmails", [...form.reminderEmails, ""])
-                  }
-                >
-                  <Plus size={16} /> {t("Add reminder email")}
-                </button>
+                </section>
               )}
-              <p className="small-copy">
-                {t("Save your account below to apply reminder changes.")}
-              </p>
-            </fieldset>
+            </>
           )}
-          <button className="button coral" disabled={busy}>
-            {busy
-              ? t("Saving…")
-              : me.profile
-                ? t("Save & confirm all information")
-                : t("Sign the petition")}
-            <ArrowUpRight size={18} />
-          </button>
-          <p className="small-copy">
-            {t(
-              "Saving confirms that you have reviewed all listed cases and updates their last-checked date.",
+          {signing && (
+            <section className="account-section consent-section">
+              <span className="eyebrow">{t("CONSENT & PREFERENCES")}</span>
+              <h2>{t("Confirm your signature")}</h2>
+              <p className="petition-statement">
+                {t(
+                  "I support transparent visa processing times, meaningful accountability for the Department of State, and the staffing and resources needed to reduce unnecessary delays.",
+                )}
+              </p>
+              <label className="checkbox">
+                <input
+                  type="checkbox"
+                  required
+                  checked={form.signed}
+                  onChange={(e) => set("signed", e.target.checked)}
+                />
+                <span>
+                  {t("I am signing this petition with my real name. *")}
+                </span>
+              </label>
+              <label className="checkbox">
+                <input
+                  type="checkbox"
+                  required
+                  checked={form.publicConsent}
+                  onChange={(e) => set("publicConsent", e.target.checked)}
+                />
+                <span>
+                  {t("I have read the")}{" "}
+                  <Link to="/data-use" target="_blank">
+                    {t("data use agreement")}
+                  </Link>{" "}
+                  {t(
+                    "and understand that my name, profile, location, legal status, optional affiliation, and submitted visa timelines will be publicly accessible. My email stays private. *",
+                  )}
+                </span>
+              </label>
+              <label className="checkbox">
+                <input
+                  type="checkbox"
+                  required
+                  checked={form.adultConsent}
+                  onChange={(e) => set("adultConsent", e.target.checked)}
+                />
+                <span>
+                  {t(
+                    "I am at least 18 and have permission to publish information about any other applicants I add. *",
+                  )}
+                </span>
+              </label>
+            </section>
+          )}
+          {(signing || tab === "settings") && (
+            <section className="account-section consent-section">
+              <h2>{t("Email reminders")}</h2>
+              <label className="checkbox">
+                <input
+                  type="checkbox"
+                  checked={form.reminders}
+                  onChange={(e) =>
+                    setForm((profile) => ({
+                      ...profile,
+                      reminders: e.target.checked,
+                      reminderEmails: e.target.checked
+                        ? profile.reminderEmails
+                        : profile.reminderEmails.filter(
+                            (email) =>
+                              reminderEmailSchema.safeParse(email).success,
+                          ),
+                    }))
+                  }
+                />
+                <span>
+                  {t(
+                    "Send me an optional monthly reminder to update active visa timelines or confirm no change.",
+                  )}
+                  <small>
+                    {t(
+                      "At most once per month after 30 days without a check-in. Unsubscribe here anytime.",
+                    )}{" "}
+                    {config.reminders
+                      ? ""
+                      : t(
+                          "Email delivery is pending setup; your preference will be saved.",
+                        )}
+                  </small>
+                </span>
+              </label>
+              <details className="reminder-help">
+                <summary
+                  title={t(
+                    "A fresh update, including “no change”, tells us a case is still waiting. This keeps our community estimates current. On the visa data page, readers can filter to cases confirmed in the last 30, 60, or 90 days. Reminders are optional and never change your timeline automatically.",
+                  )}
+                >
+                  {t("Why do we ask you to check in?")}
+                </summary>
+                <p>
+                  {t(
+                    "A fresh update, including “no change”, tells us a case is still waiting. This keeps our community estimates current. On the visa data page, readers can filter to cases confirmed in the last 30, 60, or 90 days. Reminders are optional and never change your timeline automatically.",
+                  )}
+                </p>
+              </details>
+              {form.reminders && (
+                <fieldset className="reminder-emails">
+                  <legend>{t("Additional reminder emails")}</legend>
+                  <p className="small-copy">
+                    {t("Reminders go to your sign-in email: {email}.", {
+                      email: me.user?.email || "",
+                    })}
+                  </p>
+                  <p className="small-copy">
+                    {t(
+                      "Add up to 5 other addresses you own or have permission to notify. Each gets a separate email. These addresses stay private.",
+                    )}
+                  </p>
+                  {form.reminderEmails.map((email, index) => (
+                    <div className="reminder-email-row" key={index}>
+                      <Field
+                        label={t("Reminder email {number}", {
+                          number: index + 1,
+                        })}
+                      >
+                        <input
+                          type="email"
+                          autoComplete="off"
+                          maxLength={254}
+                          required
+                          value={email}
+                          onChange={(event) =>
+                            set(
+                              "reminderEmails",
+                              form.reminderEmails.map((value, i) =>
+                                i === index ? event.target.value : value,
+                              ),
+                            )
+                          }
+                        />
+                      </Field>
+                      <button
+                        type="button"
+                        className="icon-button"
+                        aria-label={t("Remove reminder email {number}", {
+                          number: index + 1,
+                        })}
+                        onClick={() =>
+                          set(
+                            "reminderEmails",
+                            form.reminderEmails.filter((_, i) => i !== index),
+                          )
+                        }
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  ))}
+                  {form.reminderEmails.length < 5 && (
+                    <button
+                      type="button"
+                      className="text-button"
+                      onClick={() =>
+                        set("reminderEmails", [...form.reminderEmails, ""])
+                      }
+                    >
+                      <Plus size={16} /> {t("Add reminder email")}
+                    </button>
+                  )}
+                </fieldset>
+              )}
+            </section>
+          )}
+          <div className="account-save">
+            {error && <Notice tone="error">{t(error)}</Notice>}
+            {invalidFields.length > 0 && (
+              <Notice tone="error">
+                <strong>{t("Check these fields before saving.")}</strong>
+                <ul>
+                  {invalidFields.map((msg, i) => (
+                    <li key={i}>{msg}</li>
+                  ))}
+                </ul>
+              </Notice>
             )}
-          </p>
+            <button className="button coral" disabled={busy}>
+              {busy
+                ? t("Saving…")
+                : signing
+                  ? t("Sign the petition")
+                  : tab === "cases"
+                    ? t("Save visa cases")
+                    : tab === "settings"
+                      ? t("Save settings")
+                      : t("Save profile")}{" "}
+              <ArrowUpRight size={18} />
+            </button>
+          </div>
+        </form>
+      )}
+      {me.profile && (
+        <div hidden={tab !== "story"}>
+          <StoryEditor />
+        </div>
+      )}
+      {(signing || tab === "settings") && (
+        <section className="account-section manage-section">
+          <div>
+            <h2>{t("Export or delete your data")}</h2>
+            <p>
+              {t(
+                "Export a copy or delete your account and all associated information.",
+              )}
+            </p>
+          </div>
+          <div className="row-between">
+            <a className="button outline" href="/api/me/export">
+              <Download size={17} />
+              {t("Export my data")}
+            </a>
+            <button
+              className="text-button danger-text"
+              onClick={() => setDeleteOpen(true)}
+            >
+              <Trash2 size={17} />
+              {t("Delete account")}
+            </button>
+          </div>
         </section>
-      </form>
-      {me.profile && <StoryEditor />}
-      <section className="account-section manage-section">
-        <div>
-          <h2>{t("Export or delete your data")}</h2>
-          <p>
-            {t(
-              "Export a copy or delete your account and all associated information.",
-            )}
-          </p>
-        </div>
-        <div className="row-between">
-          <a className="button outline" href="/api/me/export">
-            <Download size={17} />
-            {t("Export my data")}
-          </a>
-          <button
-            className="text-button danger-text"
-            onClick={() => setDeleteOpen(true)}
-          >
-            <Trash2 size={17} />
-            {t("Delete account")}
-          </button>
-        </div>
-      </section>
+      )}
       {deleteOpen && (
         <Modal
           title={t("PERMANENT ACCOUNT DELETION")}

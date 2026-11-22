@@ -34,6 +34,6 @@ if __name__=='__main__':
   if v.pop('identifier',None)=='lis':
    assert all(k in ids for k in v['members']), 'Unmapped senator; stop rather than guess'
    v['members']={ids[k]:value for k,value in v['members'].items()}
- output={'reviewed':'2026-11-12','retrievedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'memberIdSource':'https://github.com/unitedstates/congress-legislators','bills':bills,'votes':votes}
+ output={'reviewed':'2026-11-21','retrievedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'memberIdSource':'https://github.com/unitedstates/congress-legislators','bills':bills,'votes':votes}
  pathlib.Path('shared/legislation.json').write_text(json.dumps(output,ensure_ascii=False,indent=2)+'\n')
  print(f'Updated {len(bills)} bills and {len(votes)} official roll calls. Editorial review required.')

@@ -20,7 +20,6 @@ function visa(events: [string, string][]): VisaCase {
       id: String(i),
       type,
       date,
-      note: "",
     })),
   } as VisaCase;
 }
@@ -71,7 +70,7 @@ test("reopened cases are active and later closure uses the new decision", () => 
     ["Reopened", "2026-03-01"],
   ]);
   assert.equal(caseStatus(c, now), "active");
-  c.events.push({ id: "4", type: "Approved", date: "2026-04-01", note: "" });
+  c.events.push({ id: "4", type: "Approved", date: "2026-04-01" });
   assert.equal(metricDays(c, "total", now), 90);
 });
 test("zero-day durations are retained; missing dates are excluded", () => {

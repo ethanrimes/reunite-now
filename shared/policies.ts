@@ -1,3 +1,4 @@
+import { news } from "./campaign";
 import { additionalPolicies } from "./legislation";
 export type Policy = {
   id: string;
@@ -32,7 +33,7 @@ export const policies: Policy[] = [
       "Report to Congress on staffing, technology, resources, and the effects of social-media vetting.",
       "Develop a strategy to increase consular staffing and reduce delays.",
     ],
-    updated: "2026-11-11",
+    updated: "2026-11-21",
     timeline: [
       {
         date: "2026-09-30",
@@ -44,8 +45,10 @@ export const policies: Policy[] = [
         title: "Introduced in the House",
         text: "H.R. 10711 was referred to the Judiciary and Foreign Affairs committees.",
       },
+      news.bill,
     ],
     sources: [
+      news.bill.source,
       {
         label: "Official bill text · GovInfo",
         url: "https://www.govinfo.gov/content/pkg/BILLS-119hr10711ih/html/BILLS-119hr10711ih.htm",
@@ -76,13 +79,13 @@ export const policies: Policy[] = [
     summary:
       "Challenging categorical barriers to immigrant visas and seeking lawful, individual decisions.",
     background:
-      "This litigation challenges the 75-country immigrant visa policy and related public-charge practices. The court vacated the challenged pause on August 21, 2026. Relief does not guarantee a visa or eliminate independent grounds of inadmissibility. NILC’s case page was updated November 9, 2026; consult the linked filings for the current procedural position.",
+      "This litigation challenges the 75-country immigrant visa policy and related public-charge practices. The court vacated the challenged pause on August 21, 2026. Relief does not guarantee a visa or eliminate independent grounds of inadmissibility.",
     goals: [
       "Restore individualized adjudication under immigration law.",
       "Seek implementation of relief for refusals based solely on the challenged policy.",
       "Challenge unlawful public-charge barriers to immigrant visa processing.",
     ],
-    updated: "2026-11-11",
+    updated: "2026-11-21",
     timeline: [
       {
         date: "2026-01-21",
@@ -99,13 +102,17 @@ export const policies: Policy[] = [
         title: "Applicant roadmap published",
         text: "CLINIC’s roadmap, hosted by NILC, explains the ruling and limits of relief.",
       },
+      news.stay,
       {
         date: "2026-11-06",
         title: "Amended complaint filed",
         text: "Plaintiffs challenged an expanded worldwide public-charge visa-processing regime. The allegations and requested relief are described in the amended complaint.",
       },
+      news.clinic,
     ],
     sources: [
+      news.clinic.source,
+      news.stay.source,
       {
         label: "Case updates and filings · NILC",
         url: "https://www.nilc.org/litigation/clinic-v-rubio/",
@@ -176,12 +183,12 @@ export const policies: Policy[] = [
     summary:
       "Challenging the diversity visa pauses and pursuing compliance with court-ordered processing.",
     background:
-      "This case concerns FY-2026 diversity visa applicants affected by processing holds. The State Department says its diversity visa issuance pause ended under the August 28 order. Later orders addressed implementation. Counsel lists further filings through November 9; consult those documents for individual eligibility and deadlines.",
+      "This case concerns FY-2026 diversity visa applicants affected by processing holds. The State Department says its diversity visa issuance pause ended under the August 28 order. Later orders addressed implementation. Counsel’s filings document the dispute over processing after the fiscal year ended.",
     goals: [
       "Restore processing for affected diversity visa applicants.",
       "Seek compliance with court orders and reporting on implementation.",
     ],
-    updated: "2026-11-12",
+    updated: "2026-11-21",
     timeline: [
       {
         date: "2026-08-28",
@@ -198,6 +205,7 @@ export const policies: Policy[] = [
         title: "Further order listed by counsel",
         text: "Counsel links a November 9 order and the preceding request for clarification. Read the documents for the current scope of relief.",
       },
+      news.medani,
     ],
     sources: [
       {
@@ -219,6 +227,37 @@ export const policies: Policy[] = [
     },
     contribute:
       "Affected applicants can share information through class counsel’s linked page. Earlier processing windows have passed; ask counsel about your circumstances rather than assuming enrollment or visa issuance is available.",
+  },
+  {
+    id: "castillo-v-rubio",
+    kind: "Legal case",
+    title: news.castillo.title,
+    eyebrow: "1:26-cv-11422 · N.D. Ill.",
+    status: news.castilloClosed.status,
+    theme: "Accountability",
+    summary: news.castillo.text,
+    background: news.castilloClosed.text,
+    goals: [],
+    updated: "2026-11-21",
+    timeline: [news.castillo, news.castilloClosed],
+    sources: [news.castillo.source, news.castilloClosed.source],
+    contribute: "",
+  },
+  {
+    id: "de-moura-gomes-v-rubio",
+    kind: "Legal case",
+    title: news.gomes.title,
+    eyebrow: "1:26-cv-01883 · D.D.C.",
+    status: news.gomes.status,
+    theme: "Accountability",
+    summary: news.gomes.text,
+    background:
+      "The court barred use of the pause in this family’s case. The consular officer retained authority to decide eligibility and request updated evidence.",
+    goals: [],
+    updated: "2026-11-21",
+    timeline: [news.gomes],
+    sources: [news.gomes.source],
+    contribute: "",
   },
   ...additionalPolicies,
 ];

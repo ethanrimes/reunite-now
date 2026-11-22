@@ -8,28 +8,6 @@ import {
   billLabel,
   memberVote,
 } from "../../shared/legislation";
-export function LegislativeScope() {
-  return (
-    <details className="research-scope">
-      <summary>{t("What is included in this review?")}</summary>
-      <p>
-        {t(
-          "Reviewed November 12, 2026: 22 bills across 17 initiatives, covering consular capacity, wait-time transparency, family reunification, visa-number backlogs, restrictions, and fees. Current proposals are shown alongside selected predecessors from the 116th–118th Congresses.",
-        )}
-      </p>
-      <p>
-        {t(
-          "Six passage or concurrence roll calls are included. This is a sourced, curated record, not every immigration bill, amendment, procedural vote, or member statement. Sponsorship is separate from voting; a missing vote is not opposition.",
-        )}
-      </p>
-      <p>
-        {t(
-          "Official bill names and congressional action text are shown in their original English. Summaries and interface labels follow your selected language.",
-        )}
-      </p>
-    </details>
-  );
-}
 export function BillRecord({ topicId }: { topicId: string }) {
   const topic = legislativeTopics.find((x) => x.id === topicId);
   if (!topic) return null;

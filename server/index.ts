@@ -24,8 +24,11 @@ import { canonicalHost } from "./canonical";
 import { sendReminders } from "./reminders";
 import { createDemoData, demoEnabled } from "./demo";
 import {
+  consentVersion,
   profileSchema,
   profileWriteSchema,
+  profileSections,
+  type ProfileSection,
   storySchema,
   states,
   type Profile,
@@ -137,7 +140,7 @@ app.get("/api/config", (_req, res) =>
     demoData: !!demo,
     reminders: emailReady(),
     maps: mapsReady(),
-    consentVersion: "2026-11-12",
+    consentVersion,
   }),
 );
 app.post("/api/auth/email", authLimit, async (req, res) => {
@@ -259,19 +262,15 @@ app.get("/api/me", async (req, res) => {
     user: { id: u.id, email: u.email },
     profile: p.rows[0]
       ? {
-          ...p.rows[0].data,
+          ...profileSchema.parse(p.rows[0].data),
           updatedAt: p.rows[0].updated_at,
           signedAt: p.rows[0].signed_at,
         }
       : null,
-    story: s.rows[0]?.data || null,
+    story: s.rows[0] ? storySchema.parse(s.rows[0].data) : null,
   });
 });
-app.put("/api/me/profile", requireUser, async (req, res) => {
-  const data = profileWriteSchema.parse(req.body);
-  data.reminderEmails = data.reminderEmails.filter(
-    (email) => email !== res.locals.user.email.trim().toLowerCase(),
-  );
+async function validateDistrict(data: Profile) {
   if (data.country === "United States") {
     const districts = JSON.parse(
       await readFile("public/data/districts.json", "utf8"),
@@ -282,17 +281,70 @@ app.put("/api/me/profile", requireUser, async (req, res) => {
         (f: any) => f.properties.GEOID === `${fips}${data.district}`,
       )
     )
-      return void res.status(400).json({
-        error: "Choose a valid 119th Congress district for your state.",
-      });
+      throw Object.assign(
+        new Error("Choose a valid 119th Congress district for your state."),
+        { status: 400 },
+      );
   }
+}
+app.put("/api/me/profile", requireUser, async (req, res) => {
+  const data = profileWriteSchema.parse(req.body);
+  data.reminderEmails = data.reminderEmails.filter(
+    (email) => email !== res.locals.user.email.trim().toLowerCase(),
+  );
+  await validateDistrict(data);
   const now = new Date().toISOString();
   data.cases = data.cases.map((c) => ({ ...c, updatedAt: now }));
   await db.query(
-    `INSERT INTO profiles(user_id,data) VALUES($1,$2) ON CONFLICT(user_id) DO UPDATE SET data=EXCLUDED.data,updated_at=now()`,
-    [res.locals.user.id, JSON.stringify(data)],
+    `INSERT INTO profiles(user_id,data,consent_version) VALUES($1,$2,$3) ON CONFLICT(user_id) DO UPDATE SET data=EXCLUDED.data,updated_at=now()`,
+    [res.locals.user.id, JSON.stringify(data), consentVersion],
   );
   res.json({ ok: true, updatedAt: now });
+});
+app.patch("/api/me/profile/:section", requireUser, async (req, res) => {
+  const section = req.params.section as ProfileSection;
+  if (!Object.hasOwn(profileSections, section)) return void res.sendStatus(404);
+  const fields = profileSections[section];
+  const user = res.locals.user;
+  const sectionValues = await transaction(async (q) => {
+    const result = await q.query(
+      "SELECT data FROM profiles WHERE user_id=$1 FOR UPDATE",
+      [user.id],
+    );
+    if (!result.rows[0])
+      throw Object.assign(new Error("Sign the petition first."), {
+        status: 400,
+      });
+    const saved = result.rows[0].data;
+    const updates = Object.fromEntries(
+      fields
+        .filter((key) => Object.hasOwn(req.body ?? {}, key))
+        .map((key) => [key, req.body[key]]),
+    );
+    if (!Object.keys(updates).length)
+      throw Object.assign(new Error("No fields to save."), { status: 400 });
+    const data = (
+      section === "cases" ? profileWriteSchema : profileSchema
+    ).parse({ ...saved, ...updates });
+    if (section === "profile") await validateDistrict(data);
+    if (section === "settings")
+      data.reminderEmails = data.reminderEmails.filter(
+        (email) => email !== user.email.toLowerCase(),
+      );
+    const now = new Date().toISOString();
+    if (section !== "settings")
+      data.cases = data.cases.map((c) => ({
+        ...c,
+        ...(c.role === "Applicant" && { applicantName: data.name }),
+        ...(section === "cases" && { updatedAt: now }),
+      }));
+    await q.query(
+      "UPDATE profiles SET data=$2, updated_at=CASE WHEN $3 THEN now() ELSE updated_at END WHERE user_id=$1",
+      [user.id, JSON.stringify(data), section === "cases"],
+    );
+    return Object.fromEntries(fields.map((key) => [key, data[key]]));
+  });
+  res.json({ ok: true, fields: sectionValues });
 });
 app.post("/api/me/confirm", requireUser, async (_req, res) => {
   const now = new Date().toISOString();
@@ -323,13 +375,6 @@ app.put("/api/me/story", requireUser, async (req, res) => {
     return void res
       .status(400)
       .json({ error: "Sign the petition before sharing a story" });
-  if (
-    data.caseId &&
-    !p.rows[0].data.cases.some((c: any) => c.id === data.caseId)
-  )
-    return void res
-      .status(400)
-      .json({ error: "Choose one of your visa cases" });
   await db.query(
     `INSERT INTO stories(user_id,data) VALUES($1,$2) ON CONFLICT(user_id) DO UPDATE SET data=EXCLUDED.data,updated_at=now()`,
     [res.locals.user.id, JSON.stringify(data)],
@@ -350,7 +395,7 @@ app.get("/api/me/export", requireUser, async (_req, res) => {
   res.attachment("reunite-now-data.json").json({
     email: u.email,
     profile: p.rows[0] || null,
-    story: s.rows[0]?.data || null,
+    story: s.rows[0] ? storySchema.parse(s.rows[0].data) : null,
   });
 });
 app.delete("/api/me", requireUser, async (req, res) => {
@@ -412,7 +457,7 @@ app.get("/api/public", async (_req, res) => {
 });
 app.get("/api/stories", async (_req, res) => {
   const rows = await db.query(
-    `SELECT s.user_id,s.data,s.updated_at,p.data AS profile FROM stories s JOIN profiles p ON s.user_id=p.user_id WHERE s.data->>'publish'='true' AND p.data->>'publicConsent'='true'`,
+    `SELECT s.user_id,s.data,s.updated_at,p.data->>'name' AS name,p.data->>'country' AS country FROM stories s JOIN profiles p ON s.user_id=p.user_id WHERE s.data->>'publish'='true' AND p.data->>'publicConsent'='true'`,
   );
   res.json({
     stories: [
@@ -421,12 +466,9 @@ app.get("/api/stories", async (_req, res) => {
         return {
           ...story,
           id: r.user_id,
-          name: r.profile.name,
-          country: r.profile.country,
+          name: r.name,
+          country: r.country,
           updatedAt: r.updated_at,
-          timeline:
-            r.profile.cases.find((c: any) => c.id === story.caseId)?.events ||
-            [],
         };
       }),
       ...(demo?.stories || []),
@@ -517,6 +559,9 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
 await migrate();
 await db.query("DELETE FROM login_tokens WHERE expires_at<now()");
 await db.query("DELETE FROM sessions WHERE expires_at<now()");
-app.listen(Number(process.env.PORT || 3001), "0.0.0.0", () =>
-  console.log(`Reunite Now API ready on port ${process.env.PORT || 3001}`),
+app.listen(
+  Number(process.env.PORT || 3001),
+  production ? "0.0.0.0" : "127.0.0.1",
+  () =>
+    console.log(`Reunite Now API ready on port ${process.env.PORT || 3001}`),
 );

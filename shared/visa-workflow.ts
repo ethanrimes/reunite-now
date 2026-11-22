@@ -75,19 +75,48 @@ export function milestoneLabel(category: string, type: string) {
   return "Petition / application filed";
 }
 export function applyTemplate(
-  value: VisaCase,
+  value: Omit<VisaCase, "category"> & { category: string },
   category: VisaCase["category"],
   id: () => string,
 ): VisaCase {
   // Only undated, unannotated suggestions can be replaced. Never discard a recorded milestone.
-  const recorded = value.events.filter((e) => e.date || e.note);
+  const recorded = value.events.filter((e) => e.date);
   const events = [
     ...recorded,
     ...milestonesFor(category)
       .filter((type) => !recorded.some((e) => e.type === type))
-      .map((type) => ({ id: id(), type, date: "", note: "" })),
+      .map((type) => ({ id: id(), type, date: "" })),
   ];
   return { ...value, category, events };
+}
+export const pauseSteps = [
+  "Interview",
+  "Policy-related refusal",
+  "First email: case review",
+  "Second email: reinterview instructions",
+  "Reinterview",
+] as const;
+
+export function addPauseSteps(
+  events: VisaEvent[],
+  id: () => string,
+): VisaEvent[] {
+  const remaining = [...events];
+  const steps = pauseSteps.map((type) => {
+    const index = remaining.findIndex((event) => event.type === type);
+    return index < 0
+      ? { id: id(), type, date: "" }
+      : remaining.splice(index, 1)[0];
+  });
+  const firstStep = events.findIndex((e) =>
+    pauseSteps.some((type) => type === e.type),
+  );
+  const firstOutcome = remaining.findIndex((e) =>
+    ["Approved", "Visa issued", "Final refusal", "Withdrawn"].includes(e.type),
+  );
+  const end = firstOutcome < 0 ? remaining.length : firstOutcome;
+  const index = firstStep < 0 ? end : Math.min(firstStep, end);
+  return [...remaining.slice(0, index), ...steps, ...remaining.slice(index)];
 }
 export const pauseSource =
   "https://travel.state.gov/en/newsroom/visas/2026/immigrant-visa-processing-updates-for-nationalities-at-high-risk-of-public-benefits-usage.html";

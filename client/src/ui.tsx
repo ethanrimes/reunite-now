@@ -126,7 +126,6 @@ export function Timeline({ events }: { events: VisaEvent[] }) {
               {e.date > new Date().toISOString().slice(0, 10) && (
                 <span className="tag">{t("Scheduled")}</span>
               )}
-              {e.note && <p dir="auto">{e.note}</p>}
             </div>
           </li>
         ))}

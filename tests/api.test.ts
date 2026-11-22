@@ -43,7 +43,6 @@ test("email authentication, data privacy, ownership, update and deletion", async
     name: "Integration test only",
     legalStatus: "US citizen",
     country: "United States",
-    city: "Test city",
     state: "VA",
     district: "10",
     politicalAffiliation: "",
@@ -153,35 +152,64 @@ test("email authentication, data privacy, ownership, update and deletion", async
   );
   const me = await (await request("/api/me")).json();
   assert.equal(me.user.email, email);
+  assert.equal("city" in me.profile, false);
   assert.deepEqual(me.profile.reminderEmails, [
     "backup@example.test",
     "second@example.test",
   ]);
   assert.equal(me.profile.cases[0].events.length, 2);
+  // A cached registration form may still submit the retired residence field.
+  assert.equal(
+    (
+      await request("/api/me/profile", "PUT", {
+        ...profile,
+        city: "Legacy residence",
+      })
+    ).status,
+    200,
+  );
+  assert.equal(
+    "city" in (await (await request("/api/me/export")).json()).profile.data,
+    false,
+  );
+  const beforeSettings = (await (await request("/api/me")).json()).profile;
+  const settings = await request("/api/me/profile/settings", "PATCH", {
+    reminders: true,
+    reminderEmails: me.profile.reminderEmails,
+    country: "Do not save this",
+    cases: [],
+  });
+  assert.equal(settings.status, 200);
+  const afterSettings = (await (await request("/api/me")).json()).profile;
+  assert.equal(afterSettings.country, profile.country);
+  assert.deepEqual(afterSettings.cases, beforeSettings.cases);
+  assert.equal(afterSettings.updatedAt, beforeSettings.updatedAt);
+  assert.equal(afterSettings.reminders, true);
+  assert.equal("note" in afterSettings.cases[0].events[0], false);
   const pub = await (await request("/api/public")).json();
   const record = pub.profiles.find((p: any) => p.id === me.user.id);
   assert.equal(record.name, profile.name);
+  assert.equal("city" in record, false);
   assert.equal("email" in record, false);
   assert.equal("reminders" in record, false);
   assert.equal("reminderEmails" in record, false);
   assert.equal(JSON.stringify(record).includes("backup@example.test"), false);
   const story = {
     title: "Integration test story",
-    summary: "This is synthetic test content used only for local verification.",
     body: "This is synthetic local test content. It is not a real applicant story and is deleted when the integration test completes.",
     impacts: ["Family separation"],
     support: "",
-    caseId: "test-case",
     photos: [],
     publish: true,
     rightsConsent: true,
   };
   assert.equal((await request("/api/me/story", "PUT", story)).status, 200);
-  assert.ok(
-    (await (await request("/api/stories")).json()).stories.some(
-      (s: any) => s.id === me.user.id,
-    ),
+  const published = (await (await request("/api/stories")).json()).stories.find(
+    (s: any) => s.id === me.user.id,
   );
+  assert.equal(published.title, story.title);
+  for (const key of ["summary", "caseId", "timeline"])
+    assert.equal(key in published, false);
   assert.equal((await request("/api/me/confirm", "POST")).status, 200);
   const confirmed = await (await request("/api/me")).json();
   assert.ok(
@@ -193,6 +221,7 @@ test("email authentication, data privacy, ownership, update and deletion", async
   );
   const exported = await (await request("/api/me/export")).json();
   assert.equal(exported.email, email);
+  assert.equal("city" in exported.profile.data, false);
   assert.deepEqual(
     exported.profile.data.reminderEmails,
     me.profile.reminderEmails,

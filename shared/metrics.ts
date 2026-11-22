@@ -8,14 +8,21 @@ export const metricLabels = {
   nvcClosure: "NVC to final decision",
 };
 export type Metric = keyof typeof metricLabels;
-export function orderedEvents(v: VisaCase, now = new Date()) {
+export function orderedEvents(v: Pick<VisaCase, "events">, now = new Date()) {
   return [...v.events]
     .filter((e) => !!e.date && e.date <= now.toISOString().slice(0, 10))
     .sort((a, b) => a.date.localeCompare(b.date));
 }
-export function caseStatus(v: VisaCase, now = new Date()): "active" | "closed" {
+export function caseStatus(
+  v: Pick<VisaCase, "events">,
+  now = new Date(),
+): "active" | "closed" {
   const e = orderedEvents(v, now);
-  const last = e.at(-1);
+  const last = e.findLast(
+    (event) =>
+      event.type !== "First email: case review" &&
+      event.type !== "Second email: reinterview instructions",
+  );
   return last &&
     ["Approved", "Visa issued", "Final refusal", "Withdrawn"].includes(
       last.type,

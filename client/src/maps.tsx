@@ -442,9 +442,10 @@ function Multi({
     </details>
   );
 }
-export function Coverage() {
+export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
   const { profiles } = useData();
-  const [kind, setKind] = useState<"states" | "districts" | "world">("states");
+  const [division, setDivision] = useState<"states" | "districts">("states");
+  const kind = worldwide ? "world" : division;
   const [status, setStatus] = useState<string[]>([...legalStatuses]);
   const [involved, setInvolved] = useState(["Yes", "No"]);
   const [representatives, setRepresentatives] = useState<Rep[]>([]);
@@ -548,9 +549,13 @@ export function Coverage() {
             {t("Where people")} {t("have signed.")}
           </>
         }
-        text={t(
-          "See where support comes from, across the United States and around the world. Select a US state or district to see its representatives and their parties.",
-        )}
+        text={
+          worldwide
+            ? t("Signatures by country of residence")
+            : t(
+                "Explore signatures across all 50 states, Washington, DC, and the U.S. territories. Select a state or district to see its representatives.",
+              )
+        }
       />
       <div className="mini-stats">
         <div>
@@ -583,22 +588,6 @@ export function Coverage() {
           <span>{t("supporters outside the US")}</span>
         </div>
       </div>
-      <div className="coverage-scope segmented" aria-label={t("Map geography")}>
-        <button
-          aria-pressed={kind !== "world"}
-          className={kind !== "world" ? "selected" : ""}
-          onClick={() => setKind("states")}
-        >
-          {t("United States")}
-        </button>
-        <button
-          aria-pressed={kind === "world"}
-          className={kind === "world" ? "selected" : ""}
-          onClick={() => setKind("world")}
-        >
-          {t("Worldwide signatures")}
-        </button>
-      </div>
       <MapPanel
         title={
           kind === "world"
@@ -612,14 +601,14 @@ export function Coverage() {
               <button
                 aria-pressed={kind === "states"}
                 className={kind === "states" ? "selected" : ""}
-                onClick={() => setKind("states")}
+                onClick={() => setDivision("states")}
               >
                 {t("States")}
               </button>
               <button
                 aria-pressed={kind === "districts"}
                 className={kind === "districts" ? "selected" : ""}
-                onClick={() => setKind("districts")}
+                onClick={() => setDivision("districts")}
               >
                 {t("Congressional districts")}
               </button>
@@ -672,6 +661,11 @@ export function Coverage() {
         </p>
       )}
       <div className="map-sources">
+        <Link to={worldwide ? "/coverage" : "/coverage/worldwide"}>
+          {worldwide
+            ? t("US signatures · states, districts & territories")
+            : t("Worldwide signatures")}
+        </Link>
         <External
           href={
             kind === "world"

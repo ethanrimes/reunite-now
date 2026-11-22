@@ -12,7 +12,7 @@ const baseProfile = {
   name: "Synthetic reminder test",
   legalStatus: "Other",
   country: "Colombia",
-  city: "Bogotá",
+
   personallyInvolved: true,
   signed: true,
   publicConsent: true,
@@ -31,7 +31,6 @@ const baseProfile = {
           id: "filed",
           type: "Filed",
           date: "2026-01-01",
-          note: "Private timeline note",
         },
       ],
     },
@@ -222,7 +221,7 @@ test("opt-out, recent confirmation, and closed cases suppress all recipients", a
         ...baseProfile.cases[0],
         events: [
           ...baseProfile.cases[0].events,
-          { id: "approved", type: "Approved", date: "2026-02-01", note: "" },
+          { id: "approved", type: "Approved", date: "2026-02-01" },
         ],
       },
     ],

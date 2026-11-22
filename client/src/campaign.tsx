@@ -1,9 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowUpRight, PenLine, Camera, CalendarDays } from "lucide-react";
+import {
+  ArrowUpRight,
+  PenLine,
+  Camera,
+  CalendarDays,
+  Mail,
+} from "lucide-react";
 import { t } from "./i18n";
 import { ScrollRail } from "./scroll-rail";
-import { date } from "./ui";
+import { date, External } from "./ui";
 import { PolicyTimeline } from "./policy-timeline";
 import { policies } from "../../shared/policies";
 import { participation, policyEvents, reviewedAt } from "../../shared/campaign";
@@ -14,15 +20,17 @@ export function GovernmentTimeline() {
   const events = policyEvents.filter(
     (e) => filter === "All" || e.kind === filter,
   );
-  if (newest) events.reverse();
+  events.sort((a, b) =>
+    newest ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date),
+  );
   return (
     <section className="section government-timeline" id="policy-timeline">
       <div className="section-heading">
         <div>
-          <h2>{t("The decisions behind the delays.")}</h2>
+          <h2>{t("More visa news")}</h2>
           <p>
             {t(
-              "Restrictions, processing changes and court rulings that shaped the wait.",
+              "Track bills in Congress, filings in court and changes at consulates.",
             )}
           </p>
         </div>
@@ -32,19 +40,24 @@ export function GovernmentTimeline() {
       </div>
       <div className="timeline-tools">
         <div className="segmented" aria-label={t("Filter policy timeline")}>
-          {["All", "Restriction", "Processing change", "Court ruling"].map(
-            (kind) => (
-              <button
-                key={kind}
-                type="button"
-                aria-pressed={filter === kind}
-                className={filter === kind ? "selected" : ""}
-                onClick={() => setFilter(kind)}
-              >
-                {t(kind)}
-              </button>
-            ),
-          )}
+          {[
+            "All",
+            "Restriction",
+            "Processing change",
+            "Court ruling",
+            "Court filing",
+            "Legislation",
+          ].map((kind) => (
+            <button
+              key={kind}
+              type="button"
+              aria-pressed={filter === kind}
+              className={filter === kind ? "selected" : ""}
+              onClick={() => setFilter(kind)}
+            >
+              {t(kind)}
+            </button>
+          ))}
         </div>
         <button
           className="text-button"
@@ -77,15 +90,19 @@ export function Participate() {
       </div>
       <div className="participation-grid">
         {participation.map((item, i) => {
-          const Icon = icons[i];
+          const Icon = icons[i] || Mail;
           return (
             <article key={item.to}>
               <Icon size={24} />
               <h3>{t(item.title)}</h3>
               <p>{t(item.text)}</p>
-              <Link className="text-button" to={item.to}>
-                {t(item.action)} <ArrowUpRight size={17} />
-              </Link>
+              {item.to.startsWith("https://") ? (
+                <External href={item.to}>{t(item.action)}</External>
+              ) : (
+                <Link className="text-button" to={item.to}>
+                  {t(item.action)} <ArrowUpRight size={17} />
+                </Link>
+              )}
             </article>
           );
         })}

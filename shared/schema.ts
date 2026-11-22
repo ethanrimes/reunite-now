@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { caseRoles, rolesFor, relationshipsFor } from "./visa-workflow";
+export const consentVersion = "2026-11-21";
 export const legalStatuses = [
   "US citizen",
   "Permanent resident",
@@ -44,6 +45,9 @@ export const eventTypes = [
   "Interview",
   "Administrative processing / 221(g)",
   "Policy-related refusal",
+  "First email: case review",
+  "Second email: reinterview instructions",
+  "Reinterview",
   "Final refusal",
   "Approved",
   "Visa issued",
@@ -120,11 +124,11 @@ export const eventSchema = z
     id: z.string().min(1).max(80),
     type: z.enum(eventTypes),
     date: dateSchema,
-    note: z.string().max(1000).default(""),
   })
   .superRefine((e, c) => {
     if (
       e.type !== "Interview" &&
+      e.type !== "Reinterview" &&
       e.date > new Date().toISOString().slice(0, 10)
     )
       c.addIssue({
@@ -150,7 +154,10 @@ export const caseSchema = z
     role: z.enum(caseRoles).optional(),
     category: z.enum(visaCategories),
     post: z.string().trim().min(2).max(120),
-    events: z.array(eventSchema).min(1).max(100),
+    events: z
+      .array(eventSchema)
+      .min(1, "Add at least one dated milestone")
+      .max(100),
     updatedAt: z.string().optional(),
   })
   .superRefine((v, c) => {
@@ -190,10 +197,9 @@ export const reminderEmailSchema = z
   .max(254);
 export const profileSchema = z
   .object({
-    name: z.string().trim().min(2).max(80),
+    name: z.string().trim().min(1).max(80),
     legalStatus: z.enum(legalStatuses),
     country: z.string().min(2).max(100),
-    city: z.string().trim().min(2).max(100),
     state: z.string().max(2).default(""),
     district: z.string().max(2).default(""),
     politicalAffiliation: z
@@ -241,7 +247,12 @@ export const profileSchema = z
         path: ["cases"],
         message: "Case IDs must be unique",
       });
-  });
+  })
+  .transform((p) => ({
+    ...p,
+    politicalAffiliation:
+      p.legalStatus === "US citizen" ? p.politicalAffiliation : ("" as const),
+  }));
 // Keep historical profiles readable; stronger requirements apply when a member saves.
 export const profileWriteSchema = profileSchema.superRefine((p, c) => {
   if (p.personallyInvolved && !p.cases.length)
@@ -273,11 +284,9 @@ export const profileWriteSchema = profileSchema.superRefine((p, c) => {
 });
 export const storySchema = z.object({
   title: z.string().trim().min(8).max(120),
-  summary: z.string().trim().min(20).max(240),
   body: z.string().trim().min(60).max(12000),
   impacts: z.array(z.string().max(80)).max(10),
   support: z.string().max(2000),
-  caseId: z.string().max(80),
   photos: z
     .array(
       z
@@ -301,10 +310,23 @@ export type PublicProfile = Omit<
   updatedAt: string;
   signedAt: string;
 };
-export type PublicStory = Story & {
+export type PublicStory = Omit<Story, "rightsConsent" | "publish"> & {
   id: string;
   name: string;
   country: string;
   updatedAt: string;
-  timeline: VisaEvent[];
 };
+
+export const profileSections = {
+  profile: [
+    "name",
+    "legalStatus",
+    "country",
+    "state",
+    "district",
+    "politicalAffiliation",
+  ],
+  cases: ["personallyInvolved", "cases"],
+  settings: ["reminders", "reminderEmails"],
+} as const;
+export type ProfileSection = keyof typeof profileSections;

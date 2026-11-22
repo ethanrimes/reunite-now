@@ -175,7 +175,7 @@ test("campaign events and participation copy are included in every catalog", () 
       ...p.goals,
       ...p.timeline.flatMap((e) => [e.title, e.text]),
       ...p.sources.map((s) => s.label),
-      p.contribute,
+      ...(p.contribute ? [p.contribute] : []),
     ]),
   ];
   for (const key of keys)

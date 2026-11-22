@@ -73,18 +73,6 @@ export async function createDemoData(now = new Date()) {
     "Santos",
     "Taylor",
   ];
-  const cityByState: Record<string, string> = {
-    CA: "Los Angeles",
-    TX: "Houston",
-    NY: "New York",
-    FL: "Miami",
-    WA: "Seattle",
-    VA: "Arlington",
-    IL: "Chicago",
-    NJ: "Newark",
-    MA: "Boston",
-    GA: "Atlanta",
-  };
   let seed = 4217;
   const random = () => {
     seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
@@ -158,7 +146,6 @@ export async function createDemoData(now = new Date()) {
           id: `event-${n}`,
           type,
           date: date(days),
-          note: "Illustrative milestone, not a real visa record.",
         })),
     };
   }
@@ -178,9 +165,6 @@ export async function createDemoData(now = new Date()) {
           ? "Permanent resident"
           : "US citizen",
       country: abroad ? posts[index % posts.length][0] : "United States",
-      city: abroad
-        ? posts[index % posts.length][1]
-        : cityByState[state[1]] || `${state[2]} sample city`,
       state: abroad ? "" : state[1],
       district: abroad ? "" : district.CD119,
       politicalAffiliation: [
@@ -272,31 +256,26 @@ export async function createDemoData(now = new Date()) {
     ],
   ];
   const photo = `data:image/jpeg;base64,${(await readFile("public/hero-family.jpg")).toString("base64")}`;
-  const stories = narratives.map(
-    ([title, summary, body, ...impacts], index) => {
-      const profile = profiles[index];
-      const story = storySchema.parse({
-        title,
-        summary,
-        body: `Fictional demo story. Any photograph is illustrative and does not depict the people described.\n\n${body}`,
-        impacts,
-        support:
-          "Demo request: clearer case updates and help understanding the next step. This is not a real request for assistance.",
-        caseId: profile.cases[0].id,
-        photos: index === 0 || index === 5 ? [photo] : [],
-        publish: true,
-        rightsConsent: true,
-      });
-      const { publish, rightsConsent, ...publicFields } = story;
-      return {
-        ...publicFields,
-        id: profile.id,
-        name: profile.name,
-        country: profile.country,
-        updatedAt: profile.updatedAt,
-        timeline: profile.cases[0].events,
-      };
-    },
-  );
+  const stories = narratives.map(([title, , body, ...impacts], index) => {
+    const profile = profiles[index];
+    const story = storySchema.parse({
+      title,
+      body: `Fictional demo story. Any photograph is illustrative and does not depict the people described.\n\n${body}`,
+      impacts,
+      support:
+        "Demo request: clearer case updates and help understanding the next step. This is not a real request for assistance.",
+      photos: index === 0 || index === 5 ? [photo] : [],
+      publish: true,
+      rightsConsent: true,
+    });
+    const { publish, rightsConsent, ...publicFields } = story;
+    return {
+      ...publicFields,
+      id: profile.id,
+      name: profile.name,
+      country: profile.country,
+      updatedAt: profile.updatedAt,
+    };
+  });
   return { profiles, stories };
 }

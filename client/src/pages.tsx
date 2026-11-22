@@ -1,4 +1,4 @@
-import { BillRecord, LegislativeScope } from "./legislation";
+import { BillRecord } from "./legislation";
 import { t, number } from "./i18n";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -21,7 +21,7 @@ import { useData } from "./api";
 import { PageIntro, External, Modal, Timeline, Empty, date } from "./ui";
 import { GovernmentTimeline, Participate, SupportActions } from "./campaign";
 import { policies } from "../../shared/policies";
-import type { PublicStory } from "../../shared/schema";
+import { consentVersion, type PublicStory } from "../../shared/schema";
 const demands = [
   {
     icon: Eye,
@@ -259,7 +259,6 @@ export function Policies() {
           <option value="Historical">{t("Historical legislation")}</option>
         </select>
       </label>
-      <LegislativeScope />
       <div className="policy-grid three">
         {items.map((p) => (
           <Link key={p.id} to={`/policies/${p.id}`} className="policy-card">
@@ -320,17 +319,19 @@ export function PolicyDetail() {
             <h2>{t("Background")}</h2>
             <p className="large-copy">{t(p.background)}</p>
           </section>
-          <section>
-            <h2>{t("Goals")}</h2>
-            <ul className="check-list">
-              {p.goals.map((g) => (
-                <li key={g}>
-                  <Check size={18} />
-                  {t(g)}
-                </li>
-              ))}
-            </ul>
-          </section>
+          {p.goals.length > 0 && (
+            <section>
+              <h2>{t("Goals")}</h2>
+              <ul className="check-list">
+                {p.goals.map((g) => (
+                  <li key={g}>
+                    <Check size={18} />
+                    {t(g)}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
           <BillRecord topicId={p.id} />
           <section>
             <h2>{t("Timeline & updates")}</h2>
@@ -348,14 +349,16 @@ export function PolicyDetail() {
           </section>
         </article>
         <aside>
-          <div className="side-card">
-            <span className="eyebrow">{t("HOW TO HELP")}</span>
-            <h3>{t("Get involved")}</h3>
-            <p>{t(p.contribute)}</p>
-            {p.contact && (
-              <External href={p.contact.url}>{t(p.contact.label)}</External>
-            )}
-          </div>
+          {p.contribute && (
+            <div className="side-card">
+              <span className="eyebrow">{t("HOW TO HELP")}</span>
+              <h3>{t("Get involved")}</h3>
+              <p>{t(p.contribute)}</p>
+              {p.contact && (
+                <External href={p.contact.url}>{t(p.contact.label)}</External>
+              )}
+            </div>
+          )}
           <div className="side-card light">
             <h3>{t("Sources")}</h3>
             {p.sources.map((s) => (
@@ -379,7 +382,7 @@ export function Stories() {
   const [selected, setSelected] = useState<PublicStory | null>(null);
   const [q, setQ] = useState("");
   const items = stories.filter((s) =>
-    `${s.title} ${s.country} ${s.impacts.join(" ")}`
+    `${s.title} ${s.body} ${s.name} ${s.country} ${s.impacts.join(" ")}`
       .toLowerCase()
       .includes(q.toLowerCase()),
   );
@@ -393,7 +396,7 @@ export function Stories() {
           </>
         }
         text={t(
-          "What visa delays mean day to day, told by the people dealing with them.",
+          "A missed birthday. Another year in separate homes. Families share what the wait has cost them.",
         )}
       >
         <Link className="button coral" to="/account#story">
@@ -425,24 +428,24 @@ export function Stories() {
               className="story-card"
               onClick={() => setSelected(s)}
             >
-              {s.photos[0] ? (
-                <img
-                  src={s.photos[0]}
-                  alt={t("Photo shared by {name}", { name: s.name })}
-                  loading="lazy"
-                />
-              ) : (
-                <div className="story-art">
-                  <Heart size={62} />
-                </div>
-              )}
-              <div className="story-shade" />
-              <div className="story-overlay">
+              <div className="story-card-media">
+                {s.photos[0] ? (
+                  <img
+                    src={s.photos[0]}
+                    alt={t("Photo shared by {name}", { name: s.name })}
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="story-art">
+                    <Heart size={62} />
+                  </div>
+                )}
+              </div>
+              <div className="story-caption">
                 <span className="eyebrow">
                   {t(s.country)} · {s.name}
                 </span>
                 <h3 dir="auto">{s.title}</h3>
-                <p dir="auto">{s.summary}</p>
                 <span className="read-story">
                   {t("Read their story ")}
                   <ArrowUpRight size={18} />
@@ -468,7 +471,7 @@ export function Stories() {
             </h2>
             <p>
               {t(
-                "You can add photos, describe what happened, and include your visa timeline. Nothing appears here until you choose to publish it.",
+                "Tell your story in your own words and add photos if you like. You decide when to publish.",
               )}
             </p>
             <Link className="text-button" to="/account#story">
@@ -511,9 +514,6 @@ export function Stories() {
               {selected.name} · {t(selected.country)}
             </span>
             <h2 dir="auto">{selected.title}</h2>
-            <p className="large-copy" dir="auto">
-              {selected.summary}
-            </p>
             <p className="preserve-lines" dir="auto">
               {selected.body}
             </p>
@@ -530,12 +530,6 @@ export function Stories() {
                 <p className="preserve-lines" dir="auto">
                   {selected.support}
                 </p>
-              </>
-            )}
-            {selected.timeline.length > 0 && (
-              <>
-                <h3>{t("Their timeline")}</h3>
-                <Timeline events={selected.timeline} />
               </>
             )}
             <small>
@@ -574,7 +568,7 @@ export function DataUse() {
         <h2>{t("What other people can see")}</h2>
         <p>
           {t(
-            "Your name, legal-status category, country, city, US state and congressional district, optional political affiliation, involvement in the visa process, signature date, and last-confirmed date are public. The applicant names or nicknames, countries, visa categories, posts, relationships, dates, and event notes you enter are also public. Do not include passport numbers, receipt numbers, addresses, birth dates, or documents.",
+            "Your name, legal-status category, country, US state and congressional district, optional political affiliation, involvement in the visa process, signature date, and last-confirmed date are public. The applicant names or nicknames, countries, visa categories, posts, relationships, and dates you enter are also public. Do not include passport numbers, receipt numbers, addresses, birth dates, or documents.",
           )}
         </p>
         <p>
@@ -585,13 +579,18 @@ export function DataUse() {
         <h2>{t("What stays private")}</h2>
         <p>
           {t(
-            "Your sign-in and reminder email addresses, sign-in tokens, session details, and reminder preferences stay private. They are used to operate your account and send optional reminders. We do not sell personal data or use advertising trackers.",
+            "Your sign-in email address and any reminder addresses stay off public profiles, maps, and stories. We store them to operate your account and deliver the emails you request. Anyone with access to the account database can read these addresses, including the project maintainer if they have that access.",
+          )}
+        </p>
+        <p>
+          {t(
+            "For email sign-in, Reunite Now verifies a single-use link delivered by Azure Communication Services. If you choose Google sign-in, Google verifies your identity and provides your verified email address to Reunite Now. Your sign-in tokens, session details, and reminder preferences stay private. We do not sell personal data or use advertising trackers.",
           )}
         </p>
         <h2>{t("Address lookup")}</h2>
         <p>
           {t(
-            "District lookup sends address searches to Azure Maps and its mapping providers, and coordinates or full-address fallback requests to the US Census Bureau. Reunite Now does not retain the search address, coordinates, or results. Only the confirmed state and district are saved. These providers process requests under their own privacy policies. You can select your district manually instead.",
+            "For district lookup, Azure Maps or Photon receives the address you type. The U.S. Census Bureau receives the selected address or coordinates. We save only the state and district you confirm. You can also select a district manually.",
           )}
         </p>
         <h2>{t("Statistics and interpretation")}</h2>
@@ -626,13 +625,15 @@ export function DataUse() {
         <h2>{t("Services that process data")}</h2>
         <p>
           {t(
-            "Microsoft Azure hosts the application, database, and scheduled work. Azure Communication Services handles email when enabled. Google handles Google sign-in if you choose it. Census handles optional address lookup. Public policy links and contact links take you to external organizations. We do not automatically share submissions with those organizations.",
+            "Microsoft Azure hosts the application, database, and scheduled work. Azure Communication Services handles email when enabled. Google handles Google sign-in if you choose it. Census handles optional address lookup. Public policy links and contact links take you to external organizations. We do not share submissions with those organizations.",
           )}
         </p>
         <h2>{t("Agreement version")}</h2>
         <p>
+          <time dateTime={consentVersion}>{date(consentVersion)}</time>
+          {". "}
           {t(
-            "November 11, 2026. The version accepted with your signature is recorded. This is an independent advocacy project, not a law firm or government service.",
+            "The version accepted with your signature is recorded. This is an independent advocacy project, not a law firm or government service.",
           )}
         </p>
         <Link className="button" to="/account">
@@ -650,43 +651,52 @@ export function About() {
         eyebrow={t("ABOUT REUNITE NOW")}
         title={<>{t("About Reunite Now")}</>}
         text={t(
-          "A project advocating for transparency, accountability, and adequate resources in US visa processing.",
+          "We bring families and supporters together to press Congress for shorter U.S. visa waits and clearer answers about delays.",
         )}
       />
-      <div className="about-statement">
-        <Heart size={36} />
-        <h2>
-          {t("The process takes too long.")} {t("Getting answers shouldn’t.")}
-        </h2>
-      </div>
       <div className="prose">
-        <h2>{t("Why we’re here")}</h2>
+        <h2>{t("What one district can ask of Congress")}</h2>
         <p>
           {t(
-            "When a visa process stretches on without clear information, people put their lives on hold. Families plan around unknowns. The costs are emotional, practical, and financial. Reunite Now exists to make those experiences visible and advocate for a system that communicates clearly and has the resources to do its job.",
+            "When you contact your U.S. representative, you can show them how many people in your congressional district have signed. That count gives neighbors a way to speak together and ask their representative to fund visa processing and press the State Department to explain delays.",
           )}
         </p>
-        <h2>{t("What we do")}</h2>
+        <p>
+          <Link to="/coverage">{t("Signature map")}</Link>
+        </p>
+        <h2>{t("What the wait means for a family")}</h2>
         <p>
           {t(
-            "We collect petition signatures with geographic context, track legislation and litigation with source links, make room for personal stories, and summarize voluntarily submitted visa timelines. These tools help people see a shared problem and ask for concrete improvements.",
+            "A parent can count the months on a visa application. Their child remembers which birthdays they missed. Applicants, relatives, and supporters can tell their own stories here so the public and members of Congress can hear what those months meant to them.",
           )}
+        </p>
+        <p>
+          <Link to="/stories">{t("Our stories")}</Link>
+        </p>
+        <h2>{t("How long each step takes")}</h2>
+        <p>
+          {t(
+            "Public wait-time reports cover only parts of the visa process. Applicants and sponsors can fill in the gaps by sharing dates from their own cases. Together, those timelines show how long people waited between filing, an interview, and a decision, and where others are still waiting.",
+          )}
+        </p>
+        <p>
+          <Link to="/visa-data">{t("Visa data")}</Link>
         </p>
         <h2>{t("Who can take part")}</h2>
         <p>
           {t(
-            "You do not have to be a US citizen or personally involved in a visa case to support this petition. Political affiliation is optional. The project does not endorse candidates, provide legal representation, or promise an outcome for any case.",
+            "Anyone, anywhere in the world, can support this effort. You can sign the petition if you are 18 or older, whether or not you have a visa case. Signatures from U.S. citizens who vote are especially important because they show representatives that their own voters want Congress to act.",
           )}
         </p>
-        <h2>{t("Project maintainer")}</h2>
+        <p>
+          <Link to="/account">{t("Sign the petition")}</Link>
+        </p>
+        <h2 id="maintainer">{t("Project maintainer")}</h2>
         <p>
           {t(
-            "The project is maintained by Ethan Rimes. Policy summaries link to their sources so you can read the underlying documents and check for updates.",
+            "Ethan Kallett maintains Reunite Now. He is a U.S. citizen who has been personally affected by visa delays.",
           )}
         </p>
-        <External href="https://github.com/ethanrimes">
-          {t("Ethan Rimes on GitHub")}
-        </External>
         <h2>{t("Where signatures go")}</h2>
         <p>
           {t(

@@ -80,31 +80,77 @@ export function mapsRouter(requireUser: RequestHandler) {
     const { query } = z
       .object({ query: z.string().trim().min(4).max(300) })
       .parse(req.body);
-    const data = await (
-      await atlas("search/fuzzy/json", {
-        "api-version": "1.0",
-        query,
-        typeahead: "true",
-        limit: "6",
-        countrySet: "US",
-        idxSet: "PAD,Addr",
-        language: "en-US",
-      })
-    ).json();
-    res.json({
-      results: (data.results || [])
-        .filter(
-          (r: any) =>
-            r.address?.freeformAddress &&
-            Number.isFinite(r.position?.lat) &&
-            Number.isFinite(r.position?.lon),
-        )
-        .map((r: any) => ({
-          label: r.address.freeformAddress,
-          lat: r.position.lat,
-          lon: r.position.lon,
-        })),
+    if (mapsReady()) {
+      const data = await (
+        await atlas("geocode:autocomplete", {
+          "api-version": "2026-01-01",
+          query,
+          top: "6",
+          countryRegion: "US",
+          resultTypes: "Address",
+        })
+      ).json();
+      const results = (data.features ?? []).flatMap(
+        (f: { properties?: { address?: { formattedAddress?: string } } }) => {
+          const label = f.properties?.address?.formattedAddress?.replace(
+            /, United States$/,
+            "",
+          );
+          return label ? [{ label }] : [];
+        },
+      );
+      return void res.json({ results });
+    }
+    const params = new URLSearchParams({
+      q: query,
+      countrycode: "us",
+      limit: "6",
+      lang: "en",
     });
+    const response = await fetch(`https://photon.komoot.io/api/?${params}`, {
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!response.ok)
+      return void res
+        .status(503)
+        .json({
+          error:
+            "Address suggestions are unavailable. Enter a full address or select your district manually.",
+        });
+    const data = await response.json();
+    type AddressResult = {
+      properties: {
+        housenumber?: string;
+        street?: string;
+        name?: string;
+        city?: string;
+        state?: string;
+        postcode?: string;
+        countrycode?: string;
+      };
+      geometry: { coordinates: number[] };
+    };
+    const results = (data.features as AddressResult[]).flatMap(
+      ({ properties: p, geometry }) => {
+        if (
+          p.countrycode?.toUpperCase() !== "US" ||
+          !p.housenumber ||
+          !p.street
+        )
+          return [];
+        const label = [
+          [p.housenumber, p.street].join(" "),
+          p.city,
+          p.state,
+          p.postcode,
+        ]
+          .filter(Boolean)
+          .join(", ");
+        const [lon, lat] = geometry.coordinates;
+        return [{ label, lon, lat }];
+      },
+    );
+    res.json({ results });
   });
   router.post("/district", searchLimit, async (req, res) => {
     const { lat, lon } = coordinates.parse(req.body);

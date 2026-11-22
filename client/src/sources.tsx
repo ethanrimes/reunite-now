@@ -10,6 +10,10 @@ export const credits = [
     title: "Maps and representation",
     links: [
       [
+        "© OpenStreetMap contributors · Photon",
+        "https://www.openstreetmap.org/copyright",
+      ],
+      [
         "US Census Bureau · state and congressional district boundaries",
         "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/4",
       ],

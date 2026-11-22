@@ -22,6 +22,9 @@ const VisaData = lazy(() =>
 const Account = lazy(() =>
   import("./account").then((m) => ({ default: m.Account })),
 );
+const ThankYou = lazy(() =>
+  import("./account").then((m) => ({ default: m.ThankYou })),
+);
 const Login = lazy(() =>
   import("./account").then((m) => ({ default: m.Login })),
 );
@@ -55,6 +58,12 @@ function App() {
   const location = useLocation();
   const { me, error, config } = useData();
   useEffect(() => {
+    if (location.pathname === "/account" && location.hash) {
+      document
+        .querySelector(".account-tabs")
+        ?.scrollIntoView({ block: "start" });
+      return;
+    }
     window.scrollTo(0, 0);
     if (!location.hash) return;
     const reveal = () => {
@@ -104,12 +113,12 @@ function App() {
         </Link>
         <LanguageSelector />
         <nav aria-label={t("Main navigation")}>
+          <NavLink to="/about">{t("About")}</NavLink>
           <NavLink to="/policies">{t("Policy & action")}</NavLink>
           <NavLink to="/stories">{t("Our stories")}</NavLink>
           <NavLink to="/coverage">{t("Signature map")}</NavLink>
           <NavLink to="/visa-data">{t("Visa data")}</NavLink>
           <NavLink to="/data-use">{t("Data use")}</NavLink>
-          <NavLink to="/about">{t("About")}</NavLink>
           <div className="nav-account">
             {me.user ? (
               <Link className="button small" to="/account">
@@ -163,8 +172,16 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/policies" element={<Policies />} />
             <Route path="/policies/:id" element={<PolicyDetail />} />
+            <Route
+              path="/thank-you"
+              element={previewMode ? <PreviewGate /> : <ThankYou />}
+            />
             <Route path="/stories" element={<Stories />} />
             <Route path="/coverage" element={<Coverage />} />
+            <Route
+              path="/coverage/worldwide"
+              element={<Coverage worldwide />}
+            />
             <Route path="/visa-data" element={<VisaData />} />
             <Route path="/data-use" element={<DataUse />} />
             <Route path="/about" element={<About />} />
@@ -224,13 +241,7 @@ function App() {
             <Link to="/about">{t("Our purpose")}</Link>
             <Link to="/sources">{t("Sources & credits")}</Link>
             {!previewMode && <a href="/demo">{t("Explore sample data")}</a>}
-            <a
-              href="https://github.com/ethanrimes"
-              target="_blank"
-              rel="noreferrer"
-            >
-              {t("Project maintainer ↗")}
-            </a>
+            <Link to="/about#maintainer">{t("Project maintainer")}</Link>
           </div>
         </div>
         <p className="footer-note">

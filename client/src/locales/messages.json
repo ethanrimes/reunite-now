@@ -694,20 +694,10 @@
     "pt": "Serviços que processam dados",
     "tl": "Mga serbisyong nagpoproseso ng datos"
   },
-  "Microsoft Azure hosts the application, database, and scheduled work. Azure Communication Services handles email when enabled. Google handles Google sign-in if you choose it. Census handles optional address lookup. Public policy links and contact links take you to external organizations. We do not automatically share submissions with those organizations.": {
-    "es": "Microsoft Azure aloja la aplicación, la base de datos y las tareas programadas. Azure Communication Services gestiona el correo cuando está habilitado. Google gestiona el inicio de sesión con Google si lo eliges. El Censo procesa la búsqueda opcional por dirección. Los enlaces de políticas y de contacto llevan a organizaciones externas. No compartimos automáticamente los envíos con esas organizaciones.",
-    "pt": "O Microsoft Azure hospeda a aplicação, o banco de dados e as tarefas agendadas. O Azure Communication Services cuida dos e-mails quando habilitado. O Google cuida do acesso com Google, se você o escolher. O Censo processa a busca opcional por endereço. Links de políticas e de contato levam a organizações externas. Não compartilhamos automaticamente os envios com essas organizações.",
-    "tl": "Nasa Microsoft Azure ang aplikasyon, database, at mga nakaiskedyul na gawain. Pinangangasiwaan ng Azure Communication Services ang email kapag pinagana. Pinangangasiwaan ng Google ang pag-sign in gamit ang Google kung pipiliin mo ito. Ang Census ang nagpoproseso ng opsyonal na paghahanap gamit ang address. Dinadala ka ng mga link ng patakaran at pakikipag-ugnayan sa mga panlabas na organisasyon. Hindi namin awtomatikong ibinabahagi sa kanila ang mga isinumite."
-  },
   "Agreement version": {
     "es": "Versión del acuerdo",
     "pt": "Versão do acordo",
     "tl": "Bersiyon ng kasunduan"
-  },
-  "November 11, 2026. The version accepted with your signature is recorded. This is an independent advocacy project, not a law firm or government service.": {
-    "es": "11 de noviembre de 2026. Se registra la versión aceptada al firmar. Este es un proyecto independiente de incidencia pública, no un bufete ni un servicio del gobierno.",
-    "pt": "11 de novembro de 2026. A versão aceita ao assinar é registrada. Este é um projeto independente de mobilização pública, não um escritório de advocacia nem um serviço governamental.",
-    "tl": "Nobyembre 11, 2026. Itinatala ang bersiyong tinanggap mo nang lumagda ka. Malayang proyekto ng adbokasiya ito, hindi law firm o serbisyo ng pamahalaan."
   },
   "Manage my data": {
     "es": "Gestionar mis datos",
@@ -773,16 +763,6 @@
     "es": "Responsable del proyecto",
     "pt": "Responsável pelo projeto",
     "tl": "Tagapangasiwa ng proyekto"
-  },
-  "The project is maintained by Ethan Rimes. Policy summaries link to their sources so you can read the underlying documents and check for updates.": {
-    "es": "Ethan Rimes mantiene el proyecto. Los resúmenes de políticas incluyen fuentes para que puedas leer los documentos originales y consultar las novedades.",
-    "pt": "O projeto é mantido por Ethan Rimes. Os resumos de políticas incluem fontes para que você possa ler os documentos originais e consultar as novidades.",
-    "tl": "Pinangangasiwaan ni Ethan Rimes ang proyekto. May mga sanggunian ang mga buod ng patakaran upang mabasa mo ang mga orihinal na dokumento at masuri ang mga update."
-  },
-  "Ethan Rimes on GitHub": {
-    "es": "Ethan Rimes en GitHub",
-    "pt": "Ethan Rimes no GitHub",
-    "tl": "Ethan Rimes sa GitHub"
   },
   "Where signatures go": {
     "es": "Qué ocurre con las firmas",
@@ -983,11 +963,6 @@
     "es": "Las fechas y notas serán públicas",
     "pt": "As datas e notas serão públicas",
     "tl": "Magiging pampubliko ang mga petsa at tala"
-  },
-  "Add milestones you know. You can record multiple interviews and future interview appointments. A §221(g) or policy-related refusal stays active; choose “Final refusal” only for a final denial. Use “Reopened” if a closed case resumes.": {
-    "es": "Añade los eventos que conozcas. Puedes registrar varias entrevistas y citas futuras. Una denegación por §221(g) o por políticas sigue activa; elige «Denegación definitiva» solo para una decisión final. Usa «Reabierto» si un caso cerrado se retoma.",
-    "pt": "Adicione os eventos que você conhece. É possível registrar várias entrevistas e agendamentos futuros. Uma recusa por §221(g) ou por políticas continua ativa; escolha “Recusa definitiva” apenas para uma decisão final. Use “Reaberto” se um caso encerrado for retomado.",
-    "tl": "Idagdag ang mga pangyayaring alam mo. Maaari kang magtala ng maraming panayam at mga appointment sa hinaharap. Aktibo pa rin ang pagtanggi sa ilalim ng §221(g) o batay sa patakaran; piliin lamang ang “Pinal na pagtanggi” kung pinal na ang desisyon. Gamitin ang “Muling binuksan” kapag ipinagpatuloy ang isang saradong kaso."
   },
   "Milestone": {
     "es": "Evento",
@@ -1254,11 +1229,6 @@
     "pt": "País de residência *",
     "tl": "Bansang tinitirhan *"
   },
-  "City *": {
-    "es": "Ciudad *",
-    "pt": "Cidade *",
-    "tl": "Lungsod *"
-  },
   "State or territory *": {
     "es": "Estado o territorio *",
     "pt": "Estado ou território *",
@@ -1303,11 +1273,6 @@
     "es": "Dirección para buscar el distrito",
     "pt": "Endereço para buscar o distrito",
     "tl": "Address para sa paghahanap ng distrito"
-  },
-  "Full street address, city, state, ZIP": {
-    "es": "Dirección completa, ciudad, estado y código postal",
-    "pt": "Endereço completo, cidade, estado e código postal",
-    "tl": "Buong address, lungsod, estado, ZIP code"
   },
   "Looking up…": {
     "es": "Buscando…",
@@ -3794,11 +3759,6 @@
     "pt": "Adicione no máximo 5 e-mails adicionais para lembretes",
     "tl": "Hanggang 5 karagdagang email lamang ang maaaring idagdag para sa mga paalala"
   },
-  "Your sign-in and reminder email addresses, sign-in tokens, session details, and reminder preferences stay private. They are used to operate your account and send optional reminders. We do not sell personal data or use advertising trackers.": {
-    "es": "Tus direcciones de correo de acceso y de recordatorios, tokens de acceso, datos de sesión y preferencias de recordatorios son privados. Se utilizan para gestionar tu cuenta y enviar recordatorios opcionales. No vendemos datos personales ni usamos rastreadores publicitarios.",
-    "pt": "Seus endereços de e-mail de acesso e de lembretes, tokens de acesso, dados de sessão e preferências de lembretes ficam privados. Eles são usados para manter sua conta e enviar lembretes opcionais. Não vendemos dados pessoais nem usamos rastreadores de publicidade.",
-    "tl": "Mananatiling pribado ang iyong mga email para sa pag-sign in at mga paalala, token sa pag-sign in, detalye ng session, at mga kagustuhan sa paalala. Ginagamit ang mga ito upang patakbuhin ang iyong account at magpadala ng opsyonal na paalala. Hindi kami nagbebenta ng personal na datos o gumagamit ng mga tracker sa advertising."
-  },
   "Reminders are optional. For active cases not confirmed in at least 30 days, we send at most one reminder per calendar month to each selected address. Your sign-in email receives reminders, and you can add up to 5 other addresses you own or have permission to notify. Each recipient gets a separate email without applicant details or other recipients’ addresses. Add a dated milestone or confirm no change in your account; reminders never update timelines automatically. Edit recipients or turn reminders off in Account.": {
     "es": "Los recordatorios son opcionales. Para casos activos sin confirmar durante al menos 30 días, enviamos como máximo un recordatorio por mes natural a cada dirección seleccionada. Tu correo de acceso recibe recordatorios y puedes añadir hasta 5 direcciones tuyas o cuyos titulares te hayan dado permiso. Cada destinatario recibe un correo separado, sin datos de solicitantes ni direcciones de otros destinatarios. Añade un hito con fecha o confirma que no hay cambios desde tu cuenta; los recordatorios nunca actualizan las cronologías automáticamente. Edita los destinatarios o desactiva los recordatorios en Cuenta.",
     "pt": "Os lembretes são opcionais. Para casos ativos sem confirmação há pelo menos 30 dias, enviamos no máximo um lembrete por mês civil a cada endereço selecionado. Seu e-mail de acesso recebe lembretes, e você pode adicionar até 5 endereços seus ou de pessoas que autorizaram os avisos. Cada destinatário recebe um e-mail separado, sem detalhes de solicitantes nem endereços dos demais. Adicione um marco com data ou confirme que nada mudou na sua conta; os lembretes nunca atualizam as cronologias automaticamente. Edite os destinatários ou desative os lembretes em Conta.",
@@ -4499,11 +4459,6 @@
     "pt": "A pessoa solicitante é meu/minha… *",
     "tl": "Ang aplikante ay aking… *"
   },
-  "For your own application, choose Applicant. For a self-petition, also choose Applicant.": {
-    "es": "Para tu propia solicitud, incluida una autopetición, elige Solicitante.",
-    "pt": "Para sua própria solicitação, inclusive uma autopetição, escolha Solicitante.",
-    "tl": "Para sa sarili mong aplikasyon o self-petition, piliin ang Aplikante."
-  },
   "Choose a relationship": {
     "es": "Elige la relación",
     "pt": "Escolha o parentesco",
@@ -4513,16 +4468,6 @@
     "es": "Nacionalidad (ciudadanía) del solicitante *",
     "pt": "Nacionalidade (cidadania) do solicitante *",
     "tl": "Nasyonalidad (pagkamamamayan) ng aplikante *"
-  },
-  "Choose the nationality used for this visa application, not the country of residence. Existing entries need confirmation.": {
-    "es": "Elige la nacionalidad usada en esta solicitud, no el país de residencia. Confirma los datos anteriores.",
-    "pt": "Escolha a nacionalidade usada nesta solicitação, não o país de residência. Confirme os dados anteriores.",
-    "tl": "Piliin ang nasyonalidad na ginamit sa aplikasyon, hindi ang bansang tinitirhan. Kailangang kumpirmahin ang mga dating tala."
-  },
-  "Select the assigned post, or Not assigned. A listing does not mean this post currently processes your visa category.": {
-    "es": "Elige la sede asignada o Sin asignar. Su inclusión no indica que tramite actualmente tu categoría.",
-    "pt": "Escolha o posto designado ou Não designado. A inclusão não indica que ele processe sua categoria atualmente.",
-    "tl": "Piliin ang nakatalagang tanggapan o Wala pang itinalaga. Hindi nangangahulugang kasalukuyan nitong pinoproseso ang iyong kategorya."
   },
   "Choose a post": {
     "es": "Elige una sede",
@@ -4538,11 +4483,6 @@
     "es": "Directorio oficial de sedes",
     "pt": "Diretório oficial de postos",
     "tl": "Opisyal na direktoryo ng mga tanggapan"
-  },
-  "Suggested rows are not completed events. Fill in known dates and remove steps that have not happened or do not apply. At least one dated milestone is required.": {
-    "es": "Las filas sugeridas no son hechos confirmados. Completa las fechas conocidas y elimina pasos pendientes o no aplicables. Se requiere al menos un hito con fecha.",
-    "pt": "As linhas sugeridas não são eventos concluídos. Preencha datas conhecidas e remova etapas pendentes ou não aplicáveis. É necessário ao menos um marco com data.",
-    "tl": "Hindi pa kumpirmadong pangyayari ang mga mungkahing hanay. Ilagay ang alam na petsa at alisin ang hindi pa nangyari o hindi naaangkop. Kailangan ng kahit isang hakbang na may petsa."
   },
   "Did the 2026 issuance pause affect this case?": {
     "es": "¿Afectó a este caso la pausa de emisión de 2026?",
@@ -4593,26 +4533,6 @@
     "es": "Haz clic en un estado o distrito para ver a tus representantes, sus votos relevantes y los proyectos que patrocinan.",
     "pt": "Clique em um estado ou distrito para ver seus representantes, votos relevantes e projetos que patrocinam.",
     "tl": "I-click ang estado o distrito para makita ang mga kinatawan, kaugnay nilang boto, at mga panukalang itinataguyod."
-  },
-  "What is included in this review?": {
-    "es": "¿Qué incluye esta revisión?",
-    "pt": "O que esta revisão inclui?",
-    "tl": "Ano ang kasama sa pagsusuring ito?"
-  },
-  "Reviewed November 12, 2026: 22 bills across 17 initiatives, covering consular capacity, wait-time transparency, family reunification, visa-number backlogs, restrictions, and fees. Current proposals are shown alongside selected predecessors from the 116th–118th Congresses.": {
-    "es": "Revisado el 12 de noviembre de 2026: 22 proyectos en 17 iniciativas sobre capacidad consular, transparencia, reunificación familiar, cupos de visas, restricciones y tasas. Se incluyen propuestas actuales y antecedentes de los Congresos 116.º a 118.º.",
-    "pt": "Revisado em 12 de novembro de 2026: 22 projetos em 17 iniciativas sobre capacidade consular, transparência, reunificação familiar, cotas de vistos, restrições e taxas. Inclui propostas atuais e antecedentes dos Congressos 116º a 118º.",
-    "tl": "Sinuri noong Nobyembre 12, 2026: 22 panukala sa 17 inisyatiba tungkol sa kapasidad ng konsulado, transparency, muling pagsasama ng pamilya, pila sa bilang ng visa, mga paghihigpit at bayarin. Kasama ang kasalukuyang panukala at piling naunang bersiyon sa ika-116 hanggang ika-118 Kongreso."
-  },
-  "Six passage or concurrence roll calls are included. This is a sourced, curated record, not every immigration bill, amendment, procedural vote, or member statement. Sponsorship is separate from voting; a missing vote is not opposition.": {
-    "es": "Se incluyen seis votaciones nominales de aprobación o conformidad. Es una selección documentada, no todos los proyectos, enmiendas, votos de procedimiento o declaraciones sobre inmigración. Patrocinar no es votar; la ausencia de voto no significa oposición.",
-    "pt": "Inclui seis votações nominais de aprovação ou concordância. É uma seleção documentada, não todos os projetos, emendas, votos de procedimento ou declarações sobre imigração. Patrocinar não é votar; a ausência de voto não significa oposição.",
-    "tl": "Kasama ang anim na roll call sa pagpasa o pagsang-ayon. Piling rekord itong may sanggunian, hindi lahat ng panukala, susog, boto sa pamamaraan, o pahayag sa imigrasyon. Magkaiba ang pagtataguyod at pagboto; hindi pagtutol ang kawalan ng boto."
-  },
-  "Official bill names and congressional action text are shown in their original English. Summaries and interface labels follow your selected language.": {
-    "es": "Los nombres oficiales y las actuaciones del Congreso se muestran en inglés original. Los resúmenes y controles usan tu idioma.",
-    "pt": "Os nomes oficiais e as ações do Congresso aparecem no inglês original. Resumos e controles usam seu idioma.",
-    "tl": "Nasa orihinal na Ingles ang opisyal na pangalan at aksiyon ng Kongreso. Nasa piniling wika ang buod at mga label."
   },
   "Official legislative record": {
     "es": "Registro legislativo oficial",
@@ -5304,14 +5224,459 @@
     "pt": "e entendo que meu nome, perfil, localização, situação legal, afiliação política opcional e cronologias de visto enviadas ficarão disponíveis publicamente. Meu e-mail permanece privado. *",
     "tl": "at nauunawaan kong makikita ng publiko ang pangalan, profile, lokasyon, legal na katayuan, opsyonal na pagkakaugnay sa politika, at mga isusumiteng timeline ng visa ko. Mananatiling pribado ang email ko. *"
   },
-  "Your name, legal-status category, country, city, US state and congressional district, optional political affiliation, involvement in the visa process, signature date, and last-confirmed date are public. The applicant names or nicknames, countries, visa categories, posts, relationships, dates, and event notes you enter are also public. Do not include passport numbers, receipt numbers, addresses, birth dates, or documents.": {
-    "es": "Tu nombre, categoría de situación legal, país, ciudad, estado de EE. UU. y distrito congresional, afiliación política opcional, participación en el proceso de visa, fecha de firma y fecha de última confirmación son públicos. También son públicos los nombres o apodos de los solicitantes, países, categorías de visa, puestos consulares, relaciones, fechas y notas sobre eventos que ingreses. No incluyas números de pasaporte, números de recibo, direcciones, fechas de nacimiento ni documentos.",
-    "pt": "Seu nome, categoria de situação legal, país, cidade, estado dos EUA e distrito congressional, afiliação política opcional, participação no processo de visto, data da assinatura e data da última confirmação são públicos. Os nomes ou apelidos dos solicitantes, países, categorias de visto, postos consulares, relacionamentos, datas e notas sobre eventos que você inserir também são públicos. Não inclua números de passaporte, números de recibo, endereços, datas de nascimento ou documentos.",
-    "tl": "Pampubliko ang pangalan mo, kategorya ng legal na katayuan, bansa, lungsod, estado sa US at congressional district, opsyonal na pagkakaugnay sa politika, pakikilahok sa proseso ng visa, petsa ng paglagda, at petsa ng huling pagkumpirma. Pampubliko rin ang mga pangalan o palayaw ng mga aplikante, bansa, kategorya ng visa, mga himpilan ng embahada o konsulado, relasyon, petsa, at mga tala tungkol sa mga pangyayaring ilalagay mo. Huwag maglagay ng mga numero ng pasaporte, numero ng resibo, address, petsa ng kapanganakan, o mga dokumento."
-  },
   "Sign the petition using your own name. You must have permission to publish information about another person. Visa applicants may use a nickname in their case details. You must be at least 18 to create an account.": {
     "es": "Firma la petición con tu propio nombre. Debes tener permiso para publicar información sobre otra persona. Los solicitantes de visa pueden usar un apodo en los detalles de su caso. Debes tener al menos 18 años para crear una cuenta.",
     "pt": "Assine a petição usando seu próprio nome. Você precisa ter permissão para publicar informações sobre outra pessoa. Solicitantes de visto podem usar um apelido nos detalhes do caso. É necessário ter pelo menos 18 anos para criar uma conta.",
     "tl": "Lagdaan ang petisyon gamit ang sarili mong pangalan. Kailangan mong may pahintulot para maglathala ng impormasyon tungkol sa ibang tao. Maaaring gumamit ng palayaw ang mga aplikante ng visa sa mga detalye ng kanilang kaso. Dapat ay 18 taong gulang ka man lang para gumawa ng account."
+  },
+  "I am applying for this visa": {
+    "es": "Solicito esta visa",
+    "pt": "Solicito este visto",
+    "tl": "Ako ang nag-aaplay para sa bisang ito"
+  },
+  "I am sponsoring the applicant": {
+    "es": "Patrocino al solicitante",
+    "pt": "Sou patrocinador do solicitante",
+    "tl": "Ako ang sponsor ng aplikante"
+  },
+  "Choose a visa category": {
+    "es": "Seleccione una categoría de visa",
+    "pt": "Selecione uma categoria de visto",
+    "tl": "Pumili ng kategorya ng bisa"
+  },
+  "Choose the nationality used for this visa application, not the country of residence.": {
+    "es": "Seleccione la nacionalidad usada en esta solicitud de visa, no el país de residencia.",
+    "pt": "Selecione a nacionalidade usada neste pedido de visto, não o país de residência.",
+    "tl": "Piliin ang nasyonalidad na ginamit sa aplikasyon, hindi ang bansang tinitirhan."
+  },
+  "Add pause-related milestones": {
+    "es": "Añadir etapas relacionadas con la suspensión",
+    "pt": "Adicionar etapas relacionadas à suspensão",
+    "tl": "Idagdag ang mga hakbang kaugnay ng suspensiyon"
+  },
+  "Your real name *": {
+    "es": "Su nombre real *",
+    "pt": "Seu nome verdadeiro *",
+    "tl": "Tunay mong pangalan *"
+  },
+  "U.S. citizenship or immigration status *": {
+    "es": "Ciudadanía o situación migratoria en EE. UU. *",
+    "pt": "Cidadania ou situação migratória nos EUA *",
+    "tl": "Pagkamamamayan o katayuan sa imigrasyon sa U.S. *"
+  },
+  "Select your status": {
+    "es": "Seleccione su situación",
+    "pt": "Selecione sua situação",
+    "tl": "Piliin ang iyong katayuan"
+  },
+  "Other (for example, a U.S. nonimmigrant visa holder or a foreign citizen living abroad)": {
+    "es": "Otra (por ejemplo, titular de una visa estadounidense de no inmigrante o ciudadano extranjero residente en el exterior)",
+    "pt": "Outra (por exemplo, titular de visto americano de não imigrante ou cidadão estrangeiro que mora no exterior)",
+    "tl": "Iba pa (halimbawa, may nonimmigrant visa sa U.S. o dayuhang mamamayang nakatira sa ibang bansa)"
+  },
+  "Are you applying for a U.S. visa or sponsoring an applicant? *": {
+    "es": "¿Está solicitando una visa estadounidense o patrocinando a un solicitante? *",
+    "pt": "Você está solicitando um visto americano ou patrocinando um solicitante? *",
+    "tl": "Nag-aaplay ka ba para sa bisa sa U.S. o nag-iisponsor ng aplikante? *"
+  },
+  "Yes — I am an applicant or sponsor": {
+    "es": "Sí, soy solicitante o patrocinador",
+    "pt": "Sim, sou solicitante ou patrocinador",
+    "tl": "Oo, aplikante o sponsor ako"
+  },
+  "Add your own application or a case you sponsor. Get permission before sharing another applicant’s details.": {
+    "es": "Añada su solicitud o un caso que patrocine. Pida permiso antes de compartir los datos de otra persona.",
+    "pt": "Adicione seu pedido ou um caso que você patrocine. Peça permissão antes de compartilhar dados de outra pessoa.",
+    "tl": "Idagdag ang sarili mong aplikasyon o kasong iniisponsoran mo. Humingi muna ng pahintulot bago magbahagi ng detalye ng ibang aplikante."
+  },
+  "I am signing this petition with my real name. *": {
+    "es": "Firmo esta petición con mi nombre real. *",
+    "pt": "Assino esta petição com meu nome verdadeiro. *",
+    "tl": "Ginagamit ko ang tunay kong pangalan sa paglagda sa petisyong ito. *"
+  },
+  "More visa news": {
+    "es": "Más noticias sobre visas",
+    "pt": "Mais notícias sobre vistos",
+    "tl": "Iba pang balita tungkol sa bisa"
+  },
+  "Track bills in Congress, filings in court and changes at consulates.": {
+    "es": "Siga los proyectos de ley, los escritos judiciales y los cambios en los consulados.",
+    "pt": "Acompanhe projetos no Congresso, petições judiciais e mudanças nos consulados.",
+    "tl": "Subaybayan ang mga panukala sa Kongreso, dokumentong inihain sa korte at pagbabago sa mga konsulado."
+  },
+  "Address suggestions use Photon with OpenStreetMap data. Census identifies the district. Only your confirmed state and district are saved.": {
+    "es": "Photon sugiere direcciones con datos de OpenStreetMap. La Oficina del Censo identifica el distrito. Solo se guardan el estado y el distrito que confirme.",
+    "pt": "O Photon sugere endereços com dados do OpenStreetMap. O Censo identifica o distrito. Salvamos apenas o estado e o distrito que você confirmar.",
+    "tl": "Gumagamit ang Photon ng datos ng OpenStreetMap para magmungkahi ng address. Tinutukoy ng Census ang distrito. Ang kinumpirma mong estado at distrito lang ang sine-save."
+  },
+  "For district lookup, Azure Maps or Photon receives the address you type. The U.S. Census Bureau receives the selected address or coordinates. We save only the state and district you confirm. You can also select a district manually.": {
+    "es": "Para buscar un distrito, Azure Maps o Photon recibe la dirección que escribe. La Oficina del Censo recibe la dirección elegida o las coordenadas. Solo guardamos el estado y el distrito que confirme. También puede elegir el distrito manualmente.",
+    "pt": "Para localizar o distrito, o Azure Maps ou o Photon recebe o endereço digitado. O Censo dos EUA recebe o endereço selecionado ou as coordenadas. Salvamos apenas o estado e o distrito confirmados. Você também pode escolher o distrito manualmente.",
+    "tl": "Sa paghahanap ng distrito, natatanggap ng Azure Maps o Photon ang itina-type mong address. Natatanggap ng U.S. Census Bureau ang napiling address o mga coordinate. Ang kinumpirma mong estado at distrito lamang ang sine-save namin. Maaari mo ring piliin nang manu-mano ang distrito."
+  },
+  "Reducing Visa Delays Act gains a cosponsor": {
+    "es": "El proyecto para reducir las demoras de visas suma una copatrocinadora",
+    "pt": "Projeto para reduzir a demora nos vistos ganha coautora",
+    "tl": "Nagkaroon ng kasamang tagapagtaguyod ang Reducing Visa Delays Act"
+  },
+  "Rep. María Elvira Salazar joined Rep. Suhas Subramanyam as the first cosponsor of H.R. 10711. The bill remains before the House Judiciary and Foreign Affairs committees.": {
+    "es": "La representante María Elvira Salazar se sumó al representante Suhas Subramanyam como primera copatrocinadora de H.R. 10711. El proyecto sigue en los comités de Asuntos Judiciales y de Asuntos Exteriores de la Cámara.",
+    "pt": "A deputada María Elvira Salazar se juntou a Suhas Subramanyam como primeira coautora do H.R. 10711. O projeto continua nas comissões de Justiça e de Relações Exteriores da Câmara.",
+    "tl": "Si Rep. María Elvira Salazar ang unang kasamang tagapagtaguyod ni Rep. Suhas Subramanyam sa H.R. 10711. Nasa mga komite ng Kamara sa Hudikatura at Ugnayang Panlabas pa ang panukala."
+  },
+  "This litigation challenges the 75-country immigrant visa policy and related public-charge practices. The court vacated the challenged pause on August 21, 2026. Relief does not guarantee a visa or eliminate independent grounds of inadmissibility.": {
+    "es": "El litigio impugna la política de visas de inmigrante para 75 países y las prácticas conexas sobre carga pública. El tribunal anuló la suspensión el 21 de agosto de 2026. Pueden seguir aplicándose otras causas de inadmisibilidad y la sentencia no garantiza la visa.",
+    "pt": "A ação contesta a política de vistos de imigrante para 75 países e práticas de encargo público. O tribunal anulou a suspensão em 21 de agosto de 2026. Outros motivos de inadmissibilidade podem se aplicar e a decisão não garante o visto.",
+    "tl": "Hinahamon ng kaso ang patakaran sa immigrant visa para sa 75 bansa at kaugnay na pagsusuri sa public charge. Pinawalang-bisa ng korte ang suspensiyon noong Agosto 21, 2026. Walang garantiyang visa at maaari pa ring umiral ang ibang batayan ng pagtanggi."
+  },
+  "Joint letter · ECF 138": {
+    "es": "Carta conjunta · ECF 138",
+    "pt": "Carta conjunta · ECF 138",
+    "tl": "Pinagsamang liham · ECF 138"
+  },
+  "Appeals court order": {
+    "es": "Orden del tribunal de apelaciones",
+    "pt": "Ordem do tribunal de apelações",
+    "tl": "Utos ng hukuman sa apela"
+  },
+  "Appeal changes relief for earlier refusals": {
+    "es": "La apelación afecta la revisión de denegaciones anteriores",
+    "pt": "Recurso afeta a revisão de recusas anteriores",
+    "tl": "Binago ng apela ang lunas para sa mga naunang pagtanggi"
+  },
+  "A Second Circuit judge temporarily stayed the order requiring reconsideration of refusals based solely on the pause. The order striking down the 75-country policy stayed in effect.": {
+    "es": "Un juez del Segundo Circuito suspendió temporalmente la orden de reconsiderar las denegaciones basadas solo en la suspensión. La anulación de la política de los 75 países sigue vigente.",
+    "pt": "Um juiz do Segundo Circuito suspendeu temporariamente a ordem de reavaliar recusas baseadas apenas na suspensão. A anulação da política dos 75 países continuou em vigor.",
+    "tl": "Pansamantalang itinigil ng isang hukom ng Second Circuit ang utos na muling suriin ang mga tinanggihang aplikasyon dahil lamang sa suspensiyon. Nanatili ang pagpapawalang-bisa sa patakaran para sa 75 bansa."
+  },
+  "CLINIC plaintiffs outline their next motion": {
+    "es": "Los demandantes de CLINIC detallan su próxima solicitud",
+    "pt": "Autores da ação CLINIC detalham seu próximo pedido",
+    "tl": "Inilahad ng mga nagsakdal sa CLINIC ang susunod nilang mosyon"
+  },
+  "In a joint letter, plaintiffs proposed filing for preliminary relief on November 23 over the expanded public-charge procedures. The letter asks for a briefing schedule.": {
+    "es": "En una carta conjunta, los demandantes propusieron pedir medidas provisionales el 23 de noviembre por la ampliación de los procedimientos de carga pública. La carta solicita un calendario de escritos.",
+    "pt": "Em carta conjunta, os autores propuseram pedir tutela provisória em 23 de novembro em relação aos procedimentos ampliados de encargo público. A carta solicita um cronograma de manifestações.",
+    "tl": "Sa pinagsamang liham, iminungkahi ng mga nagsakdal na humiling ng pansamantalang lunas sa Nobyembre 23 kaugnay ng pinalawak na proseso sa public charge. Humiling sila ng iskedyul ng pagsusumite ng mga argumento."
+  },
+  "This case concerns FY-2026 diversity visa applicants affected by processing holds. The State Department says its diversity visa issuance pause ended under the August 28 order. Later orders addressed implementation. Counsel’s filings document the dispute over processing after the fiscal year ended.": {
+    "es": "El caso trata de solicitantes de visas de diversidad del año fiscal 2026 afectados por demoras. Según el Departamento de Estado, la orden del 28 de agosto puso fin a la suspensión. Órdenes posteriores abordaron su ejecución. Los escritos de los abogados documentan la disputa sobre la tramitación tras el cierre del año fiscal.",
+    "pt": "A ação envolve solicitantes de vistos de diversidade do ano fiscal de 2026 afetados por paralisações. Segundo o Departamento de Estado, a ordem de 28 de agosto encerrou a suspensão. Ordens posteriores trataram de seu cumprimento. As petições documentam a disputa sobre o processamento após o fim do ano fiscal.",
+    "tl": "Saklaw ng kaso ang mga aplikante ng diversity visa sa FY 2026 na naapektuhan ng paghinto ng pagproseso. Ayon sa State Department, natapos ang suspensiyon sa utos noong Agosto 28. Tinalakay ng mga sumunod na utos ang pagpapatupad. Makikita sa mga inihain ng abogado ang pagtatalo sa pagproseso matapos ang taon ng pananalapi."
+  },
+  "Medani plaintiffs seek enforcement": {
+    "es": "Los demandantes de Medani piden la ejecución de la orden",
+    "pt": "Autores da ação Medani pedem cumprimento da ordem",
+    "tl": "Hiniling ng mga nagsakdal sa Medani na ipatupad ang utos"
+  },
+  "Counsel for FY-2026 diversity visa applicants filed a motion to enforce the court’s order. Counsel lists a hearing for January 21, 2027.": {
+    "es": "Los abogados de solicitantes de visas de diversidad del año fiscal 2026 pidieron que se ejecute la orden. Indican que hay una audiencia prevista para el 21 de enero de 2027.",
+    "pt": "Os advogados de solicitantes de vistos de diversidade do ano fiscal de 2026 pediram o cumprimento da ordem judicial. Informam que há audiência marcada para 21 de janeiro de 2027.",
+    "tl": "Naghain ang mga abogado ng mga aplikante ng diversity visa sa FY 2026 ng mosyon para ipatupad ang utos. Ayon sa kanila, nakatakda ang pagdinig sa Enero 21, 2027."
+  },
+  "The plaintiffs reported visa issuance on October 29. On November 6 the court dismissed the case without prejudice at their request.": {
+    "es": "Los demandantes informaron el 29 de octubre que se había emitido la visa. El 6 de noviembre, a petición suya, el tribunal archivó el caso sin impedir que se presentara de nuevo.",
+    "pt": "Em 29 de outubro, os autores informaram que o visto havia sido emitido. Em 6 de novembro, a pedido deles, o tribunal encerrou a ação sem impedir nova propositura.",
+    "tl": "Noong Oktubre 29, iniulat ng mga nagsakdal na naibigay na ang bisa. Sa hiling nila, ibinasura ng korte ang kaso noong Nobyembre 6 nang hindi isinasara ang posibilidad na maghain muli."
+  },
+  "After an interview in El Salvador was postponed, a federal judge gave the State Department seven days to schedule Mr. Rivera Castillo’s interview and 30 days to hold it.": {
+    "es": "Tras el aplazamiento de una entrevista en El Salvador, una jueza federal dio al Departamento de Estado siete días para fijar la entrevista del Sr. Rivera Castillo y 30 días para celebrarla.",
+    "pt": "Após o adiamento de uma entrevista em El Salvador, uma juíza federal deu ao Departamento de Estado sete dias para agendar a entrevista de Rivera Castillo e 30 dias para realizá-la.",
+    "tl": "Matapos maipagpaliban ang panayam sa El Salvador, binigyan ng hukom ang State Department ng pitong araw para itakda ang panayam ni G. Rivera Castillo at 30 araw para isagawa ito."
+  },
+  "Case closed": {
+    "es": "Caso cerrado",
+    "pt": "Caso encerrado",
+    "tl": "Sarado na ang kaso"
+  },
+  "Court opinion": {
+    "es": "Decisión del tribunal",
+    "pt": "Decisão judicial",
+    "tl": "Pasya ng hukuman"
+  },
+  "Court docket": {
+    "es": "Expediente judicial",
+    "pt": "Registro do processo",
+    "tl": "Talaan ng kaso sa korte"
+  },
+  "Castillo case closes after visa issuance": {
+    "es": "El caso Castillo se cierra tras emitirse la visa",
+    "pt": "Caso Castillo é encerrado após emissão do visto",
+    "tl": "Nagsara ang kasong Castillo matapos maibigay ang bisa"
+  },
+  "The court barred use of the pause in this family’s case. The consular officer retained authority to decide eligibility and request updated evidence.": {
+    "es": "El tribunal prohibió aplicar la suspensión a esta familia. El funcionario consular conservó la facultad de evaluar la elegibilidad y pedir pruebas actualizadas.",
+    "pt": "O tribunal proibiu aplicar a suspensão a esta família. O agente consular manteve a competência para decidir sobre a elegibilidade e solicitar provas atualizadas.",
+    "tl": "Ipinagbawal ng korte ang paggamit ng suspensiyon sa kaso ng pamilyang ito. Nananatili sa opisyal ng konsulado ang kapangyarihang magpasya sa pagiging kuwalipikado at humingi ng bagong ebidensiya."
+  },
+  "A D.C. judge ordered a fresh decision on a Brazilian investor’s EB-5 application within 60 days after a consular officer found it complete. The order applied to this family.": {
+    "es": "Un juez de Washington D. C. ordenó una nueva decisión sobre la visa EB-5 de un inversionista brasileño dentro de los 60 días siguientes a que un funcionario consular considerara completa la solicitud. La orden se limitó a esta familia.",
+    "pt": "Um juiz em Washington, D.C., determinou nova decisão sobre o pedido EB-5 de um investidor brasileiro em até 60 dias após um agente consular considerar o pedido completo. A ordem se aplicou a essa família.",
+    "tl": "Iniutos ng hukom sa D.C. ang panibagong desisyon sa EB-5 ng isang Brazilian na mamumuhunan sa loob ng 60 araw mula nang ideklarang kumpleto ng opisyal ang aplikasyon. Para sa pamilyang ito ang utos."
+  },
+  "Individual adjudication": {
+    "es": "Evaluación individual",
+    "pt": "Análise individual",
+    "tl": "Indibidwal na paghatol"
+  },
+  "Individual interview order": {
+    "es": "Orden de entrevista individual",
+    "pt": "Ordem de entrevista individual",
+    "tl": "Utos para sa isang partikular na panayam"
+  },
+  "What consulates ask before the interview": {
+    "es": "Qué preguntan los consulados antes de la entrevista",
+    "pt": "O que os consulados perguntam antes da entrevista",
+    "tl": "Mga tanong ng konsulado bago ang panayam"
+  },
+  "AILA published examples of public-charge questions sent to applicants at six posts, including Kingston, Dakar and Madrid. The examples show what applicants at those posts received.": {
+    "es": "AILA publicó ejemplos de preguntas sobre carga pública que recibieron solicitantes en seis sedes, entre ellas Kingston, Dakar y Madrid.",
+    "pt": "A AILA publicou exemplos de perguntas sobre encargo público recebidas por solicitantes em seis postos, entre eles Kingston, Dacar e Madri.",
+    "tl": "Inilathala ng AILA ang mga halimbawa ng tanong tungkol sa public charge na natanggap ng mga aplikante sa anim na konsulado, kabilang ang Kingston, Dakar at Madrid."
+  },
+  "Consular processing": {
+    "es": "Tramitación consular",
+    "pt": "Processamento consular",
+    "tl": "Pagproseso sa konsulado"
+  },
+  "Court filing": {
+    "es": "Escrito judicial",
+    "pt": "Petição judicial",
+    "tl": "Dokumentong inihain sa korte"
+  },
+  "Ask the CLINIC legal team": {
+    "es": "Consulte al equipo jurídico de CLINIC",
+    "pt": "Consulte a equipe jurídica do caso CLINIC",
+    "tl": "Magtanong sa legal na pangkat ng CLINIC"
+  },
+  "Find the litigation contact": {
+    "es": "Ver el contacto del litigio",
+    "pt": "Ver contato da equipe jurídica",
+    "tl": "Hanapin ang kontak ng legal na pangkat"
+  },
+  "If the pause affected you or a family member, NILC lists a litigation email for questions. Ask how to share your experience before sending documents.": {
+    "es": "Si la suspensión le afectó a usted o a su familia, NILC publica un correo para consultas sobre el litigio. Antes de enviar documentos, pregunte cómo compartir su experiencia.",
+    "pt": "Se a suspensão afetou você ou um familiar, o NILC fornece um e-mail para dúvidas sobre a ação. Pergunte como relatar sua experiência antes de enviar documentos.",
+    "tl": "Kung naapektuhan ka o ang pamilya mo ng suspensiyon, may email ang NILC para sa mga tanong tungkol sa kaso. Itanong muna kung paano ibabahagi ang karanasan bago magpadala ng dokumento."
+  },
+  "Report a consular delay": {
+    "es": "Informe de una demora consular",
+    "pt": "Relate um atraso consular",
+    "tl": "Mag-ulat ng pagkaantala sa konsulado"
+  },
+  "Open the interest form": {
+    "es": "Abrir el formulario de interés",
+    "pt": "Abrir o formulário de interesse",
+    "tl": "Buksan ang form ng interes"
+  },
+  "Red Eagle Law is collecting interest in a potential group lawsuit. Its form asks for your post, visa category and interview date, if available.": {
+    "es": "Red Eagle Law registra a quienes tengan interés en una posible demanda conjunta. El formulario pide su sede consular, categoría de visa y fecha de entrevista, si la tiene.",
+    "pt": "A Red Eagle Law registra interessados em uma possível ação em grupo. O formulário pede o posto consular, a categoria de visto e a data da entrevista, se houver.",
+    "tl": "Nagtatala ang Red Eagle Law ng mga interesado sa posibleng demanda ng grupo. Hinihingi sa form ang konsulado, kategorya ng bisa at petsa ng panayam kung mayroon."
+  },
+  "Share a frontline provider’s experience": {
+    "es": "Comparta su experiencia atendiendo a familias",
+    "pt": "Compartilhe sua experiência atendendo famílias",
+    "tl": "Ibahagi ang karanasan bilang tagapaglingkod sa mga pamilya"
+  },
+  "Open the provider form": {
+    "es": "Abrir el formulario para profesionales",
+    "pt": "Abrir o formulário para profissionais",
+    "tl": "Buksan ang form para sa mga tagapaglingkod"
+  },
+  "Protecting Immigrant Families asks providers how public-charge rules affect the families they serve. Its form explains consent and asks you to omit client identifiers.": {
+    "es": "Protecting Immigrant Families pregunta a los profesionales cómo afectan las reglas de carga pública a las familias que atienden. El formulario explica el consentimiento y pide omitir datos que identifiquen a los clientes.",
+    "pt": "A Protecting Immigrant Families pergunta aos profissionais como as regras de encargo público afetam as famílias atendidas. O formulário explica o consentimento e pede que sejam omitidos dados que identifiquem clientes.",
+    "tl": "Tinatanong ng Protecting Immigrant Families ang mga tagapaglingkod kung paano naaapektuhan ng mga tuntunin sa public charge ang mga pamilyang kanilang tinutulungan. Ipinapaliwanag sa form ang pahintulot at hinihiling na huwag isama ang detalye na magpapakilala sa mga kliyente."
+  },
+  "First email: case review": {
+    "es": "Primer correo: revisión del caso",
+    "pt": "Primeiro e-mail: revisão do caso",
+    "tl": "Unang email: pagsusuri ng kaso"
+  },
+  "Second email: reinterview instructions": {
+    "es": "Segundo correo: instrucciones para la nueva entrevista",
+    "pt": "Segundo e-mail: instruções para nova entrevista",
+    "tl": "Ikalawang email: tagubilin para sa panibagong panayam"
+  },
+  "Reinterview": {
+    "es": "Nueva entrevista",
+    "pt": "Nova entrevista",
+    "tl": "Panibagong panayam"
+  },
+  "Add at least one dated milestone": {
+    "es": "Añada al menos una etapa con fecha",
+    "pt": "Adicione pelo menos uma etapa com data",
+    "tl": "Magdagdag ng kahit isang hakbang na may petsa"
+  },
+  "Castillo v. Rubio": {
+    "es": "Castillo v. Rubio",
+    "pt": "Castillo v. Rubio",
+    "tl": "Castillo v. Rubio"
+  },
+  "De Moura Gomes v. Rubio": {
+    "es": "De Moura Gomes v. Rubio",
+    "pt": "De Moura Gomes v. Rubio",
+    "tl": "De Moura Gomes v. Rubio"
+  },
+  "AILA": {
+    "es": "AILA",
+    "pt": "AILA",
+    "tl": "AILA"
+  },
+  "A missed birthday. Another year in separate homes. Families share what the wait has cost them.": {
+    "es": "Un cumpleaños perdido. Otro año viviendo separados. Las familias cuentan lo que les ha costado la espera.",
+    "pt": "Um aniversário perdido. Mais um ano em casas separadas. Famílias contam o que a espera lhes custou.",
+    "tl": "Isang kaarawang pinalampas. Isa na namang taon sa magkahiwalay na tahanan. Ikinukuwento ng mga pamilya ang naging kapalit ng paghihintay."
+  },
+  "Tell your story in your own words and add photos if you like. You decide when to publish.": {
+    "es": "Cuenta tu historia con tus propias palabras y añade fotos si quieres. Tú decides cuándo publicarla.",
+    "pt": "Conte sua história com suas palavras e adicione fotos se quiser. Você decide quando publicar.",
+    "tl": "Ikuwento ang karanasan mo sa sarili mong mga salita at magdagdag ng larawan kung gusto mo. Ikaw ang magpapasya kung kailan ito ilalathala."
+  },
+  "Delete any milestone you haven’t reached yet. Enter a date for at least one milestone.": {
+    "es": "Elimina las etapas que aún no hayas alcanzado. Ingresa una fecha para al menos una etapa.",
+    "pt": "Exclua as etapas que ainda não alcançou. Informe a data de pelo menos uma etapa.",
+    "tl": "Alisin ang mga yugtong hindi mo pa nararating. Maglagay ng petsa sa kahit isang yugto."
+  },
+  "Thank you for signing.": {
+    "es": "Gracias por firmar.",
+    "pt": "Agradecemos sua assinatura.",
+    "tl": "Salamat sa paglagda."
+  },
+  "Your signature has been added. You can now share how visa delays have affected you and your family.": {
+    "es": "Tu firma se ha registrado. Ahora puedes contar cómo las demoras de visa te han afectado a ti y a tu familia.",
+    "pt": "Sua assinatura foi registrada. Agora você pode contar como os atrasos nos vistos afetaram você e sua família.",
+    "tl": "Naitala na ang lagda mo. Maaari mo nang ikuwento kung paano naapektuhan ng pagkaantala ng visa ang iyong pamilya at ikaw."
+  },
+  "Visa case {number} needs at least one dated milestone.": {
+    "es": "El caso de visa {number} necesita al menos una etapa con fecha.",
+    "pt": "O caso de visto {number} precisa de pelo menos uma etapa com data.",
+    "tl": "Kailangan ng kahit isang yugto na may petsa ang kaso ng visa {number}."
+  },
+  "Visa process": {
+    "es": "Proceso de visa",
+    "pt": "Processo de visto",
+    "tl": "Proseso ng visa"
+  },
+  "Configuration": {
+    "es": "Configuración",
+    "pt": "Configurações",
+    "tl": "Mga setting"
+  },
+  "Public": {
+    "es": "Público",
+    "pt": "Público",
+    "tl": "Pampubliko"
+  },
+  "Email reminders": {
+    "es": "Recordatorios por correo electrónico",
+    "pt": "Lembretes por e-mail",
+    "tl": "Mga paalala sa email"
+  },
+  "Check these fields before saving.": {
+    "es": "Revisa estos campos antes de guardar.",
+    "pt": "Revise estes campos antes de salvar.",
+    "tl": "Suriin ang mga patlang na ito bago mag-save."
+  },
+  "Save visa cases": {
+    "es": "Guardar casos de visa",
+    "pt": "Salvar casos de visto",
+    "tl": "I-save ang mga kaso ng visa"
+  },
+  "Save settings": {
+    "es": "Guardar configuración",
+    "pt": "Salvar configurações",
+    "tl": "I-save ang mga setting"
+  },
+  "Save profile": {
+    "es": "Guardar perfil",
+    "pt": "Salvar perfil",
+    "tl": "I-save ang profile"
+  },
+  "Changes saved.": {
+    "es": "Cambios guardados.",
+    "pt": "Alterações salvas.",
+    "tl": "Nai-save ang mga pagbabago."
+  },
+  "Explore signatures across all 50 states, Washington, DC, and the U.S. territories. Select a state or district to see its representatives.": {
+    "es": "Explora las firmas en los 50 estados, Washington D. C. y los territorios de EE. UU. Selecciona un estado o distrito para ver a sus representantes.",
+    "pt": "Explore as assinaturas nos 50 estados, em Washington, DC, e nos territórios dos EUA. Selecione um estado ou distrito para ver seus representantes.",
+    "tl": "Tingnan ang mga lagda sa lahat ng 50 estado, Washington, DC, at mga teritoryo ng US. Pumili ng estado o distrito para makita ang mga kinatawan nito."
+  },
+  "We bring families and supporters together to press Congress for shorter U.S. visa waits and clearer answers about delays.": {
+    "es": "Reunimos a familias y simpatizantes para exigir al Congreso que reduzca las esperas por las visas estadounidenses y dé respuestas más claras sobre las demoras.",
+    "pt": "Reunimos famílias e apoiadores para cobrar do Congresso esperas mais curtas pelos vistos dos EUA e respostas mais claras sobre os atrasos.",
+    "tl": "Pinagkakaisa namin ang mga pamilya at tagasuporta upang hilingin sa Kongreso na paikliin ang paghihintay sa visa ng US at magbigay ng mas malinaw na sagot tungkol sa mga pagkaantala."
+  },
+  "What one district can ask of Congress": {
+    "es": "Lo que un distrito puede pedirle al Congreso",
+    "pt": "O que um distrito pode cobrar do Congresso",
+    "tl": "Ano ang maaaring hilingin ng isang distrito sa Kongreso"
+  },
+  "When you contact your U.S. representative, you can show them how many people in your congressional district have signed. That count gives neighbors a way to speak together and ask their representative to fund visa processing and press the State Department to explain delays.": {
+    "es": "Cuando te comuniques con tu representante en el Congreso de EE. UU., puedes mostrarle cuántas personas de tu distrito han firmado. Esa cifra permite que los vecinos pidan juntos a su representante que apoye el financiamiento de la tramitación de visas y exija al Departamento de Estado que explique las demoras.",
+    "pt": "Ao entrar em contato com seu representante no Congresso dos EUA, você pode mostrar quantas pessoas do seu distrito assinaram. Com esse número em mãos, moradores podem pedir juntos que seu representante apoie o financiamento do processamento de vistos e cobre do Departamento de Estado explicações sobre os atrasos.",
+    "tl": "Kapag nakipag-ugnayan ka sa kinatawan mo sa Kongreso ng US, maipapakita mo kung ilan na ang lumagda sa inyong distrito. Gamit ang bilang na ito, sama-samang mahihiling ng magkakapitbahay na suportahan ng kanilang kinatawan ang pagpopondo sa pagproseso ng visa at hingan ng paliwanag ang Kagawaran ng Estado tungkol sa mga pagkaantala."
+  },
+  "What the wait means for a family": {
+    "es": "Qué significa la espera para una familia",
+    "pt": "O que a espera significa para uma família",
+    "tl": "Ang kahulugan ng paghihintay para sa isang pamilya"
+  },
+  "A parent can count the months on a visa application. Their child remembers which birthdays they missed. Applicants, relatives, and supporters can tell their own stories here so the public and members of Congress can hear what those months meant to them.": {
+    "es": "Un padre o una madre puede contar los meses que lleva una solicitud de visa. Su hijo recuerda los cumpleaños que pasaron separados. Solicitantes, familiares y simpatizantes pueden contar aquí sus historias para que el público y los miembros del Congreso sepan lo que significaron esos meses.",
+    "pt": "Quem tem um filho pode contar quantos meses se passaram desde o pedido de visto. Para a criança, a lembrança é dos aniversários que passaram longe um do outro. Solicitantes, familiares e apoiadores podem contar suas histórias aqui para que o público e o Congresso ouçam o que esses meses significaram.",
+    "tl": "Mabibilang ng isang magulang kung ilang buwan na ang aplikasyon sa visa. Ang naaalala ng anak ay ang mga kaarawang hindi sila magkasama. Maaaring ibahagi rito ng mga aplikante, kamag-anak, at tagasuporta ang sarili nilang kuwento para marinig ng publiko at ng mga miyembro ng Kongreso kung ano ang kahulugan ng mga buwang iyon sa kanila."
+  },
+  "How long each step takes": {
+    "es": "Cuánto tarda cada etapa",
+    "pt": "Quanto tempo leva cada etapa",
+    "tl": "Gaano katagal ang bawat yugto"
+  },
+  "Public wait-time reports cover only parts of the visa process. Applicants and sponsors can fill in the gaps by sharing dates from their own cases. Together, those timelines show how long people waited between filing, an interview, and a decision, and where others are still waiting.": {
+    "es": "Los informes públicos sobre tiempos de espera solo cubren algunas etapas del proceso. Solicitantes y patrocinadores pueden completar ese panorama compartiendo fechas de sus propios casos. En conjunto, esas cronologías muestran cuánto esperaron entre la presentación, la entrevista y la decisión, y en qué etapas otras personas siguen esperando.",
+    "pt": "Os relatórios públicos sobre a espera cobrem apenas parte do processo de visto. Solicitantes e patrocinadores podem completar esse quadro compartilhando datas dos próprios casos. Juntas, essas cronologias mostram quanto tempo passou entre o pedido, a entrevista e a decisão, e em quais etapas há pessoas que ainda esperam.",
+    "tl": "Ilang bahagi lang ng proseso ng visa ang saklaw ng mga pampublikong ulat sa tagal ng paghihintay. Maaaring ibahagi ng mga aplikante at sponsor ang mga petsa sa sarili nilang kaso para mapunan ang mga puwang. Kapag pinagsama, makikita kung gaano katagal ang pagitan ng paghahain, panayam, at desisyon, at saang yugto naghihintay pa ang iba."
+  },
+  "Anyone, anywhere in the world, can support this effort. You can sign the petition if you are 18 or older, whether or not you have a visa case. Signatures from U.S. citizens who vote are especially important because they show representatives that their own voters want Congress to act.": {
+    "es": "Cualquier persona, en cualquier parte del mundo, puede apoyar esta causa. Si tienes 18 años o más, puedes firmar la petición, tengas o no un caso de visa. Las firmas de ciudadanos estadounidenses que votan son especialmente importantes porque muestran a los representantes que sus propios votantes quieren que el Congreso actúe.",
+    "pt": "Qualquer pessoa, em qualquer lugar do mundo, pode apoiar esta causa. Quem tem 18 anos ou mais pode assinar a petição, mesmo sem um processo de visto. As assinaturas de cidadãos americanos que votam são especialmente importantes porque mostram aos representantes que seus próprios eleitores querem que o Congresso aja.",
+    "tl": "Sinuman, saanman sa mundo, ay maaaring sumuporta. Kung 18 taong gulang ka pataas, maaari kang lumagda sa petisyon kahit wala kang kaso ng visa. Mahalaga lalo ang lagda ng mga mamamayan ng US na bumoboto dahil ipinapakita nito sa mga kinatawan na nais ng sarili nilang mga botante na kumilos ang Kongreso."
+  },
+  "Ethan Kallett maintains Reunite Now. He is a U.S. citizen who has been personally affected by visa delays.": {
+    "es": "Ethan Kallett está a cargo de Reunite Now. Es un ciudadano estadounidense que ha vivido en carne propia las demoras de visa.",
+    "pt": "Ethan Kallett é o responsável pelo Reunite Now. Ele é cidadão dos EUA e foi pessoalmente afetado pelos atrasos nos vistos.",
+    "tl": "Si Ethan Kallett ang nangangasiwa sa Reunite Now. Isa siyang mamamayan ng US na personal na naapektuhan ng pagkaantala ng visa."
+  },
+  "Your sign-in email address and any reminder addresses stay off public profiles, maps, and stories. We store them to operate your account and deliver the emails you request. Anyone with access to the account database can read these addresses, including the project maintainer if they have that access.": {
+    "es": "Tu dirección de correo de acceso y las direcciones para recordatorios no aparecen en los perfiles públicos, mapas ni historias. Las guardamos para gestionar tu cuenta y enviarte los correos que solicitas. Quien tenga acceso a la base de datos de cuentas puede leer esas direcciones, incluida la persona responsable del proyecto si tiene ese acceso.",
+    "pt": "Seu e-mail de acesso e os endereços para lembretes ficam fora dos perfis públicos, mapas e histórias. Nós os armazenamos para administrar sua conta e enviar as mensagens que você solicita. Quem tem acesso ao banco de dados de contas pode ler esses endereços, inclusive o responsável pelo projeto, se tiver esse acesso.",
+    "tl": "Hindi lumalabas sa mga pampublikong profile, mapa, o kuwento ang email address na gamit mo sa pag-sign in at ang mga address para sa mga paalala. Iniimbak namin ang mga ito para mapatakbo ang account mo at maipadala ang mga email na hiniling mo. Mababasa ang mga address ng sinumang may access sa database ng mga account, pati ng tagapangasiwa ng proyekto kung mayroon siyang ganoong access."
+  },
+  "For email sign-in, Reunite Now verifies a single-use link delivered by Azure Communication Services. If you choose Google sign-in, Google verifies your identity and provides your verified email address to Reunite Now. Your sign-in tokens, session details, and reminder preferences stay private. We do not sell personal data or use advertising trackers.": {
+    "es": "Para iniciar sesión por correo, Reunite Now verifica un enlace de un solo uso enviado por Azure Communication Services. Si eliges iniciar sesión con Google, Google verifica tu identidad y proporciona tu dirección de correo verificada a Reunite Now. Tus tokens de acceso, los datos de sesión y las preferencias de recordatorios son privados. No vendemos datos personales ni usamos rastreadores publicitarios.",
+    "pt": "No acesso por e-mail, o Reunite Now verifica um link de uso único enviado pelo Azure Communication Services. Se você optar por entrar com o Google, o Google verifica sua identidade e fornece seu e-mail verificado ao Reunite Now. Os tokens de acesso, os dados da sessão e as preferências de lembretes são privados. Não vendemos dados pessoais nem usamos rastreadores de publicidade.",
+    "tl": "Kung email ang gamit mo sa pag-sign in, bineberipika ng Reunite Now ang link na isang beses lang magagamit at ipinadala ng Azure Communication Services. Kung Google ang pipiliin mo, ibeberipika ng Google ang pagkakakilanlan mo at ibibigay sa Reunite Now ang beripikadong email address mo. Pribado ang iyong mga sign-in token, detalye ng session, at mga piniling paalala. Hindi kami nagbebenta ng personal na datos o gumagamit ng mga tracker para sa patalastas."
+  },
+  "Microsoft Azure hosts the application, database, and scheduled work. Azure Communication Services handles email when enabled. Google handles Google sign-in if you choose it. Census handles optional address lookup. Public policy links and contact links take you to external organizations. We do not share submissions with those organizations.": {
+    "es": "Microsoft Azure aloja la aplicación, la base de datos y las tareas programadas. Azure Communication Services gestiona el correo cuando está habilitado. Google gestiona el inicio de sesión con Google si lo eliges. El Censo procesa la búsqueda opcional por dirección. Los enlaces de políticas y de contacto llevan a organizaciones externas. No compartimos los envíos con esas organizaciones.",
+    "pt": "O Microsoft Azure hospeda a aplicação, o banco de dados e as tarefas agendadas. O Azure Communication Services cuida dos e-mails quando habilitado. O Google cuida do acesso com Google, se você o escolher. O Censo processa a busca opcional por endereço. Links de políticas e de contato levam a organizações externas. Não compartilhamos os envios com essas organizações.",
+    "tl": "Nasa Microsoft Azure ang aplikasyon, database, at mga nakaiskedyul na gawain. Pinangangasiwaan ng Azure Communication Services ang email kapag pinagana. Pinangangasiwaan ng Google ang pag-sign in gamit ang Google kung pipiliin mo ito. Ang Census ang nagpoproseso ng opsyonal na paghahanap gamit ang address. Dinadala ka ng mga link ng patakaran at pakikipag-ugnayan sa mga panlabas na organisasyon. Hindi namin ibinabahagi sa kanila ang mga isinumite."
+  },
+  "The version accepted with your signature is recorded. This is an independent advocacy project, not a law firm or government service.": {
+    "es": "Se registra la versión aceptada al firmar. Este es un proyecto independiente de incidencia pública, no un bufete ni un servicio del gobierno.",
+    "pt": "A versão aceita ao assinar é registrada. Este é um projeto independente de mobilização pública, não um escritório de advocacia nem um serviço governamental.",
+    "tl": "Itinatala ang bersiyong tinanggap mo nang lumagda ka. Malayang proyekto ng adbokasiya ito, hindi law firm o serbisyo ng pamahalaan."
+  },
+  "Your name, legal-status category, country, US state and congressional district, optional political affiliation, involvement in the visa process, signature date, and last-confirmed date are public. The applicant names or nicknames, countries, visa categories, posts, relationships, and dates you enter are also public. Do not include passport numbers, receipt numbers, addresses, birth dates, or documents.": {
+    "es": "Tu nombre, categoría de situación legal, país, estado de EE. UU. y distrito congresional, afiliación política opcional, participación en el proceso de visa, fecha de firma y fecha de última confirmación son públicos. También son públicos los nombres o apodos de los solicitantes, países, categorías de visa, puestos consulares, relaciones y fechas que ingreses. No incluyas números de pasaporte, números de recibo, direcciones, fechas de nacimiento ni documentos.",
+    "pt": "Seu nome, categoria de situação legal, país, estado dos EUA e distrito congressional, afiliação política opcional, participação no processo de visto, data da assinatura e data da última confirmação são públicos. Os nomes ou apelidos dos solicitantes, países, categorias de visto, postos consulares, relacionamentos e datas que você inserir também são públicos. Não inclua números de passaporte, números de recibo, endereços, datas de nascimento ou documentos.",
+    "tl": "Pampubliko ang pangalan mo, kategorya ng legal na katayuan, bansa, estado sa US at congressional district, opsyonal na pagkakaugnay sa politika, pakikilahok sa proseso ng visa, petsa ng paglagda, at petsa ng huling pagkumpirma. Pampubliko rin ang mga pangalan o palayaw ng mga aplikante, bansa, kategorya ng visa, mga himpilan ng embahada o konsulado, relasyon at petsang ilalagay mo. Huwag maglagay ng mga numero ng pasaporte, numero ng resibo, address, petsa ng kapanganakan, o mga dokumento."
+  },
+  "Street address and ZIP code": {
+    "es": "Dirección y código postal",
+    "pt": "Endereço e código postal",
+    "tl": "Address ng kalye at ZIP code"
   }
 }
