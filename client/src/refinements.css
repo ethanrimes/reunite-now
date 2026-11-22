@@ -373,3 +373,41 @@
   max-height: 65vh;
   object-fit: contain;
 }
+
+@media (max-width: 650px) {
+  .site-header nav > a,
+  .site-header .nav-account a,
+  .site-header .language-selector select {
+    min-height: 44px;
+  }
+  .site-header nav > a,
+  .site-header .nav-account a,
+  .account-tabs a {
+    display: inline-flex;
+    align-items: center;
+  }
+  .account-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .account-tabs a {
+    min-height: 44px;
+    padding: 0.55rem 0.75rem;
+    overflow-wrap: anywhere;
+  }
+}
+@media (max-width: 480px) {
+  .account-section .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .account-section .section-heading .tag {
+    font-size: 0.75rem;
+  }
+  .account-save .button,
+  .account-shell #story .row-between > button.button {
+    width: 100%;
+    justify-content: center;
+  }
+}

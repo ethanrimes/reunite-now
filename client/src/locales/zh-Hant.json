@@ -1134,5 +1134,7 @@
   "Microsoft Azure hosts the application, database, and scheduled work. Azure Communication Services handles email when enabled. Google handles Google sign-in if you choose it. Census handles optional address lookup. Public policy links and contact links take you to external organizations. We do not share submissions with those organizations.": "Microsoft Azure 負責託管應用程式、資料庫與排程工作。啟用電子郵件時，由 Azure Communication Services 處理郵件。若你選擇 Google 登入，則由 Google 處理。選用地址查詢功能由人口普查局處理。政策與聯絡連結會帶你前往外部組織。我們不會將提交內容分享給這些組織。",
   "The version accepted with your signature is recorded. This is an independent advocacy project, not a law firm or government service.": "系統會記錄你連署時接受的版本。這是獨立倡議專案，並非律師事務所或政府服務。",
   "Your name, legal-status category, country, US state and congressional district, optional political affiliation, involvement in the visa process, signature date, and last-confirmed date are public. The applicant names or nicknames, countries, visa categories, posts, relationships, and dates you enter are also public. Do not include passport numbers, receipt numbers, addresses, birth dates, or documents.": "您的姓名、法律身分類別、國家、美國州別與國會選區、選填的政治立場、參與簽證流程的情況、簽署日期及最後確認日期都會公開。您填寫的申請人姓名或暱稱、國家、簽證類別、使領館據點、關係及日期也會公開。請勿填寫護照號碼、收據號碼、地址、出生日期或文件。",
-  "Street address and ZIP code": "街道地址與郵遞區號"
+  "Street address and ZIP code": "街道地址與郵遞區號",
+  "I’m the applicant": "我是申請人",
+  "I’m the sponsor": "我是擔保人"
 }

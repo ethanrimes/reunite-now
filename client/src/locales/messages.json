@@ -5678,5 +5678,15 @@
     "es": "Dirección y código postal",
     "pt": "Endereço e código postal",
     "tl": "Address ng kalye at ZIP code"
+  },
+  "I’m the applicant": {
+    "es": "Soy el solicitante",
+    "pt": "Sou o solicitante",
+    "tl": "Ako ang aplikante"
+  },
+  "I’m the sponsor": {
+    "es": "Soy el patrocinador",
+    "pt": "Sou o patrocinador",
+    "tl": "Ako ang sponsor"
   }
 }

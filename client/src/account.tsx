@@ -362,9 +362,9 @@ function VisaEditor({
               {roleOptions.map((role) => (
                 <option key={role} value={role}>
                   {role === "Applicant"
-                    ? t("I am applying for this visa")
+                    ? t("I’m the applicant")
                     : role === "Petitioner"
-                      ? t("I am sponsoring the applicant")
+                      ? t("I’m the sponsor")
                       : t(role)}
                 </option>
               ))}
