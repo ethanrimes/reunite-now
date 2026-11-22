@@ -13,7 +13,6 @@ import {
   ShieldCheck,
   Plus,
   Trash2,
-  Check,
   Download,
   LogOut,
   Camera,
@@ -21,7 +20,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { api, useData } from "./api";
-import { PageIntro, Field, Notice, Modal, date, Timeline } from "./ui";
+import { PageIntro, Field, Notice, Modal } from "./ui";
 import {
   states,
   legalStatuses,
@@ -1107,42 +1106,6 @@ export function Account() {
             </Link>
           ))}
         </nav>
-      )}
-      {me.profile && tab === "cases" && me.profile.personallyInvolved && (
-        <div className="account-confirm">
-          <div>
-            <Check size={22} />
-            <span>
-              <strong>{t("You’ve signed. Thank you.")}</strong>
-              <small>
-                {t("Last confirmed ")}
-                {date(me.profile.updatedAt)}
-              </small>
-            </span>
-          </div>
-          <button
-            className="button outline small"
-            disabled={busy}
-            onClick={async () => {
-              setBusy(true);
-              setError("");
-              try {
-                await api("/me/confirm", { method: "POST" });
-                await refresh();
-                setMessage(
-                  "Confirmed: no changes to your cases. The last-checked dates are now updated.",
-                );
-              } catch (e) {
-                setError((e as Error).message);
-              } finally {
-                setBusy(false);
-              }
-            }}
-          >
-            {t("No changes — confirm today ")}
-            <Check size={16} />
-          </button>
-        </div>
       )}
       {tab !== "story" && message && (
         <Notice tone="success">{t(message)}</Notice>

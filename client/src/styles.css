@@ -1901,30 +1901,6 @@ thead {
 .consent-section .small-copy {
   margin: 0;
 }
-.account-confirm {
-  background: #f4f3f0;
-  border: 1px solid #e3e2dc;
-  border-radius: 2px;
-  padding: 22px 27px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 30px;
-  gap: 25px;
-}
-.account-confirm > div {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.account-confirm strong {
-  font-size: 14px;
-}
-.account-confirm small {
-  display: block;
-  font-size: 10px;
-  margin-top: 5px;
-}
 .impact-options {
   display: flex;
   gap: 10px;
@@ -2852,15 +2828,6 @@ thead {
   .checkbox {
     font-size: 12px;
   }
-  .account-confirm {
-    padding: 20px;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .account-confirm .button {
-    font-size: 11px;
-    width: 100%;
-  }
   .photo-previews img {
     width: 130px;
     height: 100px;
@@ -3701,19 +3668,6 @@ input:disabled {
 }
 .checkbox a {
   color: #1c1c1c;
-}
-.account-confirm {
-  background: #f4f3f0;
-  border-color: #e3e2dc;
-  color: #1c1c1c;
-  border-radius: 2px;
-}
-.account-confirm small {
-  color: #1c1c1c;
-}
-.account-confirm .button {
-  color: #1c1c1c;
-  border-color: #e3e2dc;
 }
 .impact-options label {
   background: #f4f3f0;
