@@ -11,8 +11,8 @@ import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 SUB = '9a04b64b-af19-4519-be50-56ec2acbd855'
-RG = 'reunite-now-rg'
-APP = 'reunite-now-9a04'
+RG = 'reunite-now-eu-rg'
+APP = 'reunite-now-eu-9a04'
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--domain', default='visatransparencypetition.org', help='Canonical website hostname; register its Google callback before activation.')
 parser.add_argument('--sender-domain', help='Verified Azure sender domain; defaults to the website domain.')
@@ -52,13 +52,13 @@ for attempt in range(8):
 else:
     raise SystemExit('Trusted HTTPS is still propagating; no settings changed. Retry after both certificates settle.')
 
-domain = az('rest', '--method', 'get', '--url', ARM + f'/emailServices/reunite-now-email/domains/{SENDER_DOMAIN}?api-version=2023-04-01')
+domain = az('rest', '--method', 'get', '--url', ARM + f'/emailServices/reunite-now-eu-email/domains/{SENDER_DOMAIN}?api-version=2023-04-01')
 if not all(domain['properties']['verificationStates'][kind]['status'] == 'Verified' for kind in ['Domain', 'SPF', 'DKIM', 'DKIM2']):
     raise SystemExit('The custom sender domain is not fully verified.')
-communication = az('rest', '--method', 'get', '--url', ARM + '/communicationServices/reunite-now-communication?api-version=2023-04-01')
+communication = az('rest', '--method', 'get', '--url', ARM + '/communicationServices/reunite-now-eu-communication?api-version=2023-04-01')
 if domain['id'].lower() not in [item.lower() for item in communication['properties'].get('linkedDomains', [])]:
     raise SystemExit('The custom sender is not linked to the Communication Service.')
-sender = az('rest', '--method', 'get', '--url', ARM + f'/emailServices/reunite-now-email/domains/{SENDER_DOMAIN}/senderUsernames/ethan?api-version=2023-04-01')
+sender = az('rest', '--method', 'get', '--url', ARM + f'/emailServices/reunite-now-eu-email/domains/{SENDER_DOMAIN}/senderUsernames/ethan?api-version=2023-04-01')
 if sender['properties']['username'] != 'ethan':
     raise SystemExit('The custom sender is missing.')
 settings = {item['name']: item['value'] for item in az('webapp', 'config', 'appsettings', 'list', '-g', RG, '-n', APP)}
@@ -77,7 +77,8 @@ try:
         settings_path = handle.name
         os.chmod(settings_path, 0o600)
         json.dump({'APP_URL': ORIGIN, 'EMAIL_FROM': EMAIL_FROM}, handle)
-    az('webapp', 'config', 'appsettings', 'set', '-g', RG, '-n', APP, '--settings', '@' + settings_path)
+    for prefix in ['reunite-now', 'reunite-now-eu']:
+        az('webapp', 'config', 'appsettings', 'set', '-g', prefix+'-rg', '-n', prefix+'-9a04', '--settings', '@' + settings_path)
 finally:
     if settings_path:
         os.unlink(settings_path)

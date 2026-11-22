@@ -604,8 +604,12 @@ export function DataUse() {
         <h2>{t("Hosting, access and retention")}</h2>
         <p>
           {t(
-            "Ethan Kallett operates Reunite Now. The petition database and website currently run in Azure’s North Central US region. The reminder scheduler runs in Sweden. The sign-in and reminder email service stores service data in the United States.",
-          )}
+            "For new accounts, we look up your IP address locally. An EU address selects Sweden. Other or unrecognized addresses select the United States. We do not save the IP in your account. You can move your account in Configuration. Earlier accounts start in Sweden.",
+          )}{" "}
+          {t(
+            "Public maps, timelines and published stories combine submissions from both regions. The US web service processes requests for both. The reminder scheduler runs in Sweden and our email service processes delivery data in the US. After a move, the old region may retain a backup during its recovery window.",
+          )}{" "}
+          <a href="https://db-ip.com">{"IP geolocation by DB-IP"}</a>
         </p>
         <p>
           {t(

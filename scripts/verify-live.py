@@ -50,7 +50,7 @@ print(json.dumps({'health': health, 'authentication': config, 'publicEndpoint': 
 if args.check_reminders:
     result = subprocess.run([
         'az', 'webapp', 'config', 'appsettings', 'list',
-        '-g', 'reunite-now-rg', '-n', 'reunite-now-9a04',
+        '-g', 'reunite-now-eu-rg', '-n', 'reunite-now-eu-9a04',
         '--subscription', '9a04b64b-af19-4519-be50-56ec2acbd855', '-o', 'json'
     ], check=True, capture_output=True, text=True)
     settings = {item['name']: item['value'] for item in json.loads(result.stdout)}

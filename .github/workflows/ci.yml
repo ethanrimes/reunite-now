@@ -3,6 +3,15 @@ on: [push, pull_request]
 jobs:
   app:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: localtest
+          POSTGRES_DB: petition_eu
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -22,3 +31,20 @@ jobs:
             sleep 1
           done
           npm run test:integration
+
+      - name: Regional storage integration
+        env:
+          DATABASE_URL_EU: postgresql://postgres:localtest@127.0.0.1:5432/petition_eu
+          DATABASE_URL_US: postgresql://postgres:localtest@127.0.0.1:5432/petition_us
+          WEBSITE_SITE_NAME: local-ingress-test
+          PORT: 3329
+        run: |
+          psql "$DATABASE_URL_EU" -c 'CREATE DATABASE petition_us'
+          node dist/server.js > /tmp/reunite-regional.log 2>&1 &
+          API_PID=$!
+          trap 'kill "$API_PID"' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:3329/api/health > /dev/null; then break; fi
+            sleep 1
+          done
+          npx tsx --test tests/regions.test.ts

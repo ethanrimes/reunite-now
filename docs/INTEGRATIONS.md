@@ -14,13 +14,13 @@ The canonical site and sender use `visatransparencypetition.org`. See [the migra
 | Email sign-in | New sender verified and configured | Test delivery and sign-in on the new domain |
 | Google sign-in | Client credentials saved in Azure; authorization redirect verified | Complete a browser sign-in test |
 | Monthly reminders | Daily Azure Logic App enabled at 16:00 UTC; endpoint uses the custom domain | Test delivery to an eligible test account, then verify an unattended run |
-| Branded sender address | noreply@visatransparencypetition.org; linked to Azure Communication Services | Test delivery and maintain DNS authentication records |
+| Branded sender address | ethan@visatransparencypetition.org; linked to Azure Communication Services | Test delivery and maintain DNS authentication records |
 
 These are the deployment handoff results, not a promise that credentials or DNS will remain unchanged. Configuration flags alone do not establish successful delivery or sign-in.
 
 ## Current domain: visatransparencypetition.org
 
-The canonical origin is `https://visatransparencypetition.org`. Root and `www` use managed SNI certificates, and browser requests on the previous domain and other alternate hosts redirect to the canonical origin. The new sender `noreply@visatransparencypetition.org` has verified Domain, SPF, DKIM, and DKIM2 records and is linked to Azure Communication Services. The user confirmed that the Google callback was saved. Complete a browser Google sign-in and an email delivery test; neither was exercised during this migration. See [the migration runbook](DOMAIN-MIGRATION.md) for the new domain DNS and rollback.
+The canonical origin is `https://visatransparencypetition.org`. Root and `www` use managed SNI certificates, and browser requests on the previous domain and other alternate hosts redirect to the canonical origin. The new sender `ethan@visatransparencypetition.org` has verified Domain, SPF, DKIM, and DKIM2 records and is linked to Azure Communication Services. The user confirmed that the Google callback was saved. Complete a browser Google sign-in and an email delivery test; neither was exercised during this migration. See [the migration runbook](DOMAIN-MIGRATION.md) for the new domain DNS and rollback.
 
 ### Previous domain recovery instructions
 
@@ -119,7 +119,7 @@ To roll back a hostname cutover, restore the old `APP_URL`, retain its Google ca
 Email already uses **reunite-now-communication**, linked to **reunite-now-email**. The configured sender is:
 
 ```text
-noreply@visatransparencypetition.org
+ethan@visatransparencypetition.org
 ```
 
 From `/login` on `https://visatransparencypetition.org`, request a link to an inbox you control. Check inbox and spam, verify the sender and destination hostname, and open the link within 15 minutes. Confirm that it signs you in and that reusing the same link fails. The production response must not expose a development preview link. This test creates an account, but does not sign the petition until you submit the required registration form.

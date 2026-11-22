@@ -17,7 +17,15 @@ import path from "node:path";
 import { readFile } from "node:fs/promises";
 import { Google, generateCodeVerifier, generateState } from "arctic";
 import { z } from "zod";
-import { db, transaction, migrate } from "./db";
+import { db, transaction, migrate, dual, region, inRegion } from "./db";
+import {
+  acrossRegions,
+  homeForEmail,
+  locate,
+  moveAccount,
+  routed,
+} from "./regions";
+import { regionForIP } from "./geolocation";
 import { emailReady, sendEmail } from "./email";
 import { cleanStoryPhoto, cleanHistoricalStoryPhotos } from "./story-photos";
 import { canonicalHost } from "./canonical";
@@ -106,12 +114,45 @@ async function currentUser(req: Request) {
     ).rows[0] || null
   );
 }
-async function requireUser(req: Request, res: Response, next: NextFunction) {
-  const u = await currentUser(req);
-  if (!u)
-    return void res.status(401).json({ error: "Please sign in to continue" });
-  res.locals.user = u;
-  next();
+function detectedRegion(req: Request) {
+  // App Service overwrites Client-IP at its ingress. Development uses the socket peer.
+  return regionForIP(
+    process.env.WEBSITE_SITE_NAME
+      ? req.get("client-ip")
+      : req.socket.remoteAddress,
+  );
+}
+type Handler = (req: Request, res: Response) => Promise<unknown>;
+function accountRoute(
+  handler: Handler,
+  { optional = false, exclusive = false } = {},
+): Handler {
+  return (req, res) =>
+    routed(exclusive, async () => {
+      const raw = req.cookies.rn_session;
+      const r =
+        typeof raw === "string" &&
+        raw &&
+        (dual
+          ? await locate(
+              "SELECT 1 FROM sessions WHERE token_hash=$1 AND expires_at>now()",
+              [hash(raw)],
+            )
+          : region());
+      if (!r)
+        return optional
+          ? res.json({ user: null })
+          : res.status(401).json({ error: "Please sign in to continue" });
+      return inRegion(r, async () => {
+        const u = await currentUser(req);
+        if (!u)
+          return optional
+            ? res.json({ user: null })
+            : res.status(401).json({ error: "Please sign in to continue" });
+        res.locals.user = u;
+        return handler(req, res);
+      });
+    });
 }
 async function session(email: string, res: Response) {
   const uid = randomUUID();
@@ -126,8 +167,26 @@ async function session(email: string, res: Response) {
   );
   res.cookie("rn_session", raw, { ...cookieOptions, maxAge: 30 * 86400000 });
 }
+async function signInAtHome(
+  email: string,
+  fallback: "eu" | "us",
+  res: Response,
+) {
+  const home = await homeForEmail(email, fallback);
+  if (dual) {
+    // Before first verification multiple devices may request links in different regions.
+    // Revoke any pre-registration links held outside the verified account's home.
+    await inRegion(home === "eu" ? "us" : "eu", () =>
+      db.query(
+        "DELETE FROM login_tokens WHERE sha256(convert_to(email,'UTF8'))=decode($1,'hex')",
+        [hash(email)],
+      ),
+    );
+  }
+  await inRegion(home, () => session(email, res));
+}
 app.get("/api/health", async (_req, res) => {
-  await db.query("SELECT 1");
+  await acrossRegions(() => db.query("SELECT 1"));
   res.json({ ok: true, service: "reunite-now", version: "0.1.0" });
 });
 app.get("/api/config", (_req, res) =>
@@ -157,9 +216,13 @@ app.post("/api/auth/email", authLimit, async (req, res) => {
         "Email sign-in opens once the project’s email service is connected.",
     });
   const raw = token();
-  await db.query(
-    `INSERT INTO login_tokens(token_hash,email,expires_at) VALUES($1,$2,now()+interval '15 minutes')`,
-    [hash(raw), email],
+  await routed(false, async () =>
+    inRegion(await homeForEmail(email, detectedRegion(req)), () =>
+      db.query(
+        `INSERT INTO login_tokens(token_hash,email,expires_at) VALUES($1,$2,now()+interval '15 minutes')`,
+        [hash(raw), email],
+      ),
+    ),
   );
   const url = `${appUrl}/auth/verify#token=${raw}`;
   if (emailReady())
@@ -175,15 +238,27 @@ app.post("/api/auth/verify", authLimit, async (req, res) => {
   const { token: raw } = z
     .object({ token: z.string().min(40).max(100) })
     .parse(req.body);
-  const r = await db.query(
-    `DELETE FROM login_tokens WHERE token_hash=$1 AND expires_at>now() RETURNING email`,
-    [hash(raw)],
-  );
-  if (!r.rows[0])
+  const verified = await routed(true, async () => {
+    const source = await locate(
+      "SELECT 1 FROM login_tokens WHERE token_hash=$1 AND expires_at>now()",
+      [hash(raw)],
+    );
+    if (!source) return false;
+    const result = await inRegion(source, () =>
+      db.query(
+        "DELETE FROM login_tokens WHERE token_hash=$1 AND expires_at>now() RETURNING email",
+        [hash(raw)],
+      ),
+    );
+    const email = result.rows[0]?.email;
+    if (!email) return false;
+    await signInAtHome(email, source, res);
+    return true;
+  });
+  if (!verified)
     return void res.status(400).json({
       error: "This link has expired or already been used. Request a new link.",
     });
-  await session(r.rows[0].email, res);
   res.json({ ok: true });
 });
 function google() {
@@ -235,7 +310,9 @@ app.get("/api/auth/google/callback", authLimit, async (req, res) => {
     const info = await r.json();
     if (info.email_verified !== true || typeof info.email !== "string")
       throw new Error("Unverified email");
-    await session(info.email.toLowerCase(), res);
+    await routed(true, () =>
+      signInAtHome(info.email.toLowerCase(), detectedRegion(req), res),
+    );
     res.redirect("/account");
   } catch {
     res.redirect("/login?error=oauth");
@@ -243,32 +320,47 @@ app.get("/api/auth/google/callback", authLimit, async (req, res) => {
 });
 app.post("/api/auth/logout", async (req, res) => {
   if (req.cookies.rn_session)
-    await db.query("DELETE FROM sessions WHERE token_hash=$1", [
-      hash(req.cookies.rn_session),
-    ]);
+    await routed(false, () =>
+      acrossRegions(() =>
+        db.query("DELETE FROM sessions WHERE token_hash=$1", [
+          hash(req.cookies.rn_session),
+        ]),
+      ),
+    );
   res.clearCookie("rn_session", cookieOptions);
   res.json({ ok: true });
 });
-app.get("/api/me", async (req, res) => {
-  const u = await currentUser(req);
-  if (!u) return void res.json({ user: null });
-  const p = await db.query(
-    `SELECT data,updated_at,signed_at FROM profiles WHERE user_id=$1`,
-    [u.id],
-  );
-  const s = await db.query(`SELECT data FROM stories WHERE user_id=$1`, [u.id]);
-  res.json({
-    user: { id: u.id, email: u.email },
-    profile: p.rows[0]
-      ? {
-          ...profileSchema.parse(p.rows[0].data),
-          updatedAt: p.rows[0].updated_at,
-          signedAt: p.rows[0].signed_at,
-        }
-      : null,
-    story: s.rows[0] ? storySchema.parse(s.rows[0].data) : null,
-  });
-});
+app.get(
+  "/api/me",
+  accountRoute(
+    async (_req, res) => {
+      const u = res.locals.user;
+      const p = await db.query(
+        `SELECT data,updated_at,signed_at FROM profiles WHERE user_id=$1`,
+        [u.id],
+      );
+      const s = await db.query(`SELECT data FROM stories WHERE user_id=$1`, [
+        u.id,
+      ]);
+      res.json({
+        user: {
+          id: u.id,
+          email: u.email,
+          storageRegion: dual ? region() : undefined,
+        },
+        profile: p.rows[0]
+          ? {
+              ...profileSchema.parse(p.rows[0].data),
+              updatedAt: p.rows[0].updated_at,
+              signedAt: p.rows[0].signed_at,
+            }
+          : null,
+        story: s.rows[0] ? storySchema.parse(s.rows[0].data) : null,
+      });
+    },
+    { optional: true },
+  ),
+);
 async function validateDistrict(data: Profile) {
   if (data.country === "United States") {
     const districts = JSON.parse(
@@ -286,145 +378,194 @@ async function validateDistrict(data: Profile) {
       );
   }
 }
-app.put("/api/me/profile", requireUser, async (req, res) => {
-  const data = profileWriteSchema.parse(req.body);
-  data.reminderEmails = data.reminderEmails.filter(
-    (email) => email !== res.locals.user.email.trim().toLowerCase(),
-  );
-  await validateDistrict(data);
-  const now = new Date().toISOString();
-  data.cases = data.cases.map((c) => ({ ...c, updatedAt: now }));
-  await db.query(
-    `INSERT INTO profiles(user_id,data,consent_version) VALUES($1,$2,$3) ON CONFLICT(user_id) DO UPDATE SET data=EXCLUDED.data,updated_at=now()`,
-    [res.locals.user.id, JSON.stringify(data), consentVersion],
-  );
-  res.json({ ok: true, updatedAt: now });
-});
-app.patch("/api/me/profile/:section", requireUser, async (req, res) => {
-  const section = req.params.section as ProfileSection;
-  if (!Object.hasOwn(profileSections, section)) return void res.sendStatus(404);
-  const fields = profileSections[section];
-  const user = res.locals.user;
-  const sectionValues = await transaction(async (q) => {
-    const result = await q.query(
-      "SELECT data FROM profiles WHERE user_id=$1 FOR UPDATE",
-      [user.id],
+app.put(
+  "/api/me/profile",
+  accountRoute(async (req, res) => {
+    const data = profileWriteSchema.parse(req.body);
+    data.reminderEmails = data.reminderEmails.filter(
+      (email) => email !== res.locals.user.email.trim().toLowerCase(),
     );
-    if (!result.rows[0])
-      throw Object.assign(new Error("Sign the petition first."), {
-        status: 400,
-      });
-    const saved = result.rows[0].data;
-    const updates = Object.fromEntries(
-      fields
-        .filter((key) => Object.hasOwn(req.body ?? {}, key))
-        .map((key) => [key, req.body[key]]),
-    );
-    if (!Object.keys(updates).length)
-      throw Object.assign(new Error("No fields to save."), { status: 400 });
-    const data = (
-      section === "cases" ? profileWriteSchema : profileSchema
-    ).parse({ ...saved, ...updates });
-    if (section === "profile") await validateDistrict(data);
-    if (section === "settings")
-      data.reminderEmails = data.reminderEmails.filter(
-        (email) => email !== user.email.toLowerCase(),
-      );
+    await validateDistrict(data);
     const now = new Date().toISOString();
-    if (section !== "settings")
-      data.cases = data.cases.map((c) => ({
-        ...c,
-        ...(c.role === "Applicant" && { applicantName: data.name }),
-        ...(section === "cases" && { updatedAt: now }),
-      }));
-    await q.query(
-      "UPDATE profiles SET data=$2, updated_at=CASE WHEN $3 THEN now() ELSE updated_at END WHERE user_id=$1",
-      [user.id, JSON.stringify(data), section === "cases"],
+    data.cases = data.cases.map((c) => ({ ...c, updatedAt: now }));
+    await db.query(
+      `INSERT INTO profiles(user_id,data,consent_version) VALUES($1,$2,$3) ON CONFLICT(user_id) DO UPDATE SET data=EXCLUDED.data,updated_at=now()`,
+      [res.locals.user.id, JSON.stringify(data), consentVersion],
     );
-    return Object.fromEntries(fields.map((key) => [key, data[key]]));
-  });
-  res.json({ ok: true, fields: sectionValues });
-});
-app.post("/api/me/confirm", requireUser, async (_req, res) => {
-  const now = new Date().toISOString();
-  await transaction(async (q) => {
-    const p = await q.query(
-      `SELECT data FROM profiles WHERE user_id=$1 FOR UPDATE`,
+    res.json({ ok: true, updatedAt: now });
+  }),
+);
+app.patch(
+  "/api/me/profile/:section",
+  accountRoute(async (req, res) => {
+    const section = req.params.section as ProfileSection;
+    if (!Object.hasOwn(profileSections, section))
+      return void res.sendStatus(404);
+    const fields = profileSections[section];
+    const user = res.locals.user;
+    const sectionValues = await transaction(async (q) => {
+      const result = await q.query(
+        "SELECT data FROM profiles WHERE user_id=$1 FOR UPDATE",
+        [user.id],
+      );
+      if (!result.rows[0])
+        throw Object.assign(new Error("Sign the petition first."), {
+          status: 400,
+        });
+      const saved = result.rows[0].data;
+      const updates = Object.fromEntries(
+        fields
+          .filter((key) => Object.hasOwn(req.body ?? {}, key))
+          .map((key) => [key, req.body[key]]),
+      );
+      if (!Object.keys(updates).length)
+        throw Object.assign(new Error("No fields to save."), { status: 400 });
+      const data = (
+        section === "cases" ? profileWriteSchema : profileSchema
+      ).parse({ ...saved, ...updates });
+      if (section === "profile") await validateDistrict(data);
+      if (section === "settings")
+        data.reminderEmails = data.reminderEmails.filter(
+          (email) => email !== user.email.toLowerCase(),
+        );
+      const now = new Date().toISOString();
+      if (section !== "settings")
+        data.cases = data.cases.map((c) => ({
+          ...c,
+          ...(c.role === "Applicant" && { applicantName: data.name }),
+          ...(section === "cases" && { updatedAt: now }),
+        }));
+      await q.query(
+        "UPDATE profiles SET data=$2, updated_at=CASE WHEN $3 THEN now() ELSE updated_at END WHERE user_id=$1",
+        [user.id, JSON.stringify(data), section === "cases"],
+      );
+      return Object.fromEntries(fields.map((key) => [key, data[key]]));
+    });
+    res.json({ ok: true, fields: sectionValues });
+  }),
+);
+app.post(
+  "/api/me/confirm",
+  accountRoute(async (_req, res) => {
+    const now = new Date().toISOString();
+    await transaction(async (q) => {
+      const p = await q.query(
+        `SELECT data FROM profiles WHERE user_id=$1 FOR UPDATE`,
+        [res.locals.user.id],
+      );
+      if (!p.rows[0])
+        throw Object.assign(new Error("Complete your petition profile first"), {
+          status: 400,
+        });
+      const data = p.rows[0].data as Profile;
+      data.cases = data.cases.map((c) => ({ ...c, updatedAt: now }));
+      await q.query(
+        "UPDATE profiles SET data=$2,updated_at=now() WHERE user_id=$1",
+        [res.locals.user.id, JSON.stringify(data)],
+      );
+    });
+    res.json({ ok: true, updatedAt: now });
+  }),
+);
+app.put(
+  "/api/me/story",
+  accountRoute(async (req, res) => {
+    const data = storySchema.parse(req.body);
+    const p = await db.query(`SELECT data FROM profiles WHERE user_id=$1`, [
+      res.locals.user.id,
+    ]);
+    if (!p.rows[0])
+      return void res
+        .status(400)
+        .json({ error: "Sign the petition before sharing a story" });
+    const existing = await db.query(
+      "SELECT data FROM stories WHERE user_id=$1",
       [res.locals.user.id],
     );
-    if (!p.rows[0])
-      throw Object.assign(new Error("Complete your petition profile first"), {
-        status: 400,
-      });
-    const data = p.rows[0].data as Profile;
-    data.cases = data.cases.map((c) => ({ ...c, updatedAt: now }));
-    await q.query(
-      "UPDATE profiles SET data=$2,updated_at=now() WHERE user_id=$1",
-      [res.locals.user.id, JSON.stringify(data)],
+    const saved = existing.rows[0]?.data;
+    const safePhotos = new Set<string>(
+      saved?.photosCleaned === true ? saved.photos : [],
     );
-  });
-  res.json({ ok: true, updatedAt: now });
-});
-app.put("/api/me/story", requireUser, async (req, res) => {
-  const data = storySchema.parse(req.body);
-  const p = await db.query(`SELECT data FROM profiles WHERE user_id=$1`, [
-    res.locals.user.id,
-  ]);
-  if (!p.rows[0])
-    return void res
-      .status(400)
-      .json({ error: "Sign the petition before sharing a story" });
-  const existing = await db.query("SELECT data FROM stories WHERE user_id=$1", [
-    res.locals.user.id,
-  ]);
-  const saved = existing.rows[0]?.data;
-  const safePhotos = new Set<string>(
-    saved?.photosCleaned === true ? saved.photos : [],
-  );
-  const photos = [];
-  for (const photo of data.photos) {
-    photos.push(safePhotos.has(photo) ? photo : await cleanStoryPhoto(photo));
-  }
-  await db.query(
-    `INSERT INTO stories(user_id,data) VALUES($1,$2) ON CONFLICT(user_id) DO UPDATE SET data=EXCLUDED.data,updated_at=now()`,
-    [
+    const photos = [];
+    for (const photo of data.photos) {
+      photos.push(safePhotos.has(photo) ? photo : await cleanStoryPhoto(photo));
+    }
+    await db.query(
+      `INSERT INTO stories(user_id,data) VALUES($1,$2) ON CONFLICT(user_id) DO UPDATE SET data=EXCLUDED.data,updated_at=now()`,
+      [
+        res.locals.user.id,
+        JSON.stringify({ ...data, photos, photosCleaned: true }),
+      ],
+    );
+    res.json({ ok: true });
+  }),
+);
+app.delete(
+  "/api/me/story",
+  accountRoute(async (_req, res) => {
+    await db.query("DELETE FROM stories WHERE user_id=$1", [
       res.locals.user.id,
-      JSON.stringify({ ...data, photos, photosCleaned: true }),
-    ],
-  );
-  res.json({ ok: true });
-});
-app.delete("/api/me/story", requireUser, async (_req, res) => {
-  await db.query("DELETE FROM stories WHERE user_id=$1", [res.locals.user.id]);
-  res.json({ ok: true });
-});
-app.get("/api/me/export", requireUser, async (_req, res) => {
-  const u = res.locals.user;
-  const p = await db.query(
-    "SELECT data,updated_at,signed_at FROM profiles WHERE user_id=$1",
-    [u.id],
-  );
-  const s = await db.query("SELECT data FROM stories WHERE user_id=$1", [u.id]);
-  res.attachment("reunite-now-data.json").json({
-    email: u.email,
-    profile: p.rows[0] || null,
-    story: s.rows[0] ? storySchema.parse(s.rows[0].data) : null,
-  });
-});
-app.delete("/api/me", requireUser, async (req, res) => {
-  if (req.body?.confirmation !== "DELETE")
-    return void res
-      .status(400)
-      .json({ error: "Type DELETE to confirm account deletion" });
-  await transaction(async (q) => {
-    await q.query("DELETE FROM login_tokens WHERE email=$1", [
-      res.locals.user.email,
     ]);
-    await q.query("DELETE FROM users WHERE id=$1", [res.locals.user.id]);
-  });
-  res.clearCookie("rn_session", cookieOptions);
-  res.json({ ok: true });
-});
+    res.json({ ok: true });
+  }),
+);
+app.get(
+  "/api/me/export",
+  accountRoute(async (_req, res) => {
+    const userId = res.locals.user.id;
+    const { rows } = await db.query(
+      `SELECT u.email, u.created_at,
+       (SELECT jsonb_build_object('data',p.data,'updated_at',p.updated_at,'signed_at',p.signed_at,'consent_version',p.consent_version) FROM profiles p WHERE p.user_id=u.id) AS profile,
+       (SELECT s.data FROM stories s WHERE s.user_id=u.id) AS story,
+       (SELECT jsonb_agg(jsonb_build_object('createdAt', created_at, 'expiresAt', expires_at) ORDER BY created_at) FROM sessions WHERE user_id=u.id) AS sessions,
+       (SELECT jsonb_agg(jsonb_build_object('period', period, 'status', status, 'claimedAt', claimed_at, 'sentAt', sent_at) ORDER BY period) FROM reminder_deliveries WHERE user_id=u.id) AS reminders
+     FROM users u WHERE u.id=$1`,
+      [userId],
+    );
+    if (!rows[0]) return void res.sendStatus(401);
+    const record = rows[0];
+    res.attachment("reunite-now-data.json").json({
+      email: record.email,
+      accountCreatedAt: record.created_at,
+      storageRegion: dual ? region() : undefined,
+      profile: record.profile,
+      story: record.story ? storySchema.parse(record.story) : null,
+      sessions: record.sessions ?? [],
+      reminderDeliveries: record.reminders ?? [],
+    });
+  }),
+);
+app.delete(
+  "/api/me",
+  accountRoute(
+    async (req, res) => {
+      if (req.body?.confirmation !== "DELETE")
+        return void res
+          .status(400)
+          .json({ error: "Type DELETE to confirm account deletion" });
+      await transaction(async (q) => {
+        await q.query("DELETE FROM login_tokens WHERE email=$1", [
+          res.locals.user.email,
+        ]);
+        await q.query("DELETE FROM users WHERE id=$1", [res.locals.user.id]);
+      });
+      res.clearCookie("rn_session", cookieOptions);
+      res.json({ ok: true });
+    },
+    { exclusive: true },
+  ),
+);
+app.put(
+  "/api/me/region",
+  accountRoute(
+    async (req, res) => {
+      const destination = z.enum(["eu", "us"]).parse(req.body?.region);
+      await moveAccount(res.locals.user.id, destination);
+      res.json({ storageRegion: destination });
+    },
+    { exclusive: true },
+  ),
+);
 // Dedicated read-only fixtures. Never mix these records into production statistics.
 let previewCache:
   { day: string; data: ReturnType<typeof createDemoData> } | undefined;
@@ -443,49 +584,63 @@ app.get("/api/demo", async (_req, res) => {
   }
 });
 app.get("/api/public", async (_req, res) => {
-  const rows = await db.query(
-    `SELECT user_id,data,updated_at,signed_at FROM profiles WHERE data->>'signed'='true' AND data->>'publicConsent'='true'`,
+  const rows = await routed(false, () =>
+    acrossRegions(() =>
+      db.query(
+        `SELECT user_id,(data - 'reminderEmails') || '{"reminders":false}'::jsonb AS data,updated_at,signed_at FROM profiles WHERE data->>'signed'='true' AND data->>'publicConsent'='true'`,
+      ),
+    ),
   );
-  const profiles = rows.rows.map((r) => {
-    const p = profileSchema.parse(r.data);
-    const {
-      reminders,
-      reminderEmails,
-      affiliationConsent,
-      adultConsent,
-      publicConsent,
-      signed,
-      ...data
-    } = p;
-    return {
-      ...data,
-      id: r.user_id,
-      updatedAt: r.updated_at,
-      signedAt: r.signed_at,
-    };
-  });
+  const profiles = rows
+    .flatMap((result) => result.rows)
+    .map((r) => {
+      const p = profileSchema.parse(r.data);
+      const {
+        reminders,
+        reminderEmails,
+        affiliationConsent,
+        adultConsent,
+        publicConsent,
+        signed,
+        ...data
+      } = p;
+      return {
+        ...data,
+        id: r.user_id,
+        updatedAt: r.updated_at,
+        signedAt: r.signed_at,
+      };
+    });
   res.json({
     profiles: [...profiles, ...(demo?.profiles || [])],
     updatedAt: new Date().toISOString(),
   });
 });
 app.get("/api/stories", async (_req, res) => {
-  const rows = await db.query(
-    `SELECT s.user_id,s.data,s.updated_at,p.data->>'name' AS name,p.data->>'country' AS country FROM stories s JOIN profiles p ON s.user_id=p.user_id WHERE s.data->>'publish'='true' AND p.data->>'publicConsent'='true'`,
+  const rows = await routed(false, () =>
+    acrossRegions(() =>
+      db.query(
+        `SELECT s.user_id,s.data,s.updated_at,p.data->>'name' AS name,p.data->>'country' AS country FROM stories s JOIN profiles p ON s.user_id=p.user_id WHERE s.data->>'publish'='true' AND p.data->>'publicConsent'='true'`,
+      ),
+    ),
   );
   res.json({
     stories: [
-      ...rows.rows.map((r) => {
-        const { rightsConsent, publish, ...story } = storySchema.parse(r.data);
-        return {
-          ...story,
-          photos: r.data.photosCleaned === true ? story.photos : [],
-          id: r.user_id,
-          name: r.name,
-          country: r.country,
-          updatedAt: r.updated_at,
-        };
-      }),
+      ...rows
+        .flatMap((result) => result.rows)
+        .map((r) => {
+          const { rightsConsent, publish, ...story } = storySchema.parse(
+            r.data,
+          );
+          return {
+            ...story,
+            photos: r.data.photosCleaned === true ? story.photos : [],
+            id: r.user_id,
+            name: r.name,
+            country: r.country,
+            updatedAt: r.updated_at,
+          };
+        }),
       ...(demo?.stories || []),
     ],
   });
@@ -535,10 +690,14 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   });
 });
 await migrate();
-await cleanHistoricalStoryPhotos();
+await routed(false, () => acrossRegions(cleanHistoricalStoryPhotos));
 async function purgeExpiredAuthentication() {
-  await db.query("DELETE FROM login_tokens WHERE expires_at <= now()");
-  await db.query("DELETE FROM sessions WHERE expires_at <= now()");
+  await routed(false, () =>
+    acrossRegions(async () => {
+      await db.query("DELETE FROM login_tokens WHERE expires_at <= now()");
+      await db.query("DELETE FROM sessions WHERE expires_at <= now()");
+    }),
+  );
 }
 await purgeExpiredAuthentication();
 setInterval(

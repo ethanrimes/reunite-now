@@ -48,7 +48,7 @@ python3 scripts/package.py
 az webapp deploy --resource-group reunite-now-rg --name reunite-now-9a04 --src-path work/reunite-now.zip --type zip --ignore-stack true
 ```
 
-The app creates its SQL tables on first boot. Build artifacts, deployment packages, local databases, and secrets are excluded from Git.
+Production requires DATABASE_URL_EU (Sweden Central) and DATABASE_URL_US (North Central US). Both App Services use the same pair. Account settings can move a signer between regions. Public APIs combine consented submissions from both. Deploy the same ZIP to reunite-now-eu-9a04 in reunite-now-eu-rg as well. The app creates its SQL tables on first boot. Build artifacts, deployment packages, local databases, and secrets are excluded from Git.
 
 ## Code map
 
@@ -61,7 +61,7 @@ The app creates its SQL tables on first boot. Build artifacts, deployment packag
 
 ## Current limits
 
-The canonical site is `https://visatransparencypetition.org`, with managed HTTPS and redirects from the old domain, `www`, and the Azure hostname. Google client credentials and the branded sender `noreply@visatransparencypetition.org` are configured. Google sign-in, delivery from the new sender, and an unattended monthly reminder still need end-to-end verification. See the integration guide for current settings, DNS records, and recovery steps.
+The canonical site is `https://visatransparencypetition.org`, with managed HTTPS and redirects from the old domain, `www`, and the Azure hostname. Google client credentials and the branded sender `ethan@visatransparencypetition.org` are configured. Google sign-in, delivery from the new sender, and an unattended monthly reminder still need end-to-end verification. See the integration guide for current settings, DNS records, and recovery steps.
 
 Policy updates are editorial, not an automatic docket feed. Member cards show the tracked bill's sponsorship and voting status; they are not a complete historical voting database. Syed v. Trump is marked as needing a current status check. The world map is generalized and omits some small countries; country selections and table statistics still accept them.
 

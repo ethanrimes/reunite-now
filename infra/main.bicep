@@ -2,6 +2,10 @@ param communicationDataLocation string = 'United States'
 param location string = resourceGroup().location
 param prefix string = 'reunite-now'
 param suffix string = '9a04'
+param databaseServerName string = '${prefix}-pg-${suffix}'
+param databaseName string = 'reunite_now'
+param geoBackup bool = false
+param storageAutoGrow bool = false
 @secure()
 param databasePassword string
 resource plan 'Microsoft.Web/serverfarms@2023-12-01' = {
@@ -23,15 +27,15 @@ resource web 'Microsoft.Web/sites@2023-12-01' = {
  }
 }
 resource postgres 'Microsoft.DBforPostgreSQL/flexibleServers@2024-08-01' = {
- name:'${prefix}-pg-${suffix}'
+ name:databaseServerName
  location:location
  sku:{name:'Standard_B1ms',tier:'Burstable'}
  properties:{
   version:'16'
   administratorLogin:'reunite_admin'
   administratorLoginPassword:databasePassword
-  storage:{storageSizeGB:32,autoGrow:'Disabled'}
-  backup:{backupRetentionDays:7,geoRedundantBackup:'Disabled'}
+  storage:{storageSizeGB:32,autoGrow:storageAutoGrow ? 'Enabled' : 'Disabled'}
+  backup:{backupRetentionDays:7,geoRedundantBackup:geoBackup ? 'Enabled' : 'Disabled'}
   highAvailability:{mode:'Disabled'}
   network:{publicNetworkAccess:'Enabled'}
   authConfig:{passwordAuth:'Enabled',activeDirectoryAuth:'Disabled'}
@@ -39,7 +43,7 @@ resource postgres 'Microsoft.DBforPostgreSQL/flexibleServers@2024-08-01' = {
 }
 resource database 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2024-08-01' = {
  parent:postgres
- name:'reunite_now'
+ name:databaseName
  properties:{charset:'UTF8',collation:'en_US.utf8'}
 }
 resource communication 'Microsoft.Communication/communicationServices@2023-04-01' = {

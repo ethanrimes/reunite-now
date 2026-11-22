@@ -253,6 +253,11 @@ test("email authentication, data privacy, ownership, update and deletion", async
   }
   const exported = await (await request("/api/me/export")).json();
   assert.equal(exported.email, email);
+  assert.ok(Date.parse(exported.accountCreatedAt));
+  assert.ok(exported.profile.consent_version);
+  assert.ok(exported.sessions.length);
+  assert.ok(Array.isArray(exported.reminderDeliveries));
+  assert.equal(JSON.stringify(exported).includes("token_hash"), false);
   assert.equal("city" in exported.profile.data, false);
   assert.deepEqual(
     exported.profile.data.reminderEmails,

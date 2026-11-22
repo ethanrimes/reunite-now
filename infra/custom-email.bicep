@@ -1,8 +1,8 @@
 // Prepare the branded sender. DNS verification and linking are separate steps.
 // This template preserves the existing Azure-managed domain and Communication Service links.
-param emailServiceName string = 'reunite-now-email'
-param domainName string = 'visatransparency.org'
-param senderName string = 'noreply'
+param emailServiceName string = 'reunite-now-eu-email'
+param domainName string = 'visatransparencypetition.org'
+param senderName string = 'ethan'
 
 resource email 'Microsoft.Communication/emailServices@2023-04-01' existing = {
   name: emailServiceName

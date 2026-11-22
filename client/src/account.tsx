@@ -908,6 +908,79 @@ export function ThankYou() {
     </div>
   );
 }
+function StorageRegion({ current }: { current: "eu" | "us" }) {
+  const { refresh } = useData();
+  const [selected, setSelected] = useState(current);
+  const [saved, setSaved] = useState(current);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const [done, setDone] = useState(false);
+  useEffect(() => {
+    setSaved(current);
+    setSelected(current);
+  }, [current]);
+  return (
+    <section className="account-section manage-section">
+      <div>
+        <h2>{t("Account storage")}</h2>
+        <p>
+          {t("Current region: {region}", {
+            region: saved === "eu" ? t("Sweden (EU)") : t("United States"),
+          })}
+        </p>
+      </div>
+      <form
+        className="region-form"
+        onSubmit={async (event) => {
+          event.preventDefault();
+          if (busy || saved === selected) return;
+          setBusy(true);
+          setError("");
+          setDone(false);
+          try {
+            const result = await api<{ storageRegion: "eu" | "us" }>(
+              "/me/region",
+              { method: "PUT", body: JSON.stringify({ region: selected }) },
+            );
+            setSaved(result.storageRegion);
+            setDone(true);
+            await refresh();
+          } catch (e) {
+            setError((e as Error).message);
+          } finally {
+            setBusy(false);
+          }
+        }}
+      >
+        <Field label={t("Store my account in")}>
+          <select
+            disabled={busy}
+            value={selected}
+            onChange={(e) => {
+              setSelected(e.target.value as "us" | "eu");
+              setDone(false);
+              setError("");
+            }}
+          >
+            <option value="eu">{t("Sweden (EU)")}</option>
+            <option value="us">{t("United States")}</option>
+          </select>
+        </Field>
+        <button
+          className="button outline"
+          disabled={busy || saved === selected}
+        >
+          {busy ? t("Moving…") : t("Move my account")}
+        </button>
+        {done && <Notice>{t("Your account has moved.")}</Notice>}
+        {error && <Notice tone="error">{t(error)}</Notice>}
+      </form>
+      <small>
+        <a href="https://db-ip.com">{"IP geolocation by DB-IP"}</a>
+      </small>
+    </section>
+  );
+}
 export function Account() {
   const { me, loading, config, refresh } = useData();
   const nav = useNavigate();
@@ -1620,6 +1693,9 @@ export function Account() {
         <div hidden={tab !== "story"}>
           <StoryEditor />
         </div>
+      )}
+      {(signing || tab === "settings") && me.user?.storageRegion && (
+        <StorageRegion current={me.user.storageRegion} />
       )}
       {(signing || tab === "settings") && (
         <section className="account-section manage-section">

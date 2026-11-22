@@ -1,6 +1,6 @@
-param communicationDataLocation string = 'United States'
-param emailServiceName string = 'reunite-now-email'
-param communicationName string = 'reunite-now-communication'
+param communicationDataLocation string = 'Europe'
+param emailServiceName string = 'reunite-now-eu-email'
+param communicationName string = 'reunite-now-eu-communication'
 resource email 'Microsoft.Communication/emailServices@2023-04-01' = {
  name:emailServiceName
  location:'global'

@@ -1,3 +1,4 @@
+import { AsyncLocalStorage } from "node:async_hooks";
 import { Pool } from "pg";
 import type { PGlite } from "@electric-sql/pglite";
 import { mkdirSync } from "node:fs";
@@ -7,39 +8,60 @@ export type Queryable = {
     params?: any[],
   ) => Promise<{ rows: T[]; rowCount?: number | null }>;
 };
+export type Region = "eu" | "us";
+const scoped = new AsyncLocalStorage<Region>();
+export const inRegion = <T>(region: Region, fn: () => T) =>
+  scoped.run(region, fn);
+export const region = (): Region => scoped.getStore() ?? "eu";
+const eu = process.env.DATABASE_URL_EU,
+  us = process.env.DATABASE_URL_US;
+export const dual = Boolean(eu && us);
+if (
+  !!eu !== !!us ||
+  (eu &&
+    us &&
+    new URL(eu).host + new URL(eu).pathname ===
+      new URL(us).host + new URL(us).pathname)
+)
+  throw new Error("Provide two distinct regional database URLs");
+if (process.env.NODE_ENV === "production" && !dual)
+  throw new Error("Both regional database URLs are required in production");
+export const regions: Region[] = dual ? ["eu", "us"] : ["eu"];
+const options = {
+  max: 6,
+  connectionTimeoutMillis: 10000,
+  ssl: process.env.DB_SSL === "true" ? { rejectUnauthorized: true } : undefined,
+};
+const primary = eu || process.env.DATABASE_URL;
+const pools = {
+  eu: primary ? new Pool({ ...options, connectionString: primary }) : null,
+  us: us ? new Pool({ ...options, connectionString: us }) : null,
+};
+// Dedicated connections avoid exhausting a region's query pool with callers waiting for a move.
+export const coordinator = dual
+  ? new Pool({ ...options, max: 4, connectionString: eu })
+  : null;
+for (const pool of [coordinator, ...Object.values(pools)])
+  pool?.on("error", () => console.error("Idle database connection closed"));
 let lite: PGlite | undefined;
-if (!process.env.DATABASE_URL) {
-  if (process.env.NODE_ENV === "production")
-    throw new Error("DATABASE_URL is required in production");
+if (!primary) {
   const { PGlite } = await import("@electric-sql/pglite");
   mkdirSync(".local", { recursive: true });
   lite = new PGlite(
     process.env.TEST_DB === "1" ? "memory://" : ".local/postgres",
   );
 }
-const pool = process.env.DATABASE_URL
-  ? new Pool({
-      connectionString: process.env.DATABASE_URL,
-      max: 10,
-      ssl:
-        process.env.DB_SSL === "true"
-          ? { rejectUnauthorized: true }
-          : undefined,
-    })
-  : undefined;
-export const db: Queryable = pool
-  ? {
-      query: async (sql, params) => {
-        const r = await pool.query(sql, params);
-        return { rows: r.rows as any[], rowCount: r.rowCount };
-      },
+export const db: Queryable = {
+  query: async (sql, params) => {
+    const pool = pools[region()];
+    if (pool) {
+      const r = await pool.query(sql, params);
+      return { rows: r.rows, rowCount: r.rowCount };
     }
-  : {
-      query: async (sql, params) => {
-        const r = await lite!.query(sql, params);
-        return { rows: r.rows as any[], rowCount: r.affectedRows };
-      },
-    };
+    const r = await lite!.query(sql, params);
+    return { rows: r.rows as any[], rowCount: r.affectedRows };
+  },
+};
 export async function transaction<T>(
   fn: (q: Queryable) => Promise<T>,
 ): Promise<T> {
@@ -52,7 +74,7 @@ export async function transaction<T>(
         },
       }),
     );
-  const client = await pool!.connect();
+  const client = await pools[region()]!.connect();
   try {
     await client.query("BEGIN");
     const result = await fn(client);
@@ -66,10 +88,21 @@ export async function transaction<T>(
   }
 }
 export async function closeDb() {
-  if (pool) await pool.end();
+  await Promise.all(
+    [coordinator, ...Object.values(pools)].map((p) => p?.end()),
+  );
   if (lite) await lite.close();
 }
 export async function migrate() {
+  for (const r of regions) await inRegion(r, migrateRegionalSchema);
+  if (dual)
+    await inRegion("eu", () =>
+      db.query(
+        "CREATE TABLE IF NOT EXISTS account_moves (user_id text PRIMARY KEY, destination text NOT NULL CHECK (destination IN ('eu','us')))",
+      ),
+    );
+}
+async function migrateRegionalSchema() {
   for (const sql of [
     `CREATE TABLE IF NOT EXISTS users (id text PRIMARY KEY,email text NOT NULL UNIQUE,created_at timestamptz NOT NULL DEFAULT now())`,
     `CREATE TABLE IF NOT EXISTS sessions (token_hash text PRIMARY KEY,user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,expires_at timestamptz NOT NULL,created_at timestamptz NOT NULL DEFAULT now())`,

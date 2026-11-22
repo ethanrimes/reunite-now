@@ -5199,3 +5199,7 @@ textarea,
     gap: 14px 24px;
   }
 }
+
+.region-form { display: flex; flex-wrap: wrap; gap: 1rem; align-items: end; }
+.region-form label { min-width: min(15rem,100%); }
+.region-form > [role] { flex-basis: 100%; }

@@ -8,6 +8,7 @@ for name in ['dist','public']:
  target=stage/name
  if target.exists():shutil.rmtree(target)
  shutil.copytree(root/name,target)
+shutil.copytree(root/"server"/"data", stage/"server"/"data")
 # Install the locked Linux production dependencies, including sharp's native decoder.
 for name in ['package.json', 'package-lock.json']:
  shutil.copy2(root/name, stage/name)

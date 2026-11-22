@@ -1127,7 +1127,15 @@
   "If you cannot sign in, appear in someone else’s submission, or receive unwanted reminders, contact Ethan Kallett privately. Include the public page or story title and what you want removed. Please leave out identity documents and visa case numbers.": "若無法登入、他人投稿提及您，或您收到不想要的提醒，請私下聯絡 Ethan Kallett。請提供公開頁面或故事標題並說明希望刪除的內容。請勿附上身分證明或簽證案件編號。",
   "Cloudflare forwards privacy requests to the project’s Gmail inbox. Both services process correspondence, which may travel outside the EU.": "Cloudflare 會將私隱請求轉寄至專案的 Gmail 信箱。兩項服務均會處理郵件，郵件可能傳送至歐盟以外。",
   "We use your consent to publish the petition and optional stories. You can withdraw it at any time. Where applicable, you can also request access, correction, erasure, restriction or portability and complain to your local data protection authority.": "我們依據您的同意發布連署與自願分享的故事。您可隨時撤回同意。在適用情況下，您亦可要求存取、更正、刪除、限制處理或移轉資料，並向當地資料保護機關申訴。",
-  "Ethan Kallett operates Reunite Now. The petition database and website currently run in Azure’s North Central US region. The reminder scheduler runs in Sweden. The sign-in and reminder email service stores service data in the United States.": "Reunite Now 由 Ethan Kallett 營運。連署資料庫與網站目前設於 Azure 美國中北部，提醒排程設於瑞典。登入及提醒電郵服務在美國儲存其服務資料。",
   "Azure provides a seven-day database recovery window. Backup files can persist longer. Before a restore goes online, deletions must be reapplied. Other people may keep copies of public submissions. Email providers may retain delivery records.": "Azure 提供七天的資料庫還原期限，備份檔案可能保留更久。還原後必須重新套用刪除作業才能上線。他人可能保留公開投稿的副本，電郵服務商亦可能保留投遞記錄。",
-  "This deletes your account and submissions from the live site. Backups and copies already saved by others may persist.": "這會從目前運作的網站刪除您的帳戶及投稿。備份與他人儲存的副本仍可能存在。"
+  "This deletes your account and submissions from the live site. Backups and copies already saved by others may persist.": "這會從目前運作的網站刪除您的帳戶及投稿。備份與他人儲存的副本仍可能存在。",
+  "Account storage": "帳戶資料儲存",
+  "Current region: {region}": "目前地區：{region}",
+  "Store my account in": "帳戶儲存地區",
+  "Sweden (EU)": "瑞典（歐盟）",
+  "Moving…": "正在移轉…",
+  "Move my account": "移轉我的帳戶",
+  "Your account has moved.": "你的帳戶已移轉。",
+  "For new accounts, we look up your IP address locally. An EU address selects Sweden. Other or unrecognized addresses select the United States. We do not save the IP in your account. You can move your account in Configuration. Earlier accounts start in Sweden.": "建立帳戶時，我們會在本機查詢你的 IP 位址。歐盟 IP 會分配至瑞典，其他或無法辨識的 IP 則分配至美國。我們不會在帳戶中儲存 IP。你可在設定中移轉帳戶。既有帳戶最初存放在瑞典。",
+  "Public maps, timelines and published stories combine submissions from both regions. The US web service processes requests for both. The reminder scheduler runs in Sweden and our email service processes delivery data in the US. After a move, the old region may retain a backup during its recovery window.": "公開地圖、時間軸和已發布的故事會整合兩地的投稿。美國的網站服務處理兩地的請求。提醒排程在瑞典執行，郵件服務則在美國處理投遞資料。移轉後，原地區可能在復原期間保留備份。"
 }

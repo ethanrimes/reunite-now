@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { db, transaction, type Queryable } from "./db";
 import { emailReady, sendEmail } from "./email";
+import { acrossRegions, routed } from "./regions";
 import { caseStatus } from "../shared/metrics";
 import type { Profile } from "../shared/schema";
 
@@ -19,6 +20,19 @@ type Claim = { status: string; claimed_at: Date | string };
 export async function sendReminders(
   now = new Date(),
   delivery = { ready: emailReady, send: sendEmail },
+) {
+  const results = await routed(false, () =>
+    acrossRegions(() => sendRegionalReminders(now, delivery)),
+  );
+  return {
+    configured: results.every((r) => r.configured),
+    sent: results.reduce((n, r) => n + r.sent, 0),
+    failed: results.reduce((n, r) => n + r.failed, 0),
+  };
+}
+async function sendRegionalReminders(
+  now: Date,
+  delivery: { ready: typeof emailReady; send: typeof sendEmail },
 ) {
   if (!delivery.ready()) return { configured: false, sent: 0, failed: 0 };
   const period = now.toISOString().slice(0, 7);

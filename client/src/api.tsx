@@ -29,7 +29,7 @@ export async function api<T = any>(
   return data;
 }
 export type Me = {
-  user: { id: string; email: string } | null;
+  user: { id: string; email: string; storageRegion?: "eu" | "us" } | null;
   profile: (Profile & { updatedAt: string; signedAt: string }) | null;
   story: Story | null;
 };

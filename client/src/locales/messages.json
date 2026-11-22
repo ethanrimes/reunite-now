@@ -5639,11 +5639,6 @@
     "pt": "Publicamos a petição e os relatos opcionais com o seu consentimento. Você pode retirá-lo a qualquer momento. Quando aplicável, pode solicitar acesso, correção, exclusão, restrição ou portabilidade e reclamar à sua autoridade de proteção de dados.",
     "tl": "Ginagamit namin ang pahintulot mo upang ilathala ang petisyon at mga opsyonal na kuwento. Maaari mo itong bawiin anumang oras. Kung naaangkop, maaari kang humiling ng access, pagwawasto, pagbura, paghihigpit o paglipat ng datos at magreklamo sa lokal na awtoridad sa proteksiyon ng datos."
   },
-  "Ethan Kallett operates Reunite Now. The petition database and website currently run in Azure’s North Central US region. The reminder scheduler runs in Sweden. The sign-in and reminder email service stores service data in the United States.": {
-    "es": "Ethan Kallett gestiona Reunite Now. La base de datos y el sitio web están en la región North Central US de Azure. Los recordatorios se programan en Suecia. El servicio de correo almacena sus datos de servicio en Estados Unidos.",
-    "pt": "Ethan Kallett administra o Reunite Now. O banco de dados e o site ficam na região North Central US do Azure. O agendador de lembretes fica na Suécia. O serviço de e-mail de acesso e lembretes armazena seus dados nos EUA.",
-    "tl": "Pinapatakbo ni Ethan Kallett ang Reunite Now. Nasa North Central US ng Azure ang database at website. Nasa Sweden ang tagapag-iskedyul ng mga paalala. Nasa Estados Unidos ang nakaimbak na datos ng email service para sa pag-sign in at paalala."
-  },
   "Azure provides a seven-day database recovery window. Backup files can persist longer. Before a restore goes online, deletions must be reapplied. Other people may keep copies of public submissions. Email providers may retain delivery records.": {
     "es": "Azure permite recuperar la base de datos durante siete días. Los archivos de respaldo pueden durar más. Antes de reabrir una copia restaurada hay que volver a aplicar las eliminaciones. Otras personas pueden conservar copias de lo publicado y los proveedores de correo pueden conservar registros de entrega.",
     "pt": "O Azure oferece sete dias para restaurar o banco de dados. Backups podem persistir por mais tempo. As exclusões devem ser reaplicadas antes de uma restauração entrar no ar. Terceiros podem guardar cópias das publicações e provedores de e-mail podem manter registros de entrega.",
@@ -5653,5 +5648,50 @@
     "es": "Esto elimina tu cuenta y tus publicaciones del sitio activo. Pueden quedar copias de seguridad y copias guardadas por otras personas.",
     "pt": "Isso exclui sua conta e suas contribuições do site ativo. Backups e cópias salvas por outras pessoas podem permanecer.",
     "tl": "Buburahin nito ang account at mga isinumite mo sa aktibong site. Maaaring manatili ang mga backup at kopyang nai-save ng iba."
+  },
+  "Account storage": {
+    "es": "Almacenamiento de la cuenta",
+    "pt": "Armazenamento da conta",
+    "tl": "Imbakan ng account"
+  },
+  "Current region: {region}": {
+    "es": "Región actual: {region}",
+    "pt": "Região atual: {region}",
+    "tl": "Kasalukuyang rehiyon: {region}"
+  },
+  "Store my account in": {
+    "es": "Guardar mi cuenta en",
+    "pt": "Armazenar minha conta em",
+    "tl": "Itago ang account ko sa"
+  },
+  "Sweden (EU)": {
+    "es": "Suecia (UE)",
+    "pt": "Suécia (UE)",
+    "tl": "Sweden (EU)"
+  },
+  "Moving…": {
+    "es": "Trasladando…",
+    "pt": "Transferindo…",
+    "tl": "Inililipat…"
+  },
+  "Move my account": {
+    "es": "Trasladar mi cuenta",
+    "pt": "Transferir minha conta",
+    "tl": "Ilipat ang account ko"
+  },
+  "Your account has moved.": {
+    "es": "Tu cuenta se ha trasladado.",
+    "pt": "Sua conta foi transferida.",
+    "tl": "Nailipat na ang account mo."
+  },
+  "For new accounts, we look up your IP address locally. An EU address selects Sweden. Other or unrecognized addresses select the United States. We do not save the IP in your account. You can move your account in Configuration. Earlier accounts start in Sweden.": {
+    "es": "Al crear una cuenta, consultamos tu dirección IP localmente. Una IP de la UE selecciona Suecia. Las demás, incluidas las desconocidas, seleccionan Estados Unidos. No guardamos la IP en tu cuenta. Puedes trasladar tu cuenta desde Configuración. Las cuentas anteriores empiezan en Suecia.",
+    "pt": "Ao criar uma conta, consultamos seu IP localmente. Um IP da UE seleciona a Suécia. Os demais, inclusive os desconhecidos, selecionam os Estados Unidos. Não salvamos o IP na sua conta. Você pode transferir sua conta em Configuração. As contas anteriores começam na Suécia.",
+    "tl": "Para sa bagong account, lokal naming sinusuri ang IP address. Sweden ang pipiliin para sa IP ng EU, at Estados Unidos para sa iba o hindi matukoy na IP. Hindi namin iniimbak ang IP sa account. Maaari mong ilipat ang account sa Configuration. Nasa Sweden sa simula ang mga dating account."
+  },
+  "Public maps, timelines and published stories combine submissions from both regions. The US web service processes requests for both. The reminder scheduler runs in Sweden and our email service processes delivery data in the US. After a move, the old region may retain a backup during its recovery window.": {
+    "es": "Los mapas, las cronologías y las historias públicas reúnen aportes de ambas regiones. El servicio web de EE. UU. procesa las solicitudes de ambas. Los recordatorios se programan en Suecia y el servicio de correo procesa los datos de entrega en EE. UU. Tras un traslado, la región anterior puede conservar copias durante el plazo de recuperación.",
+    "pt": "Os mapas, as linhas do tempo e as histórias públicas reúnem contribuições das duas regiões. O serviço web nos EUA processa as solicitações de ambas. Os lembretes são agendados na Suécia e o serviço de email processa os dados de entrega nos EUA. Após a transferência, a região anterior pode manter uma cópia durante o período de recuperação.",
+    "tl": "Pinagsasama ng mga pampublikong mapa, timeline at kuwento ang mga ambag mula sa dalawang rehiyon. Pinoproseso ng web service sa US ang mga kahilingan para sa dalawa. Sa Sweden nakaiskedyul ang mga paalala at sa US pinoproseso ang datos ng paghahatid ng email. Pagkatapos ng paglipat, maaaring may backup sa dating rehiyon habang maaari pang ibalik ang datos."
   }
 }
