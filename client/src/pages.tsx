@@ -1,3 +1,4 @@
+import { ScrollRail } from "./scroll-rail";
 import { BillRecord } from "./legislation";
 import { t, number } from "./i18n";
 import { useState } from "react";
@@ -496,16 +497,31 @@ export function Stories() {
           <div className="story-modal">
             {selected.photos.length > 0 && (
               <div className="story-photos">
-                {selected.photos.map((p, i) => (
+                {selected.photos.length === 1 ? (
                   <img
-                    key={i}
-                    src={p}
-                    alt={t("Photo {count} shared by {name}", {
-                      count: i + 1,
-                      name: selected.name,
-                    })}
+                    src={selected.photos[0]}
+                    alt={t("Photo shared by {name}", { name: selected.name })}
                   />
-                ))}
+                ) : (
+                  <ScrollRail
+                    id="story-photo-carousel"
+                    title={t("Story photos")}
+                    previousLabel={t("Previous photo")}
+                    nextLabel={t("Next photo")}
+                  >
+                    {selected.photos.map((src, i) => (
+                      <div className="story-slide" key={i}>
+                        <img
+                          src={src}
+                          alt={t("Photo {count} shared by {name}", {
+                            count: i + 1,
+                            name: selected.name,
+                          })}
+                        />
+                      </div>
+                    ))}
+                  </ScrollRail>
+                )}
               </div>
             )}
             <span className="eyebrow">

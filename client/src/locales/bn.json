@@ -1112,5 +1112,8 @@
   "I’m the sponsor": "আমি স্পনসর",
   "Reunite Now is a community-led petition for shorter U.S. visa waits. Families share their stories and visa timelines here, and supporters can show their representative how many people in their district have signed.": "Reunite Now হলো মার্কিন ভিসার অপেক্ষা কমাতে মানুষের সম্মিলিত উদ্যোগে গড়ে ওঠা একটি আবেদন। পরিবারগুলো এখানে নিজেদের গল্প আর ভিসা প্রক্রিয়ার বিভিন্ন ধাপের তারিখ জানায়। সমর্থকেরা তাঁদের প্রতিনিধিকে দেখাতে পারেন যে তাঁদের নির্বাচনী এলাকার কতজন স্বাক্ষর করেছেন।",
   "Microsoft Azure hosts the application, database, and scheduled work. Azure Communication Services handles email when enabled. Google handles Google sign-in if you choose it. Public policy links and contact links take you to external organizations. We do not share submissions with those organizations.": "অ্যাপ, ডেটাবেস ও নির্ধারিত কাজ Microsoft Azure-এ চলে। ইমেইল সুবিধা চালু থাকলে Azure Communication Services ইমেইল পাঠায়। Google দিয়ে সাইন-ইন বেছে নিলে Google সেই প্রক্রিয়া পরিচালনা করে। নীতি ও যোগাযোগের প্রকাশ্য লিংকগুলো আপনাকে বাইরের প্রতিষ্ঠানের কাছে নিয়ে যায়। আপনার জমা দেওয়া তথ্য আমরা ওই প্রতিষ্ঠানগুলোর সঙ্গে শেয়ার করি না।",
-  "Find your congressional district on House.gov": "House.gov-এ আপনার কংগ্রেসনাল জেলা খুঁজুন"
+  "Find your congressional district on House.gov": "House.gov-এ আপনার কংগ্রেসনাল জেলা খুঁজুন",
+  "Story photos": "গল্পের ছবি",
+  "Previous photo": "আগের ছবি",
+  "Next photo": "পরের ছবি"
 }

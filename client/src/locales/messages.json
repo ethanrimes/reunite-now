@@ -5568,5 +5568,20 @@
     "es": "Busca tu distrito congresional en House.gov",
     "pt": "Encontre seu distrito congressional em House.gov",
     "tl": "Hanapin ang iyong distrito sa Kongreso sa House.gov"
+  },
+  "Story photos": {
+    "es": "Fotos de la historia",
+    "pt": "Fotos da história",
+    "tl": "Mga larawan sa kuwento"
+  },
+  "Previous photo": {
+    "es": "Foto anterior",
+    "pt": "Foto anterior",
+    "tl": "Nakaraang larawan"
+  },
+  "Next photo": {
+    "es": "Foto siguiente",
+    "pt": "Próxima foto",
+    "tl": "Susunod na larawan"
   }
 }

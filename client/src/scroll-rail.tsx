@@ -7,10 +7,14 @@ export function ScrollRail({
   title,
   children,
   id,
+  previousLabel = t("Previous items"),
+  nextLabel = t("Next items"),
 }: {
   title: string;
   children: ReactNode;
   id: string;
+  previousLabel?: string;
+  nextLabel?: string;
 }) {
   const rtl = languageDirection(useLanguage()) === "rtl";
   const ref = useRef<HTMLDivElement>(null);
@@ -47,7 +51,7 @@ export function ScrollRail({
         <button
           type="button"
           className="icon-button"
-          aria-label={t("Previous items")}
+          aria-label={previousLabel}
           aria-controls={id}
           disabled={edges.start}
           onClick={() => move(-1)}
@@ -57,7 +61,7 @@ export function ScrollRail({
         <button
           type="button"
           className="icon-button"
-          aria-label={t("Next items")}
+          aria-label={nextLabel}
           aria-controls={id}
           disabled={edges.end}
           onClick={() => move(1)}

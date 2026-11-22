@@ -340,19 +340,37 @@
 }
 .story-caption .read-story {
   margin-block-start: auto;
+  color: #853c2c;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.story-card:is(:hover, :focus-visible) .read-story {
+  color: #57261b;
 }
 .story-modal .story-photos {
-  display: grid;
-  justify-items: center;
-  gap: 1rem;
+  display: block;
   overflow: visible;
 }
+.story-photos .scroll-rail {
+  grid-auto-columns: 100%;
+  gap: 0;
+  padding: 0 0 0.5rem;
+  overscroll-behavior-x: contain;
+}
+.story-slide {
+  min-width: 0;
+  display: grid;
+  place-items: center;
+  scroll-snap-align: start;
+}
 .story-modal .story-photos img {
+  margin-inline: auto;
   display: block;
   width: auto;
   height: auto;
   max-width: 100%;
-  max-height: 65vh;
+  max-height: min(55vh, 32rem);
   object-fit: contain;
 }
 

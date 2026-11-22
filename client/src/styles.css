@@ -4671,8 +4671,7 @@ thead {
   text-transform: none;
   color: #e3e2dc;
 }
-.story-overlay h3,
-.read-story {
+.story-overlay h3 {
   color: #f4f3f0;
 }
 .story-card:hover .story-shade {

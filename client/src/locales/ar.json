@@ -1112,5 +1112,8 @@
   "I’m the sponsor": "أنا الكفيل",
   "Reunite Now is a community-led petition for shorter U.S. visa waits. Families share their stories and visa timelines here, and supporters can show their representative how many people in their district have signed.": "Reunite Now عريضة يقودها أفراد المجتمع للمطالبة بتقصير مدة انتظار التأشيرات الأمريكية. تروي العائلات هنا قصصها وتشارك تواريخ مراحل طلباتها، ويمكن للداعمين أن يبيّنوا لممثلهم في الكونغرس عدد الموقّعين في دائرتهم.",
   "Microsoft Azure hosts the application, database, and scheduled work. Azure Communication Services handles email when enabled. Google handles Google sign-in if you choose it. Public policy links and contact links take you to external organizations. We do not share submissions with those organizations.": "تستضيف Microsoft Azure التطبيق وقاعدة البيانات والمهام المجدولة. وتتولى Azure Communication Services البريد الإلكتروني عند تفعيلها. وتتولى Google تسجيل الدخول عبر Google إذا اخترته. وتنقلك روابط السياسات وجهات الاتصال العامة إلى مؤسسات خارجية. لا نشارك بيانات الإرسال مع تلك المؤسسات.",
-  "Find your congressional district on House.gov": "ابحث عن دائرتك الانتخابية للكونغرس على House.gov"
+  "Find your congressional district on House.gov": "ابحث عن دائرتك الانتخابية للكونغرس على House.gov",
+  "Story photos": "صور القصة",
+  "Previous photo": "الصورة السابقة",
+  "Next photo": "الصورة التالية"
 }

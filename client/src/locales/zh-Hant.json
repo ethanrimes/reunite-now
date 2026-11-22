@@ -1112,5 +1112,8 @@
   "I’m the sponsor": "我是擔保人",
   "Reunite Now is a community-led petition for shorter U.S. visa waits. Families share their stories and visa timelines here, and supporters can show their representative how many people in their district have signed.": "Reunite Now 是由社群發起的連署，呼籲縮短美國簽證的等候時間。家庭可以在這裡分享自己的故事和簽證辦理歷程，支持者也能讓民意代表看見選區裡有多少人連署。",
   "Microsoft Azure hosts the application, database, and scheduled work. Azure Communication Services handles email when enabled. Google handles Google sign-in if you choose it. Public policy links and contact links take you to external organizations. We do not share submissions with those organizations.": "Microsoft Azure 負責託管應用程式、資料庫與排程工作。啟用電子郵件時，由 Azure Communication Services 處理郵件。若你選擇 Google 登入，則由 Google 處理。政策與聯絡連結會帶你前往外部組織。我們不會將提交內容分享給這些組織。",
-  "Find your congressional district on House.gov": "前往 House.gov 查詢你的國會選區"
+  "Find your congressional district on House.gov": "前往 House.gov 查詢你的國會選區",
+  "Story photos": "故事照片",
+  "Previous photo": "上一張照片",
+  "Next photo": "下一張照片"
 }
