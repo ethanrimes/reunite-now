@@ -24,7 +24,7 @@ for hostname in [DOMAIN, SENDER_DOMAIN]:
     if not re.fullmatch(r'[a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,}', hostname):
         raise SystemExit('Supply a hostname without a scheme, path, or port.')
 ORIGIN = 'https://' + DOMAIN
-EMAIL_FROM = 'noreply@' + SENDER_DOMAIN
+EMAIL_FROM = 'ethan@' + SENDER_DOMAIN
 ARM = f'https://management.azure.com/subscriptions/{SUB}/resourceGroups/{RG}/providers/Microsoft.Communication'
 
 def az(*args):
@@ -58,8 +58,8 @@ if not all(domain['properties']['verificationStates'][kind]['status'] == 'Verifi
 communication = az('rest', '--method', 'get', '--url', ARM + '/communicationServices/reunite-now-communication?api-version=2023-04-01')
 if domain['id'].lower() not in [item.lower() for item in communication['properties'].get('linkedDomains', [])]:
     raise SystemExit('The custom sender is not linked to the Communication Service.')
-sender = az('rest', '--method', 'get', '--url', ARM + f'/emailServices/reunite-now-email/domains/{SENDER_DOMAIN}/senderUsernames/noreply?api-version=2023-04-01')
-if sender['properties']['username'] != 'noreply':
+sender = az('rest', '--method', 'get', '--url', ARM + f'/emailServices/reunite-now-email/domains/{SENDER_DOMAIN}/senderUsernames/ethan?api-version=2023-04-01')
+if sender['properties']['username'] != 'ethan':
     raise SystemExit('The custom sender is missing.')
 settings = {item['name']: item['value'] for item in az('webapp', 'config', 'appsettings', 'list', '-g', RG, '-n', APP)}
 if not settings.get('GOOGLE_CLIENT_ID') or not settings.get('GOOGLE_CLIENT_SECRET'):

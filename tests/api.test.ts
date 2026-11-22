@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import sharp from "sharp";
 // Integration tests target the local API; no real email is sent.
 const base = process.env.TEST_API_URL || "http://127.0.0.1:3001",
   origin = "http://127.0.0.1:5173";
@@ -186,12 +187,18 @@ test("email authentication, data privacy, ownership, update and deletion", async
   assert.equal("reminders" in record, false);
   assert.equal("reminderEmails" in record, false);
   assert.equal(JSON.stringify(record).includes("backup@example.test"), false);
+  const originalPhoto = await sharp({
+    create: { width: 20, height: 10, channels: 3, background: "#aabbcc" },
+  })
+    .jpeg()
+    .withExif({ IFD0: { Artist: "Private test metadata" } })
+    .toBuffer();
   const story = {
     title: "Integration test story",
     body: "This is synthetic local test content. It is not a real applicant story and is deleted when the integration test completes.",
     impacts: ["Family separation"],
     support: "",
-    photos: [],
+    photos: ["data:image/jpeg;base64," + originalPhoto.toString("base64")],
     publish: true,
     rightsConsent: true,
   };
@@ -200,6 +207,21 @@ test("email authentication, data privacy, ownership, update and deletion", async
     (s: any) => s.id === me.user.id,
   );
   assert.equal(published.title, story.title);
+  const photoBytes = Buffer.from(published.photos[0].split(",")[1], "base64");
+  const photoInfo = await sharp(photoBytes).metadata();
+  assert.equal(photoInfo.format, "webp");
+  assert.equal(photoInfo.width, 20);
+  assert.equal(photoInfo.exif, undefined);
+  assert.equal("photosCleaned" in published, false);
+  assert.equal(
+    (
+      await request("/api/me/story", "PUT", {
+        ...story,
+        photos: ["data:image/jpeg;base64,YmFk"],
+      })
+    ).status,
+    400,
+  );
   for (const key of ["summary", "caseId", "timeline"])
     assert.equal(key in published, false);
   assert.equal((await request("/api/me/confirm", "POST")).status, 200);
@@ -211,6 +233,24 @@ test("email authentication, data privacy, ownership, update and deletion", async
     confirmed.profile.cases[0].events,
     me.profile.cases[0].events,
   );
+  const publicAffiliation = async () => {
+    const { profiles } = await (await request("/api/public")).json();
+    const row = profiles.find((item: { id: string }) => item.id === me.user.id);
+    assert.equal("affiliationConsent" in row, false);
+    return row.politicalAffiliation;
+  };
+  for (const [consent, expected] of [
+    [undefined, ""],
+    [true, "Other"],
+    [false, ""],
+  ] as const) {
+    const change = await request("/api/me/profile/profile", "PATCH", {
+      politicalAffiliation: "Other",
+      affiliationConsent: consent,
+    });
+    assert.equal(change.status, 200);
+    assert.equal(await publicAffiliation(), expected);
+  }
   const exported = await (await request("/api/me/export")).json();
   assert.equal(exported.email, email);
   assert.equal("city" in exported.profile.data, false);

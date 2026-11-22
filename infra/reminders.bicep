@@ -1,3 +1,5 @@
+@allowed(['Enabled', 'Disabled'])
+param scheduleState string = 'Enabled'
 param location string = resourceGroup().location
 param appUrl string = 'https://reunite-now-9a04.azurewebsites.net'
 @secure()
@@ -6,7 +8,7 @@ resource reminderSchedule 'Microsoft.Logic/workflows@2019-05-01' = {
   name: 'reunite-now-reminders'
   location: location
   properties: {
-    state: 'Enabled'
+    state: scheduleState
     definition: {
       '$schema': 'https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#'
       contentVersion: '1.0.0.0'

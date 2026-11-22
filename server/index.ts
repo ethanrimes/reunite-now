@@ -19,6 +19,7 @@ import { Google, generateCodeVerifier, generateState } from "arctic";
 import { z } from "zod";
 import { db, transaction, migrate } from "./db";
 import { emailReady, sendEmail } from "./email";
+import { cleanStoryPhoto, cleanHistoricalStoryPhotos } from "./story-photos";
 import { canonicalHost } from "./canonical";
 import { sendReminders } from "./reminders";
 import { createDemoData, demoEnabled } from "./demo";
@@ -373,9 +374,23 @@ app.put("/api/me/story", requireUser, async (req, res) => {
     return void res
       .status(400)
       .json({ error: "Sign the petition before sharing a story" });
+  const existing = await db.query("SELECT data FROM stories WHERE user_id=$1", [
+    res.locals.user.id,
+  ]);
+  const saved = existing.rows[0]?.data;
+  const safePhotos = new Set<string>(
+    saved?.photosCleaned === true ? saved.photos : [],
+  );
+  const photos = [];
+  for (const photo of data.photos) {
+    photos.push(safePhotos.has(photo) ? photo : await cleanStoryPhoto(photo));
+  }
   await db.query(
     `INSERT INTO stories(user_id,data) VALUES($1,$2) ON CONFLICT(user_id) DO UPDATE SET data=EXCLUDED.data,updated_at=now()`,
-    [res.locals.user.id, JSON.stringify(data)],
+    [
+      res.locals.user.id,
+      JSON.stringify({ ...data, photos, photosCleaned: true }),
+    ],
   );
   res.json({ ok: true });
 });
@@ -436,6 +451,7 @@ app.get("/api/public", async (_req, res) => {
     const {
       reminders,
       reminderEmails,
+      affiliationConsent,
       adultConsent,
       publicConsent,
       signed,
@@ -463,6 +479,7 @@ app.get("/api/stories", async (_req, res) => {
         const { rightsConsent, publish, ...story } = storySchema.parse(r.data);
         return {
           ...story,
+          photos: r.data.photosCleaned === true ? story.photos : [],
           id: r.user_id,
           name: r.name,
           country: r.country,
@@ -518,8 +535,20 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   });
 });
 await migrate();
-await db.query("DELETE FROM login_tokens WHERE expires_at<now()");
-await db.query("DELETE FROM sessions WHERE expires_at<now()");
+await cleanHistoricalStoryPhotos();
+async function purgeExpiredAuthentication() {
+  await db.query("DELETE FROM login_tokens WHERE expires_at <= now()");
+  await db.query("DELETE FROM sessions WHERE expires_at <= now()");
+}
+await purgeExpiredAuthentication();
+setInterval(
+  () => {
+    purgeExpiredAuthentication().catch(() =>
+      console.error("Expired authentication cleanup failed"),
+    );
+  },
+  60 * 60 * 1000,
+).unref();
 app.listen(
   Number(process.env.PORT || 3001),
   production ? "0.0.0.0" : "127.0.0.1",

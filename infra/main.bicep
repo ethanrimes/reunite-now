@@ -1,3 +1,4 @@
+param communicationDataLocation string = 'United States'
 param location string = resourceGroup().location
 param prefix string = 'reunite-now'
 param suffix string = '9a04'
@@ -44,7 +45,7 @@ resource database 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2024-08-0
 resource communication 'Microsoft.Communication/communicationServices@2023-04-01' = {
  name:'${prefix}-communication'
  location:'global'
- properties:{dataLocation:'United States'}
+ properties:{dataLocation:communicationDataLocation}
 }
 output appName string = web.name
 output appUrl string = 'https://${web.properties.defaultHostName}'

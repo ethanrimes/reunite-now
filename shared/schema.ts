@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { caseRoles, rolesFor, relationshipsFor } from "./visa-workflow";
-export const consentVersion = "2026-11-21";
+export const consentVersion = "2026-11-22";
 export const legalStatuses = [
   "US citizen",
   "Permanent resident",
@@ -205,6 +205,7 @@ export const profileSchema = z
     politicalAffiliation: z
       .enum(["", "Democratic", "Independent", "Republican", "Other"])
       .default(""),
+    affiliationConsent: z.boolean().optional(),
     personallyInvolved: z.boolean(),
     signed: z.literal(true),
     publicConsent: z.literal(true),
@@ -251,7 +252,9 @@ export const profileSchema = z
   .transform((p) => ({
     ...p,
     politicalAffiliation:
-      p.legalStatus === "US citizen" ? p.politicalAffiliation : ("" as const),
+      p.legalStatus === "US citizen" && p.affiliationConsent === true
+        ? p.politicalAffiliation
+        : ("" as const),
   }));
 // Keep historical profiles readable; stronger requirements apply when a member saves.
 export const profileWriteSchema = profileSchema.superRefine((p, c) => {
@@ -304,7 +307,12 @@ export type Profile = z.infer<typeof profileSchema>;
 export type Story = z.infer<typeof storySchema>;
 export type PublicProfile = Omit<
   Profile,
-  "reminders" | "reminderEmails" | "adultConsent" | "publicConsent" | "signed"
+  | "affiliationConsent"
+  | "reminders"
+  | "reminderEmails"
+  | "adultConsent"
+  | "publicConsent"
+  | "signed"
 > & {
   id: string;
   updatedAt: string;
@@ -325,6 +333,7 @@ export const profileSections = {
     "state",
     "district",
     "politicalAffiliation",
+    "affiliationConsent",
   ],
   cases: ["personallyInvolved", "cases"],
   settings: ["reminders", "reminderEmails"],

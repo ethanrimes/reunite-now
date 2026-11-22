@@ -578,6 +578,40 @@ export function DataUse() {
         </p>
       </div>
       <div className="prose">
+        <h2>{t("Export, correct, or delete")}</h2>
+        <p>
+          {t(
+            "To delete your own data, open Account → Configuration → Delete account. You can do this yourself without emailing us.",
+          )}
+        </p>
+        <Link className="button" to="/account#settings">
+          {t("Manage my data ")}
+          <ArrowUpRight size={18} />
+        </Link>
+        <p>
+          {t(
+            "If you cannot sign in, appear in someone else’s submission, or receive unwanted reminders, contact Ethan Kallett privately. Include the public page or story title and what you want removed. Please leave out identity documents and visa case numbers.",
+          )}{" "}
+          <a href="mailto:ethan@visatransparencypetition.org">
+            {"ethan@visatransparencypetition.org"}
+          </a>
+        </p>
+        <p>
+          {t(
+            "We use your consent to publish the petition and optional stories. You can withdraw it at any time. Where applicable, you can also request access, correction, erasure, restriction or portability and complain to your local data protection authority.",
+          )}
+        </p>
+        <h2>{t("Hosting, access and retention")}</h2>
+        <p>
+          {t(
+            "Ethan Kallett operates Reunite Now. The petition database and website currently run in Azure’s North Central US region. The reminder scheduler runs in Sweden. The sign-in and reminder email service stores service data in the United States.",
+          )}
+        </p>
+        <p>
+          {t(
+            "Anyone worldwide can download public profiles, case timelines and published stories through the site’s public API. Your account and signature have no automatic expiry. Stories, including unpublished drafts, stay until you delete them or your account. Sign-in links expire after 15 minutes and sessions expire after 30 days.",
+          )}
+        </p>
         <h2>{t("What other people can see")}</h2>
         <p>
           {t(
@@ -618,7 +652,7 @@ export function DataUse() {
             "Reminders are optional. For active cases not confirmed in at least 30 days, we send at most one reminder per calendar month to each selected address. Your sign-in email receives reminders, and you can add up to 5 other addresses you own or have permission to notify. Each recipient gets a separate email without applicant details or other recipients’ addresses. Add a dated milestone or confirm no change in your account; reminders never update timelines automatically. Edit recipients or turn reminders off in Account.",
           )}
         </p>
-        <h2>{t("Export, correct, or delete")}</h2>
+
         <p>
           {t(
             "Visit your account to edit your profile, download your data, remove a visa case, unpublish your story, or permanently delete your account. Deletion removes your account, signature, case timelines, story photos, sessions, and reminder records from the live database. Aggregate statistics then recalculate without your records.",
@@ -626,10 +660,15 @@ export function DataUse() {
         </p>
         <p>
           {t(
-            "Encrypted Azure database backups expire under the configured retention period of 7 days. Deleted data is not used from backups; any recovery must reapply deletions before reopening the site. Copies independently saved by other visitors, search engines, or external services cannot be recalled. Email delivery providers may retain operational delivery records under their own policies.",
+            "Azure provides a seven-day database recovery window. Backup files can persist longer. Before a restore goes online, deletions must be reapplied. Other people may keep copies of public submissions. Email providers may retain delivery records.",
           )}
         </p>
         <h2>{t("Services that process data")}</h2>
+        <p>
+          {t(
+            "Cloudflare forwards privacy requests to the project’s Gmail inbox. Both services process correspondence, which may travel outside the EU.",
+          )}
+        </p>
         <p>
           {t(
             "Microsoft Azure hosts the application, database, and scheduled work. Azure Communication Services handles email when enabled. Google handles Google sign-in if you choose it. Public policy links and contact links take you to external organizations. We do not share submissions with those organizations.",
@@ -643,10 +682,6 @@ export function DataUse() {
             "The version accepted with your signature is recorded. This is an independent advocacy project, not a law firm or government service.",
           )}
         </p>
-        <Link className="button" to="/account">
-          {t("Manage my data ")}
-          <ArrowUpRight size={18} />
-        </Link>
       </div>
     </div>
   );

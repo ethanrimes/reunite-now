@@ -674,11 +674,6 @@
     "pt": "Na sua conta, você pode editar o perfil, baixar os dados, remover um caso de visto, retirar a história ou excluir permanentemente a conta. A exclusão remove sua conta, assinatura, cronologias, fotos, sessões e registros de lembretes do banco de dados ativo. As estatísticas são recalculadas sem seus registros.",
     "tl": "Pumunta sa iyong account upang baguhin ang profile, i-download ang datos, alisin ang kaso ng visa, alisin sa publiko ang kuwento, o permanenteng burahin ang account. Binubura nito ang account, lagda, mga timeline, larawan ng kuwento, sesyon, at tala ng paalala mula sa aktibong database. Muling kinukuwenta ang pinagsama-samang estadistika nang wala ang iyong mga rekord."
   },
-  "Encrypted Azure database backups expire under the configured retention period of 7 days. Deleted data is not used from backups; any recovery must reapply deletions before reopening the site. Copies independently saved by other visitors, search engines, or external services cannot be recalled. Email delivery providers may retain operational delivery records under their own policies.": {
-    "es": "Las copias de seguridad cifradas de Azure vencen según el período configurado de 7 días. Los datos eliminados no se usan desde copias de seguridad; cualquier recuperación debe volver a aplicar las eliminaciones antes de reabrir el sitio. No podemos retirar copias guardadas por otros visitantes, buscadores o servicios externos. Los proveedores de correo pueden conservar registros operativos de entrega según sus propias políticas.",
-    "pt": "Os backups criptografados do Azure expiram conforme o período configurado de 7 dias. Dados excluídos não são usados a partir dos backups; qualquer recuperação deve reaplicar as exclusões antes de reabrir o site. Não podemos remover cópias salvas por outros visitantes, mecanismos de busca ou serviços externos. Provedores de e-mail podem manter registros operacionais de entrega conforme suas próprias políticas.",
-    "tl": "Ang naka-encrypt na backup ng database sa Azure ay nag-e-expire ayon sa nakatakdang 7 araw na retention. Hindi ginagamit mula sa mga backup ang binurang datos; kailangang muling ipatupad ang mga pagbura bago buksang muli ang site matapos ang anumang recovery. Hindi mababawi ang mga kopyang hiwalay na na-save ng ibang bisita, search engine, o panlabas na serbisyo. Maaaring magtago ang mga email provider ng mga operasyonal na tala ng paghahatid ayon sa sarili nilang patakaran."
-  },
   "Services that process data": {
     "es": "Servicios que procesan datos",
     "pt": "Serviços que processam dados",
@@ -1393,11 +1388,6 @@
     "es": "¿Eliminar tu cuenta y tus datos?",
     "pt": "Excluir sua conta e seus dados?",
     "tl": "Burahin ang iyong account at datos?"
-  },
-  "This removes your signature, profile, visa cases, stories, photos, and sign-in sessions from the live application. Azure backups expire within 7 days; public copies others saved cannot be recalled.": {
-    "es": "Se eliminarán tu firma, perfil, casos, historias, fotos y sesiones de la aplicación activa. Las copias de Azure vencen en 7 días; no podemos retirar las copias públicas que otros hayan guardado.",
-    "pt": "Sua assinatura, perfil, casos, histórias, fotos e sessões serão removidos da aplicação ativa. Os backups do Azure expiram em 7 dias; não podemos remover cópias públicas salvas por outras pessoas.",
-    "tl": "Aalisin nito ang iyong lagda, profile, mga kaso, kuwento, larawan, at sesyon sa aktibong aplikasyon. Mag-e-expire ang mga backup sa Azure sa loob ng 7 araw; hindi mababawi ang pampublikong kopyang na-save ng iba."
   },
   "Type DELETE to confirm": {
     "es": "Escribe DELETE para confirmar",
@@ -5613,5 +5603,55 @@
     "es": "Perfil de GitHub de {handle}",
     "pt": "Perfil de {handle} no GitHub",
     "tl": "Profile ni {handle} sa GitHub"
+  },
+  "Hosting, access and retention": {
+    "es": "Alojamiento, acceso y conservación",
+    "pt": "Hospedagem, acesso e retenção",
+    "tl": "Pagho-host, access at pagpapanatili"
+  },
+  "Anyone worldwide can download public profiles, case timelines and published stories through the site’s public API. Your account and signature have no automatic expiry. Stories, including unpublished drafts, stay until you delete them or your account. Sign-in links expire after 15 minutes and sessions expire after 30 days.": {
+    "es": "Cualquier persona puede descargar perfiles públicos, cronologías y relatos publicados desde la API pública. Tu cuenta y firma no caducan automáticamente. Los relatos, incluidos los borradores privados, se conservan hasta que los elimines o borres tu cuenta. Los enlaces de acceso caducan a los 15 minutos y las sesiones a los 30 días.",
+    "pt": "Qualquer pessoa no mundo pode baixar perfis públicos, históricos de casos e histórias publicadas pela API pública do site. A conta e a assinatura não expiram automaticamente. As histórias, inclusive rascunhos não publicados, permanecem até você excluí-las ou apagar a conta. Os links de acesso expiram em 15 minutos e as sessões em 30 dias.",
+    "tl": "Maaaring i-download ng sinuman sa buong mundo ang mga pampublikong profile, timeline at nailathalang kuwento gamit ang pampublikong API. Walang awtomatikong pag-expire ang account at lagda mo. Mananatili ang mga kuwento, pati mga draft, hanggang burahin mo ang mga ito o ang account mo. Napapaso ang link sa pag-sign in pagkalipas ng 15 minuto at ang session pagkalipas ng 30 araw."
+  },
+  "I explicitly consent to storing my political affiliation and showing it publicly with my name. I can withdraw this choice here at any time.": {
+    "es": "Doy mi consentimiento explícito para guardar mi afiliación política y mostrarla públicamente con mi nombre. Puedo retirarlo aquí en cualquier momento.",
+    "pt": "Consinto expressamente em armazenar minha filiação política e publicá-la com meu nome. Posso retirar esse consentimento aqui a qualquer momento.",
+    "tl": "Tahasang pumapayag akong itago ang aking partidong politikal at ipakita ito sa publiko kasama ng aking pangalan. Maaari kong bawiin ito rito anumang oras."
+  },
+  "To delete your own data, open Account → Configuration → Delete account. You can do this yourself without emailing us.": {
+    "es": "Para borrar tus datos, abre Cuenta → Configuración → Eliminar cuenta. Puedes hacerlo sin enviarnos un correo.",
+    "pt": "Para apagar seus dados, abra Conta → Configurações → Excluir conta. Você pode fazer isso sem enviar um e-mail.",
+    "tl": "Para burahin ang sarili mong datos, buksan ang Account → Mga setting → Burahin ang account. Magagawa mo ito nang hindi nag-e-email sa amin."
+  },
+  "If you cannot sign in, appear in someone else’s submission, or receive unwanted reminders, contact Ethan Kallett privately. Include the public page or story title and what you want removed. Please leave out identity documents and visa case numbers.": {
+    "es": "Si no puedes iniciar sesión, apareces en la publicación de otra persona o recibes recordatorios no deseados, escribe en privado a Ethan Kallett. Indica la página pública o el título del relato y qué quieres eliminar. Omite documentos de identidad y números de expediente.",
+    "pt": "Se você não conseguir entrar, aparecer em um relato de outra pessoa ou receber lembretes indesejados, escreva em particular para Ethan Kallett. Informe a página pública ou o título do relato e o que deseja remover. Não envie documentos de identidade nem números de processos de visto.",
+    "tl": "Kung hindi ka makapag-sign in, nabanggit ka sa isinumite ng iba, o nakatatanggap ka ng mga paalalang hindi mo gusto, sumulat nang pribado kay Ethan Kallett. Isama ang pampublikong pahina o pamagat ng kuwento at ang gusto mong alisin. Huwag isama ang dokumento ng pagkakakilanlan o numero ng kaso."
+  },
+  "Cloudflare forwards privacy requests to the project’s Gmail inbox. Both services process correspondence, which may travel outside the EU.": {
+    "es": "Cloudflare reenvía las solicitudes de privacidad al buzón de Gmail del proyecto. Ambos servicios procesan esa correspondencia, que puede salir de la UE.",
+    "pt": "A Cloudflare encaminha pedidos de privacidade para o Gmail do projeto. Ambos processam a correspondência, que pode passar por países fora da UE.",
+    "tl": "Ipinapasa ng Cloudflare ang mga kahilingan sa privacy sa Gmail ng proyekto. Pinoproseso ng dalawang serbisyo ang mga mensahe, na maaaring dumaan sa labas ng EU."
+  },
+  "We use your consent to publish the petition and optional stories. You can withdraw it at any time. Where applicable, you can also request access, correction, erasure, restriction or portability and complain to your local data protection authority.": {
+    "es": "Publicamos la petición y los relatos opcionales con tu consentimiento. Puedes retirarlo en cualquier momento. Cuando corresponda, puedes solicitar acceso, rectificación, supresión, limitación o portabilidad y presentar una reclamación ante tu autoridad de protección de datos.",
+    "pt": "Publicamos a petição e os relatos opcionais com o seu consentimento. Você pode retirá-lo a qualquer momento. Quando aplicável, pode solicitar acesso, correção, exclusão, restrição ou portabilidade e reclamar à sua autoridade de proteção de dados.",
+    "tl": "Ginagamit namin ang pahintulot mo upang ilathala ang petisyon at mga opsyonal na kuwento. Maaari mo itong bawiin anumang oras. Kung naaangkop, maaari kang humiling ng access, pagwawasto, pagbura, paghihigpit o paglipat ng datos at magreklamo sa lokal na awtoridad sa proteksiyon ng datos."
+  },
+  "Ethan Kallett operates Reunite Now. The petition database and website currently run in Azure’s North Central US region. The reminder scheduler runs in Sweden. The sign-in and reminder email service stores service data in the United States.": {
+    "es": "Ethan Kallett gestiona Reunite Now. La base de datos y el sitio web están en la región North Central US de Azure. Los recordatorios se programan en Suecia. El servicio de correo almacena sus datos de servicio en Estados Unidos.",
+    "pt": "Ethan Kallett administra o Reunite Now. O banco de dados e o site ficam na região North Central US do Azure. O agendador de lembretes fica na Suécia. O serviço de e-mail de acesso e lembretes armazena seus dados nos EUA.",
+    "tl": "Pinapatakbo ni Ethan Kallett ang Reunite Now. Nasa North Central US ng Azure ang database at website. Nasa Sweden ang tagapag-iskedyul ng mga paalala. Nasa Estados Unidos ang nakaimbak na datos ng email service para sa pag-sign in at paalala."
+  },
+  "Azure provides a seven-day database recovery window. Backup files can persist longer. Before a restore goes online, deletions must be reapplied. Other people may keep copies of public submissions. Email providers may retain delivery records.": {
+    "es": "Azure permite recuperar la base de datos durante siete días. Los archivos de respaldo pueden durar más. Antes de reabrir una copia restaurada hay que volver a aplicar las eliminaciones. Otras personas pueden conservar copias de lo publicado y los proveedores de correo pueden conservar registros de entrega.",
+    "pt": "O Azure oferece sete dias para restaurar o banco de dados. Backups podem persistir por mais tempo. As exclusões devem ser reaplicadas antes de uma restauração entrar no ar. Terceiros podem guardar cópias das publicações e provedores de e-mail podem manter registros de entrega.",
+    "tl": "Pitong araw ang panahon ng pagbawi ng database sa Azure. Maaaring mas matagal manatili ang mga backup. Kailangang ulitin ang mga pagbura bago muling buksan ang site. Maaaring may kopya ng pampublikong ambag ang ibang tao at may tala ng paghahatid ang mga serbisyo ng email."
+  },
+  "This deletes your account and submissions from the live site. Backups and copies already saved by others may persist.": {
+    "es": "Esto elimina tu cuenta y tus publicaciones del sitio activo. Pueden quedar copias de seguridad y copias guardadas por otras personas.",
+    "pt": "Isso exclui sua conta e suas contribuições do site ativo. Backups e cópias salvas por outras pessoas podem permanecer.",
+    "tl": "Buburahin nito ang account at mga isinumite mo sa aktibong site. Maaaring manatili ang mga backup at kopyang nai-save ng iba."
   }
 }

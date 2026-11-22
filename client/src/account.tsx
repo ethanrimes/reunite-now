@@ -1170,6 +1170,9 @@ export function Account() {
                       setForm((p) => ({
                         ...p,
                         legalStatus,
+                        affiliationConsent:
+                          legalStatus === "US citizen" &&
+                          !!p.affiliationConsent,
                         politicalAffiliation:
                           legalStatus === "US citizen"
                             ? p.politicalAffiliation
@@ -1202,23 +1205,51 @@ export function Account() {
                   </select>
                 </Field>
                 {form.legalStatus === "US citizen" && (
-                  <Field label={t("Political affiliation · optional")}>
-                    <select
-                      value={form.politicalAffiliation}
-                      onChange={(e) =>
-                        set("politicalAffiliation", e.target.value)
-                      }
-                    >
-                      <option value="">{t("Prefer not to say")}</option>
-                      {["Democratic", "Independent", "Republican", "Other"].map(
-                        (p) => (
-                          <option key={p} value={p}>
-                            {t(p)}
-                          </option>
-                        ),
-                      )}
-                    </select>
-                  </Field>
+                  <div>
+                    <label className="check-row">
+                      <input
+                        type="checkbox"
+                        checked={!!form.affiliationConsent}
+                        onChange={(e) => {
+                          const consent = e.target.checked;
+                          setForm((p) => ({
+                            ...p,
+                            affiliationConsent: consent,
+                            politicalAffiliation: consent
+                              ? p.politicalAffiliation
+                              : "",
+                          }));
+                        }}
+                      />
+                      <span>
+                        {t(
+                          "I explicitly consent to storing my political affiliation and showing it publicly with my name. I can withdraw this choice here at any time.",
+                        )}
+                      </span>
+                    </label>
+                    {form.affiliationConsent && (
+                      <Field label={t("Political affiliation · optional")}>
+                        <select
+                          value={form.politicalAffiliation}
+                          onChange={(e) =>
+                            set("politicalAffiliation", e.target.value)
+                          }
+                        >
+                          <option value="">{t("Prefer not to say")}</option>
+                          {[
+                            "Democratic",
+                            "Independent",
+                            "Republican",
+                            "Other",
+                          ].map((p) => (
+                            <option key={p} value={p}>
+                              {t(p)}
+                            </option>
+                          ))}
+                        </select>
+                      </Field>
+                    )}
+                  </div>
                 )}
                 <Field label={t("Country of residence *")}>
                   <select
@@ -1623,7 +1654,7 @@ export function Account() {
           <h2>{t("Remove your account and data?")}</h2>
           <p>
             {t(
-              "This removes your signature, profile, visa cases, stories, photos, and sign-in sessions from the live application. Azure backups expire within 7 days; public copies others saved cannot be recalled.",
+              "This deletes your account and submissions from the live site. Backups and copies already saved by others may persist.",
             )}
           </p>
           <Field label={t("Type DELETE to confirm")}>

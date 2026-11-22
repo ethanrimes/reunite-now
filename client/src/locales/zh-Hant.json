@@ -134,7 +134,6 @@
   "Reminders are optional. When email delivery is enabled, we send at most one reminder per calendar month for accounts with active visa cases that have not been confirmed in at least 30 days. The reminder asks you to add a dated milestone or confirm no change. It never changes a timeline automatically. Turn reminders off at any time in your account.": "提醒為選用功能。啟用電子郵件寄送後，對於有進行中簽證案件且至少 30 天未確認的帳戶，每個日曆月至多寄送一次提醒。提醒會請你新增附日期的里程碑，或確認沒有變化。系統絕不會自動修改時程。你可以隨時在帳戶中關閉提醒。",
   "Export, correct, or delete": "匯出、更正或刪除",
   "Visit your account to edit your profile, download your data, remove a visa case, unpublish your story, or permanently delete your account. Deletion removes your account, signature, case timelines, story photos, sessions, and reminder records from the live database. Aggregate statistics then recalculate without your records.": "前往帳戶即可編輯個人檔案、下載資料、移除簽證案件、取消發布故事，或永久刪除帳戶。刪除後，系統會從正式資料庫移除你的帳戶、連署、案件時程、故事照片、工作階段與提醒紀錄。之後彙整統計會排除你的紀錄並重新計算。",
-  "Encrypted Azure database backups expire under the configured retention period of 7 days. Deleted data is not used from backups; any recovery must reapply deletions before reopening the site. Copies independently saved by other visitors, search engines, or external services cannot be recalled. Email delivery providers may retain operational delivery records under their own policies.": "Azure 資料庫備份已加密，並依設定的 7 天保留期限到期刪除。備份不會用來還原已刪除的資料；若要復原系統，必須先重新套用刪除紀錄，才能重新開放網站。其他訪客、搜尋引擎或外部服務自行儲存的副本無法撤回。電子郵件服務商可能依其政策保留作業寄送紀錄。",
   "Services that process data": "處理資料的服務",
   "Agreement version": "協議版本",
   "Manage my data": "管理我的資料",
@@ -278,7 +277,6 @@
   "Delete account": "刪除帳戶",
   "PERMANENT ACCOUNT DELETION": "永久刪除帳戶",
   "Remove your account and data?": "要移除你的帳戶與資料嗎？",
-  "This removes your signature, profile, visa cases, stories, photos, and sign-in sessions from the live application. Azure backups expire within 7 days; public copies others saved cannot be recalled.": "這會從正式應用程式移除你的連署、個人檔案、簽證案件、故事、照片與登入工作階段。Azure 備份會在 7 天內到期刪除；他人儲存的公開副本無法撤回。",
   "Type DELETE to confirm": "輸入 DELETE 以確認",
   "Permanently delete my account": "永久刪除我的帳戶",
   "Visa applicant country map": "簽證申請人國家地圖",
@@ -1121,5 +1119,15 @@
   "Territories": "屬地",
   "States and DC": "各州與華盛頓特區",
   "Select a territory to see its representative in Congress.": "選擇屬地即可查看其國會代表。",
-  "GitHub profile for {handle}": "{handle} 的 GitHub 個人檔案"
+  "GitHub profile for {handle}": "{handle} 的 GitHub 個人檔案",
+  "Hosting, access and retention": "託管、存取與保留",
+  "Anyone worldwide can download public profiles, case timelines and published stories through the site’s public API. Your account and signature have no automatic expiry. Stories, including unpublished drafts, stay until you delete them or your account. Sign-in links expire after 15 minutes and sessions expire after 30 days.": "全球任何人皆可透過網站的公開 API 下載公開個人檔案、案件時間軸及已發布的故事。帳戶與連署不會自動到期。故事（包含未發布的草稿）會保留至你刪除故事或帳戶。登入連結於 15 分鐘後失效，登入工作階段則於 30 天後到期。",
+  "I explicitly consent to storing my political affiliation and showing it publicly with my name. I can withdraw this choice here at any time.": "我明確同意儲存我的政治立場並與姓名一同公開。我可以隨時在此撤回同意。",
+  "To delete your own data, open Account → Configuration → Delete account. You can do this yourself without emailing us.": "要自行刪除資料，請前往帳戶 → 設定 → 刪除帳戶。無需寄送電郵。",
+  "If you cannot sign in, appear in someone else’s submission, or receive unwanted reminders, contact Ethan Kallett privately. Include the public page or story title and what you want removed. Please leave out identity documents and visa case numbers.": "若無法登入、他人投稿提及您，或您收到不想要的提醒，請私下聯絡 Ethan Kallett。請提供公開頁面或故事標題並說明希望刪除的內容。請勿附上身分證明或簽證案件編號。",
+  "Cloudflare forwards privacy requests to the project’s Gmail inbox. Both services process correspondence, which may travel outside the EU.": "Cloudflare 會將私隱請求轉寄至專案的 Gmail 信箱。兩項服務均會處理郵件，郵件可能傳送至歐盟以外。",
+  "We use your consent to publish the petition and optional stories. You can withdraw it at any time. Where applicable, you can also request access, correction, erasure, restriction or portability and complain to your local data protection authority.": "我們依據您的同意發布連署與自願分享的故事。您可隨時撤回同意。在適用情況下，您亦可要求存取、更正、刪除、限制處理或移轉資料，並向當地資料保護機關申訴。",
+  "Ethan Kallett operates Reunite Now. The petition database and website currently run in Azure’s North Central US region. The reminder scheduler runs in Sweden. The sign-in and reminder email service stores service data in the United States.": "Reunite Now 由 Ethan Kallett 營運。連署資料庫與網站目前設於 Azure 美國中北部，提醒排程設於瑞典。登入及提醒電郵服務在美國儲存其服務資料。",
+  "Azure provides a seven-day database recovery window. Backup files can persist longer. Before a restore goes online, deletions must be reapplied. Other people may keep copies of public submissions. Email providers may retain delivery records.": "Azure 提供七天的資料庫還原期限，備份檔案可能保留更久。還原後必須重新套用刪除作業才能上線。他人可能保留公開投稿的副本，電郵服務商亦可能保留投遞記錄。",
+  "This deletes your account and submissions from the live site. Backups and copies already saved by others may persist.": "這會從目前運作的網站刪除您的帳戶及投稿。備份與他人儲存的副本仍可能存在。"
 }

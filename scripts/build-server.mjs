@@ -9,7 +9,7 @@ await build({
   platform: "node",
   format: "esm",
   target: "node22",
-  external: ["@electric-sql/pglite", "pg-native"],
+  external: ["@electric-sql/pglite", "pg-native", "sharp"],
   banner: {
     js: 'import { createRequire as bundleCreateRequire } from "node:module"; const require = bundleCreateRequire(import.meta.url);',
   },

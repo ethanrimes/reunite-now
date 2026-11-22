@@ -140,7 +140,6 @@
   "the process.": "সাহায্য করুন।",
   "SIGN IN OR CREATE AN ACCOUNT": "লগ ইন করুন অথবা অ্যাকাউন্ট খুলুন",
   "A project advocating for transparency, accountability, and adequate resources in US visa processing.": "যুক্তরাষ্ট্রের ভিসা প্রক্রিয়ায় স্বচ্ছতা, জবাবদিহি ও পর্যাপ্ত সম্পদের দাবিতে কাজ করা একটি উদ্যোগ।",
-  "Encrypted Azure database backups expire under the configured retention period of 7 days. Deleted data is not used from backups; any recovery must reapply deletions before reopening the site. Copies independently saved by other visitors, search engines, or external services cannot be recalled. Email delivery providers may retain operational delivery records under their own policies.": "Azure-এ এনক্রিপ্ট করা ডেটাবেস ব্যাকআপ নির্ধারিত ৭ দিনের সংরক্ষণকাল শেষে মুছে যায়। ব্যাকআপ থেকে মুছে দেওয়া তথ্য ব্যবহার করা হয় না; সাইট পুনরায় চালুর আগে কোনো ব্যাকআপ পুনরুদ্ধার করলে মুছে দেওয়ার অনুরোধগুলো আবার কার্যকর করতে হবে। অন্য দর্শক, সার্চ ইঞ্জিন বা বাইরের সেবায় আলাদাভাবে সংরক্ষিত কপি ফিরিয়ে নেওয়া সম্ভব নয়। ইমেইল সরবরাহকারীরা নিজস্ব নীতি অনুযায়ী ইমেইল পাঠানোর কার্যক্রম-সংক্রান্ত রেকর্ড রাখতে পারে।",
   "G": "G",
   "Why we’re here": "আমরা কেন এই উদ্যোগ নিয়েছি",
   "Help change": "এই প্রক্রিয়া বদলাতে",
@@ -299,7 +298,6 @@
   "Save & confirm all information": "সব তথ্য সংরক্ষণ ও নিশ্চিত করুন",
   "supporters outside the US": "যুক্তরাষ্ট্রের বাইরের সমর্থক",
   "About this data": "এই তথ্য সম্পর্কে",
-  "This removes your signature, profile, visa cases, stories, photos, and sign-in sessions from the live application. Azure backups expire within 7 days; public copies others saved cannot be recalled.": "এটি লাইভ অ্যাপ্লিকেশন থেকে আপনার স্বাক্ষর, প্রোফাইল, ভিসা কেস, গল্প, ফটো এবং সাইন-ইন সেশনগুলি সরিয়ে দেয়। Azure ব্যাকআপের মেয়াদ 7 দিনের মধ্যে শেষ হয়ে যায়; অন্যদের সংরক্ষিত পাবলিক কপি প্রত্যাহার করা যাবে না।",
   "PERMANENT ACCOUNT DELETION": "অ্যাকাউন্ট স্থায়ীভাবে মুছে ফেলা",
   "Drag to explore · Use + / − to zoom": "টেনে মানচিত্র দেখুন · জুম করতে + / − ব্যবহার করুন",
   "since": "থেকে",
@@ -1121,5 +1119,15 @@
   "Territories": "অঞ্চলসমূহ",
   "States and DC": "অঙ্গরাজ্য ও ডিসি",
   "Select a territory to see its representative in Congress.": "কংগ্রেসে কোনো অঞ্চলের প্রতিনিধি দেখতে সেটি নির্বাচন করুন।",
-  "GitHub profile for {handle}": "{handle}-এর GitHub প্রোফাইল"
+  "GitHub profile for {handle}": "{handle}-এর GitHub প্রোফাইল",
+  "Hosting, access and retention": "হোস্টিং, প্রবেশাধিকার ও সংরক্ষণ",
+  "Anyone worldwide can download public profiles, case timelines and published stories through the site’s public API. Your account and signature have no automatic expiry. Stories, including unpublished drafts, stay until you delete them or your account. Sign-in links expire after 15 minutes and sessions expire after 30 days.": "বিশ্বের যে কেউ সাইটের পাবলিক API থেকে প্রকাশ্য প্রোফাইল, কেসের সময়রেখা ও প্রকাশিত গল্প ডাউনলোড করতে পারেন। অ্যাকাউন্ট ও স্বাক্ষরের মেয়াদ স্বয়ংক্রিয়ভাবে শেষ হয় না। অপ্রকাশিত খসড়াসহ গল্পগুলো আপনি সেগুলো বা অ্যাকাউন্ট না মোছা পর্যন্ত থাকে। সাইন-ইন লিংকের মেয়াদ ১৫ মিনিট এবং সেশনের মেয়াদ ৩০ দিন।",
+  "I explicitly consent to storing my political affiliation and showing it publicly with my name. I can withdraw this choice here at any time.": "আমার রাজনৈতিক পরিচয় সংরক্ষণ ও নামসহ প্রকাশে আমি স্পষ্ট সম্মতি দিচ্ছি। এখানে যেকোনো সময় সম্মতি প্রত্যাহার করতে পারি।",
+  "To delete your own data, open Account → Configuration → Delete account. You can do this yourself without emailing us.": "নিজের তথ্য মুছতে অ্যাকাউন্ট → সেটিংস → অ্যাকাউন্ট মুছুন খুলুন। এ জন্য আমাদের ইমেল করার প্রয়োজন নেই।",
+  "If you cannot sign in, appear in someone else’s submission, or receive unwanted reminders, contact Ethan Kallett privately. Include the public page or story title and what you want removed. Please leave out identity documents and visa case numbers.": "সাইন ইন করতে না পারলে, অন্যের লেখায় আপনার তথ্য থাকলে বা অনাকাঙ্ক্ষিত অনুস্মারক পেলে ব্যক্তিগতভাবে ইথান কালেটকে লিখুন। প্রকাশ্য পাতা বা গল্পের শিরোনাম এবং কী সরাতে চান তা জানান। পরিচয়পত্র বা ভিসা কেস নম্বর দেবেন না।",
+  "Cloudflare forwards privacy requests to the project’s Gmail inbox. Both services process correspondence, which may travel outside the EU.": "Cloudflare গোপনীয়তার অনুরোধ প্রকল্পের Gmail-এ পাঠায়। উভয় পরিষেবা চিঠিপত্র প্রক্রিয়া করে, যা ইইউ-এর বাইরে যেতে পারে।",
+  "We use your consent to publish the petition and optional stories. You can withdraw it at any time. Where applicable, you can also request access, correction, erasure, restriction or portability and complain to your local data protection authority.": "আপনার সম্মতিতে পিটিশন ও ঐচ্ছিক গল্প প্রকাশ করি। যেকোনো সময় সম্মতি প্রত্যাহার করতে পারেন। প্রযোজ্য ক্ষেত্রে তথ্য দেখা, সংশোধন, মোছা, ব্যবহার সীমিত করা বা স্থানান্তরের অনুরোধ এবং স্থানীয় তথ্য সুরক্ষা কর্তৃপক্ষের কাছে অভিযোগ করতে পারেন।",
+  "Ethan Kallett operates Reunite Now. The petition database and website currently run in Azure’s North Central US region. The reminder scheduler runs in Sweden. The sign-in and reminder email service stores service data in the United States.": "ইথান কালেট Reunite Now পরিচালনা করেন। পিটিশনের ডেটাবেস ও সাইট Azure-এর North Central US অঞ্চলে এবং অনুস্মারকের সময়সূচি সুইডেনে। সাইন-ইন ও অনুস্মারক ইমেল পরিষেবার তথ্য যুক্তরাষ্ট্রে রাখা হয়।",
+  "Azure provides a seven-day database recovery window. Backup files can persist longer. Before a restore goes online, deletions must be reapplied. Other people may keep copies of public submissions. Email providers may retain delivery records.": "Azure-এ ডেটাবেস পুনরুদ্ধারের সময়সীমা সাত দিন। ব্যাকআপ ফাইল আরও দীর্ঘ সময় থাকতে পারে। পুনরুদ্ধার করা সাইট চালুর আগে মোছার অনুরোধ আবার প্রয়োগ করতে হবে। অন্যরা প্রকাশিত তথ্যের কপি এবং ইমেল পরিষেবা বিতরণের রেকর্ড রাখতে পারে।",
+  "This deletes your account and submissions from the live site. Backups and copies already saved by others may persist.": "এটি সক্রিয় সাইট থেকে আপনার অ্যাকাউন্ট ও জমা দেওয়া তথ্য মুছে দেয়। ব্যাকআপ ও অন্যদের রাখা কপি থেকে যেতে পারে।"
 }

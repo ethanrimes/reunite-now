@@ -8,7 +8,12 @@ for name in ['dist','public']:
  target=stage/name
  if target.exists():shutil.rmtree(target)
  shutil.copytree(root/name,target)
-(stage/'package.json').write_text(json.dumps({'name':'reunite-now','version':'0.1.0','private':True,'type':'module','scripts':{'start':'node dist/server.js'},'engines':{'node':'>=22'}}))
+# Install the locked Linux production dependencies, including sharp's native decoder.
+for name in ['package.json', 'package-lock.json']:
+ shutil.copy2(root/name, stage/name)
+subprocess.run(['npm','ci','--omit=dev','--include=optional','--ignore-scripts','--os=linux','--cpu=x64','--libc=glibc','--no-audit','--no-fund'], cwd=stage, check=True)
+if not (stage/'node_modules/@img/sharp-linux-x64').is_dir():
+ raise RuntimeError('The Linux image decoder is missing')
 archive=root/'work'/'reunite-now.zip'
 with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED) as z:
  for p in stage.rglob('*'):

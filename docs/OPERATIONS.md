@@ -64,3 +64,13 @@ No request body logging or third-party analytics is installed. Avoid enabling re
 Run `python3 scripts/verify-live.py` for a read-only API smoke check. Adding `--check-reminders` invokes the real reminder job and can email eligible opted-in users; use it intentionally, not as a read-only check. It prints aggregate results only.
 
 Run `python3 scripts/configure-reminders.py` after initial provisioning and whenever `CRON_SECRET` or `APP_URL` changes. It configures the Consumption Logic App from `infra/reminders.bicep`, with the bearer secret stored as a secure workflow parameter and hidden from run inputs. App Service's WebJob agent remains disabled. See [Microsoft's Logic Apps deployment guide](https://learn.microsoft.com/en-us/azure/logic-apps/quickstart-create-deploy-bicep).
+
+## Handling a privacy request
+
+Ethan Kallett monitors ethan@visatransparencypetition.org, including its spam folder. For account holders, point to Account → Configuration → Delete account or Download data. Someone named in a story or receiving reminders can request help without a login. Ask for the public URL, the item and the requested change. Use proportionate verification and avoid requesting a passport or visa paperwork. Use a tested project sender for replies.
+
+Record the request date, scope, due date and outcome in restricted storage. Where GDPR applies, respond without undue delay and ordinarily within one month. Explain any permitted extension within that first month. For a credible disclosure involving a child or sensitive information, restrict the affected content promptly while checking the request. Verify removal through both the public page and the public API. For unwanted reminders, remove the address from the sending profile. Avoid identifying the account holder to the recipient. Review the inbox, spam, trash and attachments when closing a request. Set and follow a retention period for the minimal case record.
+
+Before reopening a database restore, reconcile account deletions, withdrawn affiliations, removed timelines and unpublished or edited stories through the restore cutoff. A list of surviving account IDs alone cannot reconcile edits. Keep the restored site private if that history cannot be established.
+
+For a suspected disclosure, contain access, preserve minimal evidence and record when the controller became aware. Assess the risk to individuals. When GDPR applies, notify the competent authority within 72 hours where feasible unless the breach is unlikely to pose a risk. Notify affected people without undue delay if the breach creates a high risk, subject to the applicable exceptions. Keep incident records private.
