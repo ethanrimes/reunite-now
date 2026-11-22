@@ -169,7 +169,7 @@
   "Sending your link…": "正在寄送登入連結…",
   "Email me a sign-in link": "寄送登入連結給我",
   "Email sign-in opens once the project’s email domain is connected. You can explore the petition, policies, and maps now.": "專案連結電子郵件網域後即可使用電子郵件登入。現在你可以瀏覽連署、政策與地圖。",
-  "Check your inbox. Your link expires in 15 minutes and works once.": "請查看收件匣。連結將於 15 分鐘後失效，且僅能使用一次。",
+  "Check your inbox for your sign-in link. If you don’t see it, check your spam folder. The link expires in 15 minutes and works once.": "請到收件匣查看登入連結。若沒看到，請查看垃圾郵件資料夾。連結將於 15 分鐘後失效，且僅能使用一次。",
   "Local development only": "僅限本機開發",
   "No email was sent. Use this link to test your account on this computer.": "未寄出電子郵件。請使用此連結在這台電腦上測試帳戶。",
   "Open local sign-in link →": "開啟本機登入連結 →",

@@ -849,10 +849,10 @@
     "pt": "O acesso por e-mail ficará disponível quando o domínio de e-mail do projeto for conectado. Você já pode explorar a petição, as políticas e os mapas.",
     "tl": "Magagamit ang pag-sign in sa email kapag nakakonekta na ang email domain ng proyekto. Maaari mo nang tingnan ang petisyon, mga patakaran, at mga mapa."
   },
-  "Check your inbox. Your link expires in 15 minutes and works once.": {
-    "es": "Revisa tu bandeja de entrada. El enlace vence en 15 minutos y funciona una sola vez.",
-    "pt": "Confira sua caixa de entrada. O link expira em 15 minutos e funciona uma única vez.",
-    "tl": "Tingnan ang iyong inbox. Mag-e-expire ang link sa loob ng 15 minuto at isang beses lamang magagamit."
+  "Check your inbox for your sign-in link. If you don’t see it, check your spam folder. The link expires in 15 minutes and works once.": {
+    "es": "Revisa tu bandeja de entrada para encontrar el enlace de acceso. Si no lo ves, revisa la carpeta de correo no deseado. El enlace vence en 15 minutos y funciona una sola vez.",
+    "pt": "Procure o link de acesso na sua caixa de entrada. Se não o encontrar, confira a pasta de spam. O link expira em 15 minutos e só pode ser usado uma vez.",
+    "tl": "Tingnan ang iyong inbox para sa link sa pag-sign in. Kung wala ito roon, tingnan ang iyong spam folder. Mag-e-expire ang link pagkalipas ng 15 minuto at isang beses lang ito magagamit."
   },
   "Local development only": {
     "es": "Solo para desarrollo local",

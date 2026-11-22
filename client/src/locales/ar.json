@@ -169,7 +169,7 @@
   "Sending your link…": "جارٍ إرسال الرابط…",
   "Email me a sign-in link": "أرسل إليّ رابط تسجيل الدخول",
   "Email sign-in opens once the project’s email domain is connected. You can explore the petition, policies, and maps now.": "سيُتاح تسجيل الدخول بالبريد الإلكتروني بعد ربط نطاق البريد الإلكتروني الخاص بالمشروع. يمكنك الآن استكشاف العريضة والسياسات والخرائط.",
-  "Check your inbox. Your link expires in 15 minutes and works once.": "تحقق من بريدك الوارد. تنتهي صلاحية الرابط بعد 15 دقيقة ويمكن استخدامه مرة واحدة.",
+  "Check your inbox for your sign-in link. If you don’t see it, check your spam folder. The link expires in 15 minutes and works once.": "تحقق من صندوق الوارد للعثور على رابط تسجيل الدخول. إذا لم تجده، فتحقق من مجلد البريد غير المرغوب فيه. تنتهي صلاحية الرابط بعد 15 دقيقة ويمكن استخدامه مرة واحدة.",
   "Local development only": "للتطوير المحلي فقط",
   "No email was sent. Use this link to test your account on this computer.": "لم يُرسل أي بريد إلكتروني. استخدم هذا الرابط لاختبار حسابك على هذا الكمبيوتر.",
   "Open local sign-in link →": "فتح رابط تسجيل الدخول المحلي ←",

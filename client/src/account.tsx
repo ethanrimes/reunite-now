@@ -157,7 +157,7 @@ export function Login() {
             {sent && (
               <Notice tone="success">
                 {t(
-                  "Check your inbox. Your link expires in 15 minutes and works once.",
+                  "Check your inbox for your sign-in link. If you don’t see it, check your spam folder. The link expires in 15 minutes and works once.",
                 )}
               </Notice>
             )}
