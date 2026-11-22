@@ -133,15 +133,13 @@ export function Home() {
         </Link>
       </section>
       <section className="demands section" id="our-demands">
+        <p className="project-introduction">
+          {t(
+            "Reunite Now is a community-led petition for shorter U.S. visa waits. Families share their stories and visa timelines here, and supporters can show their representative how many people in their district have signed.",
+          )}
+        </p>
         <div className="section-heading">
-          <div>
-            <h2>{t("Congress must require the State Department to:")}</h2>
-          </div>
-          <p>
-            {t(
-              "We call on Congress and the Department of State to make visa processing transparent, accountable, and adequately resourced.",
-            )}
-          </p>
+          <h2>{t("Congress must require the State Department to:")}</h2>
         </div>
         <div className="demands-grid">
           {demands.map((d, i) => (

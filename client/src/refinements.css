@@ -411,3 +411,10 @@
     justify-content: center;
   }
 }
+
+.demands .project-introduction {
+  max-width: 65ch;
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  line-height: 1.55;
+  margin: 0 0 clamp(1.5rem, 4vw, 3rem);
+}
