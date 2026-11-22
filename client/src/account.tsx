@@ -259,7 +259,7 @@ const emptyProfile = {
   state: "",
   district: "",
   politicalAffiliation: "",
-  personallyInvolved: false,
+  personallyInvolved: true,
   signed: false,
   publicConsent: false,
   adultConsent: false,
@@ -924,7 +924,7 @@ export function Account() {
   const [invalidFields, setInvalidFields] = useState<string[]>([]);
   const [form, setForm] = useState<ProfileForm>(() => ({
     ...emptyProfile,
-    cases: [],
+    cases: [newCase()],
   }));
   const [districts, setDistricts] = useState<any[]>([]);
   const [error, setError] = useState("");
