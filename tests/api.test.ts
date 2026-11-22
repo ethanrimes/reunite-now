@@ -231,6 +231,13 @@ test("email authentication, data privacy, ownership, update and deletion", async
   const image = await request(published.photos[0]);
   assert.equal(image.headers.get("content-type"), "image/webp");
   const photoBytes = Buffer.from(await image.arrayBuffer());
+  const completeStory = await (
+    await request(storyPath + "?photos=inline")
+  ).json();
+  assert.deepEqual(completeStory, {
+    ...published,
+    photos: ["data:image/webp;base64," + photoBytes.toString("base64")],
+  });
   const photoInfo = await sharp(photoBytes).metadata();
   assert.equal(photoInfo.format, "webp");
   assert.equal(photoInfo.width, 20);

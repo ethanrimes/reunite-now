@@ -754,14 +754,17 @@ app.get("/api/story/:id", async (req, res) => {
   const fixture = demo?.stories.find((s) => s.id === id);
   if (fixture) return void res.json(fixture);
   if (!z.uuid().safeParse(id).success) return void res.sendStatus(404);
+  const inlinePhotos = req.query.photos === "inline";
   const result = await routed(false, () =>
     acrossRegions(() =>
       db.query(
         `SELECT s.data->>'title' AS title, s.data->>'body' AS body, s.data->>'support' AS support,
-       s.data->'impacts' AS impacts, CASE WHEN s.data->>'photosCleaned'='true' THEN jsonb_array_length(s.data->'photos') ELSE 0 END AS photo_count,
+       s.data->'impacts' AS impacts,
+       CASE WHEN $2::boolean AND s.data->>'photosCleaned'='true' THEN s.data->'photos' END AS photos,
+       CASE WHEN s.data->>'photosCleaned'='true' THEN jsonb_array_length(s.data->'photos') ELSE 0 END AS photo_count,
        s.updated_at,p.data->>'name' AS name,p.data->>'country' AS country
      ${publishedStories} AND s.user_id=$1`,
-        [id],
+        [id, inlinePhotos],
       ),
     ),
   );
@@ -774,10 +777,12 @@ app.get("/api/story/:id", async (req, res) => {
     body,
     support,
     impacts,
-    photos: Array.from(
-      { length: row.photo_count },
-      (_, i) => `/api/story/${id}/photo/${i}`,
-    ),
+    photos:
+      row.photos ??
+      Array.from(
+        { length: row.photo_count },
+        (_, i) => `/api/story/${id}/photo/${i}`,
+      ),
     updatedAt: row.updated_at,
     name: row.name,
     country: row.country,

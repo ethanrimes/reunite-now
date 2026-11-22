@@ -1,7 +1,7 @@
 import { ScrollRail } from "./scroll-rail";
 import { BillRecord } from "./legislation";
 import { t, number } from "./i18n";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   ArrowRight,
@@ -417,12 +417,6 @@ export function Stories() {
     "/story-cards?" +
       new URLSearchParams({ q: query, after: cursors.at(-1) ?? "" }),
   );
-  const detail = usePublicView<PublicStory>(
-    selectedId ? "/story/" + encodeURIComponent(selectedId) : null,
-  );
-  const selected = previewMode
-    ? sampleStories.find((s) => s.id === selectedId)
-    : detail?.data;
   const items = previewMode
     ? sampleStories
         .filter((s) =>
@@ -436,7 +430,6 @@ export function Stories() {
   const loading = previewMode ? sampleLoading : !page;
   const failed = previewMode ? !!sampleError : page?.error;
   const next = page?.data?.next;
-  const selectedCard = items.find((card) => card.id === selectedId);
   return (
     <div className="page-shell">
       <PageIntro
@@ -574,94 +567,123 @@ export function Stories() {
         )}
       </p>
       {selectedId && (
-        <Modal
-          title={t("A COMMUNITY STORY")}
-          wide
+        <StoryDialog
+          key={selectedId}
+          id={selectedId}
+          sample={sampleStories.find((s) => s.id === selectedId)}
           onClose={() => setSelectedId(null)}
-        >
-          {selected ? (
-            <div className="story-modal">
-              {selected.photos.length > 0 && (
-                <div className="story-photos">
-                  {selected.photos.length === 1 ? (
-                    <img
-                      src={selected.photos[0]}
-                      alt={t("Photo shared by {name}", { name: selected.name })}
-                    />
-                  ) : (
-                    <ScrollRail
-                      id="story-photo-carousel"
-                      title={t("Story photos")}
-                      previousLabel={t("Previous photo")}
-                      nextLabel={t("Next photo")}
-                    >
-                      {selected.photos.map((src, i) => (
-                        <img
-                          key={i}
-                          src={src}
-                          loading={i === 0 ? "eager" : "lazy"}
-                          alt={t("Photo {count} shared by {name}", {
-                            count: i + 1,
-                            name: selected.name,
-                          })}
-                        />
-                      ))}
-                    </ScrollRail>
-                  )}
-                </div>
-              )}
-              <span className="eyebrow">
-                {selected.name} · {t(selected.country)}
-              </span>
-              <h2 dir="auto">{selected.title}</h2>
-              <p className="preserve-lines" dir="auto">
-                {selected.body}
-              </p>
-              <div className="tags">
-                {selected.impacts.map((x) => (
-                  <span className="tag" key={x}>
-                    {x}
-                  </span>
-                ))}
-              </div>
-              {selected.support && (
-                <>
-                  <h3>{t("The support they’re looking for")}</h3>
-                  <p className="preserve-lines" dir="auto">
-                    {selected.support}
-                  </p>
-                </>
-              )}
-              <small>
-                {t("Story last updated ")}
-                {date(selected.updatedAt)}
-              </small>
-            </div>
-          ) : detail?.error ? (
-            <Notice tone="error">
-              {t("Something went wrong. Please try again.")}
-            </Notice>
-          ) : (
-            <div className="story-modal" aria-busy="true">
-              {selectedCard?.cover && (
-                <div className="story-photos">
-                  <img
-                    src={selectedCard.cover}
-                    alt={t("Photo shared by {name}", {
-                      name: selectedCard.name,
-                    })}
-                  />
-                </div>
-              )}
-              <h2 dir="auto">{selectedCard?.title}</h2>
-              <p role="status">{t("Loading…")}</p>
-            </div>
-          )}
-        </Modal>
+        />
       )}
     </div>
   );
 }
+
+function StoryDialog({
+  id,
+  sample,
+  onClose,
+}: {
+  id: string;
+  sample?: PublicStory;
+  onClose: () => void;
+}) {
+  const detail = usePublicView<PublicStory>(
+    "/story/" + encodeURIComponent(id) + "?photos=inline",
+  );
+  const selected = previewMode ? sample : detail?.data;
+  const content = useRef<HTMLDivElement>(null);
+  const [photos, setPhotos] = useState<"loading" | "ready" | "error">(
+    "loading",
+  );
+  useEffect(() => {
+    if (!selected?.photos.length || !content.current) return;
+    let active = true;
+    // Decode the actual carousel images before revealing any of the story.
+    const images = Array.from(content.current.querySelectorAll("img"));
+    Promise.all(images.map((image) => image.decode())).then(
+      () => {
+        if (active) setPhotos("ready");
+      },
+      () => {
+        if (active) setPhotos("error");
+      },
+    );
+    return () => {
+      active = false;
+    };
+  }, [selected]);
+  const ready = selected && (!selected.photos.length || photos === "ready");
+  return (
+    <Modal title={t("A COMMUNITY STORY")} wide onClose={onClose}>
+      {detail?.error || photos === "error" ? (
+        <Notice tone="error">
+          {t("Something went wrong. Please try again.")}
+        </Notice>
+      ) : (
+        !ready && <p role="status">{t("Loading…")}</p>
+      )}
+      {selected && (
+        <div className="story-modal" ref={content} hidden={!ready}>
+          {selected.photos.length > 0 && (
+            <div className="story-photos">
+              {selected.photos.length === 1 ? (
+                <img
+                  src={selected.photos[0]}
+                  alt={t("Photo shared by {name}", { name: selected.name })}
+                />
+              ) : (
+                <ScrollRail
+                  id="story-photo-carousel"
+                  title={t("Story photos")}
+                  previousLabel={t("Previous photo")}
+                  nextLabel={t("Next photo")}
+                >
+                  {selected.photos.map((src, i) => (
+                    <img
+                      key={i}
+                      src={src}
+                      alt={t("Photo {count} shared by {name}", {
+                        count: i + 1,
+                        name: selected.name,
+                      })}
+                    />
+                  ))}
+                </ScrollRail>
+              )}
+            </div>
+          )}
+          <span className="eyebrow">
+            {selected.name} · {t(selected.country)}
+          </span>
+          <h2 dir="auto">{selected.title}</h2>
+          <p className="preserve-lines" dir="auto">
+            {selected.body}
+          </p>
+          <div className="tags">
+            {selected.impacts.map((x) => (
+              <span className="tag" key={x}>
+                {x}
+              </span>
+            ))}
+          </div>
+          {selected.support && (
+            <>
+              <h3>{t("The support they’re looking for")}</h3>
+              <p className="preserve-lines" dir="auto">
+                {selected.support}
+              </p>
+            </>
+          )}
+          <small>
+            {t("Story last updated ")}
+            {date(selected.updatedAt)}
+          </small>
+        </div>
+      )}
+    </Modal>
+  );
+}
+
 export function DataUse() {
   return (
     <div className="page-shell narrow">
