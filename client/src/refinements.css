@@ -1,66 +1,9 @@
 /* Account and evidence details use the existing civic palette. */
-.address-search {
-  position: relative;
-  isolation: isolate;
-  margin: 1rem 0;
-}
-.address-results {
-  position: absolute;
-  z-index: 1100;
-  inset-inline-start: 0;
-  inset-inline-end: 0;
-  top: 100%;
-  list-style: none;
-  padding: 0.4rem;
-  margin: 0.35rem 0;
-  background: #fff;
-  border: 1px solid var(--line, #cbd0d3);
-  border-radius: 10px;
-  box-shadow: 0 12px 30px #18344920;
-  max-height: 260px;
-  overflow: auto;
-}
-.address-results button {
-  width: 100%;
-  text-align: start;
-  border: 0;
-  background: transparent;
-  padding: 0.85rem;
-  border-radius: 6px;
-  line-height: 1.4;
-  color: #183449;
-  cursor: pointer;
-}
-.address-results [aria-selected="true"] button,
-.address-results button:hover {
-  background: #e6eef4;
-}
-.address-map {
-  height: 320px;
-  width: 100%;
-  border: 1px solid #b9c9d1;
-  border-radius: 10px;
-  background: #d9e7eb;
-  z-index: 0;
-}
-.address-map-wrap {
-  min-width: 0;
-  margin: 0.8rem 0;
-}
-.map-credit {
-  display: block;
-  font-size: 11px;
-  line-height: 1.5;
-  padding: 0.4rem 0.2rem;
-  overflow-wrap: anywhere;
-}
-.district-result {
-  border-top: 1px solid #ccd4d9;
-  padding-top: 1rem;
-}
-.district-result .row-between {
-  gap: 12px;
-  flex-wrap: wrap;
+.district-help {
+  margin-block-start: 1rem;
+  min-height: 44px;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 .policy-context {
   border-inline-start: 3px solid #9a7041;
@@ -232,20 +175,6 @@
   width: 100%;
 }
 @media (max-width: 600px) {
-  .address-map {
-    height: 280px;
-  }
-  .address-search .input-action {
-    flex-wrap: wrap;
-  }
-  .address-search .input-action input {
-    flex-basis: 100%;
-    min-width: 0;
-  }
-  .address-search .input-action button {
-    width: 100%;
-    padding: 0.7rem;
-  }
   .vote-row {
     gap: 0.5rem;
   }

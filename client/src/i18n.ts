@@ -104,15 +104,6 @@ export function t(text: string, values?: Record<string, string | number>) {
       ...new Set(details),
     ].join(" ");
   }
-  const district = text.match(
-    /^Found ([A-Z]{2}-\d{2}) in the 119th Congress\. Your search address has been cleared\. Review the result before saving\.$/,
-  );
-  if (district)
-    return translate(
-      "Found {district} in the 119th Congress. Your search address has been cleared. Review the result before saving.",
-      language,
-      { district: district[1] },
-    );
   return translate(text, language, values);
 }
 export const number = (value: number) => value.toLocaleString(getLocale());

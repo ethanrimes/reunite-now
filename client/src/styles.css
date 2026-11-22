@@ -1765,20 +1765,6 @@ thead {
   white-space: nowrap;
   font-size: 12px;
 }
-.address-lookup {
-  background: #f4f3f0;
-  padding: 20px;
-  border-radius: 2px;
-  margin-bottom: 23px;
-}
-.address-lookup summary {
-  font-size: 13px;
-  cursor: pointer;
-}
-.address-lookup p {
-  font-size: 12px;
-  margin: 17px 0;
-}
 .involvement {
   margin-top: 20px;
 }
@@ -3576,16 +3562,6 @@ input:disabled {
   color: #1c1c1c;
   border-color: #e3e2dc;
 }
-.address-lookup {
-  background: #f4f3f0;
-  border: 1px solid #e3e2dc;
-}
-.address-lookup summary {
-  color: #1c1c1c;
-}
-.address-lookup p {
-  color: #1c1c1c;
-}
 .involvement legend {
   color: #1c1c1c;
 }
@@ -4013,8 +3989,6 @@ small,
 .checkbox,
 .involvement label,
 .involvement legend,
-.address-lookup summary,
-.address-lookup p,
 .impact-options label,
 .upload-control,
 .data-summary,
@@ -4489,8 +4463,7 @@ h2 em,
 input,
 select,
 textarea,
-.input-action,
-.address-lookup {
+.input-action {
   background: #ffffff;
   border-color: #e3e2dc;
   border-radius: 2px;
@@ -5007,7 +4980,6 @@ textarea,
 .auth-art,
 .auth-form,
 .account-section,
-.address-lookup,
 .case-editor,
 .table-wrap {
   border-radius: var(--radius-panel);

@@ -10,10 +10,6 @@ export const credits = [
     title: "Maps and representation",
     links: [
       [
-        "© OpenStreetMap contributors · Photon",
-        "https://www.openstreetmap.org/copyright",
-      ],
-      [
         "US Census Bureau · state and congressional district boundaries",
         "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/4",
       ],
@@ -34,10 +30,6 @@ export const credits = [
         "https://github.com/unitedstates/congress-legislators",
       ],
       ["Biographical Directory of Congress", "https://bioguide.congress.gov/"],
-      [
-        "US Census Geocoder · address lookup",
-        "https://geocoding.geo.census.gov/geocoder/",
-      ],
     ],
   },
   {
@@ -82,7 +74,6 @@ export function Sources() {
   const sources = new Map<string, string>([
     [postsDirectory.source, "Official post directory"],
     [pauseSource, "State Department update"],
-    ["https://learn.microsoft.com/en-us/azure/azure-maps/", "Azure Maps"],
     [
       "https://privacy.microsoft.com/privacystatement",
       "Microsoft privacy statement",

@@ -86,22 +86,14 @@ test("email authentication, data privacy, ownership, update and deletion", async
       (await request("/api/me/profile", "PUT", invalid)).status,
       400,
     );
-  assert.equal(
-    (
-      await request(
-        "/api/maps/suggest",
-        "POST",
-        { query: "1600 Pennsylvania" },
-        false,
-      )
-    ).status,
-    401,
-  );
-  assert.equal(
-    (await request("/api/maps/district", "POST", { lat: 999, lon: 0 })).status,
-    400,
-  );
-  assert.equal((await request("/api/maps/tiles/3/999/1")).status, 400);
+  for (const [route, method] of [
+    ["/api/maps/suggest", "POST"],
+    ["/api/maps/district", "POST"],
+    ["/api/maps/tiles/3/1/1", "GET"],
+    ["/api/maps/attribution", "POST"],
+    ["/api/district-lookup", "POST"],
+  ])
+    assert.equal((await request(route, method)).status, 404);
   assert.equal(
     (await request("/api/me/profile", "PUT", profile, false)).status,
     401,

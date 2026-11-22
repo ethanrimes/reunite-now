@@ -47,7 +47,6 @@ import {
   type CaseRole,
 } from "../../shared/visa-workflow";
 import postsDirectory from "../../shared/posts.json";
-import { DistrictLookup } from "./district-lookup";
 import countries from "../../shared/countries.json";
 import { caseStatus } from "../../shared/metrics";
 export function Login() {
@@ -1271,11 +1270,15 @@ export function Account() {
                 )}
               </div>
               {form.country === "United States" && (
-                <DistrictLookup
-                  onConfirm={(state, district) =>
-                    setForm((p) => ({ ...p, state, district }))
-                  }
-                />
+                <a
+                  className="external district-help"
+                  href="https://www.house.gov/representatives/find-your-representative"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {t("Find your congressional district on House.gov")}{" "}
+                  <ArrowUpRight size={16} aria-hidden="true" />
+                </a>
               )}
             </section>
           )}

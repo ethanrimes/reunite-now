@@ -585,12 +585,6 @@ export function DataUse() {
             "For email sign-in, Reunite Now verifies a single-use link delivered by Azure Communication Services. If you choose Google sign-in, Google verifies your identity and provides your verified email address to Reunite Now. Your sign-in tokens, session details, and reminder preferences stay private. We do not sell personal data or use advertising trackers.",
           )}
         </p>
-        <h2>{t("Address lookup")}</h2>
-        <p>
-          {t(
-            "For district lookup, Azure Maps or Photon receives the address you type. The U.S. Census Bureau receives the selected address or coordinates. We save only the state and district you confirm. You can also select a district manually.",
-          )}
-        </p>
         <h2>{t("Statistics and interpretation")}</h2>
         <p>
           {t(
@@ -623,7 +617,7 @@ export function DataUse() {
         <h2>{t("Services that process data")}</h2>
         <p>
           {t(
-            "Microsoft Azure hosts the application, database, and scheduled work. Azure Communication Services handles email when enabled. Google handles Google sign-in if you choose it. Census handles optional address lookup. Public policy links and contact links take you to external organizations. We do not share submissions with those organizations.",
+            "Microsoft Azure hosts the application, database, and scheduled work. Azure Communication Services handles email when enabled. Google handles Google sign-in if you choose it. Public policy links and contact links take you to external organizations. We do not share submissions with those organizations.",
           )}
         </p>
         <h2>{t("Agreement version")}</h2>

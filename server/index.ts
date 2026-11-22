@@ -19,7 +19,6 @@ import { Google, generateCodeVerifier, generateState } from "arctic";
 import { z } from "zod";
 import { db, transaction, migrate } from "./db";
 import { emailReady, sendEmail } from "./email";
-import { mapsRouter, mapsReady, districtAt } from "./maps";
 import { canonicalHost } from "./canonical";
 import { sendReminders } from "./reminders";
 import { createDemoData, demoEnabled } from "./demo";
@@ -139,7 +138,6 @@ app.get("/api/config", (_req, res) =>
     devAuth,
     demoData: !!demo,
     reminders: emailReady(),
-    maps: mapsReady(),
     consentVersion,
   }),
 );
@@ -475,43 +473,6 @@ app.get("/api/stories", async (_req, res) => {
     ],
   });
 });
-app.use("/api/maps", mapsRouter(requireUser));
-app.post(
-  "/api/district-lookup",
-  requireUser,
-  rateLimit({ windowMs: 60000, limit: 10 }),
-  async (req, res) => {
-    const { address } = z
-      .object({ address: z.string().trim().min(8).max(300) })
-      .parse(req.body);
-    const params = new URLSearchParams({
-      address,
-      benchmark: "Public_AR_Current",
-      vintage: "Current_Current",
-      format: "json",
-    });
-    const r = await fetch(
-      `https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?${params}`,
-      { signal: AbortSignal.timeout(15000) },
-    );
-    if (!r.ok)
-      throw Object.assign(
-        new Error(
-          "Census lookup is unavailable. Select your district manually.",
-        ),
-        { status: 503 },
-      );
-    const data = await r.json();
-    const matches = data.result?.addressMatches;
-    if (!matches?.length)
-      return void res.status(404).json({
-        error:
-          "No address match. Try a complete US street address, or choose your district manually.",
-      });
-    const match = matches[0];
-    res.json(await districtAt(match.coordinates.y, match.coordinates.x));
-  },
-);
 app.post("/api/jobs/reminders", async (req, res) => {
   const secret = process.env.CRON_SECRET,
     auth = req.get("authorization") || "";

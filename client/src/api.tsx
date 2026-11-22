@@ -34,7 +34,6 @@ export type Me = {
   story: Story | null;
 };
 type Config = {
-  maps?: boolean;
   demoData: boolean;
   emailAuth: boolean;
   googleAuth: boolean;

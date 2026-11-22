@@ -634,16 +634,6 @@
     "pt": "Seu e-mail, tokens de acesso, dados de sessão e preferência de lembretes não fazem parte dos perfis públicos. Eles são usados para manter sua conta e, se solicitado, enviar lembretes. Não vendemos dados pessoais nem usamos rastreadores de publicidade.",
     "tl": "Hindi kasama sa pampublikong profile ang iyong email, mga token sa pag-sign in, detalye ng sesyon, at kagustuhan sa paalala. Ginagamit ang mga ito upang patakbuhin ang iyong account at magpadala ng paalala kung hiniling mo. Hindi kami nagbebenta ng personal na datos o gumagamit ng mga tracker para sa advertising."
   },
-  "Address lookup": {
-    "es": "Búsqueda por dirección",
-    "pt": "Busca por endereço",
-    "tl": "Paghahanap gamit ang address"
-  },
-  "When you use district lookup, your address is sent to the US Census Bureau’s geocoding service. Reunite Now does not save the search address or geocoding result. Only the state and congressional district you confirm are saved. Census may process the request under its own policies. You can select your district manually instead.": {
-    "es": "Al buscar tu distrito, tu dirección se envía al servicio de geocodificación de la Oficina del Censo de EE. UU. Reunite Now no guarda la dirección de búsqueda ni el resultado de geocodificación. Solo se guardan el estado y el distrito que confirmas. El Censo puede procesar la consulta según sus propias políticas. También puedes seleccionar el distrito manualmente.",
-    "pt": "Ao buscar seu distrito, seu endereço é enviado ao serviço de geocodificação do Departamento do Censo dos EUA. O Reunite Now não salva o endereço pesquisado nem o resultado da geocodificação. Apenas o estado e o distrito que você confirmar são salvos. O Censo pode processar a consulta de acordo com suas próprias políticas. Você também pode selecionar o distrito manualmente.",
-    "tl": "Kapag hinanap mo ang iyong distrito, ipinapadala ang iyong address sa serbisyong geocoding ng US Census Bureau. Hindi iniimbak ng Reunite Now ang address na hinanap o resulta ng geocoding. Ang estado at distritong kinumpirma mo lamang ang sine-save. Maaaring iproseso ng Census ang kahilingan ayon sa sarili nitong mga patakaran. Maaari mo ring piliin nang manu-mano ang iyong distrito."
-  },
   "Statistics and interpretation": {
     "es": "Estadísticas e interpretación",
     "pt": "Estatísticas e interpretação",
@@ -1259,30 +1249,10 @@
     "pt": "(distrito único)",
     "tl": "(buong estado)"
   },
-  "Not sure of your district? Look it up by address.": {
-    "es": "¿No sabes cuál es tu distrito? Búscalo por dirección.",
-    "pt": "Não sabe qual é seu distrito? Busque pelo endereço.",
-    "tl": "Hindi sigurado sa iyong distrito? Hanapin gamit ang address."
-  },
   "Your address is sent to the US Census Bureau to find your district. This application does not retain your address or search results. Only the state and district you confirm are saved.": {
     "es": "Tu dirección se envía a la Oficina del Censo de EE. UU. para encontrar tu distrito. Esta aplicación no conserva la dirección ni los resultados. Solo se guardan el estado y el distrito que confirmas.",
     "pt": "Seu endereço é enviado ao Departamento do Censo dos EUA para encontrar seu distrito. Esta aplicação não guarda o endereço nem os resultados. Apenas o estado e o distrito que você confirmar são salvos.",
     "tl": "Ipinapadala ang iyong address sa US Census Bureau upang hanapin ang distrito. Hindi iniimbak ng aplikasyon ang address o mga resulta ng paghahanap. Ang estado at distritong kinumpirma mo lamang ang sine-save."
-  },
-  "Address for district lookup": {
-    "es": "Dirección para buscar el distrito",
-    "pt": "Endereço para buscar o distrito",
-    "tl": "Address para sa paghahanap ng distrito"
-  },
-  "Looking up…": {
-    "es": "Buscando…",
-    "pt": "Buscando…",
-    "tl": "Hinahanap…"
-  },
-  "Find district": {
-    "es": "Buscar distrito",
-    "pt": "Buscar distrito",
-    "tl": "Hanapin ang distrito"
   },
   "Are you personally involved in a visa process? *": {
     "es": "¿Participas personalmente en un proceso de visa? *",
@@ -2739,11 +2709,6 @@
     "pt": "{count} casos encerrados nesta visualização",
     "tl": "{count} saradong kaso sa view na ito"
   },
-  "Found {district} in the 119th Congress. Your search address has been cleared. Review the result before saving.": {
-    "es": "Se encontró {district} en el 119.º Congreso. Se borró la dirección de búsqueda. Revisa el resultado antes de guardar.",
-    "pt": "Foi encontrado {district} no 119.º Congresso. O endereço pesquisado foi apagado. Confira o resultado antes de salvar.",
-    "tl": "Nahanap ang {district} sa ika-119 na Kongreso. Na-clear na ang address na ginamit mo sa paghahanap. Suriin ang resulta bago i-save."
-  },
   "Afghanistan": {
     "es": "Afganistán",
     "pt": "Afeganistão",
@@ -3694,16 +3659,6 @@
     "pt": "Estados Unidos",
     "tl": "Estados Unidos"
   },
-  "Census lookup is unavailable. Select your district manually.": {
-    "es": "La búsqueda del Censo no está disponible. Selecciona tu distrito manualmente.",
-    "pt": "A busca do Censo está indisponível. Selecione seu distrito manualmente.",
-    "tl": "Hindi magagamit ang paghahanap sa Census. Piliin ang iyong distrito nang manu-mano."
-  },
-  "No address match. Try a complete US street address, or choose your district manually.": {
-    "es": "No se encontró la dirección. Prueba una dirección completa de EE. UU. o selecciona el distrito manualmente.",
-    "pt": "Endereço não encontrado. Tente um endereço completo dos EUA ou selecione o distrito manualmente.",
-    "tl": "Walang tumugmang address. Subukan ang kumpletong address sa US, o piliin ang iyong distrito nang manu-mano."
-  },
   "Cancel": {
     "es": "Cancelar",
     "pt": "Cancelar",
@@ -4374,11 +4329,6 @@
     "pt": "Diretório biográfico do Congresso",
     "tl": "Talambuhay ng mga kasapi ng Kongreso"
   },
-  "US Census Geocoder · address lookup": {
-    "es": "Geocodificador del Censo de EE. UU. · búsqueda de direcciones",
-    "pt": "Geocodificador do Censo dos EUA · busca de endereços",
-    "tl": "US Census Geocoder · paghahanap gamit ang address"
-  },
   "Landing-page family photograph · Unsplash": {
     "es": "Fotografía familiar de la portada · Unsplash",
     "pt": "Fotografia da família na página inicial · Unsplash",
@@ -4599,50 +4549,10 @@
     "pt": "O patrocínio é uma ação legislativa, não um voto. Não constar na lista não estabelece uma posição.",
     "tl": "Aksiyon sa batas ang pagtataguyod, hindi isang boto. Hindi matutukoy ang posisyon mula sa kawalan sa listahan ng sponsor."
   },
-  "Selected address": {
-    "es": "Dirección seleccionada",
-    "pt": "Endereço selecionado",
-    "tl": "Napiling address"
-  },
-  "Selected address and congressional districts": {
-    "es": "Dirección seleccionada y distritos",
-    "pt": "Endereço selecionado e distritos",
-    "tl": "Napiling address at mga distrito"
-  },
-  "US Census boundaries": {
-    "es": "Límites del Censo de EE. UU.",
-    "pt": "Limites do Censo dos EUA",
-    "tl": "Mga hangganan mula sa US Census"
-  },
   "119th Congress": {
     "es": "119.º Congreso",
     "pt": "119º Congresso",
     "tl": "Ika-119 na Kongreso"
-  },
-  "Hide district boundaries": {
-    "es": "Ocultar límites de distritos",
-    "pt": "Ocultar limites dos distritos",
-    "tl": "Itago ang mga hangganan ng distrito"
-  },
-  "Show district boundaries": {
-    "es": "Mostrar límites de distritos",
-    "pt": "Mostrar limites dos distritos",
-    "tl": "Ipakita ang mga hangganan ng distrito"
-  },
-  "Review the address and district before confirming. Boundaries are for the 119th Congress; future election maps may differ.": {
-    "es": "Revisa la dirección y el distrito antes de confirmar. Los límites corresponden al 119.º Congreso; pueden cambiar para futuras elecciones.",
-    "pt": "Revise o endereço e o distrito antes de confirmar. Os limites são do 119º Congresso; podem mudar em futuras eleições.",
-    "tl": "Suriin ang address at distrito bago kumpirmahin. Para sa ika-119 na Kongreso ang mga hangganan; maaaring iba ang mapa sa susunod na halalan."
-  },
-  "District selected: {district}. Search details have been cleared.": {
-    "es": "Distrito elegido: {district}. Se borraron los datos de búsqueda.",
-    "pt": "Distrito escolhido: {district}. Os dados da busca foram apagados.",
-    "tl": "Napiling distrito: {district}. Nabura na ang detalye ng paghahanap."
-  },
-  "Use this district": {
-    "es": "Usar este distrito",
-    "pt": "Usar este distrito",
-    "tl": "Gamitin ang distritong ito"
   },
   "Processing capacity": {
     "es": "Capacidad de procesamiento",
@@ -4804,16 +4714,6 @@
     "pt": "Os limites não carregaram. Tente novamente.",
     "tl": "Hindi ma-load ang mga hangganan. Subukan muli."
   },
-  "No address suggestions. Try a complete address, then use Find district.": {
-    "es": "Sin sugerencias. Escribe una dirección completa y pulsa Buscar distrito.",
-    "pt": "Sem sugestões. Digite um endereço completo e use Buscar distrito.",
-    "tl": "Walang mungkahing address. Ilagay ang kumpletong address at gamitin ang Hanapin ang distrito."
-  },
-  "Address suggestions are unavailable. Enter a full address or select your district manually.": {
-    "es": "Las sugerencias no están disponibles. Escribe la dirección completa o elige el distrito manualmente.",
-    "pt": "As sugestões estão indisponíveis. Digite o endereço completo ou escolha o distrito manualmente.",
-    "tl": "Hindi magagamit ang mga mungkahi. Ilagay ang buong address o piliin nang manu-mano ang distrito."
-  },
   "The map service is temporarily unavailable. Please try again.": {
     "es": "El servicio de mapas no está disponible temporalmente. Inténtalo de nuevo.",
     "pt": "O serviço de mapas está temporariamente indisponível. Tente novamente.",
@@ -4953,21 +4853,6 @@
     "es": "La ley de autorización de defensa de 2026 expresa la posición del Congreso sobre modernizar e integrar sistemas consulares (§5120). No establece un plazo exigible de procesamiento.",
     "pt": "A lei de autorização de defesa de 2026 expressa a posição do Congresso sobre modernizar e integrar sistemas consulares (§5120). Não estabelece um prazo obrigatório de processamento.",
     "tl": "Kasama sa batas sa depensa para sa FY2026 ang pananaw ng Kongreso sa pagmodernisa at pagsasama ng mga sistemang konsular (§5120). Hindi ito deadline na maipatutupad sa pagproseso."
-  },
-  "Address suggestions and street maps use Azure Maps and its mapping providers. Census identifies the district. Reunite Now does not save the search address, coordinates, or results; only the state and district you confirm are saved.": {
-    "es": "Las sugerencias y mapas usan Azure Maps y sus proveedores. El Censo identifica el distrito. Reunite Now no guarda la dirección, coordenadas ni resultados; solo el estado y distrito confirmados.",
-    "pt": "Sugestões e mapas usam Azure Maps e seus fornecedores. O Censo identifica o distrito. Reunite Now não salva endereço, coordenadas ou resultados; apenas estado e distrito confirmados.",
-    "tl": "Gumagamit ang mga mungkahi at mapa ng Azure Maps at mga provider nito. Census ang tumutukoy sa distrito. Hindi iniimbak ng Reunite Now ang address, coordinate, o resulta; estado at distritong kinumpirma mo lamang."
-  },
-  "District lookup sends address searches to Azure Maps and its mapping providers, and coordinates or full-address fallback requests to the US Census Bureau. Reunite Now does not retain the search address, coordinates, or results. Only the confirmed state and district are saved. These providers process requests under their own privacy policies. You can select your district manually instead.": {
-    "es": "La búsqueda envía direcciones a Azure Maps y sus proveedores, y coordenadas o consultas de dirección completa al Censo de EE. UU. Reunite Now no retiene direcciones, coordenadas ni resultados; solo estado y distrito confirmados. Los proveedores tienen sus propias políticas de privacidad. Puedes elegir el distrito manualmente.",
-    "pt": "A busca envia endereços ao Azure Maps e seus fornecedores, e coordenadas ou consultas de endereço completo ao Censo dos EUA. Reunite Now não retém endereços, coordenadas ou resultados; apenas estado e distrito confirmados. Os fornecedores têm suas próprias políticas de privacidade. Você pode escolher o distrito manualmente.",
-    "tl": "Ipinapadala ang address sa Azure Maps at mga provider nito, at coordinate o buong address sa US Census Bureau. Hindi iniimbak ng Reunite Now ang address, coordinate, o resulta; ang kinumpirmang estado at distrito lamang. May sariling patakaran sa privacy ang mga provider. Maaari mong piliin nang manu-mano ang distrito."
-  },
-  "Azure Maps": {
-    "es": "Azure Maps",
-    "pt": "Azure Maps",
-    "tl": "Azure Maps"
   },
   "Domestic Visa Renewal Modernization Act": {
     "es": "Domestic Visa Renewal Modernization Act",
@@ -5303,16 +5188,6 @@
     "es": "Siga los proyectos de ley, los escritos judiciales y los cambios en los consulados.",
     "pt": "Acompanhe projetos no Congresso, petições judiciais e mudanças nos consulados.",
     "tl": "Subaybayan ang mga panukala sa Kongreso, dokumentong inihain sa korte at pagbabago sa mga konsulado."
-  },
-  "Address suggestions use Photon with OpenStreetMap data. Census identifies the district. Only your confirmed state and district are saved.": {
-    "es": "Photon sugiere direcciones con datos de OpenStreetMap. La Oficina del Censo identifica el distrito. Solo se guardan el estado y el distrito que confirme.",
-    "pt": "O Photon sugere endereços com dados do OpenStreetMap. O Censo identifica o distrito. Salvamos apenas o estado e o distrito que você confirmar.",
-    "tl": "Gumagamit ang Photon ng datos ng OpenStreetMap para magmungkahi ng address. Tinutukoy ng Census ang distrito. Ang kinumpirma mong estado at distrito lang ang sine-save."
-  },
-  "For district lookup, Azure Maps or Photon receives the address you type. The U.S. Census Bureau receives the selected address or coordinates. We save only the state and district you confirm. You can also select a district manually.": {
-    "es": "Para buscar un distrito, Azure Maps o Photon recibe la dirección que escribe. La Oficina del Censo recibe la dirección elegida o las coordenadas. Solo guardamos el estado y el distrito que confirme. También puede elegir el distrito manualmente.",
-    "pt": "Para localizar o distrito, o Azure Maps ou o Photon recebe o endereço digitado. O Censo dos EUA recebe o endereço selecionado ou as coordenadas. Salvamos apenas o estado e o distrito confirmados. Você também pode escolher o distrito manualmente.",
-    "tl": "Sa paghahanap ng distrito, natatanggap ng Azure Maps o Photon ang itina-type mong address. Natatanggap ng U.S. Census Bureau ang napiling address o mga coordinate. Ang kinumpirma mong estado at distrito lamang ang sine-save namin. Maaari mo ring piliin nang manu-mano ang distrito."
   },
   "Reducing Visa Delays Act gains a cosponsor": {
     "es": "El proyecto para reducir las demoras de visas suma una copatrocinadora",
@@ -5659,11 +5534,6 @@
     "pt": "No acesso por e-mail, o Reunite Now verifica um link de uso único enviado pelo Azure Communication Services. Se você optar por entrar com o Google, o Google verifica sua identidade e fornece seu e-mail verificado ao Reunite Now. Os tokens de acesso, os dados da sessão e as preferências de lembretes são privados. Não vendemos dados pessoais nem usamos rastreadores de publicidade.",
     "tl": "Kung email ang gamit mo sa pag-sign in, bineberipika ng Reunite Now ang link na isang beses lang magagamit at ipinadala ng Azure Communication Services. Kung Google ang pipiliin mo, ibeberipika ng Google ang pagkakakilanlan mo at ibibigay sa Reunite Now ang beripikadong email address mo. Pribado ang iyong mga sign-in token, detalye ng session, at mga piniling paalala. Hindi kami nagbebenta ng personal na datos o gumagamit ng mga tracker para sa patalastas."
   },
-  "Microsoft Azure hosts the application, database, and scheduled work. Azure Communication Services handles email when enabled. Google handles Google sign-in if you choose it. Census handles optional address lookup. Public policy links and contact links take you to external organizations. We do not share submissions with those organizations.": {
-    "es": "Microsoft Azure aloja la aplicación, la base de datos y las tareas programadas. Azure Communication Services gestiona el correo cuando está habilitado. Google gestiona el inicio de sesión con Google si lo eliges. El Censo procesa la búsqueda opcional por dirección. Los enlaces de políticas y de contacto llevan a organizaciones externas. No compartimos los envíos con esas organizaciones.",
-    "pt": "O Microsoft Azure hospeda a aplicação, o banco de dados e as tarefas agendadas. O Azure Communication Services cuida dos e-mails quando habilitado. O Google cuida do acesso com Google, se você o escolher. O Censo processa a busca opcional por endereço. Links de políticas e de contato levam a organizações externas. Não compartilhamos os envios com essas organizações.",
-    "tl": "Nasa Microsoft Azure ang aplikasyon, database, at mga nakaiskedyul na gawain. Pinangangasiwaan ng Azure Communication Services ang email kapag pinagana. Pinangangasiwaan ng Google ang pag-sign in gamit ang Google kung pipiliin mo ito. Ang Census ang nagpoproseso ng opsyonal na paghahanap gamit ang address. Dinadala ka ng mga link ng patakaran at pakikipag-ugnayan sa mga panlabas na organisasyon. Hindi namin ibinabahagi sa kanila ang mga isinumite."
-  },
   "The version accepted with your signature is recorded. This is an independent advocacy project, not a law firm or government service.": {
     "es": "Se registra la versión aceptada al firmar. Este es un proyecto independiente de incidencia pública, no un bufete ni un servicio del gobierno.",
     "pt": "A versão aceita ao assinar é registrada. Este é um projeto independente de mobilização pública, não um escritório de advocacia nem um serviço governamental.",
@@ -5673,11 +5543,6 @@
     "es": "Tu nombre, categoría de situación legal, país, estado de EE. UU. y distrito congresional, afiliación política opcional, participación en el proceso de visa, fecha de firma y fecha de última confirmación son públicos. También son públicos los nombres o apodos de los solicitantes, países, categorías de visa, puestos consulares, relaciones y fechas que ingreses. No incluyas números de pasaporte, números de recibo, direcciones, fechas de nacimiento ni documentos.",
     "pt": "Seu nome, categoria de situação legal, país, estado dos EUA e distrito congressional, afiliação política opcional, participação no processo de visto, data da assinatura e data da última confirmação são públicos. Os nomes ou apelidos dos solicitantes, países, categorias de visto, postos consulares, relacionamentos e datas que você inserir também são públicos. Não inclua números de passaporte, números de recibo, endereços, datas de nascimento ou documentos.",
     "tl": "Pampubliko ang pangalan mo, kategorya ng legal na katayuan, bansa, estado sa US at congressional district, opsyonal na pagkakaugnay sa politika, pakikilahok sa proseso ng visa, petsa ng paglagda, at petsa ng huling pagkumpirma. Pampubliko rin ang mga pangalan o palayaw ng mga aplikante, bansa, kategorya ng visa, mga himpilan ng embahada o konsulado, relasyon at petsang ilalagay mo. Huwag maglagay ng mga numero ng pasaporte, numero ng resibo, address, petsa ng kapanganakan, o mga dokumento."
-  },
-  "Street address and ZIP code": {
-    "es": "Dirección y código postal",
-    "pt": "Endereço e código postal",
-    "tl": "Address ng kalye at ZIP code"
   },
   "I’m the applicant": {
     "es": "Soy el solicitante",
@@ -5693,5 +5558,15 @@
     "es": "Reunite Now es una petición impulsada por la comunidad para reducir la espera por las visas de EE. UU. Aquí las familias comparten sus historias y las fechas de sus trámites. Quienes apoyan la petición pueden mostrarle a su representante cuántas personas de su distrito han firmado.",
     "pt": "O Reunite Now é uma petição da comunidade para reduzir a espera por vistos dos EUA. As famílias compartilham aqui suas histórias e as datas de seus processos. Quem apoia a petição pode mostrar ao seu representante quantas pessoas do distrito assinaram.",
     "tl": "Ang Reunite Now ay petisyong pinangungunahan ng komunidad para mapaikli ang paghihintay sa visa ng US. Ibinabahagi rito ng mga pamilya ang kanilang kuwento at mga petsa sa proseso ng visa. Maipapakita ng mga tagasuporta sa kanilang kinatawan kung ilan na ang lumagda sa kanilang distrito."
+  },
+  "Microsoft Azure hosts the application, database, and scheduled work. Azure Communication Services handles email when enabled. Google handles Google sign-in if you choose it. Public policy links and contact links take you to external organizations. We do not share submissions with those organizations.": {
+    "es": "Microsoft Azure aloja la aplicación, la base de datos y las tareas programadas. Azure Communication Services gestiona el correo cuando está habilitado. Google gestiona el inicio de sesión con Google si lo eliges. Los enlaces de políticas y de contacto llevan a organizaciones externas. No compartimos los envíos con esas organizaciones.",
+    "pt": "O Microsoft Azure hospeda a aplicação, o banco de dados e as tarefas agendadas. O Azure Communication Services cuida dos e-mails quando habilitado. O Google cuida do acesso com Google, se você o escolher. Links de políticas e de contato levam a organizações externas. Não compartilhamos os envios com essas organizações.",
+    "tl": "Nasa Microsoft Azure ang aplikasyon, database, at mga nakaiskedyul na gawain. Pinangangasiwaan ng Azure Communication Services ang email kapag pinagana. Pinangangasiwaan ng Google ang pag-sign in gamit ang Google kung pipiliin mo ito. Dinadala ka ng mga link ng patakaran at pakikipag-ugnayan sa mga panlabas na organisasyon. Hindi namin ibinabahagi sa kanila ang mga isinumite."
+  },
+  "Find your congressional district on House.gov": {
+    "es": "Busca tu distrito congresional en House.gov",
+    "pt": "Encontre seu distrito congressional em House.gov",
+    "tl": "Hanapin ang iyong distrito sa Kongreso sa House.gov"
   }
 }
