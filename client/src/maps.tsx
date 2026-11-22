@@ -25,20 +25,12 @@ import {
   usMapProjector,
 } from "../../shared/coverage";
 import { Link } from "react-router-dom";
-import { useData } from "./api";
+import { previewMode } from "./preview";
+import { visaStatistics, type PlaceCount } from "../../shared/public-views";
+import { useData, usePublicView } from "./api";
 import { PageIntro, Modal, External, Empty, date } from "./ui";
-import {
-  states,
-  legalStatuses,
-  visaCategories,
-  type PublicProfile,
-} from "../../shared/schema";
-import {
-  filterCases,
-  summarize,
-  metricLabels,
-  type Metric,
-} from "../../shared/metrics";
+import { states, legalStatuses, visaCategories } from "../../shared/schema";
+import { metricLabels, type Metric } from "../../shared/metrics";
 type Rep = {
   id: string;
   name: string;
@@ -352,7 +344,10 @@ function GeoMap({
         ).addTo(layers);
         if (kind === "districts") {
           L.geoJSON(
-            { ...base, features: visibleFeatures(base) } as GeoJSON.FeatureCollection,
+            {
+              ...base,
+              features: visibleFeatures(base),
+            } as GeoJSON.FeatureCollection,
             {
               interactive: false,
               style: {
@@ -501,11 +496,20 @@ export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
         setRepError("Representative information could not be loaded."),
       );
   }, []);
-  const matching = filterSignatures(profiles, {
-    statuses: status,
-    involvement: involved,
-    parties,
-  });
+  const params = new URLSearchParams({ filtered: "1" });
+  status.forEach((v) => params.append("status", v));
+  involved.forEach((v) => params.append("connection", v));
+  parties.forEach((v) => params.append("party", v));
+  const coverage = usePublicView<{ places: PlaceCount[] }>(
+    "/stats/coverage?" + params,
+  );
+  const matching = previewMode
+    ? filterSignatures(profiles, {
+        statuses: status,
+        involvement: involved,
+        parties,
+      }).map((p) => ({ ...p, count: 1 }))
+    : (coverage?.data?.places ?? []);
   const filtered = matching.filter((p) => {
     if (kind === "world") return true;
     if (p.country !== "United States") return false;
@@ -520,7 +524,7 @@ export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
     if (kind === "world") {
       for (const p of filtered) {
         r[p.country] ||= { key: p.country, name: p.country, count: 0 };
-        r[p.country].count++;
+        r[p.country].count += p.count;
       }
       return r;
     }
@@ -559,11 +563,12 @@ export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
       const key = kind !== "districts" ? state[0] : `${state[0]}${p.district}`;
       if (!r[key])
         r[key] = { key, name: `${state[1]}-${p.district}`, count: 0, reps: [] };
-      r[key].count++;
+      r[key].count += p.count;
     }
     return r;
   }, [
     profiles,
+    coverage,
     kind,
     status.join(),
     involved.join(),
@@ -588,10 +593,15 @@ export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
               )
         }
       />
+      {coverage?.error && (
+        <p role="alert">{t("Something went wrong. Please try again.")}</p>
+      )}
       <div className="mini-stats">
         <div>
           <Users />
-          <strong>{number(filtered.length)}</strong>
+          <strong>
+            {number(filtered.reduce((sum, p) => sum + p.count, 0))}
+          </strong>
           <span>{t("signatures in this view")}</span>
         </div>
         <div>
@@ -615,7 +625,11 @@ export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
           <Globe2 />
           <strong>
             {number(
-              matching.filter((p) => p.country !== "United States").length,
+              matching.reduce(
+                (sum, p) =>
+                  p.country !== "United States" ? sum + p.count : sum,
+                0,
+              ),
             )}
           </strong>
           <span>{t("supporters outside the US")}</span>
@@ -823,33 +837,28 @@ export function VisaData() {
   const [metric, setMetric] = useState<Metric>("sinceFiling");
   const [selected, setSelected] = useState<Region | null>(null);
   const [postSearch, setPostSearch] = useState("");
-  const posts = [
-    ...new Set(profiles.flatMap((p) => p.cases.map((c) => c.post))),
-  ].sort();
+  const filters = { post, days: Number(days), status, category };
+  const remote = usePublicView<ReturnType<typeof visaStatistics>>(
+    "/stats/visas?" +
+      new URLSearchParams({ post, days, status, category, metric }),
+  );
+  const sample = useMemo(
+    () => (previewMode ? visaStatistics(profiles, filters, metric) : null),
+    [profiles, post, days, status, category, metric],
+  );
+  const stats = sample ?? remote?.data;
+  const posts = stats?.posts ?? (post ? [post] : []);
   const metrics: Metric[] =
     status === "active"
       ? ["sinceFiling", "sinceNvc"]
       : ["total", "filingInterview", "nvcInterview", "nvcClosure"];
-  const cases = filterCases(profiles, {
-    post,
-    days: Number(days),
-    status,
-    category,
-  });
-  const regions = useMemo(() => {
-    const r: Record<string, Region> = {};
-    for (const country of new Set(
-      cases.map((c) => c.nationality).filter((n): n is string => !!n),
-    )) {
-      const s = summarize(
-        cases.filter((c) => c.nationality === country),
-        metric,
-      );
-      r[country] = { key: country, name: country, ...s };
-    }
-    return r;
-  }, [profiles, post, days, status, category, metric]);
-  const allSummary = summarize(cases, metric);
+  const regions = Object.fromEntries(
+    Object.entries(stats?.countries ?? {}).map(([name, value]) => [
+      name,
+      { key: name, name, ...value },
+    ]),
+  );
+  useEffect(() => setSelected(null), [post, days, status, category, metric]);
   return (
     <div className="page-shell">
       <PageIntro
@@ -957,27 +966,28 @@ export function VisaData() {
           </select>
         </label>
       </div>
+      {!stats && (
+        <p role="status">
+          {remote?.error
+            ? t("Something went wrong. Please try again.")
+            : t("Loading…")}
+        </p>
+      )}
       <div className="data-summary">
         <span>
           {t(
             status === "active"
               ? "{count} active cases in this view"
               : "{count} closed cases in this view",
-            { count: number(cases.length) },
+            { count: number(stats?.count ?? 0) },
           )}
         </span>
         <span>
-          <strong>
-            {number(
-              new Set(
-                cases.map((c) => c.nationality).filter((n): n is string => !!n),
-              ).size,
-            )}
-          </strong>
+          <strong>{number(Object.keys(regions).length)}</strong>
           {t(" confirmed nationalities")}
         </span>
         <span>
-          <strong>{number(new Set(cases.map((c) => c.post)).size)}</strong>
+          <strong>{number(stats?.postCount ?? 0)}</strong>
           {t(" consular posts")}
         </span>
       </div>
@@ -999,18 +1009,16 @@ export function VisaData() {
             <tbody>
               {visaCategories
                 .filter(
-                  (v) =>
-                    (!category || v === category) &&
-                    cases.some((c) => c.category === v),
+                  (v) => (!category || v === category) && stats?.categories[v],
                 )
                 .map((v) => {
-                  const vc = cases.filter((c) => c.category === v);
+                  const vc = stats!.categories[v];
                   return (
                     <tr key={v}>
                       <th>{v}</th>
-                      <td>{number(vc.length)}</td>
+                      <td>{number(vc.count)}</td>
                       {metrics.map((m) => {
-                        const s = summarize(vc, m);
+                        const s = vc.metrics[m];
                         return (
                           <td key={m}>
                             {s.median === null
@@ -1026,7 +1034,7 @@ export function VisaData() {
                     </tr>
                   );
                 })}
-              {!cases.length && (
+              {stats && !stats.count && (
                 <tr>
                   <td colSpan={metrics.length + 2}>
                     <Empty title={t("No cases match these filters yet")}>

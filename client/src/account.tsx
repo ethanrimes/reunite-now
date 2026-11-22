@@ -101,6 +101,14 @@ export function Login() {
             "Sign in or create an account with a secure email link or Google. New members complete their petition profile next.",
           )}
         </p>
+        <div className="auth-privacy">
+          <ShieldCheck size={18} />
+          <p>
+            {t("Your email is never public. You’ll review the")}{" "}
+            <Link to="/data-use">{t("data use agreement")}</Link>
+            {t(" before signing.")}
+          </p>
+        </div>
         {me.user ? (
           <Link className="button" to="/account">
             {t("Continue to your account ")}
@@ -180,14 +188,6 @@ export function Login() {
             )}
           </>
         )}
-        <div className="auth-privacy">
-          <ShieldCheck size={18} />
-          <p>
-            {t("Your email is never public. You’ll review the")}{" "}
-            <Link to="/data-use">{t("data use agreement")}</Link>
-            {t(" before signing.")}
-          </p>
-        </div>
       </div>
     </div>
   );
@@ -1164,6 +1164,16 @@ export function Account() {
               )
         }
       >
+        {signing && (
+          <Link
+            className="text-button"
+            to="/data-use"
+            target="_blank"
+            rel="noopener"
+          >
+            {t("Privacy & data use")}
+          </Link>
+        )}
         <button
           className="text-button"
           onClick={async () => {
@@ -1525,7 +1535,7 @@ export function Account() {
                     {t("data use agreement")}
                   </Link>{" "}
                   {t(
-                    "and understand that my name, profile, location, legal status, optional affiliation, and submitted visa timelines will be publicly accessible. My email stays private. *",
+                    "and consent to the use of my signature, profile and visa timelines in public statistics. My email stays private. *",
                   )}
                 </span>
               </label>

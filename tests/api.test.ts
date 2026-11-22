@@ -179,14 +179,27 @@ test("email authentication, data privacy, ownership, update and deletion", async
   assert.equal(afterSettings.updatedAt, beforeSettings.updatedAt);
   assert.equal(afterSettings.reminders, true);
   assert.equal("note" in afterSettings.cases[0].events[0], false);
-  const pub = await (await request("/api/public")).json();
-  const record = pub.profiles.find((p: any) => p.id === me.user.id);
-  assert.equal(record.name, profile.name);
-  assert.equal("city" in record, false);
-  assert.equal("email" in record, false);
-  assert.equal("reminders" in record, false);
-  assert.equal("reminderEmails" in record, false);
-  assert.equal(JSON.stringify(record).includes("backup@example.test"), false);
+  for (const path of ["/api/public", "/api/stories"])
+    assert.equal((await request(path)).status, 404);
+  assert.equal(
+    (await request("/api/me/export", "GET", undefined, false)).status,
+    401,
+  );
+  const places = (await (await request("/api/stats/coverage")).json()).places;
+  assert.deepEqual(
+    places.find((p: any) => p.state === "VA"),
+    { country: "United States", state: "VA", district: "10", count: 1 },
+  );
+  const stats = await (await request("/api/stats/visas?days=0")).json();
+  assert.equal(stats.categories["K-1"].count, 1);
+  for (const value of [
+    me.user.id,
+    profile.name,
+    "Test applicant",
+    "2026-01-01",
+    "backup@example.test",
+  ])
+    assert.ok(!JSON.stringify(stats).includes(value));
   const originalPhoto = await sharp({
     create: { width: 20, height: 10, channels: 3, background: "#aabbcc" },
   })
@@ -203,11 +216,21 @@ test("email authentication, data privacy, ownership, update and deletion", async
     rightsConsent: true,
   };
   assert.equal((await request("/api/me/story", "PUT", story)).status, 200);
-  const published = (await (await request("/api/stories")).json()).stories.find(
-    (s: any) => s.id === me.user.id,
+  const cards = (await (await request("/api/story-cards?q=synthetic")).json())
+    .cards;
+  const card = cards.find((s: any) => s.id === me.user.id);
+  assert.deepEqual(
+    Object.keys(card).sort(),
+    ["id", "name", "country", "title", "cover"].sort(),
   );
+  assert.match(card.cover, /^data:image\/webp;base64,/);
+  const storyPath = "/api/story/" + me.user.id;
+  const published = await (await request(storyPath)).json();
   assert.equal(published.title, story.title);
-  const photoBytes = Buffer.from(published.photos[0].split(",")[1], "base64");
+  assert.deepEqual(published.photos, [storyPath + "/photo/0"]);
+  const image = await request(published.photos[0]);
+  assert.equal(image.headers.get("content-type"), "image/webp");
+  const photoBytes = Buffer.from(await image.arrayBuffer());
   const photoInfo = await sharp(photoBytes).metadata();
   assert.equal(photoInfo.format, "webp");
   assert.equal(photoInfo.width, 20);
@@ -233,11 +256,17 @@ test("email authentication, data privacy, ownership, update and deletion", async
     confirmed.profile.cases[0].events,
     me.profile.cases[0].events,
   );
-  const publicAffiliation = async () => {
-    const { profiles } = await (await request("/api/public")).json();
-    const row = profiles.find((item: { id: string }) => item.id === me.user.id);
-    assert.equal("affiliationConsent" in row, false);
-    return row.politicalAffiliation;
+  const showsParty = async (party: string) => {
+    const params = new URLSearchParams({
+      filtered: "1",
+      status: "US citizen",
+      connection: "Yes",
+      party,
+    });
+    const result = await (
+      await request("/api/stats/coverage?" + params)
+    ).json();
+    return result.places.some((p: any) => p.state === "VA" && p.count === 1);
   };
   for (const [consent, expected] of [
     [undefined, ""],
@@ -249,7 +278,8 @@ test("email authentication, data privacy, ownership, update and deletion", async
       affiliationConsent: consent,
     });
     assert.equal(change.status, 200);
-    assert.equal(await publicAffiliation(), expected);
+    assert.equal(await showsParty(expected), true);
+    assert.equal(await showsParty(expected === "" ? "Other" : ""), false);
   }
   const exported = await (await request("/api/me/export")).json();
   assert.equal(exported.email, email);
@@ -286,17 +316,11 @@ test("email authentication, data privacy, ownership, update and deletion", async
     200,
   );
   assert.equal((await (await request("/api/me")).json()).user, null);
+  assert.equal((await request(storyPath)).status, 404);
+  assert.equal((await request(published.photos[0])).status, 404);
   assert.equal(
-    (await (await request("/api/public")).json()).profiles.some(
-      (p: any) => p.id === me.user.id,
-    ),
-    false,
-  );
-  assert.equal(
-    (await (await request("/api/stories")).json()).stories.some(
-      (p: any) => p.id === me.user.id,
-    ),
-    false,
+    (await (await request("/api/story-cards?q=synthetic")).json()).cards.length,
+    0,
   );
 });
 

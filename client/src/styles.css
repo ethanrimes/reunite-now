@@ -1227,7 +1227,7 @@ footer {
   margin-bottom: 18px;
 }
 .prose .button {
-  margin-top: 20px;
+  margin-block: 0 1.25rem;
 }
 .about-statement {
   background: #f4f3f0;
@@ -1672,7 +1672,7 @@ thead {
 .auth-privacy {
   display: flex;
   gap: 12px;
-  margin-top: 30px;
+  margin-block: 1rem 1.5rem;
 }
 .auth-privacy p {
   font-size: 11px;
@@ -4368,7 +4368,7 @@ h2 em,
 .impact-strip > a,
 .back-link,
 .petition-note > span a,
-.prose a {
+.prose a:not(.button) {
   color: #1c1c1c;
 }
 .hero,
@@ -5203,3 +5203,6 @@ textarea,
 .region-form { display: flex; flex-wrap: wrap; gap: 1rem; align-items: end; }
 .region-form label { min-width: min(15rem,100%); }
 .region-form > [role] { flex-basis: 100%; }
+
+.prose a[href^="mailto:"] { overflow-wrap: anywhere; text-decoration: underline; }
+.story-navigation { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-block: 1rem; }

@@ -614,11 +614,6 @@
     "pt": "Informações claras sobre o que você compartilha, o que é público e como remover seus dados.",
     "tl": "Malinaw na impormasyon tungkol sa ibinabahagi mo, kung ano ang pampubliko, at kung paano ito aalisin."
   },
-  "Your email is private. Your petition profile and visa timelines are public after you consent. Stories are public only when you choose to publish them.": {
-    "es": "Tu correo es privado. Tu perfil de la petición y tus cronologías de visa son públicos después de dar tu consentimiento. Las historias solo son públicas cuando decides publicarlas.",
-    "pt": "Seu e-mail é privado. Seu perfil da petição e suas cronologias de visto são públicos após seu consentimento. As histórias só são públicas quando você decide publicá-las.",
-    "tl": "Pribado ang iyong email. Pampubliko ang iyong profile sa petisyon at mga timeline ng visa kapag pumayag ka. Pampubliko lamang ang mga kuwento kapag pinili mong ilathala ang mga ito."
-  },
   "What other people can see": {
     "es": "Lo que pueden ver otras personas",
     "pt": "O que outras pessoas podem ver",
@@ -5104,16 +5099,6 @@
     "pt": "Digite seu próprio nome para assinar a petição.",
     "tl": "Ilagay ang sarili mong pangalan para lumagda sa petisyon."
   },
-  "and understand that my name, profile, location, legal status, optional affiliation, and submitted visa timelines will be publicly accessible. My email stays private. *": {
-    "es": "y entiendo que mi nombre, perfil, ubicación, situación legal, afiliación política opcional y cronologías de visa que envíe serán de acceso público. Mi correo electrónico se mantiene privado. *",
-    "pt": "e entendo que meu nome, perfil, localização, situação legal, afiliação política opcional e cronologias de visto enviadas ficarão disponíveis publicamente. Meu e-mail permanece privado. *",
-    "tl": "at nauunawaan kong makikita ng publiko ang pangalan, profile, lokasyon, legal na katayuan, opsyonal na pagkakaugnay sa politika, at mga isusumiteng timeline ng visa ko. Mananatiling pribado ang email ko. *"
-  },
-  "Sign the petition using your own name. You must have permission to publish information about another person. Visa applicants may use a nickname in their case details. You must be at least 18 to create an account.": {
-    "es": "Firma la petición con tu propio nombre. Debes tener permiso para publicar información sobre otra persona. Los solicitantes de visa pueden usar un apodo en los detalles de su caso. Debes tener al menos 18 años para crear una cuenta.",
-    "pt": "Assine a petição usando seu próprio nome. Você precisa ter permissão para publicar informações sobre outra pessoa. Solicitantes de visto podem usar um apelido nos detalhes do caso. É necessário ter pelo menos 18 anos para criar uma conta.",
-    "tl": "Lagdaan ang petisyon gamit ang sarili mong pangalan. Kailangan mong may pahintulot para maglathala ng impormasyon tungkol sa ibang tao. Maaaring gumamit ng palayaw ang mga aplikante ng visa sa mga detalye ng kanilang kaso. Dapat ay 18 taong gulang ka man lang para gumawa ng account."
-  },
   "I am applying for this visa": {
     "es": "Solicito esta visa",
     "pt": "Solicito este visto",
@@ -5539,11 +5524,6 @@
     "pt": "A versão aceita ao assinar é registrada. Este é um projeto independente de mobilização pública, não um escritório de advocacia nem um serviço governamental.",
     "tl": "Itinatala ang bersiyong tinanggap mo nang lumagda ka. Malayang proyekto ng adbokasiya ito, hindi law firm o serbisyo ng pamahalaan."
   },
-  "Your name, legal-status category, country, US state and congressional district, optional political affiliation, involvement in the visa process, signature date, and last-confirmed date are public. The applicant names or nicknames, countries, visa categories, posts, relationships, and dates you enter are also public. Do not include passport numbers, receipt numbers, addresses, birth dates, or documents.": {
-    "es": "Tu nombre, categoría de situación legal, país, estado de EE. UU. y distrito congresional, afiliación política opcional, participación en el proceso de visa, fecha de firma y fecha de última confirmación son públicos. También son públicos los nombres o apodos de los solicitantes, países, categorías de visa, puestos consulares, relaciones y fechas que ingreses. No incluyas números de pasaporte, números de recibo, direcciones, fechas de nacimiento ni documentos.",
-    "pt": "Seu nome, categoria de situação legal, país, estado dos EUA e distrito congressional, afiliação política opcional, participação no processo de visto, data da assinatura e data da última confirmação são públicos. Os nomes ou apelidos dos solicitantes, países, categorias de visto, postos consulares, relacionamentos e datas que você inserir também são públicos. Não inclua números de passaporte, números de recibo, endereços, datas de nascimento ou documentos.",
-    "tl": "Pampubliko ang pangalan mo, kategorya ng legal na katayuan, bansa, estado sa US at congressional district, opsyonal na pagkakaugnay sa politika, pakikilahok sa proseso ng visa, petsa ng paglagda, at petsa ng huling pagkumpirma. Pampubliko rin ang mga pangalan o palayaw ng mga aplikante, bansa, kategorya ng visa, mga himpilan ng embahada o konsulado, relasyon at petsang ilalagay mo. Huwag maglagay ng mga numero ng pasaporte, numero ng resibo, address, petsa ng kapanganakan, o mga dokumento."
-  },
   "I’m the applicant": {
     "es": "Soy el solicitante",
     "pt": "Sou o solicitante",
@@ -5609,11 +5589,6 @@
     "pt": "Hospedagem, acesso e retenção",
     "tl": "Pagho-host, access at pagpapanatili"
   },
-  "Anyone worldwide can download public profiles, case timelines and published stories through the site’s public API. Your account and signature have no automatic expiry. Stories, including unpublished drafts, stay until you delete them or your account. Sign-in links expire after 15 minutes and sessions expire after 30 days.": {
-    "es": "Cualquier persona puede descargar perfiles públicos, cronologías y relatos publicados desde la API pública. Tu cuenta y firma no caducan automáticamente. Los relatos, incluidos los borradores privados, se conservan hasta que los elimines o borres tu cuenta. Los enlaces de acceso caducan a los 15 minutos y las sesiones a los 30 días.",
-    "pt": "Qualquer pessoa no mundo pode baixar perfis públicos, históricos de casos e histórias publicadas pela API pública do site. A conta e a assinatura não expiram automaticamente. As histórias, inclusive rascunhos não publicados, permanecem até você excluí-las ou apagar a conta. Os links de acesso expiram em 15 minutos e as sessões em 30 dias.",
-    "tl": "Maaaring i-download ng sinuman sa buong mundo ang mga pampublikong profile, timeline at nailathalang kuwento gamit ang pampublikong API. Walang awtomatikong pag-expire ang account at lagda mo. Mananatili ang mga kuwento, pati mga draft, hanggang burahin mo ang mga ito o ang account mo. Napapaso ang link sa pag-sign in pagkalipas ng 15 minuto at ang session pagkalipas ng 30 araw."
-  },
   "I explicitly consent to storing my political affiliation and showing it publicly with my name. I can withdraw this choice here at any time.": {
     "es": "Doy mi consentimiento explícito para guardar mi afiliación política y mostrarla públicamente con mi nombre. Puedo retirarlo aquí en cualquier momento.",
     "pt": "Consinto expressamente em armazenar minha filiação política e publicá-la com meu nome. Posso retirar esse consentimento aqui a qualquer momento.",
@@ -5623,11 +5598,6 @@
     "es": "Para borrar tus datos, abre Cuenta → Configuración → Eliminar cuenta. Puedes hacerlo sin enviarnos un correo.",
     "pt": "Para apagar seus dados, abra Conta → Configurações → Excluir conta. Você pode fazer isso sem enviar um e-mail.",
     "tl": "Para burahin ang sarili mong datos, buksan ang Account → Mga setting → Burahin ang account. Magagawa mo ito nang hindi nag-e-email sa amin."
-  },
-  "If you cannot sign in, appear in someone else’s submission, or receive unwanted reminders, contact Ethan Kallett privately. Include the public page or story title and what you want removed. Please leave out identity documents and visa case numbers.": {
-    "es": "Si no puedes iniciar sesión, apareces en la publicación de otra persona o recibes recordatorios no deseados, escribe en privado a Ethan Kallett. Indica la página pública o el título del relato y qué quieres eliminar. Omite documentos de identidad y números de expediente.",
-    "pt": "Se você não conseguir entrar, aparecer em um relato de outra pessoa ou receber lembretes indesejados, escreva em particular para Ethan Kallett. Informe a página pública ou o título do relato e o que deseja remover. Não envie documentos de identidade nem números de processos de visto.",
-    "tl": "Kung hindi ka makapag-sign in, nabanggit ka sa isinumite ng iba, o nakatatanggap ka ng mga paalalang hindi mo gusto, sumulat nang pribado kay Ethan Kallett. Isama ang pampublikong pahina o pamagat ng kuwento at ang gusto mong alisin. Huwag isama ang dokumento ng pagkakakilanlan o numero ng kaso."
   },
   "Cloudflare forwards privacy requests to the project’s Gmail inbox. Both services process correspondence, which may travel outside the EU.": {
     "es": "Cloudflare reenvía las solicitudes de privacidad al buzón de Gmail del proyecto. Ambos servicios procesan esa correspondencia, que puede salir de la UE.",
@@ -5684,14 +5654,69 @@
     "pt": "Sua conta foi transferida.",
     "tl": "Nailipat na ang account mo."
   },
-  "For new accounts, we look up your IP address locally. An EU address selects Sweden. Other or unrecognized addresses select the United States. We do not save the IP in your account. You can move your account in Configuration. Earlier accounts start in Sweden.": {
-    "es": "Al crear una cuenta, consultamos tu dirección IP localmente. Una IP de la UE selecciona Suecia. Las demás, incluidas las desconocidas, seleccionan Estados Unidos. No guardamos la IP en tu cuenta. Puedes trasladar tu cuenta desde Configuración. Las cuentas anteriores empiezan en Suecia.",
-    "pt": "Ao criar uma conta, consultamos seu IP localmente. Um IP da UE seleciona a Suécia. Os demais, inclusive os desconhecidos, selecionam os Estados Unidos. Não salvamos o IP na sua conta. Você pode transferir sua conta em Configuração. As contas anteriores começam na Suécia.",
-    "tl": "Para sa bagong account, lokal naming sinusuri ang IP address. Sweden ang pipiliin para sa IP ng EU, at Estados Unidos para sa iba o hindi matukoy na IP. Hindi namin iniimbak ang IP sa account. Maaari mong ilipat ang account sa Configuration. Nasa Sweden sa simula ang mga dating account."
-  },
   "Public maps, timelines and published stories combine submissions from both regions. The US web service processes requests for both. The reminder scheduler runs in Sweden and our email service processes delivery data in the US. After a move, the old region may retain a backup during its recovery window.": {
     "es": "Los mapas, las cronologías y las historias públicas reúnen aportes de ambas regiones. El servicio web de EE. UU. procesa las solicitudes de ambas. Los recordatorios se programan en Suecia y el servicio de correo procesa los datos de entrega en EE. UU. Tras un traslado, la región anterior puede conservar copias durante el plazo de recuperación.",
     "pt": "Os mapas, as linhas do tempo e as histórias públicas reúnem contribuições das duas regiões. O serviço web nos EUA processa as solicitações de ambas. Os lembretes são agendados na Suécia e o serviço de email processa os dados de entrega nos EUA. Após a transferência, a região anterior pode manter uma cópia durante o período de recuperação.",
     "tl": "Pinagsasama ng mga pampublikong mapa, timeline at kuwento ang mga ambag mula sa dalawang rehiyon. Pinoproseso ng web service sa US ang mga kahilingan para sa dalawa. Sa Sweden nakaiskedyul ang mga paalala at sa US pinoproseso ang datos ng paghahatid ng email. Pagkatapos ng paglipat, maaaring may backup sa dating rehiyon habang maaari pang ibalik ang datos."
+  },
+  "Your email is private. With your consent, your signature and timeline contribute to public statistics. You choose whether to publish your story and photos.": {
+    "es": "Tu correo es privado. Con tu consentimiento, tu firma y tu cronología se incluyen en las estadísticas públicas. Tú decides si publicas tu historia y tus fotos.",
+    "pt": "Seu e-mail é privado. Com seu consentimento, sua assinatura e sua cronologia entram nas estatísticas públicas. Você decide se publica sua história e suas fotos.",
+    "tl": "Pribado ang email mo. Kung papayag ka, isasama ang lagda at timeline mo sa pampublikong estadistika. Ikaw ang magpapasya kung ilalathala ang kuwento at mga larawan mo."
+  },
+  "Choose Export my data in Account → Configuration to download your records. Each account can export only its own data.": {
+    "es": "En Cuenta → Configuración, elige Exportar mis datos para descargar tus registros. Cada cuenta solo puede exportar sus propios datos.",
+    "pt": "Em Conta → Configuração, selecione Exportar meus dados para baixar seus registros. Cada conta só pode exportar os próprios dados.",
+    "tl": "Sa Account → Mga setting, piliin ang pag-export ng iyong data para i-download ang mga tala mo. Sariling data lamang ang maaaring i-export ng bawat account."
+  },
+  "If you cannot sign in, appear in someone else’s submission, or receive unwanted reminders, email the project maintainer privately. Say what information you would like removed.": {
+    "es": "Si no puedes iniciar sesión, apareces en la publicación de otra persona o recibes recordatorios no deseados, escribe en privado al responsable del proyecto. Indica qué información quieres eliminar.",
+    "pt": "Se não conseguir entrar, aparecer na publicação de outra pessoa ou receber lembretes indesejados, envie um e-mail privado ao responsável pelo projeto. Indique quais informações deseja remover.",
+    "tl": "Kung hindi ka makapag-sign in, nabanggit ka sa isinumite ng iba, o nakatatanggap ka ng hindi gustong paalala, mag-email nang pribado sa namamahala sa proyekto. Sabihin kung anong impormasyon ang nais mong ipatanggal."
+  },
+  "We offer regional storage to support data residency choices and respect privacy rights, including those under the EU GDPR.": {
+    "es": "Ofrecemos almacenamiento regional para que puedas elegir dónde se guardan tus datos y para respetar los derechos de privacidad, incluidos los reconocidos por el RGPD de la UE.",
+    "pt": "Oferecemos armazenamento regional para permitir a escolha de onde os dados ficam e respeitar os direitos de privacidade, inclusive os previstos no RGPD da UE.",
+    "tl": "Maaari kang pumili ng rehiyon para sa pag-iimbak ng data bilang bahagi ng aming paggalang sa mga karapatan sa privacy, kabilang ang mga karapatan sa ilalim ng GDPR ng EU."
+  },
+  "When you create an account, we check your IP address against a local copy of the DB-IP country database. An EU address selects Sweden. Other or unrecognized addresses select the United States. The lookup does not send your IP to DB-IP or save it in either account database.": {
+    "es": "Al crear una cuenta, consultamos tu IP en una copia local de la base de países de DB-IP. Una IP de la UE selecciona Suecia. Las demás, incluidas las desconocidas, seleccionan Estados Unidos. La consulta no envía tu IP a DB-IP ni la guarda en las bases de datos de cuentas.",
+    "pt": "Ao criar uma conta, consultamos seu IP em uma cópia local da base de países da DB-IP. Um IP da UE seleciona a Suécia. Outros endereços, inclusive os desconhecidos, selecionam os Estados Unidos. A consulta não envia seu IP à DB-IP nem o salva nas bases de contas.",
+    "tl": "Kapag gumawa ka ng account, hinahanap namin ang IP address mo sa lokal na kopya ng talaan ng mga bansa ng DB-IP. Sweden ang napipili para sa IP mula sa EU at Estados Unidos para sa iba o hindi makilalang IP. Hindi ipinapadala sa DB-IP o itinatala sa alinmang database ng account ang IP mo sa paghahanap na ito."
+  },
+  "To change regions, open Account → Configuration → Account storage, choose a region and select Move my account. Accounts created before regional selection started in Sweden.": {
+    "es": "Para cambiar de región, abre Cuenta → Configuración → Almacenamiento de la cuenta, elige la región y pulsa Mover mi cuenta. Las cuentas anteriores a esta opción comenzaron en Suecia.",
+    "pt": "Para mudar de região, abra Conta → Configuração → Armazenamento da conta, escolha a região e selecione Mover minha conta. As contas anteriores a essa opção começaram na Suécia.",
+    "tl": "Para lumipat ng rehiyon, buksan ang Account → Mga setting → Imbakan ng account, pumili ng rehiyon at pindutin ang Ilipat ang account ko. Sa Sweden nagsimula ang mga account na ginawa bago naging posible ang pagpili ng rehiyon."
+  },
+  "Maps show signature counts by location and selected filters. Visa tables summarize reported cases and waiting times. Published stories show your name, country, text and photos. Leave out passport and receipt numbers, addresses, birth dates, identity documents and other identifying details.": {
+    "es": "Los mapas muestran el número de firmas por lugar y según los filtros elegidos. Las tablas resumen los casos y sus tiempos de espera. Las historias publicadas muestran tu nombre, país, texto y fotos. Omite números de pasaporte y de recibo, direcciones, fechas de nacimiento, documentos de identidad y otros datos identificativos.",
+    "pt": "Os mapas mostram contagens de assinaturas por local e pelos filtros escolhidos. As tabelas resumem os casos e seus tempos de espera. Histórias publicadas mostram seu nome, país, texto e fotos. Omita números de passaporte e de recibo, endereços, datas de nascimento, documentos de identidade e outros dados de identificação.",
+    "tl": "Makikita sa mga mapa ang bilang ng lagda ayon sa lugar at mga napiling filter. Binubuod ng mga talahanayan ang mga kaso at tagal ng paghihintay. Makikita sa nailathalang kuwento ang pangalan, bansa, teksto at mga larawan mo. Huwag isama ang numero ng pasaporte o resibo, address, petsa ng kapanganakan, dokumento ng pagkakakilanlan at iba pang detalyeng makatutukoy sa isang tao."
+  },
+  "and consent to the use of my signature, profile and visa timelines in public statistics. My email stays private. *": {
+    "es": "y doy mi consentimiento para que se usen mi firma, perfil y cronologías de visa en las estadísticas públicas. Mi correo es privado. *",
+    "pt": "e autorizo o uso da minha assinatura, perfil e cronologias de visto nas estatísticas públicas. Meu e-mail permanece privado. *",
+    "tl": "at pumapayag akong gamitin ang aking lagda, profile at mga timeline ng visa sa pampublikong estadistika. Pribado ang email ko. *"
+  },
+  "Previous stories": {
+    "es": "Historias anteriores",
+    "pt": "Histórias anteriores",
+    "tl": "Mga naunang kuwento"
+  },
+  "More stories": {
+    "es": "Más historias",
+    "pt": "Mais histórias",
+    "tl": "Higit pang kuwento"
+  },
+  "Your account and signature have no automatic expiry. Stories, including unpublished drafts, stay until you delete them or your account. Sign-in links expire after 15 minutes and sessions expire after 30 days.": {
+    "es": "Tu cuenta y firma no caducan automáticamente. Los relatos, incluidos los borradores privados, se conservan hasta que los elimines o borres tu cuenta. Los enlaces de acceso caducan a los 15 minutos y las sesiones a los 30 días.",
+    "pt": "A conta e a assinatura não expiram automaticamente. As histórias, inclusive rascunhos não publicados, permanecem até você excluí-las ou apagar a conta. Os links de acesso expiram em 15 minutos e as sessões em 30 dias.",
+    "tl": "Walang awtomatikong pag-expire ang account at lagda mo. Mananatili ang mga kuwento, pati mga draft, hanggang burahin mo ang mga ito o ang account mo. Napapaso ang link sa pag-sign in pagkalipas ng 15 minuto at ang session pagkalipas ng 30 araw."
+  },
+  "Sign the petition using your own name. Get that person’s permission before publishing information about them. Visa applicants may use a nickname in their case details. You must be at least 18 to create an account.": {
+    "es": "Firma la petición con tu propio nombre. Debes tener permiso para publicar información sobre otra persona. Los solicitantes de visa pueden usar un apodo en los detalles de su caso. Debes tener al menos 18 años para crear una cuenta.",
+    "pt": "Assine a petição usando seu próprio nome. Você precisa ter permissão para publicar informações sobre outra pessoa. Solicitantes de visto podem usar um apelido nos detalhes do caso. É necessário ter pelo menos 18 anos para criar uma conta.",
+    "tl": "Lagdaan ang petisyon gamit ang sarili mong pangalan. Kailangan mong may pahintulot para maglathala ng impormasyon tungkol sa ibang tao. Maaaring gumamit ng palayaw ang mga aplikante ng visa sa mga detalye ng kanilang kaso. Dapat ay 18 taong gulang ka man lang para gumawa ng account."
   }
 }

@@ -18,7 +18,7 @@ import {
   MapPin,
   Check,
 } from "lucide-react";
-import { api, useData } from "./api";
+import { usePublicView, useData } from "./api";
 import { previewMode } from "./preview";
 import {
   PageIntro,
@@ -31,6 +31,7 @@ import {
 } from "./ui";
 import { GovernmentTimeline, Participate, SupportActions } from "./campaign";
 import { policies } from "../../shared/policies";
+import type { PlaceCount, StoryPage } from "../../shared/public-views";
 import { consentVersion, type PublicStory } from "../../shared/schema";
 const demands = [
   {
@@ -51,7 +52,12 @@ const demands = [
 ];
 export function Home() {
   const { profiles, loading, me } = useData();
-  const us = profiles.filter((p) => p.country === "United States");
+  const reach = usePublicView<{ places: PlaceCount[] }>("/stats/coverage");
+  const places = previewMode
+    ? profiles.map((p) => ({ ...p, count: 1 }))
+    : (reach?.data?.places ?? []);
+  const pending = previewMode ? loading : !reach?.data;
+  const us = places.filter((p) => p.country === "United States");
   const nstates = new Set(us.map((p) => p.state)).size,
     ndistricts = new Set(us.map((p) => `${p.state}-${p.district}`)).size;
   return (
@@ -126,15 +132,19 @@ export function Home() {
           {t(" Petition support")} {t("so far")}
         </div>
         <div>
-          <strong>{loading ? "—" : number(profiles.length)}</strong>
+          <strong>
+            {pending
+              ? "—"
+              : number(places.reduce((sum, p) => sum + p.count, 0))}
+          </strong>
           <span>{t("petition signatories")}</span>
         </div>
         <div>
-          <strong>{loading ? "—" : number(nstates)}</strong>
+          <strong>{pending ? "—" : number(nstates)}</strong>
           <span>{t("US states & territories")}</span>
         </div>
         <div>
-          <strong>{loading ? "—" : number(ndistricts)}</strong>
+          <strong>{pending ? "—" : number(ndistricts)}</strong>
           <span>{t("congressional districts")}</span>
         </div>
         <Link to="/coverage">
@@ -391,32 +401,42 @@ export function Stories() {
     loading: sampleLoading,
     error: sampleError,
   } = useData();
-  const [published, setPublished] = useState<PublicStory[] | null>(null);
-  const [storyError, setStoryError] = useState(false);
-  useEffect(() => {
-    if (previewMode) return;
-    const request = new AbortController();
-    api<{ stories: PublicStory[] }>("/stories", { signal: request.signal })
-      .then(({ stories }) => {
-        if (!request.signal.aborted) setPublished(stories);
-      })
-      .catch(() => {
-        if (!request.signal.aborted) setStoryError(true);
-      });
-    return () => request.abort();
-  }, []);
-  const stories = previewMode ? sampleStories : (published ?? []);
-  const loading = previewMode
-    ? sampleLoading
-    : published === null && !storyError;
-  const failed = previewMode ? !!sampleError : storyError;
-  const [selected, setSelected] = useState<PublicStory | null>(null);
   const [q, setQ] = useState("");
-  const items = stories.filter((s) =>
-    `${s.title} ${s.body} ${s.name} ${s.country} ${s.impacts.join(" ")}`
-      .toLowerCase()
-      .includes(q.toLowerCase()),
+  const [query, setQuery] = useState("");
+  useEffect(() => {
+    if (q === query) return;
+    const timer = setTimeout(() => {
+      setQuery(q);
+      setCursors([""]);
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [q, query]);
+  const [cursors, setCursors] = useState([""]);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const page = usePublicView<StoryPage>(
+    "/story-cards?" +
+      new URLSearchParams({ q: query, after: cursors.at(-1) ?? "" }),
   );
+  const detail = usePublicView<PublicStory>(
+    selectedId ? "/story/" + encodeURIComponent(selectedId) : null,
+  );
+  const selected = previewMode
+    ? sampleStories.find((s) => s.id === selectedId)
+    : detail?.data;
+  const items = previewMode
+    ? sampleStories
+        .filter((s) =>
+          [s.title, s.body, s.name, s.country, ...s.impacts]
+            .join(" ")
+            .toLowerCase()
+            .includes(q.toLowerCase()),
+        )
+        .map((s) => ({ ...s, cover: s.photos[0] }))
+    : (page?.data?.cards ?? []);
+  const loading = previewMode ? sampleLoading : !page;
+  const failed = previewMode ? !!sampleError : page?.error;
+  const next = page?.data?.next;
+  const selectedCard = items.find((card) => card.id === selectedId);
   return (
     <div className="page-shell">
       <PageIntro
@@ -437,12 +457,12 @@ export function Stories() {
       </PageIntro>
       <div className="toolbar">
         <span>
-          {loading || failed
+          {loading || failed || next || cursors.length > 1
             ? null
-            : stories.length === 1
+            : items.length === 1
               ? t("1 community story")
               : t("{count} community stories", {
-                  count: number(stories.length),
+                  count: number(items.length),
                 })}
         </span>
         <label className="search">
@@ -450,7 +470,10 @@ export function Stories() {
           <input
             aria-label={t("Search stories")}
             value={q}
-            onChange={(e) => setQ(e.target.value)}
+            maxLength={250}
+            onChange={(e) => {
+              setQ(e.target.value);
+            }}
             placeholder={t("Search places, stories, or experiences")}
           />
         </label>
@@ -467,12 +490,12 @@ export function Stories() {
             <button
               key={s.id}
               className="story-card"
-              onClick={() => setSelected(s)}
+              onClick={() => setSelectedId(s.id)}
             >
               <div className="story-card-media">
-                {s.photos[0] ? (
+                {s.cover ? (
                   <img
-                    src={s.photos[0]}
+                    src={s.cover}
                     alt={t("Photo shared by {name}", { name: s.name })}
                     loading="lazy"
                   />
@@ -522,6 +545,26 @@ export function Stories() {
           </div>
         </div>
       )}
+      {(next || cursors.length > 1) && (
+        <div className="story-navigation">
+          {cursors.length > 1 && (
+            <button
+              className="button outline"
+              onClick={() => setCursors((c) => c.slice(0, -1))}
+            >
+              {t("Previous stories")}
+            </button>
+          )}
+          {next && (
+            <button
+              className="button outline"
+              onClick={() => setCursors((c) => [...c, next])}
+            >
+              {t("More stories")}
+            </button>
+          )}
+        </div>
+      )}
       <p className="method-note">
         {t(
           "Community stories and external sources remain in their original language.",
@@ -530,68 +573,90 @@ export function Stories() {
           "Stories are self-reported and are not independently verified. Sharing here does not send your story to a lawyer, political group, or representative.",
         )}
       </p>
-      {selected && (
+      {selectedId && (
         <Modal
           title={t("A COMMUNITY STORY")}
           wide
-          onClose={() => setSelected(null)}
+          onClose={() => setSelectedId(null)}
         >
-          <div className="story-modal">
-            {selected.photos.length > 0 && (
-              <div className="story-photos">
-                {selected.photos.length === 1 ? (
-                  <img
-                    src={selected.photos[0]}
-                    alt={t("Photo shared by {name}", { name: selected.name })}
-                  />
-                ) : (
-                  <ScrollRail
-                    id="story-photo-carousel"
-                    title={t("Story photos")}
-                    previousLabel={t("Previous photo")}
-                    nextLabel={t("Next photo")}
-                  >
-                    {selected.photos.map((src, i) => (
-                      <img
-                        key={i}
-                        src={src}
-                        alt={t("Photo {count} shared by {name}", {
-                          count: i + 1,
-                          name: selected.name,
-                        })}
-                      />
-                    ))}
-                  </ScrollRail>
-                )}
+          {selected ? (
+            <div className="story-modal">
+              {selected.photos.length > 0 && (
+                <div className="story-photos">
+                  {selected.photos.length === 1 ? (
+                    <img
+                      src={selected.photos[0]}
+                      alt={t("Photo shared by {name}", { name: selected.name })}
+                    />
+                  ) : (
+                    <ScrollRail
+                      id="story-photo-carousel"
+                      title={t("Story photos")}
+                      previousLabel={t("Previous photo")}
+                      nextLabel={t("Next photo")}
+                    >
+                      {selected.photos.map((src, i) => (
+                        <img
+                          key={i}
+                          src={src}
+                          loading={i === 0 ? "eager" : "lazy"}
+                          alt={t("Photo {count} shared by {name}", {
+                            count: i + 1,
+                            name: selected.name,
+                          })}
+                        />
+                      ))}
+                    </ScrollRail>
+                  )}
+                </div>
+              )}
+              <span className="eyebrow">
+                {selected.name} · {t(selected.country)}
+              </span>
+              <h2 dir="auto">{selected.title}</h2>
+              <p className="preserve-lines" dir="auto">
+                {selected.body}
+              </p>
+              <div className="tags">
+                {selected.impacts.map((x) => (
+                  <span className="tag" key={x}>
+                    {x}
+                  </span>
+                ))}
               </div>
-            )}
-            <span className="eyebrow">
-              {selected.name} · {t(selected.country)}
-            </span>
-            <h2 dir="auto">{selected.title}</h2>
-            <p className="preserve-lines" dir="auto">
-              {selected.body}
-            </p>
-            <div className="tags">
-              {selected.impacts.map((x) => (
-                <span className="tag" key={x}>
-                  {x}
-                </span>
-              ))}
+              {selected.support && (
+                <>
+                  <h3>{t("The support they’re looking for")}</h3>
+                  <p className="preserve-lines" dir="auto">
+                    {selected.support}
+                  </p>
+                </>
+              )}
+              <small>
+                {t("Story last updated ")}
+                {date(selected.updatedAt)}
+              </small>
             </div>
-            {selected.support && (
-              <>
-                <h3>{t("The support they’re looking for")}</h3>
-                <p className="preserve-lines" dir="auto">
-                  {selected.support}
-                </p>
-              </>
-            )}
-            <small>
-              {t("Story last updated ")}
-              {date(selected.updatedAt)}
-            </small>
-          </div>
+          ) : detail?.error ? (
+            <Notice tone="error">
+              {t("Something went wrong. Please try again.")}
+            </Notice>
+          ) : (
+            <div className="story-modal" aria-busy="true">
+              {selectedCard?.cover && (
+                <div className="story-photos">
+                  <img
+                    src={selectedCard.cover}
+                    alt={t("Photo shared by {name}", {
+                      name: selectedCard.name,
+                    })}
+                  />
+                </div>
+              )}
+              <h2 dir="auto">{selectedCard?.title}</h2>
+              <p role="status">{t("Loading…")}</p>
+            </div>
+          )}
         </Modal>
       )}
     </div>
@@ -615,7 +680,7 @@ export function DataUse() {
         <ShieldCheck size={30} />
         <p>
           {t(
-            "Your email is private. Your petition profile and visa timelines are public after you consent. Stories are public only when you choose to publish them.",
+            "Your email is private. With your consent, your signature and timeline contribute to public statistics. You choose whether to publish your story and photos.",
           )}
         </p>
       </div>
@@ -626,13 +691,18 @@ export function DataUse() {
             "To delete your own data, open Account → Configuration → Delete account. You can do this yourself without emailing us.",
           )}
         </p>
+        <p>
+          {t(
+            "Choose Export my data in Account → Configuration to download your records. Each account can export only its own data.",
+          )}
+        </p>
         <Link className="button" to="/account#settings">
           {t("Manage my data ")}
           <ArrowUpRight size={18} />
         </Link>
         <p>
           {t(
-            "If you cannot sign in, appear in someone else’s submission, or receive unwanted reminders, contact Ethan Kallett privately. Include the public page or story title and what you want removed. Please leave out identity documents and visa case numbers.",
+            "If you cannot sign in, appear in someone else’s submission, or receive unwanted reminders, email the project maintainer privately. Say what information you would like removed.",
           )}{" "}
           <a href="mailto:ethan@visatransparencypetition.org">
             {"ethan@visatransparencypetition.org"}
@@ -646,27 +716,49 @@ export function DataUse() {
         <h2>{t("Hosting, access and retention")}</h2>
         <p>
           {t(
-            "For new accounts, we look up your IP address locally. An EU address selects Sweden. Other or unrecognized addresses select the United States. We do not save the IP in your account. You can move your account in Configuration. Earlier accounts start in Sweden.",
-          )}{" "}
-          {t(
-            "Public maps, timelines and published stories combine submissions from both regions. The US web service processes requests for both. The reminder scheduler runs in Sweden and our email service processes delivery data in the US. After a move, the old region may retain a backup during its recovery window.",
-          )}{" "}
-          <a href="https://db-ip.com">{"IP geolocation by DB-IP"}</a>
+            "We offer regional storage to support data residency choices and respect privacy rights, including those under the EU GDPR.",
+          )}
         </p>
         <p>
           {t(
-            "Anyone worldwide can download public profiles, case timelines and published stories through the site’s public API. Your account and signature have no automatic expiry. Stories, including unpublished drafts, stay until you delete them or your account. Sign-in links expire after 15 minutes and sessions expire after 30 days.",
+            "When you create an account, we check your IP address against a local copy of the DB-IP country database. An EU address selects Sweden. Other or unrecognized addresses select the United States. The lookup does not send your IP to DB-IP or save it in either account database.",
+          )}{" "}
+          <a href="https://db-ip.com/">{"IP geolocation by DB-IP"}</a>
+        </p>
+        <p>
+          {t(
+            "To change regions, open Account → Configuration → Account storage, choose a region and select Move my account. Accounts created before regional selection started in Sweden.",
+          )}
+        </p>
+        <p>
+          {t(
+            "Public maps, timelines and published stories combine submissions from both regions. The US web service processes requests for both. The reminder scheduler runs in Sweden and our email service processes delivery data in the US. After a move, the old region may retain a backup during its recovery window.",
+          )}
+        </p>
+        <p>
+          {t(
+            "Your account and signature have no automatic expiry. Stories, including unpublished drafts, stay until you delete them or your account. Sign-in links expire after 15 minutes and sessions expire after 30 days.",
+          )}
+        </p>
+        <p>
+          {t(
+            "Visit your account to edit your profile, download your data, remove a visa case, unpublish your story, or permanently delete your account. Deletion removes your account, signature, case timelines, story photos, sessions, and reminder records from the live database. Aggregate statistics then recalculate without your records.",
+          )}
+        </p>
+        <p>
+          {t(
+            "Azure provides a seven-day database recovery window. Backup files can persist longer. Before a restore goes online, deletions must be reapplied. Other people may keep copies of public submissions. Email providers may retain delivery records.",
           )}
         </p>
         <h2>{t("What other people can see")}</h2>
         <p>
           {t(
-            "Your name, legal-status category, country, US state and congressional district, optional political affiliation, involvement in the visa process, signature date, and last-confirmed date are public. The applicant names or nicknames, countries, visa categories, posts, relationships, and dates you enter are also public. Do not include passport numbers, receipt numbers, addresses, birth dates, or documents.",
+            "Maps show signature counts by location and selected filters. Visa tables summarize reported cases and waiting times. Published stories show your name, country, text and photos. Leave out passport and receipt numbers, addresses, birth dates, identity documents and other identifying details.",
           )}
         </p>
         <p>
           {t(
-            "Sign the petition using your own name. You must have permission to publish information about another person. Visa applicants may use a nickname in their case details. You must be at least 18 to create an account.",
+            "Sign the petition using your own name. Get that person’s permission before publishing information about them. Visa applicants may use a nickname in their case details. You must be at least 18 to create an account.",
           )}
         </p>
         <h2>{t("What stays private")}</h2>
@@ -699,16 +791,6 @@ export function DataUse() {
           )}
         </p>
 
-        <p>
-          {t(
-            "Visit your account to edit your profile, download your data, remove a visa case, unpublish your story, or permanently delete your account. Deletion removes your account, signature, case timelines, story photos, sessions, and reminder records from the live database. Aggregate statistics then recalculate without your records.",
-          )}
-        </p>
-        <p>
-          {t(
-            "Azure provides a seven-day database recovery window. Backup files can persist longer. Before a restore goes online, deletions must be reapplied. Other people may keep copies of public submissions. Email providers may retain delivery records.",
-          )}
-        </p>
         <h2>{t("Services that process data")}</h2>
         <p>
           {t(

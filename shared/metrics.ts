@@ -1,4 +1,11 @@
-import type { VisaCase, PublicProfile } from "./schema";
+import type { VisaCase, VisaEvent } from "./schema";
+type Timeline = { events: Pick<VisaEvent, "date" | "type">[] };
+type ReportedCase = Pick<
+  VisaCase,
+  "post" | "category" | "nationality" | "updatedAt"
+> &
+  Timeline;
+export type CaseReport = { cases: ReportedCase[]; updatedAt: string };
 export const metricLabels = {
   sinceFiling: "Time since filing",
   sinceNvc: "Time since arrival at NVC",
@@ -8,15 +15,12 @@ export const metricLabels = {
   nvcClosure: "NVC to final decision",
 };
 export type Metric = keyof typeof metricLabels;
-export function orderedEvents(v: Pick<VisaCase, "events">, now = new Date()) {
+export function orderedEvents(v: Timeline, now = new Date()) {
   return [...v.events]
     .filter((e) => !!e.date && e.date <= now.toISOString().slice(0, 10))
     .sort((a, b) => a.date.localeCompare(b.date));
 }
-export function caseStatus(
-  v: Pick<VisaCase, "events">,
-  now = new Date(),
-): "active" | "closed" {
+export function caseStatus(v: Timeline, now = new Date()): "active" | "closed" {
   const e = orderedEvents(v, now);
   const last = e.findLast(
     (event) =>
@@ -31,7 +35,7 @@ export function caseStatus(
     : "active";
 }
 export function metricDays(
-  v: VisaCase,
+  v: Timeline,
   metric: Metric,
   now = new Date(),
 ): number | null {
@@ -86,14 +90,14 @@ export function median(values: number[]): number | null {
     m = Math.floor(v.length / 2);
   return v.length % 2 ? v[m] : (v[m - 1] + v[m]) / 2;
 }
-export function summarize(cases: VisaCase[], metric: Metric, now = new Date()) {
+export function summarize(cases: Timeline[], metric: Metric, now = new Date()) {
   const values = cases
     .map((c) => metricDays(c, metric, now))
     .filter((v): v is number => v !== null);
   return { count: cases.length, sample: values.length, median: median(values) };
 }
 export function filterCases(
-  profiles: PublicProfile[],
+  profiles: CaseReport[],
   filters: { post?: string; days?: number; status?: string; category?: string },
   now = new Date(),
 ) {

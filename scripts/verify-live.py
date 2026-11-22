@@ -26,7 +26,7 @@ health = request('/api/health')
 assert health['ok'] is True
 config = request('/api/config')
 assert config['devAuth'] is False
-public = request('/api/public')
+assert isinstance(request('/api/stats/coverage')['places'], list)
 class NoRedirect(urllib.request.HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         return None

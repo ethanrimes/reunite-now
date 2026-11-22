@@ -34,28 +34,45 @@ export async function cleanStoryPhoto(photo: string) {
   }
 }
 
+export async function storyCover(photo?: string) {
+  if (!photo) return null;
+  const bytes = Buffer.from(photo.slice(photo.indexOf(",") + 1), "base64");
+  const cover = await sharp(bytes)
+    .resize(480, 360, { fit: "inside", withoutEnlargement: true })
+    .webp({ quality: 68 })
+    .toBuffer();
+  return "data:image/webp;base64," + cover.toString("base64");
+}
+
 // Re-encode historical photos once. An unreadable original stays in the owner's
 // export, while the public endpoint withholds unverified photos.
 export async function cleanHistoricalStoryPhotos() {
   const { rows } = await db.query(
-    "SELECT user_id FROM stories WHERE data->>'photosCleaned' IS DISTINCT FROM 'true'",
+    "SELECT user_id FROM stories WHERE data->>'photosCleaned' IS DISTINCT FROM 'true' OR NOT (data ? 'cover')",
   );
   for (const { user_id } of rows) {
     const result = await db.query("SELECT data FROM stories WHERE user_id=$1", [
       user_id,
     ]);
     const original = result.rows[0]?.data;
-    if (!original || original.photosCleaned === true) continue;
-    const photos = [];
+    if (!original || (original.photosCleaned === true && "cover" in original))
+      continue;
+    const photos: string[] = [];
+    let cover;
     try {
       for (const photo of original.photos ?? [])
-        photos.push(await cleanStoryPhoto(photo));
+        photos.push(
+          original.photosCleaned === true
+            ? photo
+            : await cleanStoryPhoto(photo),
+        );
+      cover = await storyCover(photos[0]);
     } catch {
       console.error("A historical story photo needs owner review");
       continue;
     }
     await db.query("UPDATE stories SET data=$1 WHERE user_id=$2 AND data=$3", [
-      JSON.stringify({ ...original, photos, photosCleaned: true }),
+      JSON.stringify({ ...original, photos, cover, photosCleaned: true }),
       user_id,
       JSON.stringify(original),
     ]);

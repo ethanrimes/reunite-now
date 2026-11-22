@@ -1,12 +1,3 @@
-import messages from "./locales/messages.json";
-import arabic from "./locales/ar.json";
-import bengali from "./locales/bn.json";
-import traditionalChinese from "./locales/zh-Hant.json";
-const additionalCatalogs: Record<string, Record<string, string>> = {
-  ar: arabic,
-  bn: bengali,
-  "zh-Hant": traditionalChinese,
-};
 export type Language = "en" | "es" | "pt" | "tl" | "ar" | "bn" | "zh-Hant";
 export const languageNames = {
   en: "English",
@@ -41,7 +32,24 @@ function initialLanguage(): Language {
     return "en";
   }
 }
-let language: Language = initialLanguage();
+type Catalog = Record<string, string>;
+const catalogs: Partial<Record<Language, Catalog>> = {};
+async function loadCatalog(value: Language) {
+  if (value === "en" || catalogs[value]) return;
+  if (value === "ar") catalogs.ar = (await import("./locales/ar.json")).default;
+  else if (value === "bn")
+    catalogs.bn = (await import("./locales/bn.json")).default;
+  else if (value === "zh-Hant")
+    catalogs[value] = (await import("./locales/zh-Hant.json")).default;
+  else {
+    const messages = (await import("./locales/messages.json")).default;
+    catalogs[value] = Object.fromEntries(
+      Object.entries(messages).map(([key, entry]) => [key, entry[value]]),
+    );
+  }
+}
+let language: Language = "en";
+let requested = 0;
 const listeners = new Set<() => void>();
 export const getLanguage = () => language;
 export const getLocale = () => localeNames[language];
@@ -51,8 +59,11 @@ export function subscribeLanguage(listener: () => void) {
     listeners.delete(listener);
   };
 }
-export function setLanguage(value: Language) {
+export async function setLanguage(value: Language) {
   if (!validLanguage(value)) return;
+  const sequence = ++requested;
+  await loadCatalog(value);
+  if (sequence !== requested) return;
   language = value;
   try {
     if (typeof window !== "undefined")
@@ -69,13 +80,11 @@ export function translate(
   values: Record<string, string | number> = {},
 ) {
   const normalized = text.replace(/\s+/g, " ").trim();
-  const entry = (messages as Record<string, Partial<Record<Language, string>>>)[
-    normalized
-  ];
+  const catalog = catalogs[lang];
   const translated =
-    lang === "en"
-      ? normalized
-      : (additionalCatalogs[lang]?.[normalized] ?? entry?.[lang] ?? normalized);
+    catalog && Object.hasOwn(catalog, normalized)
+      ? catalog[normalized]
+      : normalized;
   const result = translated.replace(/\{(\w+)\}/g, (match, key) =>
     values[key] === undefined ? match : String(values[key]),
   );
@@ -87,10 +96,7 @@ export function t(text: string, values?: Record<string, string | number>) {
   // API validation errors include internal field paths. Show readable guidance
   // and translated domain rules, without translating or changing submitted data.
   if (language !== "en" && /^\w+(?:\.\w+)*: /.test(text)) {
-    const catalog = messages as Record<
-      string,
-      Partial<Record<Language, string>>
-    >;
+    const catalog = catalogs[language] ?? {};
     const details = text
       .split("; ")
       .map((part) => part.replace(/^.*?: /, ""))
@@ -114,10 +120,13 @@ function updateDocument() {
   document.title = `Reunite Now — ${t("Visa processing needs to change.")}`;
 }
 updateDocument();
-if (typeof window !== "undefined")
+if (typeof window !== "undefined") {
+  const restore = (value: Language) => {
+    void setLanguage(value).catch(() => {});
+  };
+  restore(initialLanguage());
   window.addEventListener("storage", (event) => {
-    if (event.key !== storageKey) return;
-    language = validLanguage(event.newValue) ? event.newValue : "en";
-    updateDocument();
-    listeners.forEach((listener) => listener());
+    if (event.key === storageKey)
+      restore(validLanguage(event.newValue) ? event.newValue : "en");
   });
+}

@@ -108,7 +108,8 @@ test("All language catalogs cover interface strings and preserve placeholders", 
   }
 });
 
-test("translation interpolation, fallback, and locale selection", () => {
+test("translation interpolation, fallback, and locale selection", async () => {
+  for (const lang of ["es", "pt", "tl"] as const) await setLanguage(lang);
   assert.equal(translate("Sign the petition", "es"), "Firmar la petición");
   assert.equal(translate("Sign the petition", "pt"), "Assinar a petição");
   assert.equal(translate(" Sign the petition ", "es"), " Firmar la petición ");
@@ -127,18 +128,18 @@ test("translation interpolation, fallback, and locale selection", () => {
   assert.equal(validLanguage("fr"), false);
   let changes = 0;
   const unsubscribe = subscribeLanguage(() => changes++);
-  setLanguage("es");
+  await setLanguage("es");
   assert.equal(getLanguage(), "es");
-  setLanguage("pt");
+  await setLanguage("pt");
   assert.equal(getLanguage(), "pt");
   assert.equal(changes, 2);
-  setLanguage("tl");
+  await setLanguage("tl");
   assert.equal(getLanguage(), "tl");
   assert.equal(getLocale(), "fil-PH");
   assert.equal(changes, 3);
   for (const lang of ["ar", "bn", "zh-Hant"] as const) {
     assert.equal(validLanguage(lang), true);
-    setLanguage(lang);
+    await setLanguage(lang);
     assert.equal(getLanguage(), lang);
     assert.equal(getLocale(), lang);
     assert.notEqual(translate("Sign the petition", lang), "Sign the petition");
@@ -151,7 +152,7 @@ test("translation interpolation, fallback, and locale selection", () => {
   assert.equal(Object.keys(languageNames).length, 7);
   assert.equal(changes, 6);
   unsubscribe();
-  setLanguage("en");
+  await setLanguage("en");
   assert.equal(changes, 6);
 });
 
@@ -182,7 +183,7 @@ test("campaign events and participation copy are included in every catalog", () 
 });
 
 // Direction must also reset when a reader returns from Arabic to another language.
-test("language changes update document language, direction and title", () => {
+test("language changes update document language, direction and title", async () => {
   const original = Object.getOwnPropertyDescriptor(globalThis, "document");
   const document = { documentElement: { lang: "", dir: "" }, title: "" };
   Object.defineProperty(globalThis, "document", {
@@ -191,7 +192,7 @@ test("language changes update document language, direction and title", () => {
   });
   try {
     for (const lang of ["ar", "bn", "zh-Hant", "en"] as const) {
-      setLanguage(lang);
+      await setLanguage(lang);
       assert.equal(
         document.documentElement.lang,
         lang === "en" ? "en-US" : lang,
@@ -205,6 +206,6 @@ test("language changes update document language, direction and title", () => {
   } finally {
     if (original) Object.defineProperty(globalThis, "document", original);
     else Reflect.deleteProperty(globalThis, "document");
-    setLanguage("en");
+    await setLanguage("en");
   }
 });

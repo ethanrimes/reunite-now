@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Globe2 } from "lucide-react";
 import {
   getLanguage,
@@ -17,6 +17,7 @@ export function useLanguage() {
 }
 export function LanguageSelector() {
   const language = useLanguage();
+  const [failed, setFailed] = useState(false);
   return (
     <label className="language-selector">
       <Globe2 size={16} aria-hidden="true" />
@@ -24,8 +25,9 @@ export function LanguageSelector() {
       <select
         value={language}
         onChange={(event) => {
+          setFailed(false);
           if (validLanguage(event.target.value))
-            setLanguage(event.target.value);
+            void setLanguage(event.target.value).catch(() => setFailed(true));
         }}
       >
         {Object.entries(languageNames).map(([code, name]) => (
@@ -34,6 +36,9 @@ export function LanguageSelector() {
           </option>
         ))}
       </select>
+      {failed && (
+        <span role="alert">{t("Something went wrong. Please try again.")}</span>
+      )}
     </label>
   );
 }

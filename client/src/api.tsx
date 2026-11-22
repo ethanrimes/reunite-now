@@ -1,8 +1,10 @@
+import { useLocation } from "react-router-dom";
 import { previewMode } from "./preview";
 import {
   createContext,
   useContext,
   useState,
+  useRef,
   useEffect,
   type ReactNode,
 } from "react";
@@ -29,7 +31,7 @@ export async function api<T = any>(
   return data;
 }
 export type Me = {
-  user: { id: string; email: string; storageRegion?: "eu" | "us" } | null;
+  user: { id: string; email?: string; storageRegion?: "eu" | "us" } | null;
   profile: (Profile & { updatedAt: string; signedAt: string }) | null;
   story: Story | null;
 };
@@ -60,15 +62,25 @@ export function DataProvider({ children }: { children: ReactNode }) {
   });
   const [profiles, setProfiles] = useState<PublicProfile[]>([]);
   const [stories, setStories] = useState<PublicStory[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { pathname } = useLocation();
+  const scope =
+    !previewMode &&
+    ["/account", "/thank-you"].includes(pathname.replace(/\/$/, ""))
+      ? "account"
+      : "session";
+  const [loadedScope, setLoadedScope] = useState("");
+  const requestId = useRef(0);
+  const loading = loadedScope !== scope;
   const [error, setError] = useState("");
   async function refresh() {
+    const id = ++requestId.current;
     try {
       if (previewMode) {
         const sample = await api<{
           profiles: PublicProfile[];
           stories: PublicStory[];
         }>("/demo");
+        if (id !== requestId.current) return;
         setMe({ user: null, profile: null, story: null });
         setConfig({
           demoData: true,
@@ -82,24 +94,29 @@ export function DataProvider({ children }: { children: ReactNode }) {
         setError("");
         return;
       }
-      const [m, c, p] = await Promise.all([
-        api<Me>("/me"),
+      const [m, c] = await Promise.all([
+        api<Me>(scope === "account" ? "/me" : "/me?view=session"),
         api<Config>("/config"),
-        api<{ profiles: PublicProfile[] }>("/public"),
       ]);
+      if (id !== requestId.current) return;
       setMe(m);
       setConfig(c);
-      setProfiles(p.profiles);
       setError("");
     } catch (e) {
-      setError((e as Error).message);
+      if (id === requestId.current) {
+        setMe({ user: null, profile: null, story: null });
+        setError((e as Error).message);
+      }
     } finally {
-      setLoading(false);
+      if (id === requestId.current) setLoadedScope(scope);
     }
   }
   useEffect(() => {
     void refresh();
-  }, []);
+    return () => {
+      requestId.current++;
+    };
+  }, [scope]);
   return (
     <Context.Provider
       value={{ me, config, profiles, stories, loading, error, refresh }}
@@ -109,3 +126,28 @@ export function DataProvider({ children }: { children: ReactNode }) {
   );
 }
 export const useData = () => useContext(Context);
+
+// Key results to the request so a slow response cannot replace newer filters.
+export function usePublicView<T>(path: string | null) {
+  const [result, setResult] = useState<{
+    path: string;
+    data?: T;
+    error?: boolean;
+  }>();
+  useEffect(() => {
+    if (!path || previewMode) {
+      setResult(undefined);
+      return;
+    }
+    const controller = new AbortController();
+    api<T>(path, { signal: controller.signal })
+      .then((data) => {
+        if (!controller.signal.aborted) setResult({ path, data });
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) setResult({ path, error: true });
+      });
+    return () => controller.abort();
+  }, [path]);
+  return result?.path === path ? result : undefined;
+}

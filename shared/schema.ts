@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { caseRoles, rolesFor, relationshipsFor } from "./visa-workflow";
-export const consentVersion = "2026-11-22";
+export const consentVersion = "2026-11-22T18:00:00Z";
 export const legalStatuses = [
   "US citizen",
   "Permanent resident",

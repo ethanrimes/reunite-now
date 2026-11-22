@@ -3,6 +3,12 @@ import express, {
   type Response,
   type NextFunction,
 } from "express";
+import {
+  visaStatistics,
+  type PlaceCount,
+  type StoryCard,
+} from "../shared/public-views";
+import { filterSignatures } from "../shared/coverage";
 import helmet from "helmet";
 import compression from "compression";
 import cookieParser from "cookie-parser";
@@ -27,7 +33,11 @@ import {
 } from "./regions";
 import { regionForIP } from "./geolocation";
 import { emailReady, sendEmail } from "./email";
-import { cleanStoryPhoto, cleanHistoricalStoryPhotos } from "./story-photos";
+import {
+  storyCover,
+  cleanStoryPhoto,
+  cleanHistoricalStoryPhotos,
+} from "./story-photos";
 import { canonicalHost } from "./canonical";
 import { sendReminders } from "./reminders";
 import { createDemoData, demoEnabled } from "./demo";
@@ -40,7 +50,6 @@ import {
   storySchema,
   states,
   type Profile,
-  type PublicProfile,
 } from "../shared/schema";
 const production = process.env.NODE_ENV === "production";
 const appUrl = process.env.APP_URL || "http://127.0.0.1:5173";
@@ -320,8 +329,14 @@ app.post("/api/auth/logout", async (req, res) => {
 app.get(
   "/api/me",
   accountRoute(
-    async (_req, res) => {
+    async (req, res) => {
       const u = res.locals.user;
+      if (req.query.view === "session")
+        return void res.json({
+          user: { id: u.id },
+          profile: null,
+          story: null,
+        });
       const [p, s] = await Promise.all([
         db.query(
           `SELECT data,updated_at,signed_at FROM profiles WHERE user_id=$1`,
@@ -473,15 +488,19 @@ app.put(
     const safePhotos = new Set<string>(
       saved?.photosCleaned === true ? saved.photos : [],
     );
-    const photos = [];
+    const photos: string[] = [];
     for (const photo of data.photos) {
       photos.push(safePhotos.has(photo) ? photo : await cleanStoryPhoto(photo));
     }
+    const cover =
+      saved?.photosCleaned && photos[0] === saved.photos[0] && "cover" in saved
+        ? saved.cover
+        : await storyCover(photos[0]);
     await db.query(
       `INSERT INTO stories(user_id,data) VALUES($1,$2) ON CONFLICT(user_id) DO UPDATE SET data=EXCLUDED.data,updated_at=now()`,
       [
         res.locals.user.id,
-        JSON.stringify({ ...data, photos, photosCleaned: true }),
+        JSON.stringify({ ...data, photos, cover, photosCleaned: true }),
       ],
     );
     res.json({ ok: true });
@@ -570,66 +589,198 @@ app.get("/api/demo", async (_req, res) => {
     throw error;
   }
 });
-app.get("/api/public", async (_req, res) => {
-  const rows = await routed(false, () =>
+const signedProfile =
+  "data->>'signed' = 'true' AND data->>'publicConsent' = 'true'";
+app.get("/api/stats/coverage", async (req, res) => {
+  const params = new URL(req.originalUrl, appUrl).searchParams;
+  const filters = {
+    statuses: params.getAll("status"),
+    involvement: params.getAll("connection"),
+    parties: params.getAll("party"),
+  };
+  const filtered = params.has("filtered");
+  const result = await routed(false, () =>
     acrossRegions(() =>
-      db.query(
-        `SELECT user_id,(data - 'reminderEmails') || '{"reminders":false}'::jsonb AS data,updated_at,signed_at FROM profiles WHERE data->>'signed'='true' AND data->>'publicConsent'='true'`,
+      db.query<PlaceCount>(
+        `SELECT data->>'country' AS country, coalesce(data->>'state','') AS state,
+     coalesce(data->>'district','') AS district, count(*)::int AS count FROM profiles
+     WHERE ${signedProfile} AND ($1::boolean OR (
+       data->>'legalStatus' = ANY($2::text[]) AND
+       (CASE WHEN data->>'personallyInvolved'='true' THEN 'Yes' ELSE 'No' END) = ANY($3::text[]) AND
+       (CASE WHEN data->>'legalStatus'='US citizen' AND data->>'affiliationConsent'='true'
+         THEN coalesce(data->>'politicalAffiliation','') ELSE '' END) = ANY($4::text[])
+     )) GROUP BY 1,2,3`,
+        [!filtered, filters.statuses, filters.involvement, filters.parties],
       ),
     ),
   );
-  const profiles = rows
-    .flatMap((result) => result.rows)
-    .map((r) => {
-      const p = profileSchema.parse(r.data);
-      const {
-        reminders,
-        reminderEmails,
-        affiliationConsent,
-        adultConsent,
-        publicConsent,
-        signed,
-        ...data
-      } = p;
-      return {
-        ...data,
-        id: r.user_id,
-        updatedAt: r.updated_at,
-        signedAt: r.signed_at,
-      };
-    });
+  const samples = demo
+    ? filtered
+      ? filterSignatures(demo.profiles, filters)
+      : demo.profiles
+    : [];
+  const places = new Map<string, PlaceCount>();
+  for (const { country, state, district, count } of [
+    ...result.flatMap((r) => r.rows),
+    ...samples.map((p) => ({ ...p, count: 1 })),
+  ]) {
+    const key = JSON.stringify([country, state, district]);
+    const previous = places.get(key);
+    if (previous) previous.count += count;
+    else places.set(key, { country, state, district, count });
+  }
+  res.json({ places: [...places.values()] });
+});
+
+app.get("/api/stats/visas", async (req, res) => {
+  const { post, days, status, category, metric } = z
+    .object({
+      post: z.string().max(120).default(""),
+      days: z.coerce.number().int().nonnegative().default(90),
+      status: z.enum(["active", "closed"]).default("active"),
+      category: z.string().max(100).default(""),
+      metric: z
+        .enum([
+          "sinceFiling",
+          "sinceNvc",
+          "total",
+          "filingInterview",
+          "nvcInterview",
+          "nvcClosure",
+        ])
+        .default("sinceFiling"),
+    })
+    .parse(req.query);
+  const result = await routed(false, () =>
+    acrossRegions(() =>
+      db.query(
+        `SELECT updated_at, (SELECT jsonb_agg(jsonb_build_object(
+            'post', c->'post', 'category', c->'category', 'nationality', c->'nationality', 'updatedAt', c->'updatedAt',
+            'events', (SELECT jsonb_agg(jsonb_build_object('date', e->'date', 'type', e->'type') ORDER BY position)
+                      FROM jsonb_array_elements(c->'events') WITH ORDINALITY AS events(e, position))
+          )) FROM jsonb_array_elements(data->'cases') AS c) AS cases
+         FROM profiles WHERE ${signedProfile} AND jsonb_array_length(data->'cases') > 0`,
+      ),
+    ),
+  );
+  const profiles = result.flatMap((r) =>
+    r.rows.map((row) => ({
+      cases: row.cases,
+      updatedAt: new Date(row.updated_at).toISOString(),
+    })),
+  );
+  res.json(
+    visaStatistics(
+      [...profiles, ...(demo?.profiles ?? [])],
+      { post, days, status, category },
+      metric,
+    ),
+  );
+});
+
+const publishedStories = `FROM stories s JOIN profiles p ON p.user_id=s.user_id
+  WHERE s.data->>'publish'='true' AND p.data->>'signed'='true' AND p.data->>'publicConsent'='true'`;
+app.get("/api/story-cards", async (req, res) => {
+  const { after, q } = z
+    .object({
+      after: z.string().max(80).default(""),
+      q: z.string().max(250).default(""),
+    })
+    .parse(req.query);
+  const pageSize = 9;
+  const result = await routed(false, () =>
+    acrossRegions(() =>
+      db.query(
+        `SELECT s.user_id AS id, s.data->>'title' AS title, p.data->>'country' AS country, p.data->>'name' AS name,
+       CASE WHEN s.data->>'photosCleaned'='true' THEN s.data->>'cover' END AS cover
+     ${publishedStories} AND s.user_id::text > $1 AND ($2='' OR strpos(lower(concat_ws(' ', s.data->>'title', s.data->>'body',
+       p.data->>'name', p.data->>'country', s.data->>'impacts')), lower($2)) > 0)
+     ORDER BY s.user_id LIMIT $3`,
+        [after, q, pageSize + 1],
+      ),
+    ),
+  );
+  const cards: StoryCard[] = result.flatMap((r) =>
+    r.rows.map(({ id, name, title, country, cover }) => ({
+      id,
+      name,
+      title,
+      country,
+      cover,
+    })),
+  );
+  for (const s of demo?.stories ?? []) {
+    if (
+      s.id > after &&
+      [s.title, s.body, s.name, s.country, ...s.impacts]
+        .join(" ")
+        .toLowerCase()
+        .includes(q.toLowerCase())
+    )
+      cards.push({
+        id: s.id,
+        name: s.name,
+        title: s.title,
+        country: s.country,
+        cover: s.photos[0] ?? null,
+      });
+  }
+  cards.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
   res.json({
-    profiles: [...profiles, ...(demo?.profiles || [])],
-    updatedAt: new Date().toISOString(),
+    cards: cards.slice(0, pageSize),
+    next: cards.length > pageSize ? cards[pageSize - 1].id : null,
   });
 });
-app.get("/api/stories", async (_req, res) => {
-  const rows = await routed(false, () =>
+app.get("/api/story/:id/photo/:index", async (req, res) => {
+  const { id, index } = req.params;
+  if (!z.uuid().safeParse(id).success || !/^[0-3]$/.test(index))
+    return void res.sendStatus(404);
+  const result = await routed(false, () =>
     acrossRegions(() =>
       db.query(
-        `SELECT s.user_id,s.data,s.updated_at,p.data->>'name' AS name,p.data->>'country' AS country FROM stories s JOIN profiles p ON s.user_id=p.user_id WHERE s.data->>'publish'='true' AND p.data->>'publicConsent'='true'`,
+        `SELECT s.data->'photos'->>$2::int AS photo ${publishedStories} AND s.user_id=$1 AND s.data->>'photosCleaned'='true'`,
+        [id, Number(index)],
       ),
     ),
   );
+  const photo = result.flatMap((r) => r.rows)[0]?.photo;
+  if (!photo) return void res.sendStatus(404);
+  res
+    .type("image/webp")
+    .send(Buffer.from(photo.slice(photo.indexOf(",") + 1), "base64"));
+});
+app.get("/api/story/:id", async (req, res) => {
+  const { id } = req.params;
+  const fixture = demo?.stories.find((s) => s.id === id);
+  if (fixture) return void res.json(fixture);
+  if (!z.uuid().safeParse(id).success) return void res.sendStatus(404);
+  const result = await routed(false, () =>
+    acrossRegions(() =>
+      db.query(
+        `SELECT s.data->>'title' AS title, s.data->>'body' AS body, s.data->>'support' AS support,
+       s.data->'impacts' AS impacts, CASE WHEN s.data->>'photosCleaned'='true' THEN jsonb_array_length(s.data->'photos') ELSE 0 END AS photo_count,
+       s.updated_at,p.data->>'name' AS name,p.data->>'country' AS country
+     ${publishedStories} AND s.user_id=$1`,
+        [id],
+      ),
+    ),
+  );
+  const row = result.flatMap((r) => r.rows)[0];
+  if (!row) return void res.sendStatus(404);
+  const { title, body, support, impacts } = row;
   res.json({
-    stories: [
-      ...rows
-        .flatMap((result) => result.rows)
-        .map((r) => {
-          const { rightsConsent, publish, ...story } = storySchema.parse(
-            r.data,
-          );
-          return {
-            ...story,
-            photos: r.data.photosCleaned === true ? story.photos : [],
-            id: r.user_id,
-            name: r.name,
-            country: r.country,
-            updatedAt: r.updated_at,
-          };
-        }),
-      ...(demo?.stories || []),
-    ],
+    id,
+    title,
+    body,
+    support,
+    impacts,
+    photos: Array.from(
+      { length: row.photo_count },
+      (_, i) => `/api/story/${id}/photo/${i}`,
+    ),
+    updatedAt: row.updated_at,
+    name: row.name,
+    country: row.country,
   });
 });
 app.post("/api/jobs/reminders", async (req, res) => {
@@ -648,6 +799,13 @@ app.use("/api", (_req, res) =>
 );
 app.use("/demo", (_req, res, next) => {
   res.set("X-Robots-Tag", "noindex, nofollow");
+  next();
+});
+app.get("/stories", (_req, res, next) => {
+  res.set(
+    "Link",
+    "</api/story-cards?q=&after=>; rel=preload; as=fetch; crossorigin=anonymous",
+  );
   next();
 });
 app.use(

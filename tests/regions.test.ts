@@ -103,21 +103,16 @@ test("two regional databases preserve sessions, visibility, private records and 
     200,
   );
   async function checkPublic() {
-    const { profiles } = await (await request("public")).json();
-    for (const user of [a, b]) {
-      const matches = profiles.filter((p: any) => p.id === user.id);
-      assert.equal(matches.length, 1);
-      for (const field of [
-        "email",
-        "reminders",
-        "reminderEmails",
-        "storageRegion",
-      ])
-        assert.ok(!(field in matches[0]));
-    }
-    const { stories } = await (await request("stories")).json();
-    assert.equal(stories.filter((s: any) => s.id === b.id).length, 1);
-    assert.ok(!stories.some((s: any) => s.id === a.id));
+    const { places } = await (await request("stats/coverage")).json();
+    assert.deepEqual(
+      places.filter((p: any) => p.country === "Sweden"),
+      [{ country: "Sweden", state: "", district: "", count: 2 }],
+    );
+    const { cards } = await (await request("story-cards")).json();
+    assert.equal(cards.filter((s: any) => s.id === b.id).length, 1);
+    assert.ok(!cards.some((s: any) => s.id === a.id));
+    assert.equal((await request("story/" + a.id)).status, 404);
+    assert.equal((await request("story/" + b.id)).status, 200);
   }
   await checkPublic();
   await pools.eu.query(
@@ -213,6 +208,12 @@ test("two regional databases preserve sessions, visibility, private records and 
     await request("me/export", "GET", undefined, eu)
   ).json();
   assert.equal(exported.story.body, story.body);
+  const other = await (
+    await request("me/export?userId=" + a.id, "GET", undefined, us)
+  ).json();
+  assert.equal(other.email, usEmail);
+  assert.equal(other.story.publish, true);
+  assert.equal(JSON.stringify(other).includes(euEmail), false);
   assert.equal(exported.reminderDeliveries.length, 1);
   for (const cookie of [eu, us])
     assert.equal(
