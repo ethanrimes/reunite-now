@@ -894,6 +894,16 @@
     "pt": "Vamos tentar novamente.",
     "tl": "Subukan natin muli."
   },
+  "Finish signing in": {
+    "es": "Completa el inicio de sesión",
+    "pt": "Conclua o login",
+    "tl": "Tapusin ang pag-sign in"
+  },
+  "Confirm sign-in": {
+    "es": "Confirmar inicio de sesión",
+    "pt": "Confirmar login",
+    "tl": "Kumpirmahin ang pag-sign in"
+  },
   "Signing you in…": {
     "es": "Iniciando sesión…",
     "pt": "Entrando…",

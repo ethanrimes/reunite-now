@@ -1,5 +1,5 @@
 import { t } from "./i18n";
-import { useState, useEffect, useRef, type FormEvent } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import {
   Link,
   Navigate,
@@ -195,34 +195,51 @@ export function Login() {
 export function Verify() {
   const { refresh } = useData();
   const nav = useNavigate();
+  const { hash } = useLocation();
+  const token = new URLSearchParams(hash.slice(1)).get("token");
+  const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const once = useRef(false);
-  useEffect(() => {
-    if (once.current) return;
-    once.current = true;
-    const token = new URLSearchParams(window.location.hash.slice(1)).get(
-      "token",
-    );
-    window.history.replaceState(null, "", "/auth/verify");
-    if (!token) {
-      setError("The sign-in link is missing its token. Request a new link.");
-      return;
+  const problem = token
+    ? error
+    : "The sign-in link is missing its token. Request a new link.";
+
+  async function confirm() {
+    if (!token || busy) return;
+    setBusy(true);
+    window.history.replaceState(window.history.state, "", "/auth/verify");
+    try {
+      await api("/auth/verify", {
+        method: "POST",
+        body: JSON.stringify({ token }),
+      });
+      await refresh();
+      nav("/account", { replace: true });
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
     }
-    api("/auth/verify", { method: "POST", body: JSON.stringify({ token }) })
-      .then(() => refresh())
-      .then(() => nav("/account", { replace: true }))
-      .catch((e) => setError(e.message));
-  }, []);
+  }
+
   return (
     <div className="page-shell narrow">
-      <h1>{error ? t("Let’s try that again.") : t("Signing you in…")}</h1>
-      {error && (
+      <h1>{problem ? t("Let’s try that again.") : t("Finish signing in")}</h1>
+      {problem ? (
         <>
-          <Notice tone="error">{t(error)}</Notice>
+          <Notice tone="error">{t(problem)}</Notice>
           <Link className="button" to="/login">
             {t("Request a new link")}
           </Link>
         </>
+      ) : (
+        <button
+          type="button"
+          className="button"
+          onClick={confirm}
+          disabled={busy}
+        >
+          {busy ? t("Signing you in…") : t("Confirm sign-in")}
+        </button>
       )}
     </div>
   );
