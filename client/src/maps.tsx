@@ -18,7 +18,10 @@ import {
 import {
   filterSignatures,
   usMapBounds,
-  usInsets,
+  territoryMapBounds,
+  stateInsets,
+  territoryInsets,
+  isTerritory,
   usMapProjector,
 } from "../../shared/coverage";
 import { Link } from "react-router-dom";
@@ -52,6 +55,7 @@ type Rep = {
   contact: string;
   source: string;
 };
+type USView = "states" | "districts" | "territories";
 type Feature = GeoJSON.Feature<GeoJSON.Geometry, any>;
 type Region = {
   key: string;
@@ -139,7 +143,7 @@ function GeoMap({
   measure = "signatures",
   onSelect,
 }: {
-  kind: "states" | "districts" | "world";
+  kind: USView | "world";
   regions: Record<string, Region>;
   shade?: string;
   measure?: "signatures" | "applicants";
@@ -151,13 +155,14 @@ function GeoMap({
   const [error, setError] = useState("");
   const [ready, setReady] = useState(false);
   const [compact, setCompact] = useState(false);
+  const usBounds = kind === "territories" ? territoryMapBounds : usMapBounds;
   const bounds: L.LatLngBoundsExpression =
     kind === "world"
       ? [
           [-56, -180],
           [80, 180],
         ]
-      : (usMapBounds.map((point) => [...point]) as L.LatLngBoundsExpression);
+      : (usBounds.map((point) => [...point]) as L.LatLngBoundsExpression);
   const fitPadding: L.PointExpression = kind === "world" ? [35, 35] : [18, 35];
   const reset = () =>
     map.current?.fitBounds(bounds, { padding: fitPadding, animate: false });
@@ -209,34 +214,35 @@ function GeoMap({
     setReady(false);
     Promise.all([
       geography(kind === "world" ? "world" : "states"),
-      geography(kind),
+      geography(kind === "territories" ? "states" : kind),
     ])
       .then(([base, data]) => {
         if (canceled) return;
         // Only the world view uses geographic context. US geometry is a compact diagram.
         const project = kind === "world" ? null : usMapProjector(base);
         if (project) {
-          for (const inset of usInsets) {
+          for (const inset of kind === "territories"
+            ? territoryInsets
+            : stateInsets) {
             const [left, bottom, right, top] = inset.box;
-            L.rectangle(
+            const frame = L.rectangle(
               [
                 [bottom, left],
                 [top, right],
               ],
               {
-                interactive: false,
+                interactive: kind === "territories",
                 color: "#c6cdd1",
                 weight: 1,
                 fillColor: "#f3f5f5",
                 fillOpacity: 1,
               },
             ).addTo(layers);
+            if (kind === "territories" && regions[inset.state]) {
+              frame.on("click", () => onSelect(regions[inset.state]));
+            }
             const label = document.createElement("span");
-            label.textContent = compact
-              ? inset.short
-              : right - left < 10
-                ? inset.short
-                : t(inset.name);
+            label.textContent = compact ? inset.short : t(inset.name);
             L.tooltip({
               permanent: true,
               direction: "center",
@@ -310,12 +316,15 @@ function GeoMap({
               }
             });
           });
-        const features = data.features.map((f) => ({
-          ...f,
-          geometry: project
-            ? project(f.geometry, String(f.properties?.GEOID).slice(0, 2))
-            : f.geometry,
-        }));
+        const visibleFeatures = (collection: GeoJSON.FeatureCollection) => {
+          if (!project) return collection.features;
+          return collection.features.flatMap((f) => {
+            const state = String(f.properties?.GEOID).slice(0, 2);
+            if (isTerritory(state) !== (kind === "territories")) return [];
+            return [{ ...f, geometry: project(f.geometry, state) }];
+          });
+        };
+        const features = visibleFeatures(data);
         const layer = L.geoJSON(
           { ...data, features } as GeoJSON.FeatureCollection,
           {
@@ -341,6 +350,21 @@ function GeoMap({
             },
           },
         ).addTo(layers);
+        if (kind === "districts") {
+          L.geoJSON(
+            { ...base, features: visibleFeatures(base) } as GeoJSON.FeatureCollection,
+            {
+              interactive: false,
+              style: {
+                className: "state-outline",
+                color: "#344e60",
+                weight: 1.8,
+                opacity: 1,
+                fill: false,
+              },
+            },
+          ).addTo(layers);
+        }
         setReady(true);
       })
       .catch((e) => {
@@ -444,7 +468,7 @@ function Multi({
 }
 export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
   const { profiles } = useData();
-  const [division, setDivision] = useState<"states" | "districts">("states");
+  const [division, setDivision] = useState<USView>("states");
   const kind = worldwide ? "world" : division;
   const [status, setStatus] = useState<string[]>([...legalStatuses]);
   const [involved, setInvolved] = useState(["Yes", "No"]);
@@ -482,9 +506,12 @@ export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
     involvement: involved,
     parties,
   });
-  const filtered = matching.filter(
-    (p) => kind === "world" || p.country === "United States",
-  );
+  const filtered = matching.filter((p) => {
+    if (kind === "world") return true;
+    if (p.country !== "United States") return false;
+    const state = states.find((s) => s[1] === p.state);
+    return state && isTerritory(state[0]) === (kind === "territories");
+  });
   useEffect(() => {
     setSelected(null);
   }, [kind, status, involved, parties]);
@@ -498,13 +525,17 @@ export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
       return r;
     }
     for (const s of states) {
-      if (kind === "states")
+      if (isTerritory(s[0]) !== (kind === "territories")) continue;
+      if (kind !== "districts")
         r[s[0]] = {
           key: s[0],
           name: s[2],
           count: 0,
           reps: representatives.filter(
-            (p) => p.state === s[1] && p.chamber === "Senate",
+            (p) =>
+              p.state === s[1] &&
+              p.chamber ===
+                (kind === "territories" || s[1] === "DC" ? "House" : "Senate"),
           ),
         };
       else
@@ -525,7 +556,7 @@ export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
     for (const p of filtered) {
       const state = states.find((s) => s[1] === p.state);
       if (!state) continue;
-      const key = kind === "states" ? state[0] : `${state[0]}${p.district}`;
+      const key = kind !== "districts" ? state[0] : `${state[0]}${p.district}`;
       if (!r[key])
         r[key] = { key, name: `${state[1]}-${p.district}`, count: 0, reps: [] };
       r[key].count++;
@@ -575,7 +606,9 @@ export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
           <span>
             {kind === "world"
               ? t("countries represented")
-              : t("states & territories")}
+              : kind === "territories"
+                ? t("Territories")
+                : t("States and DC")}
           </span>
         </div>
         <div>
@@ -612,6 +645,13 @@ export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
               >
                 {t("Congressional districts")}
               </button>
+              <button
+                aria-pressed={kind === "territories"}
+                className={kind === "territories" ? "selected" : ""}
+                onClick={() => setDivision("territories")}
+              >
+                {t("Territories")}
+              </button>
             </div>
           )}
           <Multi
@@ -644,10 +684,12 @@ export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
         </div>
         {kind !== "world" && (
           <p className="map-click-hint">
-            <Info size={17} />
-            {t(
-              "Click a state or congressional district to see your representatives, their relevant votes, and bill sponsorships.",
-            )}
+            <Info size={17} aria-hidden="true" />
+            {kind === "territories"
+              ? t("Select a territory to see its representative in Congress.")
+              : t(
+                  "Click a state or congressional district to see your representatives, their relevant votes, and bill sponsorships.",
+                )}
           </p>
         )}
         <GeoMap kind={kind} regions={regions} onSelect={setSelected} />

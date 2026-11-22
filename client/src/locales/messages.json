@@ -5529,10 +5529,10 @@
     "pt": "Seu e-mail de acesso e os endereços para lembretes ficam fora dos perfis públicos, mapas e histórias. Nós os armazenamos para administrar sua conta e enviar as mensagens que você solicita. Quem tem acesso ao banco de dados de contas pode ler esses endereços, inclusive o responsável pelo projeto, se tiver esse acesso.",
     "tl": "Hindi lumalabas sa mga pampublikong profile, mapa, o kuwento ang email address na gamit mo sa pag-sign in at ang mga address para sa mga paalala. Iniimbak namin ang mga ito para mapatakbo ang account mo at maipadala ang mga email na hiniling mo. Mababasa ang mga address ng sinumang may access sa database ng mga account, pati ng tagapangasiwa ng proyekto kung mayroon siyang ganoong access."
   },
-  "For email sign-in, Reunite Now verifies a single-use link delivered by Azure Communication Services. If you choose Google sign-in, Google verifies your identity and provides your verified email address to Reunite Now. Your sign-in tokens, session details, and reminder preferences stay private. We do not sell personal data or use advertising trackers.": {
-    "es": "Para iniciar sesión por correo, Reunite Now verifica un enlace de un solo uso enviado por Azure Communication Services. Si eliges iniciar sesión con Google, Google verifica tu identidad y proporciona tu dirección de correo verificada a Reunite Now. Tus tokens de acceso, los datos de sesión y las preferencias de recordatorios son privados. No vendemos datos personales ni usamos rastreadores publicitarios.",
-    "pt": "No acesso por e-mail, o Reunite Now verifica um link de uso único enviado pelo Azure Communication Services. Se você optar por entrar com o Google, o Google verifica sua identidade e fornece seu e-mail verificado ao Reunite Now. Os tokens de acesso, os dados da sessão e as preferências de lembretes são privados. Não vendemos dados pessoais nem usamos rastreadores de publicidade.",
-    "tl": "Kung email ang gamit mo sa pag-sign in, bineberipika ng Reunite Now ang link na isang beses lang magagamit at ipinadala ng Azure Communication Services. Kung Google ang pipiliin mo, ibeberipika ng Google ang pagkakakilanlan mo at ibibigay sa Reunite Now ang beripikadong email address mo. Pribado ang iyong mga sign-in token, detalye ng session, at mga piniling paalala. Hindi kami nagbebenta ng personal na datos o gumagamit ng mga tracker para sa patalastas."
+  "For email sign-in, Reunite Now verifies a single-use link delivered by Azure Communication Services. If you choose Google sign-in, Google verifies your identity and provides your verified email address to Reunite Now.": {
+    "es": "Para iniciar sesión por correo, Reunite Now verifica un enlace de un solo uso enviado por Azure Communication Services. Si eliges iniciar sesión con Google, Google verifica tu identidad y proporciona tu dirección de correo verificada a Reunite Now.",
+    "pt": "No acesso por e-mail, o Reunite Now verifica um link de uso único enviado pelo Azure Communication Services. Se você optar por entrar com o Google, o Google verifica sua identidade e fornece seu e-mail verificado ao Reunite Now.",
+    "tl": "Kung email ang gamit mo sa pag-sign in, bineberipika ng Reunite Now ang link na isang beses lang magagamit at ipinadala ng Azure Communication Services. Kung Google ang pipiliin mo, ibeberipika ng Google ang pagkakakilanlan mo at ibibigay sa Reunite Now ang beripikadong email address mo."
   },
   "The version accepted with your signature is recorded. This is an independent advocacy project, not a law firm or government service.": {
     "es": "Se registra la versión aceptada al firmar. Este es un proyecto independiente de incidencia pública, no un bufete ni un servicio del gobierno.",
@@ -5583,5 +5583,20 @@
     "es": "Foto siguiente",
     "pt": "Próxima foto",
     "tl": "Susunod na larawan"
+  },
+  "Territories": {
+    "es": "Territorios",
+    "pt": "Territórios",
+    "tl": "Mga teritoryo"
+  },
+  "States and DC": {
+    "es": "Estados y DC",
+    "pt": "Estados e DC",
+    "tl": "Mga estado at DC"
+  },
+  "Select a territory to see its representative in Congress.": {
+    "es": "Selecciona un territorio para ver quién lo representa en el Congreso.",
+    "pt": "Selecione um território para ver quem o representa no Congresso.",
+    "tl": "Pumili ng teritoryo para makita ang kinatawan nito sa Kongreso."
   }
 }

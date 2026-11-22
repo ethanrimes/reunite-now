@@ -510,15 +510,14 @@ export function Stories() {
                     nextLabel={t("Next photo")}
                   >
                     {selected.photos.map((src, i) => (
-                      <div className="story-slide" key={i}>
-                        <img
-                          src={src}
-                          alt={t("Photo {count} shared by {name}", {
-                            count: i + 1,
-                            name: selected.name,
-                          })}
-                        />
-                      </div>
+                      <img
+                        key={i}
+                        src={src}
+                        alt={t("Photo {count} shared by {name}", {
+                          count: i + 1,
+                          name: selected.name,
+                        })}
+                      />
                     ))}
                   </ScrollRail>
                 )}
@@ -598,7 +597,7 @@ export function DataUse() {
         </p>
         <p>
           {t(
-            "For email sign-in, Reunite Now verifies a single-use link delivered by Azure Communication Services. If you choose Google sign-in, Google verifies your identity and provides your verified email address to Reunite Now. Your sign-in tokens, session details, and reminder preferences stay private. We do not sell personal data or use advertising trackers.",
+            "For email sign-in, Reunite Now verifies a single-use link delivered by Azure Communication Services. If you choose Google sign-in, Google verifies your identity and provides your verified email address to Reunite Now.",
           )}
         </p>
         <h2>{t("Statistics and interpretation")}</h2>

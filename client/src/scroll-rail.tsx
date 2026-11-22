@@ -29,10 +29,12 @@ export function ScrollRail({
     const observer = new ResizeObserver(update);
     observer.observe(el);
     el.addEventListener("scroll", update, { passive: true });
+    el.addEventListener("load", update, true);
     update();
     return () => {
       observer.disconnect();
       el.removeEventListener("scroll", update);
+      el.removeEventListener("load", update, true);
     };
   }, [children, rtl]);
   const move = (direction: number) => {

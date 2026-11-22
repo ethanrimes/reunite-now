@@ -1105,7 +1105,7 @@
   "Anyone, anywhere in the world, can support this effort. You can sign the petition if you are 18 or older, whether or not you have a visa case. Signatures from U.S. citizens who vote are especially important because they show representatives that their own voters want Congress to act.": "無論身在何處，任何人都能支持這項行動。只要年滿 18 歲，不論有沒有申辦簽證，都可以連署。有投票的美國公民所提供的連署尤其重要，因為這能讓民意代表看見，自己的選民希望國會採取行動。",
   "Ethan Kallett maintains Reunite Now. He is a U.S. citizen who has been personally affected by visa delays.": "Reunite Now 由 Ethan Kallett 維護。他是美國公民，親身經歷過簽證延誤帶來的影響。",
   "Your sign-in email address and any reminder addresses stay off public profiles, maps, and stories. We store them to operate your account and deliver the emails you request. Anyone with access to the account database can read these addresses, including the project maintainer if they have that access.": "你的登入電郵地址與提醒用地址不會出現在公開的個人資料、地圖或故事中。我們儲存這些地址，以管理你的帳戶並寄送你要求的郵件。任何有權存取帳戶資料庫的人都能讀取這些地址；專案維護者若有此權限，也能讀取。",
-  "For email sign-in, Reunite Now verifies a single-use link delivered by Azure Communication Services. If you choose Google sign-in, Google verifies your identity and provides your verified email address to Reunite Now. Your sign-in tokens, session details, and reminder preferences stay private. We do not sell personal data or use advertising trackers.": "使用電郵登入時，Azure Communication Services 會寄出一次性連結，再由 Reunite Now 驗證。若選擇使用 Google 登入，Google 會驗證你的身分，並將已驗證的電郵地址提供給 Reunite Now。你的登入權杖、工作階段資料與提醒偏好均為私人資訊。我們不出售個人資料，也不使用廣告追蹤工具。",
+  "For email sign-in, Reunite Now verifies a single-use link delivered by Azure Communication Services. If you choose Google sign-in, Google verifies your identity and provides your verified email address to Reunite Now.": "使用電郵登入時，Azure Communication Services 會寄出一次性連結，再由 Reunite Now 驗證。若選擇使用 Google 登入，Google 會驗證你的身分，並將已驗證的電郵地址提供給 Reunite Now。",
   "The version accepted with your signature is recorded. This is an independent advocacy project, not a law firm or government service.": "系統會記錄你連署時接受的版本。這是獨立倡議專案，並非律師事務所或政府服務。",
   "Your name, legal-status category, country, US state and congressional district, optional political affiliation, involvement in the visa process, signature date, and last-confirmed date are public. The applicant names or nicknames, countries, visa categories, posts, relationships, and dates you enter are also public. Do not include passport numbers, receipt numbers, addresses, birth dates, or documents.": "您的姓名、法律身分類別、國家、美國州別與國會選區、選填的政治立場、參與簽證流程的情況、簽署日期及最後確認日期都會公開。您填寫的申請人姓名或暱稱、國家、簽證類別、使領館據點、關係及日期也會公開。請勿填寫護照號碼、收據號碼、地址、出生日期或文件。",
   "I’m the applicant": "我是申請人",
@@ -1115,5 +1115,8 @@
   "Find your congressional district on House.gov": "前往 House.gov 查詢你的國會選區",
   "Story photos": "故事照片",
   "Previous photo": "上一張照片",
-  "Next photo": "下一張照片"
+  "Next photo": "下一張照片",
+  "Territories": "屬地",
+  "States and DC": "各州與華盛頓特區",
+  "Select a territory to see its representative in Congress.": "選擇屬地即可查看其國會代表。"
 }

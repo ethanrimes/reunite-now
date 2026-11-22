@@ -260,11 +260,14 @@
 .coverage-scope {
   display: inline-flex;
 }
+.map-panel {
+  --coverage-gutter: 20px;
+}
 .map-toolbar.coverage-filters {
   flex-wrap: wrap;
   justify-content: flex-start;
   gap: 16px 24px;
-  padding: 16px 20px;
+  padding: 16px var(--coverage-gutter);
 }
 .coverage-filters .multi-select {
   margin: 0;
@@ -513,9 +516,13 @@
   }
   .coverage-filters .segmented {
     width: 100%;
+    flex-wrap: wrap;
+  }
+  .map-panel {
+    --coverage-gutter: 12px;
   }
   .map-toolbar.coverage-filters {
-    padding: 12px;
+    padding: 12px var(--coverage-gutter);
     gap: 8px;
   }
   .coverage-filters .multi-select {

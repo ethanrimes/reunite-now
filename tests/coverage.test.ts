@@ -4,7 +4,9 @@ import assert from "node:assert/strict";
 import {
   filterSignatures,
   usMapBounds,
-  usInsets,
+  stateInsets,
+  territoryInsets,
+  isTerritory,
   usMapProjector,
 } from "../shared/coverage";
 import { isPreviewPath } from "../client/src/preview";
@@ -77,7 +79,9 @@ test("US inset layout keeps every state and district inside its box without chan
   }
   for (const feature of [...states.features, ...districts.features]) {
     const code = String(feature.properties!.GEOID).slice(0, 2);
-    const inset = usInsets.find((i) => i.state === code);
+    const inset = [...stateInsets, ...territoryInsets].find(
+      (i) => i.state === code,
+    );
     const [west, south, east, north] = inset?.box || [
       usMapBounds[0][1],
       usMapBounds[0][0],
@@ -107,11 +111,38 @@ test("US inset layout keeps every state and district inside its box without chan
     Math.abs(acrossDateline[0][0] - acrossDateline[1][0]) < 2,
     "Alaska stays connected across the dateline",
   );
-  const pr = usInsets.find((i) => i.state === "72")!;
-  assert.ok(
-    pr.box[0] > 30 && pr.box[3] < 0,
-    "Puerto Rico occupies a southeast inset",
+  const [origin, east, north] = positions(
+    project(
+      {
+        type: "LineString",
+        coordinates: [
+          [-154, 64],
+          [-153, 64],
+          [-154, 65],
+        ],
+      },
+      "02",
+    ),
   );
+  const distance = (p: number[]) =>
+    Math.hypot(p[0] - origin[0], p[1] - origin[1]);
+  const ratio = distance(east) / distance(north);
+  assert.ok(
+    ratio > 0.41 && ratio < 0.47,
+    "Alaska retains local proportions at 64°N",
+  );
+  assert.equal(
+    states.features.filter((f) => !isTerritory(String(f.properties?.GEOID)))
+      .length,
+    51,
+  );
+  assert.deepEqual(territoryInsets.map((i) => i.short).sort(), [
+    "AS",
+    "GU",
+    "MP",
+    "PR",
+    "VI",
+  ]);
 });
 test("sample routes use a distinct prefix", () => {
   for (const path of ["/demo", "/demo/", "/demo/coverage", "/demo/account"])
