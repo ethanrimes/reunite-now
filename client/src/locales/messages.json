@@ -5254,10 +5254,10 @@
     "pt": "Adicionar etapas relacionadas à suspensão",
     "tl": "Idagdag ang mga hakbang kaugnay ng suspensiyon"
   },
-  "Your real name *": {
-    "es": "Su nombre real *",
-    "pt": "Seu nome verdadeiro *",
-    "tl": "Tunay mong pangalan *"
+  "Name *": {
+    "es": "Nombre *",
+    "pt": "Nome *",
+    "tl": "Pangalan *"
   },
   "U.S. citizenship or immigration status *": {
     "es": "Ciudadanía o situación migratoria en EE. UU. *",

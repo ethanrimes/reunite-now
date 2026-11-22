@@ -1123,7 +1123,7 @@ export function Account() {
               </div>
               <div className="form-grid">
                 <Field
-                  label={t("Your real name *")}
+                  label={t("Name *")}
                   hint={t("Enter your own name to sign the petition.")}
                 >
                   <input
