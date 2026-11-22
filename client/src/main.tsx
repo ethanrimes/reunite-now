@@ -240,8 +240,7 @@ function App() {
             <Link to="/data-use">{t("Privacy & data use")}</Link>
             <Link to="/about">{t("Our purpose")}</Link>
             <Link to="/sources">{t("Sources & credits")}</Link>
-            {!previewMode && <a href="/demo">{t("Explore sample data")}</a>}
-            <Link to="/about#maintainer">{t("Project maintainer")}</Link>
+            <a href="https://github.com/ethanrimes">{t("Project maintainer")}</a>
           </div>
         </div>
         <p className="footer-note">
