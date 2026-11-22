@@ -32,6 +32,7 @@ import {
   routed,
 } from "./regions";
 import { regionForIP } from "./geolocation";
+import { feedbackMessageLimit, maintainerEmail } from "../shared/feedback";
 import { emailReady, sendEmail } from "./email";
 import {
   storyCover,
@@ -196,6 +197,48 @@ app.get("/api/config", (_req, res) =>
     reminders: emailReady(),
     consentVersion,
   }),
+);
+const feedbackSchema = z.strictObject({
+  email: z.string().trim().max(254).pipe(z.email()),
+  message: z.string().trim().min(1).max(feedbackMessageLimit),
+});
+app.post(
+  "/api/feedback",
+  rateLimit({
+    windowMs: 15 * 60000,
+    limit: 5,
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    message: { error: "Too many messages. Please try again in 15 minutes." },
+  }),
+  async (req, res) => {
+    const parsed = feedbackSchema.safeParse(req.body);
+    if (!parsed.success)
+      return res
+        .status(400)
+        .json({
+          error:
+            "Enter a valid email address and a message of up to 4,000 characters.",
+        });
+    const { email, message } = parsed.data;
+    try {
+      await sendEmail(
+        maintainerEmail,
+        "Reunite Now project feedback",
+        `Submitted through the project feedback form.\nReply address supplied by the visitor: ${email}\n\n${message}`,
+        randomUUID(),
+        email,
+      );
+    } catch {
+      return res
+        .status(503)
+        .json({
+          error:
+            "We couldn’t confirm your message was sent. Try again or email the maintainer directly.",
+        });
+    }
+    res.json({ sent: true });
+  },
 );
 app.post("/api/auth/email", authLimit, async (req, res) => {
   const { email } = z

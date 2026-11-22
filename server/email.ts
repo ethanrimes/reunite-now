@@ -13,6 +13,7 @@ export async function sendEmail(
   subject: string,
   text: string,
   key: string,
+  replyTo?: string,
 ) {
   if (!emailReady()) throw new Error("Azure email delivery is not configured");
   const client = process.env.AZURE_COMMUNICATION_CONNECTION_STRING
@@ -27,6 +28,7 @@ export async function sendEmail(
     {
       senderAddress: process.env.EMAIL_FROM!,
       recipients: { to: [{ address: to }] },
+      ...(replyTo && { replyTo: [{ address: replyTo }] }),
       content: { subject, plainText: text },
     },
     { operationId },

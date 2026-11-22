@@ -58,6 +58,7 @@ test("All language catalogs cover interface strings and preserve placeholders", 
   }
   for (const name of [
     "main",
+    "feedback",
     "campaign",
     "policy-timeline",
     "scroll-rail",

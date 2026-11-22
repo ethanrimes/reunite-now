@@ -1,3 +1,4 @@
+import { maintainerEmail } from "../../shared/feedback";
 import { ScrollRail } from "./scroll-rail";
 import { BillRecord } from "./legislation";
 import { t, number } from "./i18n";
@@ -724,11 +725,19 @@ export function DataUse() {
         </Link>
         <p>
           {t(
-            "If you cannot sign in, appear in someone else’s submission, or receive unwanted reminders, email the project maintainer privately. Say what information you would like removed.",
+            "You can contact Ethan Kallett, the project maintainer, about any privacy concern. For example, he can help if you can’t sign in, someone has shared information about you, or you want reminders to stop.",
           )}{" "}
-          <a href="mailto:ethan@visatransparencypetition.org">
-            {"ethan@visatransparencypetition.org"}
+          {t("Email him at")}{" "}
+          <a dir="ltr" href={`mailto:${maintainerEmail}`}>
+            {maintainerEmail}
           </a>
+          .
+        </p>
+        <p>
+          {t(
+            "If you prefer, our feedback form sends your message to the same inbox.",
+          )}{" "}
+          <Link to="/feedback">{t("Use the project feedback form")}</Link>
         </p>
         <p>
           {t(
@@ -816,7 +825,7 @@ export function DataUse() {
         <h2>{t("Services that process data")}</h2>
         <p>
           {t(
-            "Cloudflare forwards privacy requests to the project’s Gmail inbox. Both services process correspondence, which may travel outside the EU.",
+            "The feedback form emails your message and reply address to the maintainer through Azure Communication Services. Cloudflare forwards project correspondence to Gmail. These messages may travel outside the EU and are stored in email, outside the petition databases.",
           )}
         </p>
         <p>

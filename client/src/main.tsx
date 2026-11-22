@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 import { ArrowUpRight, MoveUpRight } from "lucide-react";
 import { DataProvider, useData } from "./api";
+import { Feedback } from "./feedback";
 import { Home, Policies, PolicyDetail, Stories, DataUse, About } from "./pages";
 const Coverage = lazy(() =>
   import("./maps").then((m) => ({ default: m.Coverage })),
@@ -119,6 +120,7 @@ function App() {
           <NavLink to="/coverage">{t("Signature map")}</NavLink>
           <NavLink to="/visa-data">{t("Visa data")}</NavLink>
           <NavLink to="/data-use">{t("Data use")}</NavLink>
+          <NavLink to="/feedback">{t("Project feedback")}</NavLink>
           <div className="nav-account">
             {me.user ? (
               <Link className="button small" to="/account">
@@ -184,6 +186,7 @@ function App() {
             />
             <Route path="/visa-data" element={<VisaData />} />
             <Route path="/data-use" element={<DataUse />} />
+            <Route path="/feedback" element={<Feedback />} />
             <Route path="/about" element={<About />} />
             <Route path="/sources" element={<Sources />} />
             <Route

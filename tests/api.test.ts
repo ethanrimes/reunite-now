@@ -359,3 +359,15 @@ test("sample API is isolated, read-only, and excludes private account fields", a
   }
   assert.equal((await request("/api/demo", "POST", {})).status, 404);
 });
+
+test("signed-out feedback validates input and fixes the delivery address", async () => {
+  const submit = (body: object) => request("/api/feedback", "POST", body, false);
+  const input = { email: "visitor@example.test", message: "Feedback" };
+  for (const invalid of [
+    { ...input, message: "   " },
+    { ...input, email: "invalid" },
+    { ...input, message: "a".repeat(4001) },
+    { ...input, to: "another@example.test" },
+  ])
+    assert.equal((await submit(invalid)).status, 400);
+});

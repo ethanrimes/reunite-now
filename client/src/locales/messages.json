@@ -5599,11 +5599,6 @@
     "pt": "Para apagar seus dados, abra Conta → Configurações → Excluir conta. Você pode fazer isso sem enviar um e-mail.",
     "tl": "Para burahin ang sarili mong datos, buksan ang Account → Mga setting → Burahin ang account. Magagawa mo ito nang hindi nag-e-email sa amin."
   },
-  "Cloudflare forwards privacy requests to the project’s Gmail inbox. Both services process correspondence, which may travel outside the EU.": {
-    "es": "Cloudflare reenvía las solicitudes de privacidad al buzón de Gmail del proyecto. Ambos servicios procesan esa correspondencia, que puede salir de la UE.",
-    "pt": "A Cloudflare encaminha pedidos de privacidade para o Gmail do projeto. Ambos processam a correspondência, que pode passar por países fora da UE.",
-    "tl": "Ipinapasa ng Cloudflare ang mga kahilingan sa privacy sa Gmail ng proyekto. Pinoproseso ng dalawang serbisyo ang mga mensahe, na maaaring dumaan sa labas ng EU."
-  },
   "We use your consent to publish the petition and optional stories. You can withdraw it at any time. Where applicable, you can also request access, correction, erasure, restriction or portability and complain to your local data protection authority.": {
     "es": "Publicamos la petición y los relatos opcionales con tu consentimiento. Puedes retirarlo en cualquier momento. Cuando corresponda, puedes solicitar acceso, rectificación, supresión, limitación o portabilidad y presentar una reclamación ante tu autoridad de protección de datos.",
     "pt": "Publicamos a petição e os relatos opcionais com o seu consentimento. Você pode retirá-lo a qualquer momento. Quando aplicável, pode solicitar acesso, correção, exclusão, restrição ou portabilidade e reclamar à sua autoridade de proteção de dados.",
@@ -5669,11 +5664,6 @@
     "pt": "Em Conta → Configuração, selecione Exportar meus dados para baixar seus registros. Cada conta só pode exportar os próprios dados.",
     "tl": "Sa Account → Mga setting, piliin ang pag-export ng iyong data para i-download ang mga tala mo. Sariling data lamang ang maaaring i-export ng bawat account."
   },
-  "If you cannot sign in, appear in someone else’s submission, or receive unwanted reminders, email the project maintainer privately. Say what information you would like removed.": {
-    "es": "Si no puedes iniciar sesión, apareces en la publicación de otra persona o recibes recordatorios no deseados, escribe en privado al responsable del proyecto. Indica qué información quieres eliminar.",
-    "pt": "Se não conseguir entrar, aparecer na publicação de outra pessoa ou receber lembretes indesejados, envie um e-mail privado ao responsável pelo projeto. Indique quais informações deseja remover.",
-    "tl": "Kung hindi ka makapag-sign in, nabanggit ka sa isinumite ng iba, o nakatatanggap ka ng hindi gustong paalala, mag-email nang pribado sa namamahala sa proyekto. Sabihin kung anong impormasyon ang nais mong ipatanggal."
-  },
   "We offer regional storage to support data residency choices and respect privacy rights, including those under the EU GDPR.": {
     "es": "Ofrecemos almacenamiento regional para que puedas elegir dónde se guardan tus datos y para respetar los derechos de privacidad, incluidos los reconocidos por el RGPD de la UE.",
     "pt": "Oferecemos armazenamento regional para permitir a escolha de onde os dados ficam e respeitar os direitos de privacidade, inclusive os previstos no RGPD da UE.",
@@ -5718,5 +5708,85 @@
     "es": "Firma la petición con tu propio nombre. Debes tener permiso para publicar información sobre otra persona. Los solicitantes de visa pueden usar un apodo en los detalles de su caso. Debes tener al menos 18 años para crear una cuenta.",
     "pt": "Assine a petição usando seu próprio nome. Você precisa ter permissão para publicar informações sobre outra pessoa. Solicitantes de visto podem usar um apelido nos detalhes do caso. É necessário ter pelo menos 18 anos para criar uma conta.",
     "tl": "Lagdaan ang petisyon gamit ang sarili mong pangalan. Kailangan mong may pahintulot para maglathala ng impormasyon tungkol sa ibang tao. Maaaring gumamit ng palayaw ang mga aplikante ng visa sa mga detalye ng kanilang kaso. Dapat ay 18 taong gulang ka man lang para gumawa ng account."
+  },
+  "Project feedback": {
+    "es": "Comentarios sobre el proyecto",
+    "pt": "Fale sobre o projeto",
+    "tl": "Puna tungkol sa proyekto"
+  },
+  "Report a bug, suggest a feature, ask a question, or send a request or complaint. Your message goes privately to Ethan Kallett, the project maintainer.": {
+    "es": "Informa de un error, sugiere una función, haz una pregunta o envía una petición o queja. Tu mensaje llega de forma privada a Ethan Kallett, responsable del proyecto.",
+    "pt": "Relate um erro, sugira uma funcionalidade, faça uma pergunta ou envie um pedido ou uma reclamação. Sua mensagem será enviada em particular a Ethan Kallett, responsável pelo projeto.",
+    "tl": "Mag-ulat ng problema, magmungkahi ng bagong tampok, magtanong, o magpadala ng kahilingan o reklamo. Pribadong matatanggap ni Ethan Kallett, ang nangangasiwa sa proyekto, ang iyong mensahe."
+  },
+  "Your message": {
+    "es": "Tu mensaje",
+    "pt": "Sua mensagem",
+    "tl": "Ang iyong mensahe"
+  },
+  "The maintainer can reply to you at this address.": {
+    "es": "El responsable del proyecto podrá responderte a esta dirección.",
+    "pt": "O responsável pelo projeto poderá responder neste endereço.",
+    "tl": "Dito maaaring ipadala ng tagapangasiwa ang sagot sa iyo."
+  },
+  "Please leave out visa case numbers and identity documents.": {
+    "es": "No incluyas números de expediente de visa ni documentos de identidad.",
+    "pt": "Não inclua números de processos de visto nem documentos de identidade.",
+    "tl": "Huwag isama ang numero ng iyong kaso sa visa o mga dokumento ng pagkakakilanlan."
+  },
+  "Sending…": {
+    "es": "Enviando…",
+    "pt": "Enviando…",
+    "tl": "Ipinapadala…"
+  },
+  "Send feedback": {
+    "es": "Enviar comentarios",
+    "pt": "Enviar mensagem",
+    "tl": "Ipadala ang mensahe"
+  },
+  "Thank you. Your feedback has been sent to the maintainer.": {
+    "es": "Gracias. Tus comentarios se han enviado al responsable del proyecto.",
+    "pt": "Agradecemos a mensagem. Ela foi enviada ao responsável pelo projeto.",
+    "tl": "Salamat. Naipadala na ang iyong mensahe sa tagapangasiwa ng proyekto."
+  },
+  "Too many messages. Please try again in 15 minutes.": {
+    "es": "Se han enviado demasiados mensajes. Inténtalo de nuevo en 15 minutos.",
+    "pt": "Foram enviadas muitas mensagens. Tente novamente em 15 minutos.",
+    "tl": "Napakaraming mensahe. Subukang muli pagkalipas ng 15 minuto."
+  },
+  "Enter a valid email address and a message of up to 4,000 characters.": {
+    "es": "Ingresa una dirección de correo válida y un mensaje de hasta 4000 caracteres.",
+    "pt": "Informe um endereço de e-mail válido e uma mensagem de até 4.000 caracteres.",
+    "tl": "Maglagay ng wastong email address at mensaheng hanggang 4,000 character."
+  },
+  "We couldn’t confirm your message was sent. Try again or email the maintainer directly.": {
+    "es": "No pudimos confirmar el envío de tu mensaje. Vuelve a intentarlo o escribe directamente al responsable del proyecto.",
+    "pt": "Não foi possível confirmar o envio. Tente novamente ou envie um e-mail diretamente ao responsável pelo projeto.",
+    "tl": "Hindi namin makumpirma kung naipadala ang iyong mensahe. Subukang muli o direktang mag-email sa tagapangasiwa."
+  },
+  "You can contact Ethan Kallett, the project maintainer, about any privacy concern. For example, he can help if you can’t sign in, someone has shared information about you, or you want reminders to stop.": {
+    "es": "Si tienes alguna inquietud sobre tu privacidad, puedes contactar a Ethan Kallett, responsable del proyecto. Por ejemplo, puede ayudarte si no puedes iniciar sesión, si alguien compartió información sobre ti o si quieres dejar de recibir recordatorios.",
+    "pt": "Se tiver alguma dúvida sobre privacidade, entre em contato com Ethan Kallett, responsável pelo projeto. Ele pode ajudar se você não conseguir entrar na sua conta, se alguém tiver compartilhado informações sobre você ou se quiser parar de receber lembretes.",
+    "tl": "Para sa anumang alalahanin tungkol sa privacy, maaaring makipag-ugnayan kay Ethan Kallett, ang nangangasiwa sa proyekto. Matutulungan ka niya kung hindi ka makapag-sign in, may nagbahagi ng impormasyon tungkol sa iyo, o gusto mong itigil ang mga paalala."
+  },
+  "Email him at": {
+    "es": "Su correo electrónico es",
+    "pt": "O e-mail dele é",
+    "tl": "Ang email address niya ay"
+  },
+  "If you prefer, our feedback form sends your message to the same inbox.": {
+    "es": "Si lo prefieres, puedes usar el formulario de comentarios. Tu mensaje llegará al mismo buzón.",
+    "pt": "Se preferir, use o formulário de contato. Sua mensagem chegará à mesma caixa de entrada.",
+    "tl": "Kung mas gusto mo, gamitin ang form. Mapupunta ang mensahe sa parehong inbox."
+  },
+  "Use the project feedback form": {
+    "es": "Abrir el formulario de comentarios",
+    "pt": "Abrir o formulário de contato",
+    "tl": "Buksan ang form para sa puna"
+  },
+  "The feedback form emails your message and reply address to the maintainer through Azure Communication Services. Cloudflare forwards project correspondence to Gmail. These messages may travel outside the EU and are stored in email, outside the petition databases.": {
+    "es": "El formulario envía tu mensaje y tu dirección de respuesta al responsable del proyecto a través de Azure Communication Services. Cloudflare reenvía la correspondencia del proyecto a Gmail. Estos mensajes pueden circular fuera de la UE y se guardan en el correo, fuera de las bases de datos de la petición.",
+    "pt": "O formulário envia sua mensagem e seu endereço de resposta ao responsável pelo projeto via Azure Communication Services. A Cloudflare encaminha a correspondência do projeto ao Gmail. Essas mensagens podem passar por países fora da UE e ficam armazenadas no e-mail, fora dos bancos de dados da petição.",
+    "tl": "Ipinapadala ng form ang mensahe at email address mo sa tagapangasiwa sa pamamagitan ng Azure Communication Services. Ipinapasa ng Cloudflare ang mga email ng proyekto sa Gmail. Maaaring dumaan ang mga ito sa labas ng EU at nakaimbak ang mga ito sa email, hiwalay sa mga database ng petisyon."
   }
 }
