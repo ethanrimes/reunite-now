@@ -40,7 +40,7 @@ import { BrandMark } from "./components/brand";
 import { Sources } from "./pages/sources";
 import { previewMode } from "./app/preview";
 import "./styles/styles.css";
-import "./features/policy/campaign";
+import "./styles/campaign.css";
 import "./styles/refinements.css";
 import "./styles/languages.css";
 function PreviewGate() {

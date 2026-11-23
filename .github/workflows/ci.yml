@@ -20,6 +20,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      - name: Check the campaign layout is in the production stylesheet
+        run: grep -Fq '.participation-grid{' dist/public/assets/index-*.css
       - run: npm test
       - name: API integration
         run: |
