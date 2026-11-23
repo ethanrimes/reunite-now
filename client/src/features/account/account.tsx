@@ -1,5 +1,5 @@
 import { t } from "../../i18n/i18n";
-import { useState, useEffect, type FormEvent } from "react";
+import { useState, useEffect, useRef, type FormEvent } from "react";
 import {
   Link,
   Navigate,
@@ -187,6 +187,16 @@ export function Login() {
                 )}
               </Notice>
             )}
+            <Link
+              className="text-link"
+              to={
+                forFeedback
+                  ? "/auth/verify?method=code&intent=feedback"
+                  : "/auth/verify?method=code"
+              }
+            >
+              {t("Enter a sign-in code")}
+            </Link>
             {devLink && (
               <Notice>
                 <strong>{t("Local development only")}</strong>
@@ -210,6 +220,22 @@ export function Login() {
     </div>
   );
 }
+function reportLinkError(
+  reason: "missing_token" | "verification_unreachable",
+  ref: string | null,
+) {
+  // Best effort only. A report never consumes a link or delays a user's next step.
+  void fetch("/api/auth/email-link-error", {
+    method: "POST",
+    credentials: "omit",
+    keepalive: true,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      reason,
+      ref: ref && /^[a-f0-9]{24}$/.test(ref) ? ref : undefined,
+    }),
+  }).catch(() => {});
+}
 export function Verify() {
   const { refresh } = useData();
   const nav = useNavigate();
@@ -218,27 +244,40 @@ export function Verify() {
   const token = new URLSearchParams(hash.slice(1)).get("token");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const problem = token
-    ? error
-    : "The sign-in link is missing its token. Request a new link.";
+  const manual = new URLSearchParams(search).get("method") === "code";
+  const [code, setCode] = useState("");
+  const useCode = manual || !token;
+  const codePath =
+    "/auth/verify?method=code" + (forFeedback ? "&intent=feedback" : "");
+  const ref = new URLSearchParams(search).get("ref");
+  const reportedMissing = useRef<string | null>(null);
+  useEffect(() => {
+    if (token || manual) {
+      reportedMissing.current = null;
+    } else if (reportedMissing.current !== search) {
+      reportedMissing.current = search;
+      reportLinkError("missing_token", ref);
+    }
+  }, [token, search, ref, manual]);
 
   async function confirm() {
-    if (!token || busy) return;
+    if ((useCode && !code.trim()) || busy) return;
+    setError("");
     setBusy(true);
-    window.history.replaceState(
-      window.history.state,
-      "",
-      "/auth/verify" + search,
-    );
     try {
       await api("/auth/verify", {
         method: "POST",
-        body: JSON.stringify({ token }),
+        body: JSON.stringify(useCode ? { code, ref } : { token, ref }),
       });
       await refresh();
       nav(forFeedback ? "/feedback" : "/account", { replace: true });
     } catch (e) {
-      setError((e as Error).message);
+      if (e instanceof TypeError || e instanceof SyntaxError) {
+        reportLinkError("verification_unreachable", ref);
+        setError("Sign-in could not be completed. Please try again.");
+      } else {
+        setError((e as Error).message);
+      }
     } finally {
       setBusy(false);
     }
@@ -246,27 +285,53 @@ export function Verify() {
 
   return (
     <div className="page-shell narrow">
-      <h1>{problem ? t("Let’s try that again.") : t("Finish signing in")}</h1>
-      {problem ? (
-        <>
-          <Notice tone="error">{t(problem)}</Notice>
-          <Link
-            className="button"
-            to={forFeedback ? "/login?intent=feedback" : "/login"}
-          >
-            {t("Request a new link")}
-          </Link>
-        </>
-      ) : (
-        <button
-          type="button"
-          className="button"
-          onClick={confirm}
-          disabled={busy}
-        >
+      <h1>{t(useCode ? "Enter a sign-in code" : "Finish signing in")}</h1>
+      {useCode && !manual && (
+        <Notice>
+          {t(
+            "This link is missing its token. You can still sign in with the code in your email.",
+          )}
+        </Notice>
+      )}
+      {error && <Notice tone="error">{t(error)}</Notice>}
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          void confirm();
+        }}
+      >
+        {useCode && (
+          <Field label={t("Code from your sign-in email")}>
+            <input
+              type="text"
+              name="code"
+              autoComplete="one-time-code"
+              dir="ltr"
+              autoCapitalize="characters"
+              spellCheck={false}
+              required
+              maxLength={80}
+              value={code}
+              onChange={(event) => setCode(event.target.value)}
+            />
+          </Field>
+        )}
+        <button type="submit" className="button" disabled={busy}>
           {busy ? t("Signing you in…") : t("Confirm sign-in")}
         </button>
+      </form>
+      {!useCode && (
+        <p>
+          <Link to={codePath} onClick={() => setError("")}>
+            {t("Enter a sign-in code")}
+          </Link>
+        </p>
       )}
+      <p>
+        <Link to={forFeedback ? "/login?intent=feedback" : "/login"}>
+          {t("Request a new link")}
+        </Link>
+      </p>
     </div>
   );
 }

@@ -50,28 +50,38 @@ test("two regional databases preserve sessions, visibility, private records and 
     });
   }
   const email = (prefix: string) => prefix + randomUUID() + "@example.test";
-  async function signIn(address: string, ip: string) {
+  async function signIn(
+    address: string,
+    ip: string,
+    method: "link" | "code" = "link",
+  ) {
     const link = await (
       await request("auth/email", "POST", { email: address }, "", ip)
     ).json();
     const token = new URLSearchParams(new URL(link.devLink).hash.slice(1)).get(
       "token",
     );
-    const response = await request("auth/verify", "POST", { token }, "", ip);
+    const response = await request(
+      "auth/verify",
+      "POST",
+      method === "code" ? { code: link.devCode } : { token },
+      "",
+      ip,
+    );
     assert.equal(response.status, 200);
     return response.headers.get("set-cookie")!.split(";")[0];
   }
   const euEmail = email("eu"),
     usEmail = email("us");
   const eu = await signIn(euEmail, "194.109.6.66"),
-    us = await signIn(usEmail, "8.8.8.8");
+    us = await signIn(usEmail, "8.8.8.8", "code");
   const me = async (cookie: string) =>
     (await (await request("me", "GET", undefined, cookie)).json()).user;
   const a = await me(eu),
     b = await me(us);
   assert.equal(a.storageRegion, "eu");
   assert.equal(b.storageRegion, "us");
-  assert.equal((await me(await signIn(euEmail, "8.8.8.8"))).id, a.id);
+  assert.equal((await me(await signIn(euEmail, "8.8.8.8", "code"))).id, a.id);
   const profile = {
     name: "Regional test",
     country: "Sweden",

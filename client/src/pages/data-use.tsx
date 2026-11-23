@@ -119,6 +119,7 @@ export function DataUse() {
             "For email sign-in, Reunite Now verifies a single-use link delivered by Azure Communication Services. If you choose Google sign-in, Google verifies your identity and provides your verified email address to Reunite Now.",
           )}
         </p>
+        <p>{t("Your email also includes a one-time sign-in code. To troubleshoot email sign-in, authorized operators can see your email when known, a link reference, and the outcome or error in private diagnostic logs kept for about seven days.")}</p>
         <h2>{t("Statistics and interpretation")}</h2>
         <p>
           {t(

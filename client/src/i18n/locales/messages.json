@@ -5903,5 +5903,35 @@
     "es": "Para firmar, debes aceptar que se publiquen tu nombre y la fecha y hora de tu firma. Después puedes ocultarlos en Cuenta → Configuración. Las firmas anteriores aparecen de forma anónima, salvo que la persona haya elegido publicar su nombre.",
     "pt": "Para assinar, você precisa autorizar a publicação do seu nome e da data e hora da assinatura. Depois, pode ocultá-los em Conta → Configuração. As assinaturas anteriores são anônimas, salvo quando a pessoa optou por publicar seu nome.",
     "tl": "Upang lumagda, kailangang pumayag kang ilathala ang iyong pangalan at oras ng paglagda. Maaari mo itong itago kalaunan sa Account → Mga setting. Hindi ipinapakita ang pangalan ng mga naunang lumagda maliban kung pinili nilang ilathala ito."
+  },
+  "Enter a sign-in code": {
+    "es": "Introducir un código de acceso",
+    "pt": "Inserir um código de acesso",
+    "tl": "Ilagay ang code sa pag-sign in"
+  },
+  "Code from your sign-in email": {
+    "es": "Código del correo de acceso",
+    "pt": "Código do e-mail de acesso",
+    "tl": "Code mula sa email sa pag-sign in"
+  },
+  "This link is missing its token. You can still sign in with the code in your email.": {
+    "es": "A este enlace le falta el token. Puedes iniciar sesión con el código de tu correo.",
+    "pt": "Este link está sem o token. Você ainda pode entrar com o código do e-mail.",
+    "tl": "Nawawala ang token ng link na ito. Maaari ka pa ring mag-sign in gamit ang code sa email mo."
+  },
+  "Check the sign-in code and try again.": {
+    "es": "Comprueba el código de acceso e inténtalo de nuevo.",
+    "pt": "Confira o código de acesso e tente novamente.",
+    "tl": "Suriin ang code at subukang muli."
+  },
+  "This code is incorrect, expired, or already used. Request a new email.": {
+    "es": "El código es incorrecto, ha caducado o ya se ha usado. Solicita otro correo.",
+    "pt": "O código está incorreto, expirou ou já foi usado. Solicite outro e-mail.",
+    "tl": "Mali, paso na, o nagamit na ang code. Humiling ng bagong email."
+  },
+  "Your email also includes a one-time sign-in code. To troubleshoot email sign-in, authorized operators can see your email when known, a link reference, and the outcome or error in private diagnostic logs kept for about seven days.": {
+    "es": "El correo también incluye un código de un solo uso. Para resolver problemas de acceso, el personal autorizado puede consultar tu correo cuando se conoce, una referencia del enlace y el resultado o error en registros privados que se conservan unos siete días.",
+    "pt": "O e-mail também inclui um código de uso único. Para diagnosticar problemas de acesso, operadores autorizados podem consultar seu e-mail quando conhecido, uma referência do link e o resultado ou erro em registros privados mantidos por cerca de sete dias.",
+    "tl": "May code din sa email na isang beses lang magagamit. Para malutas ang mga problema sa pag-sign in, makikita ng mga awtorisadong tagapangasiwa ang iyong email kung alam ito, ang sanggunian ng link, at ang resulta o error sa pribadong talaang itinatago nang humigit-kumulang pitong araw."
   }
 }

@@ -1179,5 +1179,11 @@
   "Next page": "পরের পৃষ্ঠা",
   "I consent to having my name and signing time published in the petition’s public signatory list. *": "আমি আবেদনপত্রের প্রকাশ্য স্বাক্ষরকারী তালিকায় আমার নাম এবং স্বাক্ষরের তারিখ ও সময় প্রকাশে সম্মতি দিচ্ছি। *",
   "To sign, consent to publishing your name and signing time.": "স্বাক্ষর করতে আপনার নাম ও স্বাক্ষরের সময় প্রকাশের সম্মতি দিন।",
-  "Signing requires your consent to publish your name and signing time. You can hide them later in Account → Configuration. Earlier signatures appear anonymously unless the signer chose to be listed by name.": "স্বাক্ষর করতে আপনার নাম ও স্বাক্ষরের সময় প্রকাশে সম্মতি দিতে হবে। পরে অ্যাকাউন্ট → সেটিংস থেকে এগুলো লুকাতে পারেন। যাঁরা আগে স্বাক্ষর করেছেন, তাঁরা নাম প্রকাশের অনুমতি না দিলে তাঁদের স্বাক্ষর বেনামে দেখানো হয়।"
+  "Signing requires your consent to publish your name and signing time. You can hide them later in Account → Configuration. Earlier signatures appear anonymously unless the signer chose to be listed by name.": "স্বাক্ষর করতে আপনার নাম ও স্বাক্ষরের সময় প্রকাশে সম্মতি দিতে হবে। পরে অ্যাকাউন্ট → সেটিংস থেকে এগুলো লুকাতে পারেন। যাঁরা আগে স্বাক্ষর করেছেন, তাঁরা নাম প্রকাশের অনুমতি না দিলে তাঁদের স্বাক্ষর বেনামে দেখানো হয়।",
+  "Enter a sign-in code": "সাইন-ইন কোড লিখুন",
+  "Code from your sign-in email": "সাইন-ইন ইমেলের কোড",
+  "This link is missing its token. You can still sign in with the code in your email.": "এই লিংকে টোকেন নেই। ইমেলের কোড দিয়েও সাইন ইন করতে পারবেন।",
+  "Check the sign-in code and try again.": "সাইন-ইন কোডটি দেখে আবার চেষ্টা করুন।",
+  "This code is incorrect, expired, or already used. Request a new email.": "কোডটি ভুল, মেয়াদ শেষ বা ইতিমধ্যে ব্যবহৃত হয়েছে। নতুন ইমেল চেয়ে নিন।",
+  "Your email also includes a one-time sign-in code. To troubleshoot email sign-in, authorized operators can see your email when known, a link reference, and the outcome or error in private diagnostic logs kept for about seven days.": "ইমেলে একবার ব্যবহারযোগ্য সাইন-ইন কোডও থাকে। সমস্যা সমাধানের জন্য অনুমোদিত কর্মীরা ব্যক্তিগত লগে আপনার ইমেল ঠিকানা (জানা থাকলে), লিংকের রেফারেন্স ও ফলাফল বা ত্রুটি দেখতে পারেন। এই লগ প্রায় সাত দিন রাখা হয়।"
 }

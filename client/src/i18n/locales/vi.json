@@ -1179,5 +1179,11 @@
   "Next page": "Trang tiếp theo",
   "I consent to having my name and signing time published in the petition’s public signatory list. *": "Tôi đồng ý cho công khai tên và thời điểm tôi ký trong danh sách người ký kiến nghị. *",
   "To sign, consent to publishing your name and signing time.": "Để ký, bạn cần đồng ý cho công khai tên và thời điểm ký.",
-  "Signing requires your consent to publish your name and signing time. You can hide them later in Account → Configuration. Earlier signatures appear anonymously unless the signer chose to be listed by name.": "Khi ký, bạn cần đồng ý cho công khai tên và thời điểm ký. Sau đó, bạn có thể ẩn thông tin này trong Tài khoản → Cài đặt. Các chữ ký trước đây được hiển thị ẩn danh, trừ khi người ký đã chọn công khai tên."
+  "Signing requires your consent to publish your name and signing time. You can hide them later in Account → Configuration. Earlier signatures appear anonymously unless the signer chose to be listed by name.": "Khi ký, bạn cần đồng ý cho công khai tên và thời điểm ký. Sau đó, bạn có thể ẩn thông tin này trong Tài khoản → Cài đặt. Các chữ ký trước đây được hiển thị ẩn danh, trừ khi người ký đã chọn công khai tên.",
+  "Enter a sign-in code": "Nhập mã đăng nhập",
+  "Code from your sign-in email": "Mã trong email đăng nhập",
+  "This link is missing its token. You can still sign in with the code in your email.": "Liên kết thiếu mã xác thực. Bạn vẫn có thể đăng nhập bằng mã trong email.",
+  "Check the sign-in code and try again.": "Kiểm tra mã đăng nhập rồi thử lại.",
+  "This code is incorrect, expired, or already used. Request a new email.": "Mã không đúng, đã hết hạn hoặc đã được sử dụng. Hãy yêu cầu email mới.",
+  "Your email also includes a one-time sign-in code. To troubleshoot email sign-in, authorized operators can see your email when known, a link reference, and the outcome or error in private diagnostic logs kept for about seven days.": "Email cũng có mã đăng nhập dùng một lần. Để xử lý sự cố đăng nhập, người vận hành được ủy quyền có thể xem địa chỉ email nếu xác định được, mã tham chiếu của liên kết và kết quả hoặc lỗi trong nhật ký riêng tư được lưu khoảng bảy ngày."
 }

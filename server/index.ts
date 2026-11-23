@@ -31,6 +31,7 @@ import { z } from "zod";
 import {
   db,
   publicDb,
+  type Queryable,
   externalSchema,
   transaction,
   migrate,
@@ -47,6 +48,17 @@ import {
 } from "./regions";
 import { regionForIP } from "./geolocation";
 import { feedbackMessageLimit, maintainerEmail } from "../shared/feedback";
+import {
+  newSignInCode,
+  tokenFromCode,
+  signInMessage,
+} from "./email-signin-message";
+import {
+  emailTrace,
+  linkReference,
+  traceEmailSignIn,
+  validReference,
+} from "./email-signin-log";
 import { emailReady, sendEmail } from "./email";
 import {
   storyCover,
@@ -94,6 +106,10 @@ app.use(
 );
 if (production) app.use(canonicalHost(appUrl));
 app.use(compression());
+app.post(
+  ["/api/auth/email", "/api/auth/verify", "/api/auth/email-link-error"],
+  traceEmailSignIn,
+);
 app.use(express.json({ limit: "7mb" }));
 app.use(cookieParser());
 app.use("/api", (_req, res, next) => {
@@ -106,6 +122,32 @@ const authLimit = rateLimit({
   standardHeaders: "draft-8",
   legacyHeaders: false,
   message: { error: "Too many attempts. Please try again in 15 minutes." },
+  handler: (req, res, _next, options) => {
+    if (res.locals.emailSignIn) {
+      const trace = emailTrace(res);
+      // A shared network can hit the limiter before either route handler runs.
+      if (
+        req.path === "/api/auth/email" &&
+        typeof req.body?.email === "string" &&
+        req.body.email.length <= 254
+      ) {
+        const email = z.email().safeParse(req.body.email);
+        if (email.success) trace.email = email.data.toLowerCase();
+      } else if (req.path === "/api/auth/verify") {
+        trace.suppliedRef = validReference(req.body?.ref);
+        trace.method = req.body?.code === undefined ? "link" : "code";
+        const raw =
+          trace.method === "link"
+            ? req.body?.token
+            : typeof req.body.code === "string" && req.body.code.length <= 80
+              ? tokenFromCode(req.body.code)
+              : undefined;
+        if (typeof raw === "string" && raw.length >= 40 && raw.length <= 100)
+          trace.linkId = linkReference(raw);
+      }
+    }
+    res.status(options.statusCode).send(options.message);
+  },
 });
 app.use("/api", (req, res, next) => {
   if (
@@ -169,36 +211,43 @@ function accountRoute(
     });
   };
 }
-async function session(email: string, res: Response) {
+async function createSession(email: string, connection: Queryable) {
   const uid = randomUUID();
-  const u = await db.query(
+  const u = await connection.query(
     `INSERT INTO users(id,email) VALUES($1,$2) ON CONFLICT(email) DO UPDATE SET email=EXCLUDED.email RETURNING id`,
     [uid, email],
   );
   const raw = token();
-  await db.query(
+  await connection.query(
     `INSERT INTO sessions(token_hash,user_id,expires_at) VALUES($1,$2,now()+interval '30 days')`,
     [hash(raw), u.rows[0].id],
   );
-  res.cookie("rn_session", raw, { ...cookieOptions, maxAge: 30 * 86400000 });
+  return raw;
 }
 async function signInAtHome(
   email: string,
   fallback: "eu" | "us",
-  res: Response,
+  sourceTransaction?: Queryable,
 ) {
   const home = await homeForEmail(email, fallback);
   if (dual) {
     // Before first verification multiple devices may request links in different regions.
     // Revoke any pre-registration links held outside the verified account's home.
-    await inRegion(home === "eu" ? "us" : "eu", () =>
-      db.query(
+    const other = home === "eu" ? "us" : "eu";
+    const connection =
+      other === fallback && sourceTransaction ? sourceTransaction : db;
+    await inRegion(other, () =>
+      connection.query(
         "DELETE FROM login_tokens WHERE sha256(convert_to(email,'UTF8'))=decode($1,'hex')",
         [hash(email)],
       ),
     );
   }
-  await inRegion(home, () => session(email, res));
+  if (home === fallback && sourceTransaction)
+    return createSession(email, sourceTransaction);
+  return inRegion(home, () =>
+    transaction((connection) => createSession(email, connection)),
+  );
 }
 app.get("/api/health", async (_req, res) => {
   await acrossRegions(() => db.query("SELECT 1"));
@@ -264,63 +313,149 @@ app.post("/api/auth/email", authLimit, async (req, res) => {
         .transform((v) => v.trim().toLowerCase()),
     })
     .parse(req.body);
-  if (!emailReady() && !devAuth)
+  const trace = emailTrace(res);
+  trace.email = email;
+  trace.feedback = intent === "feedback";
+  if (!emailReady() && !devAuth) {
+    trace.reason = "email_unavailable";
+    trace.message =
+      "Email sign-in opens once the project’s email service is connected.";
     return void res.status(503).json({
       error:
         "Email sign-in opens once the project’s email service is connected.",
     });
-  const raw = token();
+  }
+  const code = newSignInCode();
+  const raw = tokenFromCode(code)!;
+  trace.linkId = linkReference(raw);
+  trace.stage = "store_link";
   await routed(false, async () =>
-    inRegion(await homeForEmail(email, detectedRegion(req)), () =>
-      db.query(
+    inRegion(await homeForEmail(email, detectedRegion(req)), () => {
+      trace.region = region();
+      return db.query(
         `INSERT INTO login_tokens(token_hash,email,expires_at) VALUES($1,$2,now()+interval '15 minutes')`,
         [hash(raw), email],
-      ),
-    ),
+      );
+    }),
   );
-  const url = `${appUrl}/auth/verify${intent === "feedback" ? "?intent=feedback" : ""}#token=${raw}`;
-  if (emailReady())
-    await sendEmail(
+  const query = new URLSearchParams({ ref: trace.linkId });
+  if (trace.feedback) query.set("intent", "feedback");
+  const url = `${appUrl}/auth/verify?${query}#token=${raw}`;
+  trace.stage = emailReady() ? "send_email" : "local_link";
+  if (emailReady()) {
+    const body = signInMessage(
+      url,
+      `${appUrl}/auth/verify?method=code${trace.feedback ? "&intent=feedback" : ""}`,
+      code,
+    );
+    const delivery = await sendEmail(
       email,
       "Your Reunite Now sign-in link",
-      [
-        "Use this link within 15 minutes to sign in to Reunite Now. It works once.",
-        url,
-        "If you see “The sign-in link is missing its token,” copy the full URL as written above, including the #token= part and everything after it. Paste it into your browser’s address bar and open it.",
-        `If the URL in this email is missing #token= or has no code after it, contact the project maintainer at ${maintainerEmail}. Keep the sign-in link and code private when you write.`,
-        "If you did not request this email, you can ignore it.",
-      ].join("\n\n"),
+      body.text,
       `signin/${hash(raw)}`,
+      undefined,
+      body.html,
     );
-  res.json({ ok: true, ...(devAuth && !emailReady() ? { devLink: url } : {}) });
+    if (/^[0-9a-f-]{36}$/i.test(delivery.id)) trace.deliveryId = delivery.id;
+    trace.stage = "email_accepted";
+  }
+  res.json({
+    ok: true,
+    ...(devAuth && !emailReady() ? { devLink: url, devCode: code } : {}),
+  });
 });
 app.post("/api/auth/verify", authLimit, async (req, res) => {
-  const { token: raw } = z
-    .object({ token: z.string().min(40).max(100) })
-    .parse(req.body);
+  const trace = emailTrace(res);
+  trace.suppliedRef = validReference(req.body?.ref);
+  const usingCode = req.body?.code !== undefined;
+  trace.method = usingCode ? "code" : "link";
+  let raw: string;
+  if (usingCode) {
+    const candidate =
+      typeof req.body.code === "string" && req.body.code.length <= 80
+        ? tokenFromCode(req.body.code)
+        : null;
+    if (!candidate) {
+      trace.reason = "invalid_code";
+      trace.message = "Check the sign-in code and try again.";
+      return res.status(400).json({ error: trace.message });
+    }
+    raw = candidate;
+  } else {
+    raw = z
+      .object({ token: z.string().min(40).max(100) })
+      .parse(req.body).token;
+  }
+  trace.linkId = linkReference(raw);
+  trace.stage = "find_link";
   const verified = await routed(true, async () => {
     const source = await locate(
-      "SELECT 1 FROM login_tokens WHERE token_hash=$1 AND expires_at>now()",
+      "SELECT 1 FROM login_tokens WHERE token_hash=$1",
       [hash(raw)],
     );
-    if (!source) return false;
-    const result = await inRegion(source, () =>
-      db.query(
-        "DELETE FROM login_tokens WHERE token_hash=$1 AND expires_at>now() RETURNING email",
-        [hash(raw)],
-      ),
+    if (!source) {
+      trace.reason = "unknown_or_consumed";
+      return false;
+    }
+    trace.region = source;
+    trace.stage = "redeem_link";
+    return inRegion(source, () =>
+      transaction(async (connection) => {
+        const result = await connection.query(
+          "DELETE FROM login_tokens WHERE token_hash=$1 AND expires_at>now() RETURNING email",
+          [hash(raw)],
+        );
+        const email = result.rows[0]?.email;
+        if (!email) {
+          trace.reason = "expired_or_removed";
+          return false;
+        }
+        trace.email = email;
+        trace.stage = "create_session";
+        return signInAtHome(email, source, connection);
+      }),
     );
-    const email = result.rows[0]?.email;
-    if (!email) return false;
-    await signInAtHome(email, source, res);
-    return true;
   });
-  if (!verified)
-    return void res.status(400).json({
-      error: "This link has expired or already been used. Request a new link.",
-    });
+  if (!verified) {
+    trace.message = usingCode
+      ? "This code is incorrect, expired, or already used. Request a new email."
+      : "This link has expired or already been used. Request a new link.";
+    return void res.status(400).json({ error: trace.message });
+  }
+  res.cookie("rn_session", verified, {
+    ...cookieOptions,
+    maxAge: 30 * 86400000,
+  });
+  trace.stage = "session_created";
   res.json({ ok: true });
 });
+app.post(
+  "/api/auth/email-link-error",
+  rateLimit({
+    windowMs: 15 * 60000,
+    limit: 30,
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+  }),
+  (req, res) => {
+    const parsed = z
+      .object({
+        reason: z.enum(["missing_token", "verification_unreachable"]),
+        ref: z.unknown().optional(),
+      })
+      .safeParse(req.body);
+    if (!parsed.success) return res.sendStatus(400);
+    const trace = emailTrace(res);
+    trace.stage = "browser_report";
+    trace.suppliedRef = validReference(parsed.data.ref);
+    trace.reason = parsed.data.reason;
+    trace.message =
+      trace.reason === "missing_token"
+        ? "The sign-in link is missing its token. Request a new link."
+        : "Browser could not reach the verification service.";
+    res.sendStatus(204);
+  },
+);
 function google() {
   return new Google(
     process.env.GOOGLE_CLIENT_ID!,
@@ -378,9 +513,13 @@ app.get("/api/auth/google/callback", authLimit, async (req, res) => {
     const info = await r.json();
     if (info.email_verified !== true || typeof info.email !== "string")
       throw new Error("Unverified email");
-    await routed(true, () =>
-      signInAtHome(info.email.toLowerCase(), detectedRegion(req), res),
+    const session = await routed(true, () =>
+      signInAtHome(info.email.toLowerCase(), detectedRegion(req)),
     );
+    res.cookie("rn_session", session, {
+      ...cookieOptions,
+      maxAge: 30 * 86400000,
+    });
     res.redirect(saved.feedback === true ? "/feedback" : "/account");
   } catch {
     res.redirect("/login?error=oauth");
@@ -936,12 +1075,26 @@ app.get("/{*path}", (_req, res) =>
     .sendFile(path.resolve("dist/public/index.html")),
 );
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-  if (err instanceof z.ZodError)
-    return void res.status(400).json({
-      error: err.issues
-        .map((i) => `${i.path.join(".")}: ${i.message}`)
-        .join("; "),
-    });
+  if (err instanceof z.ZodError) {
+    const message = err.issues
+      .map((i) => `${i.path.join(".")}: ${i.message}`)
+      .join("; ");
+    if (res.locals.emailSignIn) {
+      // Only our fixed email/token schemas produce these validation messages.
+      emailTrace(res).reason = "validation_failed";
+      emailTrace(res).message = message;
+    }
+    return void res.status(400).json({ error: message });
+  }
+  if (res.locals.emailSignIn) {
+    // Provider messages/stacks can contain addresses, SQL or request URLs.
+    const code = err.code || err.name;
+    if (
+      typeof code === "string" &&
+      /^[A-Za-z][A-Za-z0-9_.]{0,35}$|^[0-9A-Z]{5}$/.test(code)
+    )
+      emailTrace(res).serviceCode = code;
+  }
   console.error("Request failed", err.code || err.name || "Error");
   res.status(err.status || 500).json({
     error: err.status ? err.message : "Something went wrong. Please try again.",

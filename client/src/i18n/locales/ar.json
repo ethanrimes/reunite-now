@@ -1179,5 +1179,11 @@
   "Next page": "الصفحة التالية",
   "I consent to having my name and signing time published in the petition’s public signatory list. *": "أوافق على نشر اسمي وتاريخ توقيعي ووقته في قائمة الموقّعين العلنية على العريضة. *",
   "To sign, consent to publishing your name and signing time.": "للتوقيع، يجب أن توافق على نشر اسمك ووقت توقيعك.",
-  "Signing requires your consent to publish your name and signing time. You can hide them later in Account → Configuration. Earlier signatures appear anonymously unless the signer chose to be listed by name.": "يتطلب التوقيع موافقتك على نشر اسمك ووقت توقيعك. يمكنك إخفاؤهما لاحقًا في الحساب ← الإعدادات. تظهر التوقيعات السابقة بلا أسماء ما لم يختر أصحابها نشر أسمائهم."
+  "Signing requires your consent to publish your name and signing time. You can hide them later in Account → Configuration. Earlier signatures appear anonymously unless the signer chose to be listed by name.": "يتطلب التوقيع موافقتك على نشر اسمك ووقت توقيعك. يمكنك إخفاؤهما لاحقًا في الحساب ← الإعدادات. تظهر التوقيعات السابقة بلا أسماء ما لم يختر أصحابها نشر أسمائهم.",
+  "Enter a sign-in code": "أدخل رمز تسجيل الدخول",
+  "Code from your sign-in email": "الرمز الوارد في رسالة تسجيل الدخول",
+  "This link is missing its token. You can still sign in with the code in your email.": "يفتقد هذا الرابط رمز التحقق. لا يزال بإمكانك تسجيل الدخول بالرمز الوارد في بريدك الإلكتروني.",
+  "Check the sign-in code and try again.": "تحقق من رمز تسجيل الدخول وأعد المحاولة.",
+  "This code is incorrect, expired, or already used. Request a new email.": "الرمز غير صحيح أو منتهي الصلاحية أو مُستخدَم من قبل. اطلب رسالة جديدة.",
+  "Your email also includes a one-time sign-in code. To troubleshoot email sign-in, authorized operators can see your email when known, a link reference, and the outcome or error in private diagnostic logs kept for about seven days.": "تتضمن الرسالة أيضًا رمزًا لتسجيل الدخول يُستخدم مرة واحدة. ولمعالجة مشكلات الدخول، يمكن للمشغّلين المخوّلين الاطلاع على بريدك الإلكتروني إذا كان معروفًا ومرجع الرابط والنتيجة أو الخطأ في سجلات خاصة تُحفظ نحو سبعة أيام."
 }

@@ -1179,5 +1179,11 @@
   "Next page": "下一頁",
   "I consent to having my name and signing time published in the petition’s public signatory list. *": "我同意在這份請願書的公開連署名單上公布我的姓名及連署日期和時間。 *",
   "To sign, consent to publishing your name and signing time.": "連署前，請同意公開您的姓名和連署時間。",
-  "Signing requires your consent to publish your name and signing time. You can hide them later in Account → Configuration. Earlier signatures appear anonymously unless the signer chose to be listed by name.": "連署時，您必須同意公開姓名和連署時間。之後可在「帳戶 → 設定」中隱藏這些資料。先前的連署會匿名顯示，除非連署人曾選擇公開姓名。"
+  "Signing requires your consent to publish your name and signing time. You can hide them later in Account → Configuration. Earlier signatures appear anonymously unless the signer chose to be listed by name.": "連署時，您必須同意公開姓名和連署時間。之後可在「帳戶 → 設定」中隱藏這些資料。先前的連署會匿名顯示，除非連署人曾選擇公開姓名。",
+  "Enter a sign-in code": "輸入登入碼",
+  "Code from your sign-in email": "登入郵件中的驗證碼",
+  "This link is missing its token. You can still sign in with the code in your email.": "這個連結缺少驗證權杖。你仍可使用郵件中的驗證碼登入。",
+  "Check the sign-in code and try again.": "請確認登入碼後再試一次。",
+  "This code is incorrect, expired, or already used. Request a new email.": "驗證碼有誤、已過期或已使用。請索取新的郵件。",
+  "Your email also includes a one-time sign-in code. To troubleshoot email sign-in, authorized operators can see your email when known, a link reference, and the outcome or error in private diagnostic logs kept for about seven days.": "郵件也會附上一次性登入碼。為排查登入問題，授權人員可在私人紀錄中查看已知的電子郵件地址、連結識別碼，以及登入結果或錯誤。紀錄約保留七天。"
 }
