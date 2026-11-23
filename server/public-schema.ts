@@ -1,6 +1,10 @@
 // These views are owned by the migration identity. Public queries never select
 // the profile or story document itself, even when a caller omits a filter.
 export const publicViews = [
+  `CREATE OR REPLACE VIEW public.rn_signatories WITH (security_barrier=true) AS
+   SELECT data->>'name' AS name, signed_at
+     FROM public.profiles WHERE data->>'signed'='true' AND data->>'publicConsent'='true'
+       AND data->'listSignature'='true'::jsonb`,
   `CREATE OR REPLACE VIEW public.rn_signature_groups WITH (security_barrier=true) AS
    SELECT data->>'country' AS country, coalesce(data->>'state','') AS state,
           coalesce(data->>'district','') AS district, data->>'legalStatus' AS status,

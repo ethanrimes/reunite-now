@@ -177,6 +177,7 @@ export async function createDemoData(now = new Date()) {
       personallyInvolved: involved,
       signed: true,
       publicConsent: true,
+      listSignature: index % 3 !== 0,
       adultConsent: true,
       reminders: false,
       cases,
@@ -193,7 +194,7 @@ export async function createDemoData(now = new Date()) {
       ...publicFields,
       id: `demo-${index}`,
       updatedAt: timestamp(index % 115),
-      signedAt: timestamp(120 + (index % 200)),
+      signedAt: timestamp(120 + (index % 200)).replace(".000Z", ".000000Z"),
     };
   });
 

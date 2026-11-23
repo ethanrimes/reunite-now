@@ -34,7 +34,7 @@ try {
             "GRANT USAGE ON SCHEMA public TO rn_runtime, rn_reader",
           );
           await q.query(
-            "GRANT SELECT ON public.rn_signature_groups, public.rn_visa_samples, public.rn_published_stories TO rn_reader",
+            "GRANT SELECT ON public.rn_signature_groups, public.rn_signatories, public.rn_visa_samples, public.rn_published_stories TO rn_reader",
           );
           await q.query(
             "GRANT SELECT, INSERT ON public.users, public.sessions, public.login_tokens, public.profiles, public.stories, public.reminder_deliveries, public.reminder_recipient_deliveries TO rn_runtime",

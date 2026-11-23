@@ -1158,5 +1158,18 @@
   "The feedback form emails your message and sign-in email address to the maintainer through Azure Communication Services. Cloudflare forwards project correspondence to Gmail. These messages may travel outside the EU and are stored in email, outside the petition databases.": "意見表會透過 Azure Communication Services 將您的訊息和登入時使用的電子郵件地址寄給維護者。Cloudflare 會將專案郵件轉寄到 Gmail。這些郵件可能會傳送到歐盟境外，並儲存在電子信箱中，與連署資料庫分開。",
   "Report a bug, suggest a feature, ask a question, or send a request or complaint. Your request goes directly to the project maintainer, Ethan Kallett.": "您可以回報問題、建議新功能、提問，或提出請求或申訴。您的請求會直接寄給專案維護者 Ethan Kallett。",
   "Reply email": "回覆用電子郵件",
-  "Please leave out visa case numbers and other personally identifiable information.": "請勿填寫簽證案件編號或其他可識別個人身分的資訊。"
+  "Please leave out visa case numbers and other personally identifiable information.": "請勿填寫簽證案件編號或其他可識別個人身分的資訊。",
+  "Signature views": "連署檢視",
+  "US map": "美國地圖",
+  "World map": "世界地圖",
+  "Signatories": "連署人",
+  "Public signatory list": "公開連署人名單",
+  "Show my name and the date and time I signed in the public signatory list.": "在公開連署人名單中顯示我的姓名及連署日期和時間。",
+  "You can choose to publish your name and signing time in the signatory list. Change this choice in Account → Configuration at any time.": "您可以選擇在連署人名單中公開姓名與連署時間。您隨時可以前往「帳戶」→「設定」變更選擇。",
+  "People who chose to share their name and signing time, newest first.": "以下列出選擇公開姓名與連署時間的人士，最近連署者列在最前面。",
+  "No signatures to display.": "沒有可顯示的連署。",
+  "Name": "姓名",
+  "Signed at": "連署時間",
+  "Newer signatures": "較新的連署",
+  "Older signatures": "較早的連署"
 }

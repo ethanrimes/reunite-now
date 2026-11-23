@@ -1158,5 +1158,18 @@
   "The feedback form emails your message and sign-in email address to the maintainer through Azure Communication Services. Cloudflare forwards project correspondence to Gmail. These messages may travel outside the EU and are stored in email, outside the petition databases.": "يرسل النموذج رسالتك وعنوان البريد الإلكتروني الذي سجلت الدخول به إلى المسؤول عبر Azure Communication Services. وتعيد Cloudflare توجيه مراسلات المشروع إلى Gmail. قد تمر هذه الرسائل خارج الاتحاد الأوروبي وتُحفظ في البريد الإلكتروني خارج قواعد بيانات العريضة.",
   "Report a bug, suggest a feature, ask a question, or send a request or complaint. Your request goes directly to the project maintainer, Ethan Kallett.": "يمكنك الإبلاغ عن خلل أو اقتراح ميزة أو طرح سؤال أو تقديم طلب أو شكوى. يصل طلبك مباشرة إلى إيثان كاليت، المسؤول عن المشروع.",
   "Reply email": "البريد الإلكتروني للرد",
-  "Please leave out visa case numbers and other personally identifiable information.": "يرجى عدم ذكر أرقام ملفات التأشيرات أو أي معلومات أخرى يمكن أن تكشف هوية شخص ما."
+  "Please leave out visa case numbers and other personally identifiable information.": "يرجى عدم ذكر أرقام ملفات التأشيرات أو أي معلومات أخرى يمكن أن تكشف هوية شخص ما.",
+  "Signature views": "طرق عرض التوقيعات",
+  "US map": "خريطة الولايات المتحدة",
+  "World map": "خريطة العالم",
+  "Signatories": "الموقّعون",
+  "Public signatory list": "القائمة العامة للموقّعين",
+  "Show my name and the date and time I signed in the public signatory list.": "أوافق على إظهار اسمي وتاريخ توقيعي ووقته في القائمة العامة للموقّعين.",
+  "You can choose to publish your name and signing time in the signatory list. Change this choice in Account → Configuration at any time.": "يمكنك اختيار نشر اسمك ووقت توقيعك في قائمة الموقّعين. ويمكنك تغيير هذا الخيار في أي وقت من الحساب ← الإعدادات.",
+  "People who chose to share their name and signing time, newest first.": "الموقّعون الذين اختاروا مشاركة أسمائهم وأوقات توقيعهم، بدءًا بالأحدث.",
+  "No signatures to display.": "لا توجد توقيعات لعرضها.",
+  "Name": "الاسم",
+  "Signed at": "تاريخ التوقيع ووقته",
+  "Newer signatures": "توقيعات أحدث",
+  "Older signatures": "توقيعات أقدم"
 }

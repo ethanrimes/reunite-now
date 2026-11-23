@@ -170,6 +170,35 @@ test("email authentication, data privacy, ownership, update and deletion", async
   );
   const me = await (await request("/api/me")).json();
   assert.equal(me.user.email, email);
+  const listed = async () => {
+    const response = await request("/api/signatories", "GET", undefined, false);
+    assert.equal(response.status, 200);
+    const { signatories } = await response.json();
+    return signatories.filter(
+      (row: { name: string }) => row.name === profile.name,
+    );
+  };
+  assert.deepEqual(await listed(), []);
+  assert.equal(
+    (
+      await request("/api/me/profile/settings", "PATCH", {
+        listSignature: true,
+      })
+    ).status,
+    200,
+  );
+  const [signature] = await listed();
+  assert.deepEqual(Object.keys(signature).sort(), ["name", "signedAt"]);
+  assert.equal(new Date(signature.signedAt).toISOString(), me.profile.signedAt);
+  assert.equal(
+    (
+      await request("/api/me/profile/settings", "PATCH", {
+        listSignature: false,
+      })
+    ).status,
+    200,
+  );
+  assert.deepEqual(await listed(), []);
   assert.equal("city" in me.profile, false);
   assert.deepEqual(me.profile.reminderEmails, [
     "backup@example.test",

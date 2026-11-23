@@ -1,3 +1,4 @@
+import { SignatureNavigation } from "./signature-navigation";
 import { MemberVotes } from "../policy/legislation";
 import { t, number } from "../../i18n/i18n";
 import { useState, useEffect, useRef, useMemo, type ReactNode } from "react";
@@ -480,6 +481,7 @@ export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
     "",
   ]);
   useEffect(() => {
+    if (worldwide) return;
     fetch("/data/districts.json")
       .then((r) => r.json())
       .then((d) =>
@@ -495,7 +497,7 @@ export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
       .catch(() =>
         setRepError("Representative information could not be loaded."),
       );
-  }, []);
+  }, [worldwide]);
   const params = new URLSearchParams({ filtered: "1" });
   status.forEach((v) => params.append("status", v));
   involved.forEach((v) => params.append("connection", v));
@@ -593,6 +595,7 @@ export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
               )
         }
       />
+      <SignatureNavigation />
       {coverage?.error && (
         <p role="alert">{t("Something went wrong. Please try again.")}</p>
       )}
@@ -717,11 +720,6 @@ export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
         </p>
       )}
       <div className="map-sources">
-        <Link to={worldwide ? "/coverage" : "/coverage/worldwide"}>
-          {worldwide
-            ? t("US signatures · states, districts & territories")
-            : t("Worldwide signatures")}
-        </Link>
         <External
           href={
             kind === "world"

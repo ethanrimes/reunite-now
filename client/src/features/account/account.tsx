@@ -1581,6 +1581,23 @@ export function Account() {
             </section>
           )}
           {(signing || tab === "settings") && (
+            <section className="account-section">
+              <h2>{t("Public signatory list")}</h2>
+              <label className="checkbox">
+                <input
+                  type="checkbox"
+                  checked={form.listSignature === true}
+                  onChange={(e) => set("listSignature", e.target.checked)}
+                />
+                <span>
+                  {t(
+                    "Show my name and the date and time I signed in the public signatory list.",
+                  )}
+                </span>
+              </label>
+            </section>
+          )}
+          {(signing || tab === "settings") && (
             <section className="account-section consent-section">
               <h2>{t("Email reminders")}</h2>
               <label className="checkbox">

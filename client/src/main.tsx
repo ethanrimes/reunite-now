@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 import { ArrowUpRight, MoveUpRight } from "lucide-react";
 import { DataProvider, useData } from "./app/api";
+import { Signatories } from "./features/maps/signatories";
 import { Feedback } from "./pages/feedback";
 import { Home } from "./pages/home";
 import { Policies, PolicyDetail } from "./features/policy/policies";
@@ -183,6 +184,7 @@ function App() {
               element={previewMode ? <PreviewGate /> : <ThankYou />}
             />
             <Route path="/stories" element={<Stories />} />
+            <Route path="/coverage/signatories" element={<Signatories />} />
             <Route path="/coverage" element={<Coverage />} />
             <Route
               path="/coverage/worldwide"

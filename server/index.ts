@@ -8,6 +8,11 @@ import {
   type PlaceCount,
   type StoryCard,
 } from "../shared/public-views";
+import {
+  signatoryPage,
+  signatoryPageSize,
+  type Signatory,
+} from "../shared/signatories";
 import { filterSignatures } from "../shared/coverage";
 import helmet from "helmet";
 import compression from "compression";
@@ -278,7 +283,13 @@ app.post("/api/auth/email", authLimit, async (req, res) => {
     await sendEmail(
       email,
       "Your Reunite Now sign-in link",
-      `Use this link within 15 minutes to sign in to Reunite Now:\n\n${url}\n\nIf you did not request this, ignore this email.`,
+      [
+        "Use this link within 15 minutes to sign in to Reunite Now. It works once.",
+        url,
+        "If you see “The sign-in link is missing its token,” copy the full URL as written above, including the #token= part and everything after it. Paste it into your browser’s address bar and open it.",
+        `If the URL in this email is missing #token= or has no code after it, contact the project maintainer at ${maintainerEmail}. Keep the sign-in link and code private when you write.`,
+        "If you did not request this email, you can ignore it.",
+      ].join("\n\n"),
       `signin/${hash(raw)}`,
     );
   res.json({ ok: true, ...(devAuth && !emailReady() ? { devLink: url } : {}) });
@@ -653,6 +664,27 @@ app.get("/api/demo", async (_req, res) => {
     throw error;
   }
 });
+app.get("/api/signatories", async (req, res) => {
+  const { before } = z
+    .object({ before: z.string().datetime({ precision: 6 }).optional() })
+    .parse(req.query);
+  const results = await routed(false, () =>
+    acrossRegions(() =>
+      publicDb.query<Signatory>(
+        `SELECT name, to_char(signed_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS "signedAt"
+       FROM public.rn_signatories
+       WHERE ($1::timestamptz IS NULL OR signed_at < $1)
+       ORDER BY signed_at DESC FETCH FIRST $2 ROWS WITH TIES`,
+        [before ?? null, signatoryPageSize + 1],
+      ),
+    ),
+  );
+  const rows = results.flatMap((result) => result.rows);
+  const samples = demo?.profiles.filter((p) => p.listSignature) ?? [];
+  res
+    .set("Cache-Control", "no-store")
+    .json(signatoryPage([...rows, ...samples], before));
+});
 app.get("/api/stats/coverage", async (req, res) => {
   const params = new URL(req.originalUrl, appUrl).searchParams;
   const filters = {
@@ -902,6 +934,9 @@ if (externalSchema) {
       throw new Error("Reader login has private table or schema privileges");
     await publicDb.query(
       "SELECT country FROM public.rn_signature_groups LIMIT 0",
+    );
+    await publicDb.query(
+      "SELECT name,signed_at FROM public.rn_signatories LIMIT 0",
     );
     await publicDb.query("SELECT cases FROM public.rn_visa_samples LIMIT 0");
     await publicDb.query("SELECT id FROM public.rn_published_stories LIMIT 0");

@@ -107,6 +107,7 @@ export function DataUse() {
             "Maps show signature counts by location and selected filters. Visa tables summarize reported cases and waiting times. Published stories show your name, country, text and photos. Leave out passport and receipt numbers, addresses, birth dates, identity documents and other identifying details.",
           )}
         </p>
+        <p>{t("You can choose to publish your name and signing time in the signatory list. Change this choice in Account → Configuration at any time.")}</p>
         <p>
           {t(
             "Sign the petition using your own name. Get that person’s permission before publishing information about them. Visa applicants may use a nickname in their case details. You must be at least 18 to create an account.",

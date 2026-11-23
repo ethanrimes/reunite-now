@@ -9,6 +9,7 @@ import {
   isTerritory,
   usMapProjector,
 } from "../shared/coverage";
+import { signatoryPage, signatoryPageSize } from "../shared/signatories";
 import { isPreviewPath } from "../client/src/app/preview";
 import type { PublicProfile } from "../shared/schema";
 
@@ -149,4 +150,19 @@ test("sample routes use a distinct prefix", () => {
     assert.equal(isPreviewPath(path), true);
   for (const path of ["/", "/coverage", "/democracy", "/demo-other"])
     assert.equal(isPreviewPath(path), false);
+});
+
+test("the public list keeps simultaneous signatures across a page boundary", () => {
+  const rows = Array.from({ length: signatoryPageSize + 2 }, (_, i) => ({
+    name: "Sample " + i,
+    signedAt: "2026-01-02T00:00:00.000000Z",
+  }));
+  const older = { name: "Older", signedAt: "2026-01-01T00:00:00.000000Z" };
+  const first = signatoryPage([older, ...rows]);
+  assert.equal(first.signatories.length, rows.length);
+  assert.equal(first.next, rows[0].signedAt);
+  assert.deepEqual(signatoryPage([...rows, older], first.next!), {
+    signatories: [older],
+    next: null,
+  });
 });

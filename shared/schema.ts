@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { caseRoles, rolesFor, relationshipsFor } from "./visa-workflow";
-export const consentVersion = "2026-11-22T18:00:00Z";
+export const consentVersion = "2026-11-23T04:11:00Z";
 export const legalStatuses = [
   "US citizen",
   "Permanent resident",
@@ -209,6 +209,7 @@ export const profileSchema = z
     personallyInvolved: z.boolean(),
     signed: z.literal(true),
     publicConsent: z.literal(true),
+    listSignature: z.boolean().optional(),
     adultConsent: z.literal(true),
     reminders: z.boolean(),
     reminderEmails: z
@@ -336,6 +337,6 @@ export const profileSections = {
     "affiliationConsent",
   ],
   cases: ["personallyInvolved", "cases"],
-  settings: ["reminders", "reminderEmails"],
+  settings: ["reminders", "reminderEmails", "listSignature"],
 } as const;
 export type ProfileSection = keyof typeof profileSections;

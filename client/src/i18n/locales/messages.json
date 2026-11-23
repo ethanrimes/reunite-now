@@ -5798,5 +5798,70 @@
     "es": "No incluyas números de expediente de visa ni otros datos que permitan identificar a una persona.",
     "pt": "Não inclua números de processos de visto nem outros dados que possam identificar uma pessoa.",
     "tl": "Huwag isama ang numero ng kaso ng visa o iba pang impormasyong maaaring tumukoy sa pagkakakilanlan ng isang tao."
+  },
+  "Signature views": {
+    "es": "Vistas de firmas",
+    "pt": "Visualizações das assinaturas",
+    "tl": "Mga paraan ng pagtingin sa mga lagda"
+  },
+  "US map": {
+    "es": "Mapa de EE. UU.",
+    "pt": "Mapa dos EUA",
+    "tl": "Mapa ng US"
+  },
+  "World map": {
+    "es": "Mapa mundial",
+    "pt": "Mapa-múndi",
+    "tl": "Mapa ng mundo"
+  },
+  "Signatories": {
+    "es": "Firmantes",
+    "pt": "Signatários",
+    "tl": "Mga lumagda"
+  },
+  "Public signatory list": {
+    "es": "Lista pública de firmantes",
+    "pt": "Lista pública de signatários",
+    "tl": "Pampublikong listahan ng mga lumagda"
+  },
+  "Show my name and the date and time I signed in the public signatory list.": {
+    "es": "Mostrar mi nombre y la fecha y hora en que firmé en la lista pública de firmantes.",
+    "pt": "Mostrar meu nome e a data e a hora em que assinei na lista pública de signatários.",
+    "tl": "Ipakita sa pampublikong listahan ang aking pangalan at ang petsa at oras ng aking paglagda."
+  },
+  "You can choose to publish your name and signing time in the signatory list. Change this choice in Account → Configuration at any time.": {
+    "es": "Puedes elegir que tu nombre y la hora de tu firma aparezcan en la lista de firmantes. Puedes cambiar esta opción cuando quieras en Cuenta → Configuración.",
+    "pt": "Você pode publicar seu nome e a data e hora da assinatura na lista de signatários. Altere essa escolha a qualquer momento em Conta → Configuração.",
+    "tl": "Maaari mong ilathala ang iyong pangalan at oras ng paglagda sa listahan ng mga lumagda. Mababago mo ito anumang oras sa Account → Configuration."
+  },
+  "People who chose to share their name and signing time, newest first.": {
+    "es": "Personas que eligieron compartir su nombre y la hora de su firma, de la más reciente a la más antigua.",
+    "pt": "Pessoas que optaram por divulgar o nome e a data e hora da assinatura, das mais recentes às mais antigas.",
+    "tl": "Mga pumayag na ipakita ang kanilang pangalan at oras ng paglagda, mula sa pinakabago."
+  },
+  "No signatures to display.": {
+    "es": "No hay firmas para mostrar.",
+    "pt": "Nenhuma assinatura para exibir.",
+    "tl": "Walang lagdang maipapakita."
+  },
+  "Name": {
+    "es": "Nombre",
+    "pt": "Nome",
+    "tl": "Pangalan"
+  },
+  "Signed at": {
+    "es": "Fecha y hora de la firma",
+    "pt": "Data e hora da assinatura",
+    "tl": "Petsa at oras ng paglagda"
+  },
+  "Newer signatures": {
+    "es": "Firmas más recientes",
+    "pt": "Assinaturas mais recentes",
+    "tl": "Mas bagong mga lagda"
+  },
+  "Older signatures": {
+    "es": "Firmas anteriores",
+    "pt": "Assinaturas anteriores",
+    "tl": "Mas naunang mga lagda"
   }
 }

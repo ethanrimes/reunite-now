@@ -1158,5 +1158,18 @@
   "The feedback form emails your message and sign-in email address to the maintainer through Azure Communication Services. Cloudflare forwards project correspondence to Gmail. These messages may travel outside the EU and are stored in email, outside the petition databases.": "ফর্মটি Azure Communication Services-এর মাধ্যমে আপনার বার্তা ও সাইন ইন করার ইমেইল ঠিকানা তত্ত্বাবধায়ককে পাঠায়। Cloudflare প্রকল্পের ইমেইল Gmail-এ পাঠায়। এসব বার্তা ইউরোপীয় ইউনিয়নের বাইরে যেতে পারে এবং পিটিশনের ডেটাবেসের বাইরে ইমেইলে সংরক্ষিত থাকে।",
   "Report a bug, suggest a feature, ask a question, or send a request or complaint. Your request goes directly to the project maintainer, Ethan Kallett.": "ত্রুটি জানান, নতুন সুবিধার প্রস্তাব দিন, প্রশ্ন করুন বা অনুরোধ কিংবা অভিযোগ পাঠান। আপনার অনুরোধ সরাসরি প্রকল্পের তত্ত্বাবধায়ক ইথান কালেটের কাছে যাবে।",
   "Reply email": "উত্তর পাওয়ার ইমেইল",
-  "Please leave out visa case numbers and other personally identifiable information.": "ভিসা আবেদনের কেস নম্বর বা কাউকে শনাক্ত করা যায় এমন অন্য কোনো তথ্য দেবেন না।"
+  "Please leave out visa case numbers and other personally identifiable information.": "ভিসা আবেদনের কেস নম্বর বা কাউকে শনাক্ত করা যায় এমন অন্য কোনো তথ্য দেবেন না।",
+  "Signature views": "স্বাক্ষর দেখার ধরন",
+  "US map": "যুক্তরাষ্ট্রের মানচিত্র",
+  "World map": "বিশ্ব মানচিত্র",
+  "Signatories": "স্বাক্ষরকারীরা",
+  "Public signatory list": "স্বাক্ষরকারীদের প্রকাশ্য তালিকা",
+  "Show my name and the date and time I signed in the public signatory list.": "স্বাক্ষরকারীদের প্রকাশ্য তালিকায় আমার নাম এবং স্বাক্ষরের তারিখ ও সময় দেখান।",
+  "You can choose to publish your name and signing time in the signatory list. Change this choice in Account → Configuration at any time.": "আপনি চাইলে স্বাক্ষরকারীদের তালিকায় আপনার নাম ও স্বাক্ষরের সময় প্রকাশ করতে পারেন। অ্যাকাউন্ট → কনফিগারেশন থেকে যেকোনো সময় এই পছন্দ বদলাতে পারেন।",
+  "People who chose to share their name and signing time, newest first.": "যাঁরা তাঁদের নাম ও স্বাক্ষরের সময় প্রকাশ করতে চেয়েছেন, তাঁদের সর্বশেষ স্বাক্ষর আগে দেখানো হয়েছে।",
+  "No signatures to display.": "দেখানোর মতো কোনো স্বাক্ষর নেই।",
+  "Name": "নাম",
+  "Signed at": "স্বাক্ষরের তারিখ ও সময়",
+  "Newer signatures": "নতুন স্বাক্ষর",
+  "Older signatures": "আগের স্বাক্ষর"
 }

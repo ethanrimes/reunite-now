@@ -177,6 +177,8 @@ async function migrateRegionalSchema(q: Queryable) {
     `CREATE TABLE IF NOT EXISTS reminder_recipient_deliveries (user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,period text NOT NULL,recipient_key text NOT NULL,status text NOT NULL DEFAULT 'pending',claimed_at timestamptz NOT NULL DEFAULT now(),sent_at timestamptz,PRIMARY KEY(user_id,period,recipient_key))`,
     `CREATE INDEX IF NOT EXISTS sessions_user_id ON sessions(user_id)`,
     `CREATE INDEX IF NOT EXISTS sessions_expiry ON sessions(expires_at)`,
+    `CREATE INDEX IF NOT EXISTS profiles_listed_signatures ON profiles(signed_at DESC)
+     WHERE data->>'signed'='true' AND data->>'publicConsent'='true' AND data->'listSignature'='true'::jsonb`,
     ...publicViews,
   ])
     await q.query(sql);

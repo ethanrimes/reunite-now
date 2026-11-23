@@ -46,6 +46,7 @@ test("regional runtime and reader logins enforce their privileges", async (t) =>
     }
     for (const view of [
       "rn_signature_groups",
+      "rn_signatories",
       "rn_published_stories",
       "rn_visa_samples",
     ]) {
