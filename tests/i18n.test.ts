@@ -7,6 +7,7 @@ import { policies } from "../shared/policies";
 import messages from "../client/src/i18n/locales/messages.json";
 import arabic from "../client/src/i18n/locales/ar.json";
 import bengali from "../client/src/i18n/locales/bn.json";
+import vietnamese from "../client/src/i18n/locales/vi.json";
 import traditionalChinese from "../client/src/i18n/locales/zh-Hant.json";
 import {
   translate,
@@ -29,6 +30,7 @@ test("All language catalogs cover interface strings and preserve placeholders", 
   const additions: Record<string, Record<string, string>> = {
     ar: arabic,
     bn: bengali,
+    vi: vietnamese,
     "zh-Hant": traditionalChinese,
   };
   for (const [language, translations] of Object.entries(additions)) {
@@ -128,7 +130,7 @@ test("translation interpolation, fallback, and locale selection", async () => {
   assert.equal(getLanguage(), "tl");
   assert.equal(getLocale(), "fil-PH");
   assert.equal(changes, 3);
-  for (const lang of ["ar", "bn", "zh-Hant"] as const) {
+  for (const lang of ["ar", "bn", "vi", "zh-Hant"] as const) {
     assert.equal(validLanguage(lang), true);
     await setLanguage(lang);
     assert.equal(getLanguage(), lang);
@@ -138,13 +140,14 @@ test("translation interpolation, fallback, and locale selection", async () => {
     assert.ok(translate("{count} selected", lang, { count: 3 }).includes("3"));
     assert.equal(languageDirection(lang), lang === "ar" ? "rtl" : "ltr");
   }
+  assert.equal(translate("Sign the petition", "vi"), "Ký kiến nghị");
   assert.equal(validLanguage("zh"), false);
   assert.equal(validLanguage("toString"), false);
-  assert.equal(Object.keys(languageNames).length, 7);
-  assert.equal(changes, 6);
+  assert.equal(Object.keys(languageNames).length, 8);
+  assert.equal(changes, 7);
   unsubscribe();
   await setLanguage("en");
-  assert.equal(changes, 6);
+  assert.equal(changes, 7);
 });
 
 // These strings are passed dynamically to t(), so the JSX literal scan cannot see them.
@@ -182,7 +185,7 @@ test("language changes update document language, direction and title", async () 
     configurable: true,
   });
   try {
-    for (const lang of ["ar", "bn", "zh-Hant", "en"] as const) {
+    for (const lang of ["ar", "bn", "vi", "zh-Hant", "en"] as const) {
       await setLanguage(lang);
       assert.equal(
         document.documentElement.lang,

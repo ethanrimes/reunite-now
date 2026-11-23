@@ -1,4 +1,4 @@
-export type Language = "en" | "es" | "pt" | "tl" | "ar" | "bn" | "zh-Hant";
+export type Language = "en" | "es" | "pt" | "tl" | "ar" | "bn" | "zh-Hant" | "vi";
 export const languageNames = {
   en: "English",
   es: "Español",
@@ -7,6 +7,7 @@ export const languageNames = {
   ar: "العربية",
   bn: "বাংলা",
   "zh-Hant": "繁體中文",
+  vi: "Tiếng Việt",
 };
 export const localeNames: Record<Language, string> = {
   en: "en-US",
@@ -16,6 +17,7 @@ export const localeNames: Record<Language, string> = {
   ar: "ar",
   bn: "bn",
   "zh-Hant": "zh-Hant",
+  vi: "vi",
 };
 export const languageDirection = (value: Language) =>
   value === "ar" ? "rtl" : "ltr";
@@ -39,6 +41,8 @@ async function loadCatalog(value: Language) {
   if (value === "ar") catalogs.ar = (await import("./locales/ar.json")).default;
   else if (value === "bn")
     catalogs.bn = (await import("./locales/bn.json")).default;
+  else if (value === "vi")
+    catalogs.vi = (await import("./locales/vi.json")).default;
   else if (value === "zh-Hant")
     catalogs[value] = (await import("./locales/zh-Hant.json")).default;
   else {

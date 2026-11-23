@@ -49,11 +49,11 @@ html[dir="rtl"] :is(.map-help, .map-legend, .map-reset) {
   min-width: 105px;
 }
 /* Long translated labels wrap within the page instead of clipping. */
-:is(html:lang(ar), html:lang(bn), html:lang(zh-Hant)) .site-header nav {
+:is(html:lang(ar), html:lang(bn), html:lang(zh-Hant), html:lang(vi)) .site-header nav {
   flex-wrap: wrap;
   row-gap: 10px;
 }
-:is(html:lang(ar), html:lang(bn), html:lang(zh-Hant)) .button {
+:is(html:lang(ar), html:lang(bn), html:lang(zh-Hant), html:lang(vi)) .button {
   white-space: normal;
 }
 @media (max-width: 600px) {
