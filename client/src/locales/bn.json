@@ -1142,9 +1142,7 @@
   "Your account and signature have no automatic expiry. Stories, including unpublished drafts, stay until you delete them or your account. Sign-in links expire after 15 minutes and sessions expire after 30 days.": "অ্যাকাউন্ট ও স্বাক্ষরের মেয়াদ স্বয়ংক্রিয়ভাবে শেষ হয় না। অপ্রকাশিত খসড়াসহ গল্পগুলো আপনি সেগুলো বা অ্যাকাউন্ট না মোছা পর্যন্ত থাকে। সাইন-ইন লিংকের মেয়াদ ১৫ মিনিট এবং সেশনের মেয়াদ ৩০ দিন।",
   "Sign the petition using your own name. Get that person’s permission before publishing information about them. Visa applicants may use a nickname in their case details. You must be at least 18 to create an account.": "নিজের নাম ব্যবহার করে পিটিশনে স্বাক্ষর করুন। অন্য কারও সম্পর্কে তথ্য প্রকাশ করতে হলে আপনার অনুমতি থাকতে হবে। ভিসা আবেদনকারীরা তাদের মামলার বিবরণে ডাকনাম ব্যবহার করতে পারেন। অ্যাকাউন্ট তৈরি করতে আপনার বয়স কমপক্ষে ১৮ বছর হতে হবে।",
   "Project feedback": "প্রকল্প সম্পর্কে মতামত",
-  "Report a bug, suggest a feature, ask a question, or send a request or complaint. Your message goes privately to Ethan Kallett, the project maintainer.": "ত্রুটি জানান, নতুন সুবিধার প্রস্তাব দিন, প্রশ্ন করুন বা অনুরোধ কিংবা অভিযোগ পাঠান। আপনার বার্তা ব্যক্তিগতভাবে প্রকল্পের তত্ত্বাবধায়ক ইথান কালেটের কাছে যাবে।",
   "Your message": "আপনার বার্তা",
-  "Please leave out visa case numbers and identity documents.": "ভিসা আবেদনের কেস নম্বর বা পরিচয়পত্র দেবেন না।",
   "Sending…": "পাঠানো হচ্ছে…",
   "Send feedback": "মতামত পাঠান",
   "Thank you. Your feedback has been sent to the maintainer.": "ধন্যবাদ। আপনার মতামত তত্ত্বাবধায়কের কাছে পাঠানো হয়েছে।",
@@ -1155,8 +1153,10 @@
   "Use the project feedback form": "প্রকল্পের মতামত ফর্ম খুলুন",
   "Sign in to send feedback": "মতামত পাঠাতে সাইন ইন করুন",
   "Use your email link or Google account to return to the feedback form.": "মতামত ফর্মে ফিরতে ইমেইলের লিংক বা আপনার Google অ্যাকাউন্ট ব্যবহার করুন।",
-  "Your message will include your sign-in email so the maintainer can reply.": "আপনার বার্তার সঙ্গে সাইন ইন করার ইমেইল ঠিকানা পাঠানো হবে, যাতে তত্ত্বাবধায়ক উত্তর দিতে পারেন।",
   "Enter a message of up to 4,000 characters.": "সর্বোচ্চ ৪,০০০ অক্ষরের একটি বার্তা লিখুন।",
   "If you can sign in, you can also use the feedback form to reach the same inbox.": "সাইন ইন করতে পারলে একই ইনবক্সে বার্তা পাঠাতে মতামত ফর্মও ব্যবহার করতে পারেন।",
-  "The feedback form emails your message and sign-in email address to the maintainer through Azure Communication Services. Cloudflare forwards project correspondence to Gmail. These messages may travel outside the EU and are stored in email, outside the petition databases.": "ফর্মটি Azure Communication Services-এর মাধ্যমে আপনার বার্তা ও সাইন ইন করার ইমেইল ঠিকানা তত্ত্বাবধায়ককে পাঠায়। Cloudflare প্রকল্পের ইমেইল Gmail-এ পাঠায়। এসব বার্তা ইউরোপীয় ইউনিয়নের বাইরে যেতে পারে এবং পিটিশনের ডেটাবেসের বাইরে ইমেইলে সংরক্ষিত থাকে।"
+  "The feedback form emails your message and sign-in email address to the maintainer through Azure Communication Services. Cloudflare forwards project correspondence to Gmail. These messages may travel outside the EU and are stored in email, outside the petition databases.": "ফর্মটি Azure Communication Services-এর মাধ্যমে আপনার বার্তা ও সাইন ইন করার ইমেইল ঠিকানা তত্ত্বাবধায়ককে পাঠায়। Cloudflare প্রকল্পের ইমেইল Gmail-এ পাঠায়। এসব বার্তা ইউরোপীয় ইউনিয়নের বাইরে যেতে পারে এবং পিটিশনের ডেটাবেসের বাইরে ইমেইলে সংরক্ষিত থাকে।",
+  "Report a bug, suggest a feature, ask a question, or send a request or complaint. Your request goes directly to the project maintainer, Ethan Kallett.": "ত্রুটি জানান, নতুন সুবিধার প্রস্তাব দিন, প্রশ্ন করুন বা অনুরোধ কিংবা অভিযোগ পাঠান। আপনার অনুরোধ সরাসরি প্রকল্পের তত্ত্বাবধায়ক ইথান কালেটের কাছে যাবে।",
+  "Reply email": "উত্তর পাওয়ার ইমেইল",
+  "Please leave out visa case numbers and other personally identifiable information.": "ভিসা আবেদনের কেস নম্বর বা কাউকে শনাক্ত করা যায় এমন অন্য কোনো তথ্য দেবেন না।"
 }

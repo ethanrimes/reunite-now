@@ -50,7 +50,7 @@ export function Feedback() {
           <h1>{t("Project feedback")}</h1>
           <p>
             {t(
-              "Report a bug, suggest a feature, ask a question, or send a request or complaint. Your message goes privately to Ethan Kallett, the project maintainer.",
+              "Report a bug, suggest a feature, ask a question, or send a request or complaint. Your request goes directly to the project maintainer, Ethan Kallett.",
             )}
           </p>
         </div>
@@ -73,16 +73,16 @@ export function Feedback() {
             setError("");
           }}
         >
-          <p className="feedback-identity">
-            {t(
-              "Your message will include your sign-in email so the maintainer can reply.",
-            )}{" "}
-            <bdi>{me.user.email}</bdi>
-          </p>
+          <dl className="feedback-identity">
+            <dt>{t("Reply email")}</dt>
+            <dd>
+              <bdi dir="ltr">{me.user.email}</bdi>
+            </dd>
+          </dl>
           <Field
             label={t("Your message")}
             hint={t(
-              "Please leave out visa case numbers and identity documents.",
+              "Please leave out visa case numbers and other personally identifiable information.",
             )}
           >
             <textarea

@@ -5714,20 +5714,10 @@
     "pt": "Fale sobre o projeto",
     "tl": "Puna tungkol sa proyekto"
   },
-  "Report a bug, suggest a feature, ask a question, or send a request or complaint. Your message goes privately to Ethan Kallett, the project maintainer.": {
-    "es": "Informa de un error, sugiere una función, haz una pregunta o envía una petición o queja. Tu mensaje llega de forma privada a Ethan Kallett, responsable del proyecto.",
-    "pt": "Relate um erro, sugira uma funcionalidade, faça uma pergunta ou envie um pedido ou uma reclamação. Sua mensagem será enviada em particular a Ethan Kallett, responsável pelo projeto.",
-    "tl": "Mag-ulat ng problema, magmungkahi ng bagong tampok, magtanong, o magpadala ng kahilingan o reklamo. Pribadong matatanggap ni Ethan Kallett, ang nangangasiwa sa proyekto, ang iyong mensahe."
-  },
   "Your message": {
     "es": "Tu mensaje",
     "pt": "Sua mensagem",
     "tl": "Ang iyong mensahe"
-  },
-  "Please leave out visa case numbers and identity documents.": {
-    "es": "No incluyas números de expediente de visa ni documentos de identidad.",
-    "pt": "Não inclua números de processos de visto nem documentos de identidade.",
-    "tl": "Huwag isama ang numero ng iyong kaso sa visa o mga dokumento ng pagkakakilanlan."
   },
   "Sending…": {
     "es": "Enviando…",
@@ -5779,11 +5769,6 @@
     "pt": "Use o link enviado por e-mail ou sua conta do Google para voltar ao formulário de contato.",
     "tl": "Gamitin ang link sa email o ang iyong Google account para bumalik sa form."
   },
-  "Your message will include your sign-in email so the maintainer can reply.": {
-    "es": "Tu mensaje incluirá el correo con el que iniciaste sesión para que el responsable del proyecto pueda responderte.",
-    "pt": "Sua mensagem incluirá o e-mail usado para entrar, para que o responsável pelo projeto possa responder.",
-    "tl": "Kasama sa mensahe ang email na ginamit mo sa pag-sign in para makasagot ang tagapangasiwa."
-  },
   "Enter a message of up to 4,000 characters.": {
     "es": "Escribe un mensaje de hasta 4000 caracteres.",
     "pt": "Escreva uma mensagem de até 4.000 caracteres.",
@@ -5798,5 +5783,20 @@
     "es": "El formulario envía tu mensaje y el correo con el que iniciaste sesión al responsable del proyecto a través de Azure Communication Services. Cloudflare reenvía la correspondencia del proyecto a Gmail. Estos mensajes pueden circular fuera de la UE y se guardan en el correo, fuera de las bases de datos de la petición.",
     "pt": "O formulário envia sua mensagem e o e-mail usado para entrar ao responsável pelo projeto via Azure Communication Services. A Cloudflare encaminha a correspondência do projeto ao Gmail. Essas mensagens podem passar por países fora da UE e ficam armazenadas no e-mail, fora dos bancos de dados da petição.",
     "tl": "Ipinapadala ng form ang mensahe at email na ginamit mo sa pag-sign in sa tagapangasiwa sa pamamagitan ng Azure Communication Services. Ipinapasa ng Cloudflare ang mga email ng proyekto sa Gmail. Maaaring dumaan ang mga ito sa labas ng EU at nakaimbak ang mga ito sa email, hiwalay sa mga database ng petisyon."
+  },
+  "Report a bug, suggest a feature, ask a question, or send a request or complaint. Your request goes directly to the project maintainer, Ethan Kallett.": {
+    "es": "Informa de un error, sugiere una función, haz una pregunta o envía una petición o queja. Tu solicitud llega directamente a Ethan Kallett, responsable del proyecto.",
+    "pt": "Relate um erro, sugira uma funcionalidade, faça uma pergunta ou envie um pedido ou uma reclamação. Sua solicitação vai diretamente para Ethan Kallett, responsável pelo projeto.",
+    "tl": "Mag-ulat ng problema, magmungkahi ng bagong tampok, magtanong, o magpadala ng kahilingan o reklamo. Diretso kay Ethan Kallett, ang nangangasiwa sa proyekto, ang iyong mensahe."
+  },
+  "Reply email": {
+    "es": "Correo de respuesta",
+    "pt": "E-mail para resposta",
+    "tl": "Email para sa tugon"
+  },
+  "Please leave out visa case numbers and other personally identifiable information.": {
+    "es": "No incluyas números de expediente de visa ni otros datos que permitan identificar a una persona.",
+    "pt": "Não inclua números de processos de visto nem outros dados que possam identificar uma pessoa.",
+    "tl": "Huwag isama ang numero ng kaso ng visa o iba pang impormasyong maaaring tumukoy sa pagkakakilanlan ng isang tao."
   }
 }

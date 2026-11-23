@@ -440,6 +440,21 @@
 }
 
 .feedback-identity {
-  margin-block: 0 1rem;
+  display: grid;
+  gap: 0.25rem;
+  margin: 0 0 1.5rem;
+  padding-inline-start: 1rem;
+  border-inline-start: 3px solid var(--line);
+}
+
+.feedback-identity dt {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.feedback-identity dd {
+  min-width: 0;
+  margin: 0;
+  font-weight: 600;
   overflow-wrap: anywhere;
 }

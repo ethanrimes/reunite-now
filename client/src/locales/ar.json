@@ -1142,9 +1142,7 @@
   "Your account and signature have no automatic expiry. Stories, including unpublished drafts, stay until you delete them or your account. Sign-in links expire after 15 minutes and sessions expire after 30 days.": "لا تنتهي صلاحية حسابك وتوقيعك تلقائيًا. تبقى القصص، بما فيها المسودات غير المنشورة، حتى تحذفها أو تحذف حسابك. تنتهي صلاحية روابط الدخول بعد 15 دقيقة والجلسات بعد 30 يومًا.",
   "Sign the petition using your own name. Get that person’s permission before publishing information about them. Visa applicants may use a nickname in their case details. You must be at least 18 to create an account.": "وقّع العريضة باستخدام اسمك الحقيقي. يجب أن تحصل على إذن لنشر معلومات عن شخص آخر. يجوز لمتقدمي طلبات التأشيرة استخدام لقب في تفاصيل قضاياهم. يجب ألا يقل عمرك عن 18 عامًا لإنشاء حساب.",
   "Project feedback": "ملاحظات حول المشروع",
-  "Report a bug, suggest a feature, ask a question, or send a request or complaint. Your message goes privately to Ethan Kallett, the project maintainer.": "يمكنك الإبلاغ عن خلل أو اقتراح ميزة أو طرح سؤال أو تقديم طلب أو شكوى. تصل رسالتك بشكل خاص إلى إيثان كاليت، المسؤول عن المشروع.",
   "Your message": "رسالتك",
-  "Please leave out visa case numbers and identity documents.": "يرجى عدم إرفاق وثائق الهوية أو ذكر أرقام ملفات التأشيرات.",
   "Sending…": "جارٍ الإرسال…",
   "Send feedback": "إرسال الملاحظات",
   "Thank you. Your feedback has been sent to the maintainer.": "شكرًا لك. أُرسلت ملاحظاتك إلى المسؤول عن المشروع.",
@@ -1155,8 +1153,10 @@
   "Use the project feedback form": "فتح نموذج ملاحظات المشروع",
   "Sign in to send feedback": "سجّل الدخول لإرسال ملاحظاتك",
   "Use your email link or Google account to return to the feedback form.": "استخدم الرابط المرسل إلى بريدك الإلكتروني أو حساب Google للعودة إلى نموذج الملاحظات.",
-  "Your message will include your sign-in email so the maintainer can reply.": "ستتضمن رسالتك عنوان البريد الإلكتروني الذي سجلت الدخول به حتى يتمكن المسؤول عن المشروع من الرد عليك.",
   "Enter a message of up to 4,000 characters.": "أدخل رسالة لا تتجاوز ٤٠٠٠ حرف.",
   "If you can sign in, you can also use the feedback form to reach the same inbox.": "إذا كان بإمكانك تسجيل الدخول، يمكنك أيضًا استخدام نموذج الملاحظات لمراسلة صندوق البريد نفسه.",
-  "The feedback form emails your message and sign-in email address to the maintainer through Azure Communication Services. Cloudflare forwards project correspondence to Gmail. These messages may travel outside the EU and are stored in email, outside the petition databases.": "يرسل النموذج رسالتك وعنوان البريد الإلكتروني الذي سجلت الدخول به إلى المسؤول عبر Azure Communication Services. وتعيد Cloudflare توجيه مراسلات المشروع إلى Gmail. قد تمر هذه الرسائل خارج الاتحاد الأوروبي وتُحفظ في البريد الإلكتروني خارج قواعد بيانات العريضة."
+  "The feedback form emails your message and sign-in email address to the maintainer through Azure Communication Services. Cloudflare forwards project correspondence to Gmail. These messages may travel outside the EU and are stored in email, outside the petition databases.": "يرسل النموذج رسالتك وعنوان البريد الإلكتروني الذي سجلت الدخول به إلى المسؤول عبر Azure Communication Services. وتعيد Cloudflare توجيه مراسلات المشروع إلى Gmail. قد تمر هذه الرسائل خارج الاتحاد الأوروبي وتُحفظ في البريد الإلكتروني خارج قواعد بيانات العريضة.",
+  "Report a bug, suggest a feature, ask a question, or send a request or complaint. Your request goes directly to the project maintainer, Ethan Kallett.": "يمكنك الإبلاغ عن خلل أو اقتراح ميزة أو طرح سؤال أو تقديم طلب أو شكوى. يصل طلبك مباشرة إلى إيثان كاليت، المسؤول عن المشروع.",
+  "Reply email": "البريد الإلكتروني للرد",
+  "Please leave out visa case numbers and other personally identifiable information.": "يرجى عدم ذكر أرقام ملفات التأشيرات أو أي معلومات أخرى يمكن أن تكشف هوية شخص ما."
 }
