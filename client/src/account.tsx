@@ -57,6 +57,7 @@ export function Login() {
   const [sent, setSent] = useState(false);
   const [devLink, setDevLink] = useState("");
   const [params] = useSearchParams();
+  const forFeedback = params.get("intent") === "feedback";
   async function submit(e: FormEvent) {
     e.preventDefault();
     setBusy(true);
@@ -64,7 +65,10 @@ export function Login() {
     try {
       const r = await api("/auth/email", {
         method: "POST",
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({
+          email,
+          intent: forFeedback ? "feedback" : undefined,
+        }),
       });
       setSent(true);
       setDevLink(r.devLink || "");
@@ -92,14 +96,20 @@ export function Login() {
       <div className="auth-form">
         <span className="eyebrow">{t("SIGN IN OR CREATE AN ACCOUNT")}</span>
         <h2>
-          {params.get("intent") === "sign"
-            ? t("Sign the petition")
-            : t("Log in")}
+          {forFeedback
+            ? t("Sign in to send feedback")
+            : params.get("intent") === "sign"
+              ? t("Sign the petition")
+              : t("Log in")}
         </h2>
         <p>
-          {t(
-            "Sign in or create an account with a secure email link or Google. New members complete their petition profile next.",
-          )}
+          {forFeedback
+            ? t(
+                "Use your email link or Google account to return to the feedback form.",
+              )
+            : t(
+                "Sign in or create an account with a secure email link or Google. New members complete their petition profile next.",
+              )}
         </p>
         <div className="auth-privacy">
           <ShieldCheck size={18} />
@@ -110,15 +120,23 @@ export function Login() {
           </p>
         </div>
         {me.user ? (
-          <Link className="button" to="/account">
-            {t("Continue to your account ")}
+          <Link className="button" to={forFeedback ? "/feedback" : "/account"}>
+            {forFeedback
+              ? t("Use the project feedback form")
+              : t("Continue to your account ")}
             <ArrowUpRight size={17} />
           </Link>
         ) : (
           <>
             <a
               className={`button google ${!config.googleAuth ? "disabled" : ""}`}
-              href={config.googleAuth ? "/api/auth/google" : undefined}
+              href={
+                config.googleAuth
+                  ? forFeedback
+                    ? "/api/auth/google?intent=feedback"
+                    : "/api/auth/google"
+                  : undefined
+              }
               aria-disabled={!config.googleAuth}
             >
               <span className="google-g">{t("G")}</span>
@@ -195,7 +213,8 @@ export function Login() {
 export function Verify() {
   const { refresh } = useData();
   const nav = useNavigate();
-  const { hash } = useLocation();
+  const { hash, search } = useLocation();
+  const forFeedback = new URLSearchParams(search).get("intent") === "feedback";
   const token = new URLSearchParams(hash.slice(1)).get("token");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -206,14 +225,18 @@ export function Verify() {
   async function confirm() {
     if (!token || busy) return;
     setBusy(true);
-    window.history.replaceState(window.history.state, "", "/auth/verify");
+    window.history.replaceState(
+      window.history.state,
+      "",
+      "/auth/verify" + search,
+    );
     try {
       await api("/auth/verify", {
         method: "POST",
         body: JSON.stringify({ token }),
       });
       await refresh();
-      nav("/account", { replace: true });
+      nav(forFeedback ? "/feedback" : "/account", { replace: true });
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -227,7 +250,10 @@ export function Verify() {
       {problem ? (
         <>
           <Notice tone="error">{t(problem)}</Notice>
-          <Link className="button" to="/login">
+          <Link
+            className="button"
+            to={forFeedback ? "/login?intent=feedback" : "/login"}
+          >
             {t("Request a new link")}
           </Link>
         </>

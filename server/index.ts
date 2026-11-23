@@ -120,12 +120,16 @@ function detectedRegion(req: Request) {
       : req.socket.remoteAddress,
   );
 }
-type Handler = (req: Request, res: Response) => Promise<unknown>;
+type Handler = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => Promise<unknown>;
 function accountRoute(
   handler: Handler,
   { optional = false, exclusive = false } = {},
 ): Handler {
-  return async (req, res) => {
+  return async (req, res, next) => {
     const noSession = () =>
       optional
         ? res.json({ user: null })
@@ -147,7 +151,7 @@ function accountRoute(
       const match = matches[0];
       if (!match) return noSession();
       res.locals.user = match.user;
-      return inRegion(match.storage, () => handler(req, res));
+      return inRegion(match.storage, () => handler(req, res, next));
     });
   };
 }
@@ -199,7 +203,6 @@ app.get("/api/config", (_req, res) =>
   }),
 );
 const feedbackSchema = z.strictObject({
-  email: z.string().trim().max(254).pipe(z.email()),
   message: z.string().trim().min(1).max(feedbackMessageLimit),
 });
 app.post(
@@ -211,38 +214,36 @@ app.post(
     legacyHeaders: false,
     message: { error: "Too many messages. Please try again in 15 minutes." },
   }),
+  accountRoute(async (_req, _res, next) => next()),
   async (req, res) => {
     const parsed = feedbackSchema.safeParse(req.body);
     if (!parsed.success)
-      return res
-        .status(400)
-        .json({
-          error:
-            "Enter a valid email address and a message of up to 4,000 characters.",
-        });
-    const { email, message } = parsed.data;
+      return res.status(400).json({
+        error: "Enter a message of up to 4,000 characters.",
+      });
+    const { message } = parsed.data;
+    const email = res.locals.user.email;
     try {
       await sendEmail(
         maintainerEmail,
         "Reunite Now project feedback",
-        `Submitted through the project feedback form.\nReply address supplied by the visitor: ${email}\n\n${message}`,
+        `Submitted through the project feedback form.\nSigned-in account: ${email}\n\n${message}`,
         randomUUID(),
         email,
       );
     } catch {
-      return res
-        .status(503)
-        .json({
-          error:
-            "We couldn’t confirm your message was sent. Try again or email the maintainer directly.",
-        });
+      return res.status(503).json({
+        error:
+          "We couldn’t confirm your message was sent. Try again or email the maintainer directly.",
+      });
     }
     res.json({ sent: true });
   },
 );
 app.post("/api/auth/email", authLimit, async (req, res) => {
-  const { email } = z
+  const { email, intent } = z
     .object({
+      intent: z.literal("feedback").optional(),
       email: z
         .email()
         .max(254)
@@ -263,7 +264,7 @@ app.post("/api/auth/email", authLimit, async (req, res) => {
       ),
     ),
   );
-  const url = `${appUrl}/auth/verify#token=${raw}`;
+  const url = `${appUrl}/auth/verify${intent === "feedback" ? "?intent=feedback" : ""}#token=${raw}`;
   if (emailReady())
     await sendEmail(
       email,
@@ -307,15 +308,23 @@ function google() {
     `${appUrl}/api/auth/google/callback`,
   );
 }
-app.get("/api/auth/google", authLimit, (_req, res) => {
+app.get("/api/auth/google", authLimit, (req, res) => {
   if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET)
     return void res.redirect("/login?error=google-unavailable");
   const state = generateState(),
     verifier = generateCodeVerifier();
-  res.cookie("rn_oauth", JSON.stringify({ state, verifier }), {
-    ...cookieOptions,
-    maxAge: 600000,
-  });
+  res.cookie(
+    "rn_oauth",
+    JSON.stringify({
+      state,
+      verifier,
+      feedback: req.query.intent === "feedback",
+    }),
+    {
+      ...cookieOptions,
+      maxAge: 600000,
+    },
+  );
   res.redirect(
     google()
       .createAuthorizationURL(state, verifier, ["openid", "email", "profile"])
@@ -352,7 +361,7 @@ app.get("/api/auth/google/callback", authLimit, async (req, res) => {
     await routed(true, () =>
       signInAtHome(info.email.toLowerCase(), detectedRegion(req), res),
     );
-    res.redirect("/account");
+    res.redirect(saved.feedback === true ? "/feedback" : "/account");
   } catch {
     res.redirect("/login?error=oauth");
   }
@@ -374,9 +383,12 @@ app.get(
   accountRoute(
     async (req, res) => {
       const u = res.locals.user;
-      if (req.query.view === "session")
+      if (req.query.view === "session" || req.query.view === "feedback")
         return void res.json({
-          user: { id: u.id },
+          user:
+            req.query.view === "feedback"
+              ? { id: u.id, email: u.email }
+              : { id: u.id },
           profile: null,
           story: null,
         });

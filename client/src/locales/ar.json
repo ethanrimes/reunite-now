@@ -1144,17 +1144,19 @@
   "Project feedback": "ملاحظات حول المشروع",
   "Report a bug, suggest a feature, ask a question, or send a request or complaint. Your message goes privately to Ethan Kallett, the project maintainer.": "يمكنك الإبلاغ عن خلل أو اقتراح ميزة أو طرح سؤال أو تقديم طلب أو شكوى. تصل رسالتك بشكل خاص إلى إيثان كاليت، المسؤول عن المشروع.",
   "Your message": "رسالتك",
-  "The maintainer can reply to you at this address.": "يمكن للمسؤول عن المشروع الرد عليك عبر هذا العنوان.",
   "Please leave out visa case numbers and identity documents.": "يرجى عدم إرفاق وثائق الهوية أو ذكر أرقام ملفات التأشيرات.",
   "Sending…": "جارٍ الإرسال…",
   "Send feedback": "إرسال الملاحظات",
   "Thank you. Your feedback has been sent to the maintainer.": "شكرًا لك. أُرسلت ملاحظاتك إلى المسؤول عن المشروع.",
   "Too many messages. Please try again in 15 minutes.": "أُرسلت رسائل كثيرة. يرجى المحاولة مرة أخرى بعد 15 دقيقة.",
-  "Enter a valid email address and a message of up to 4,000 characters.": "أدخل عنوان بريد إلكتروني صالحًا ورسالة لا تتجاوز ٤٠٠٠ حرف.",
   "We couldn’t confirm your message was sent. Try again or email the maintainer directly.": "تعذّر تأكيد إرسال رسالتك. حاول مرة أخرى أو راسل المسؤول عن المشروع مباشرة.",
   "You can contact Ethan Kallett, the project maintainer, about any privacy concern. For example, he can help if you can’t sign in, someone has shared information about you, or you want reminders to stop.": "يمكنك التواصل مع إيثان كاليت، المسؤول عن المشروع، بشأن أي مسألة تتعلق بخصوصيتك. مثلًا، يمكنه مساعدتك إذا تعذّر عليك تسجيل الدخول أو شارك أحد معلومات عنك أو أردت إيقاف التذكيرات.",
   "Email him at": "عنوان بريده الإلكتروني هو",
-  "If you prefer, our feedback form sends your message to the same inbox.": "إذا كنت تفضّل استخدام نموذج الملاحظات، فستصل رسالتك إلى صندوق البريد نفسه.",
   "Use the project feedback form": "فتح نموذج ملاحظات المشروع",
-  "The feedback form emails your message and reply address to the maintainer through Azure Communication Services. Cloudflare forwards project correspondence to Gmail. These messages may travel outside the EU and are stored in email, outside the petition databases.": "يرسل النموذج رسالتك وعنوان بريدك للرد إلى المسؤول عبر Azure Communication Services. وتعيد Cloudflare توجيه مراسلات المشروع إلى Gmail. قد تمر هذه الرسائل خارج الاتحاد الأوروبي وتُحفظ في البريد الإلكتروني خارج قواعد بيانات العريضة."
+  "Sign in to send feedback": "سجّل الدخول لإرسال ملاحظاتك",
+  "Use your email link or Google account to return to the feedback form.": "استخدم الرابط المرسل إلى بريدك الإلكتروني أو حساب Google للعودة إلى نموذج الملاحظات.",
+  "Your message will include your sign-in email so the maintainer can reply.": "ستتضمن رسالتك عنوان البريد الإلكتروني الذي سجلت الدخول به حتى يتمكن المسؤول عن المشروع من الرد عليك.",
+  "Enter a message of up to 4,000 characters.": "أدخل رسالة لا تتجاوز ٤٠٠٠ حرف.",
+  "If you can sign in, you can also use the feedback form to reach the same inbox.": "إذا كان بإمكانك تسجيل الدخول، يمكنك أيضًا استخدام نموذج الملاحظات لمراسلة صندوق البريد نفسه.",
+  "The feedback form emails your message and sign-in email address to the maintainer through Azure Communication Services. Cloudflare forwards project correspondence to Gmail. These messages may travel outside the EU and are stored in email, outside the petition databases.": "يرسل النموذج رسالتك وعنوان البريد الإلكتروني الذي سجلت الدخول به إلى المسؤول عبر Azure Communication Services. وتعيد Cloudflare توجيه مراسلات المشروع إلى Gmail. قد تمر هذه الرسائل خارج الاتحاد الأوروبي وتُحفظ في البريد الإلكتروني خارج قواعد بيانات العريضة."
 }

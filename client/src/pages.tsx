@@ -735,7 +735,7 @@ export function DataUse() {
         </p>
         <p>
           {t(
-            "If you prefer, our feedback form sends your message to the same inbox.",
+            "If you can sign in, you can also use the feedback form to reach the same inbox.",
           )}{" "}
           <Link to="/feedback">{t("Use the project feedback form")}</Link>
         </p>
@@ -825,7 +825,7 @@ export function DataUse() {
         <h2>{t("Services that process data")}</h2>
         <p>
           {t(
-            "The feedback form emails your message and reply address to the maintainer through Azure Communication Services. Cloudflare forwards project correspondence to Gmail. These messages may travel outside the EU and are stored in email, outside the petition databases.",
+            "The feedback form emails your message and sign-in email address to the maintainer through Azure Communication Services. Cloudflare forwards project correspondence to Gmail. These messages may travel outside the EU and are stored in email, outside the petition databases.",
           )}
         </p>
         <p>

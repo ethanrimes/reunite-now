@@ -438,3 +438,8 @@
   line-height: 1.55;
   margin: 0 0 clamp(1.5rem, 4vw, 3rem);
 }
+
+.feedback-identity {
+  margin-block: 0 1rem;
+  overflow-wrap: anywhere;
+}

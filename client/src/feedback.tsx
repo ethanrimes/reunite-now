@@ -1,11 +1,13 @@
 import { useState, type FormEvent } from "react";
 import { feedbackMessageLimit, maintainerEmail } from "../../shared/feedback";
-import { api } from "./api";
+import { Link } from "react-router-dom";
+import { api, useData } from "./api";
 import { t } from "./i18n";
 import { previewMode } from "./preview";
 import { Field, Notice } from "./ui";
 
 export function Feedback() {
+  const { me, loading } = useData();
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
@@ -22,7 +24,6 @@ export function Feedback() {
       await api("/feedback", {
         method: "POST",
         body: JSON.stringify({
-          email: fields.get("email"),
           message: fields.get("message"),
         }),
       });
@@ -31,9 +32,9 @@ export function Feedback() {
     } catch (cause) {
       const detail = cause instanceof Error ? cause.message : "";
       setError(
-        detail === "Too many messages. Please try again in 15 minutes." ||
-          detail ===
-            "Enter a valid email address and a message of up to 4,000 characters."
+        detail === "Please sign in to continue" ||
+          detail === "Too many messages. Please try again in 15 minutes." ||
+          detail === "Enter a message of up to 4,000 characters."
           ? detail
           : "We couldn’t confirm your message was sent. Try again or email the maintainer directly.",
       );
@@ -58,6 +59,12 @@ export function Feedback() {
         <a href="/feedback" className="button">
           {t("Use the project feedback form")}
         </a>
+      ) : loading ? (
+        <p role="status">{t("Loading…")}</p>
+      ) : !me.user ? (
+        <Link className="button" to="/login?intent=feedback">
+          {t("Sign in to send feedback")}
+        </Link>
       ) : (
         <form
           onSubmit={submit}
@@ -66,19 +73,12 @@ export function Feedback() {
             setError("");
           }}
         >
-          <Field
-            label={t("Email address")}
-            hint={t("The maintainer can reply to you at this address.")}
-          >
-            <input
-              name="email"
-              type="email"
-              autoComplete="email"
-              maxLength={254}
-              required
-              readOnly={sending}
-            />
-          </Field>
+          <p className="feedback-identity">
+            {t(
+              "Your message will include your sign-in email so the maintainer can reply.",
+            )}{" "}
+            <bdi>{me.user.email}</bdi>
+          </p>
           <Field
             label={t("Your message")}
             hint={t(
@@ -104,7 +104,13 @@ export function Feedback() {
           {error && (
             <Notice tone="error">
               {t(error)}{" "}
-              <a href={`mailto:${maintainerEmail}`}>{maintainerEmail}</a>
+              {error === "Please sign in to continue" ? (
+                <Link to="/login?intent=feedback">
+                  {t("Sign in to send feedback")}
+                </Link>
+              ) : (
+                <a href={`mailto:${maintainerEmail}`}>{maintainerEmail}</a>
+              )}
             </Notice>
           )}
         </form>

@@ -63,10 +63,11 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const [profiles, setProfiles] = useState<PublicProfile[]>([]);
   const [stories, setStories] = useState<PublicStory[]>([]);
   const { pathname } = useLocation();
-  const scope =
-    !previewMode &&
-    ["/account", "/thank-you"].includes(pathname.replace(/\/$/, ""))
-      ? "account"
+  const path = pathname.replace(/\/$/, "");
+  const scope = ["/account", "/thank-you"].includes(path)
+    ? "account"
+    : path === "/feedback"
+      ? "feedback"
       : "session";
   const [loadedScope, setLoadedScope] = useState("");
   const requestId = useRef(0);
@@ -95,7 +96,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         return;
       }
       const [m, c] = await Promise.all([
-        api<Me>(scope === "account" ? "/me" : "/me?view=session"),
+        api<Me>(scope === "account" ? "/me" : `/me?view=${scope}`),
         api<Config>("/config"),
       ]);
       if (id !== requestId.current) return;

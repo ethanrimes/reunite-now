@@ -40,6 +40,31 @@ test("email authentication, data privacy, ownership, update and deletion", async
     400,
     "magic link is one use",
   );
+  const feedbackUser = await (await request("/api/me?view=feedback")).json();
+  assert.equal(feedbackUser.user.email, email);
+  assert.equal(feedbackUser.profile, null);
+  assert.equal(
+    (
+      await request("/api/feedback", "POST", {
+        email: "other@example.test",
+        message: "Hello",
+      })
+    ).status,
+    400,
+  );
+  assert.equal(
+    (
+      await request("/api/feedback", "POST", {
+        to: "other@example.test",
+        message: "Hello",
+      })
+    ).status,
+    400,
+  );
+  assert.equal(
+    (await request("/api/feedback", "POST", { message: "  " })).status,
+    400,
+  );
   const profile = {
     name: "Integration test only",
     legalStatus: "US citizen",
@@ -360,14 +385,13 @@ test("sample API is isolated, read-only, and excludes private account fields", a
   assert.equal((await request("/api/demo", "POST", {})).status, 404);
 });
 
-test("signed-out feedback validates input and fixes the delivery address", async () => {
-  const submit = (body: object) => request("/api/feedback", "POST", body, false);
-  const input = { email: "visitor@example.test", message: "Feedback" };
-  for (const invalid of [
-    { ...input, message: "   " },
-    { ...input, email: "invalid" },
-    { ...input, message: "a".repeat(4001) },
-    { ...input, to: "another@example.test" },
+test("feedback requires sign-in even if a visitor supplies an email", async () => {
+  for (const body of [
+    { message: "Hello" },
+    { message: "Hello", email: "visitor@example.test" },
   ])
-    assert.equal((await submit(invalid)).status, 400);
+    assert.equal(
+      (await request("/api/feedback", "POST", body, false)).status,
+      401,
+    );
 });

@@ -1144,17 +1144,19 @@
   "Project feedback": "প্রকল্প সম্পর্কে মতামত",
   "Report a bug, suggest a feature, ask a question, or send a request or complaint. Your message goes privately to Ethan Kallett, the project maintainer.": "ত্রুটি জানান, নতুন সুবিধার প্রস্তাব দিন, প্রশ্ন করুন বা অনুরোধ কিংবা অভিযোগ পাঠান। আপনার বার্তা ব্যক্তিগতভাবে প্রকল্পের তত্ত্বাবধায়ক ইথান কালেটের কাছে যাবে।",
   "Your message": "আপনার বার্তা",
-  "The maintainer can reply to you at this address.": "তত্ত্বাবধায়ক এই ঠিকানায় আপনাকে উত্তর দিতে পারবেন।",
   "Please leave out visa case numbers and identity documents.": "ভিসা আবেদনের কেস নম্বর বা পরিচয়পত্র দেবেন না।",
   "Sending…": "পাঠানো হচ্ছে…",
   "Send feedback": "মতামত পাঠান",
   "Thank you. Your feedback has been sent to the maintainer.": "ধন্যবাদ। আপনার মতামত তত্ত্বাবধায়কের কাছে পাঠানো হয়েছে।",
   "Too many messages. Please try again in 15 minutes.": "অনেক বার্তা পাঠানো হয়েছে। ১৫ মিনিট পরে আবার চেষ্টা করুন।",
-  "Enter a valid email address and a message of up to 4,000 characters.": "একটি বৈধ ইমেইল ঠিকানা এবং সর্বোচ্চ ৪,০০০ অক্ষরের বার্তা লিখুন।",
   "We couldn’t confirm your message was sent. Try again or email the maintainer directly.": "বার্তাটি পাঠানো হয়েছে কি না নিশ্চিত করা যায়নি। আবার চেষ্টা করুন বা তত্ত্বাবধায়ককে সরাসরি ইমেইল করুন।",
   "You can contact Ethan Kallett, the project maintainer, about any privacy concern. For example, he can help if you can’t sign in, someone has shared information about you, or you want reminders to stop.": "গোপনীয়তা নিয়ে যেকোনো উদ্বেগের বিষয়ে প্রকল্পের তত্ত্বাবধায়ক ইথান কালেটের সঙ্গে যোগাযোগ করতে পারেন। যেমন, আপনি সাইন ইন করতে না পারলে, কেউ আপনার তথ্য প্রকাশ করলে বা আপনি আর অনুস্মারক পেতে না চাইলে তিনি সাহায্য করতে পারেন।",
   "Email him at": "তাঁর ইমেইল ঠিকানা",
-  "If you prefer, our feedback form sends your message to the same inbox.": "চাইলে মতামত ফর্ম ব্যবহার করতে পারেন। আপনার বার্তা একই ইনবক্সে পৌঁছাবে।",
   "Use the project feedback form": "প্রকল্পের মতামত ফর্ম খুলুন",
-  "The feedback form emails your message and reply address to the maintainer through Azure Communication Services. Cloudflare forwards project correspondence to Gmail. These messages may travel outside the EU and are stored in email, outside the petition databases.": "ফর্মটি Azure Communication Services-এর মাধ্যমে আপনার বার্তা ও উত্তর দেওয়ার ঠিকানা তত্ত্বাবধায়ককে ইমেইল করে। Cloudflare প্রকল্পের ইমেইল Gmail-এ পাঠায়। এসব বার্তা ইউরোপীয় ইউনিয়নের বাইরে যেতে পারে এবং পিটিশনের ডেটাবেসের বাইরে ইমেইলে সংরক্ষিত থাকে।"
+  "Sign in to send feedback": "মতামত পাঠাতে সাইন ইন করুন",
+  "Use your email link or Google account to return to the feedback form.": "মতামত ফর্মে ফিরতে ইমেইলের লিংক বা আপনার Google অ্যাকাউন্ট ব্যবহার করুন।",
+  "Your message will include your sign-in email so the maintainer can reply.": "আপনার বার্তার সঙ্গে সাইন ইন করার ইমেইল ঠিকানা পাঠানো হবে, যাতে তত্ত্বাবধায়ক উত্তর দিতে পারেন।",
+  "Enter a message of up to 4,000 characters.": "সর্বোচ্চ ৪,০০০ অক্ষরের একটি বার্তা লিখুন।",
+  "If you can sign in, you can also use the feedback form to reach the same inbox.": "সাইন ইন করতে পারলে একই ইনবক্সে বার্তা পাঠাতে মতামত ফর্মও ব্যবহার করতে পারেন।",
+  "The feedback form emails your message and sign-in email address to the maintainer through Azure Communication Services. Cloudflare forwards project correspondence to Gmail. These messages may travel outside the EU and are stored in email, outside the petition databases.": "ফর্মটি Azure Communication Services-এর মাধ্যমে আপনার বার্তা ও সাইন ইন করার ইমেইল ঠিকানা তত্ত্বাবধায়ককে পাঠায়। Cloudflare প্রকল্পের ইমেইল Gmail-এ পাঠায়। এসব বার্তা ইউরোপীয় ইউনিয়নের বাইরে যেতে পারে এবং পিটিশনের ডেটাবেসের বাইরে ইমেইলে সংরক্ষিত থাকে।"
 }
