@@ -83,22 +83,22 @@ export function DataUse() {
         </p>
         <p>
           {t(
-            "Public maps, timelines and published stories combine submissions from both regions. The US web service processes requests for both. The reminder scheduler runs in Sweden and our email service processes delivery data in the US. After a move, the old region may retain a backup during its recovery window.",
+            "Public maps, timelines and stories combine submissions from both regions. Our US web service handles requests for both. We schedule reminders in Sweden and process email delivery data in the US.",
           )}
         </p>
         <p>
           {t(
-            "Your account and signature have no automatic expiry. Stories, including unpublished drafts, stay until you delete them or your account. Sign-in links expire after 15 minutes and sessions expire after 30 days.",
+            "Your account and signature do not expire. Stories and drafts stay until you delete them or your account. Sign-in links expire after 15 minutes and sessions after 30 days.",
           )}
         </p>
         <p>
           {t(
-            "Visit your account to edit your profile, download your data, remove a visa case, unpublish your story, or permanently delete your account. Deletion removes your account, signature, case timelines, story photos, sessions, and reminder records from the live database. Aggregate statistics then recalculate without your records.",
+            "In Account, you can edit your profile, download your data, remove a visa case, unpublish a story or delete your account. Deleting your account removes your signature, timelines, stories, photos, sessions and reminder records from the live database. Public totals update accordingly.",
           )}
         </p>
         <p>
           {t(
-            "Azure provides a seven-day database recovery window. Backup files can persist longer. Before a restore goes online, deletions must be reapplied. Other people may keep copies of public submissions. Email providers may retain delivery records.",
+            "After a region change, a backup may remain in the previous region. Azure’s recovery window is seven days, though backup files may persist longer. We reapply deletions before restoring service. Others may retain copies of public submissions, and email providers may keep delivery records.",
           )}
         </p>
         <h2>{t("What other people can see")}</h2>
@@ -108,11 +108,6 @@ export function DataUse() {
           )}
         </p>
         <p>{t("Signing requires your consent to publish your name and signing time. You can hide them later in Account → Configuration. Earlier signatures appear anonymously unless the signer chose to be listed by name.")}</p>
-        <p>
-          {t(
-            "Sign the petition using your own name. Get that person’s permission before publishing information about them. Visa applicants may use a nickname in their case details. You must be at least 18 to create an account.",
-          )}
-        </p>
         <h2>{t("What stays private")}</h2>
         <p>
           {t(

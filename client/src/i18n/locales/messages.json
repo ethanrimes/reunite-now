@@ -664,10 +664,10 @@
     "pt": "Exportar, corrigir ou excluir",
     "tl": "I-export, itama, o burahin"
   },
-  "Visit your account to edit your profile, download your data, remove a visa case, unpublish your story, or permanently delete your account. Deletion removes your account, signature, case timelines, story photos, sessions, and reminder records from the live database. Aggregate statistics then recalculate without your records.": {
-    "es": "En tu cuenta puedes editar tu perfil, descargar tus datos, eliminar un caso de visa, retirar tu historia o eliminar permanentemente tu cuenta. La eliminación borra tu cuenta, firma, cronologías, fotos, sesiones y registros de recordatorios de la base de datos activa. Las estadísticas se recalculan sin tus registros.",
-    "pt": "Na sua conta, você pode editar o perfil, baixar os dados, remover um caso de visto, retirar a história ou excluir permanentemente a conta. A exclusão remove sua conta, assinatura, cronologias, fotos, sessões e registros de lembretes do banco de dados ativo. As estatísticas são recalculadas sem seus registros.",
-    "tl": "Pumunta sa iyong account upang baguhin ang profile, i-download ang datos, alisin ang kaso ng visa, alisin sa publiko ang kuwento, o permanenteng burahin ang account. Binubura nito ang account, lagda, mga timeline, larawan ng kuwento, sesyon, at tala ng paalala mula sa aktibong database. Muling kinukuwenta ang pinagsama-samang estadistika nang wala ang iyong mga rekord."
+  "In Account, you can edit your profile, download your data, remove a visa case, unpublish a story or delete your account. Deleting your account removes your signature, timelines, stories, photos, sessions and reminder records from the live database. Public totals update accordingly.": {
+    "es": "En Cuenta puedes editar tu perfil, descargar tus datos, eliminar un caso de visa, retirar una historia publicada o borrar tu cuenta. Al borrar la cuenta, se eliminan de la base de datos activa tu firma, cronologías, historias, fotos, sesiones y registros de recordatorios. Los totales públicos se actualizan para reflejarlo.",
+    "pt": "Em Conta, você pode editar seu perfil, baixar seus dados, remover um caso de visto, retirar uma história do ar ou excluir sua conta. Ao excluir a conta, sua assinatura, linhas do tempo, histórias, fotos, sessões e registros de lembretes são removidos do banco de dados em uso. Os totais públicos são atualizados.",
+    "tl": "Sa Account, maaari mong i-edit ang iyong profile, i-download ang iyong datos, alisin ang isang kaso ng visa, bawiin ang pagkakalathala ng isang kuwento o burahin ang iyong account. Kapag binura mo ang account, aalisin sa aktibong database ang iyong lagda, mga timeline, kuwento, larawan, sesyon at tala ng mga paalala. Maa-update rin ang mga pampublikong bilang."
   },
   "Services that process data": {
     "es": "Servicios que procesan datos",
@@ -5604,10 +5604,10 @@
     "pt": "Publicamos a petição e os relatos opcionais com o seu consentimento. Você pode retirá-lo a qualquer momento. Quando aplicável, pode solicitar acesso, correção, exclusão, restrição ou portabilidade e reclamar à sua autoridade de proteção de dados.",
     "tl": "Ginagamit namin ang pahintulot mo upang ilathala ang petisyon at mga opsyonal na kuwento. Maaari mo itong bawiin anumang oras. Kung naaangkop, maaari kang humiling ng access, pagwawasto, pagbura, paghihigpit o paglipat ng datos at magreklamo sa lokal na awtoridad sa proteksiyon ng datos."
   },
-  "Azure provides a seven-day database recovery window. Backup files can persist longer. Before a restore goes online, deletions must be reapplied. Other people may keep copies of public submissions. Email providers may retain delivery records.": {
-    "es": "Azure permite recuperar la base de datos durante siete días. Los archivos de respaldo pueden durar más. Antes de reabrir una copia restaurada hay que volver a aplicar las eliminaciones. Otras personas pueden conservar copias de lo publicado y los proveedores de correo pueden conservar registros de entrega.",
-    "pt": "O Azure oferece sete dias para restaurar o banco de dados. Backups podem persistir por mais tempo. As exclusões devem ser reaplicadas antes de uma restauração entrar no ar. Terceiros podem guardar cópias das publicações e provedores de e-mail podem manter registros de entrega.",
-    "tl": "Pitong araw ang panahon ng pagbawi ng database sa Azure. Maaaring mas matagal manatili ang mga backup. Kailangang ulitin ang mga pagbura bago muling buksan ang site. Maaaring may kopya ng pampublikong ambag ang ibang tao at may tala ng paghahatid ang mga serbisyo ng email."
+  "After a region change, a backup may remain in the previous region. Azure’s recovery window is seven days, though backup files may persist longer. We reapply deletions before restoring service. Others may retain copies of public submissions, and email providers may keep delivery records.": {
+    "es": "Si cambias de región, puede quedar una copia de seguridad en la región anterior. Azure permite recuperar datos durante siete días, aunque los archivos de respaldo pueden conservarse más tiempo. Volvemos a aplicar las eliminaciones antes de restablecer el servicio. Otras personas pueden guardar copias de las contribuciones públicas y los proveedores de correo pueden conservar registros de entrega.",
+    "pt": "Após uma mudança de região, uma cópia de segurança pode permanecer na região anterior. O prazo de recuperação do Azure é de sete dias, mas os arquivos de backup podem ficar armazenados por mais tempo. Reaplicamos as exclusões antes de restabelecer o serviço. Outras pessoas podem guardar cópias das contribuições públicas, e os provedores de e-mail podem manter registros de entrega.",
+    "tl": "Kapag nagpalit ka ng rehiyon, maaaring may matirang backup sa dating rehiyon. Pitong araw ang palugit ng Azure para mabawi ang datos, ngunit maaaring manatili nang mas matagal ang mga backup file. Muli naming binubura ang mga datos na tinanggal na bago ibalik ang serbisyo. Maaaring may naitabi ang iba na mga kopya ng pampublikong isinumite, at maaaring magtago ang mga email provider ng mga tala ng paghahatid."
   },
   "This deletes your account and submissions from the live site. Backups and copies already saved by others may persist.": {
     "es": "Esto elimina tu cuenta y tus publicaciones del sitio activo. Pueden quedar copias de seguridad y copias guardadas por otras personas.",
@@ -5649,10 +5649,10 @@
     "pt": "Sua conta foi transferida.",
     "tl": "Nailipat na ang account mo."
   },
-  "Public maps, timelines and published stories combine submissions from both regions. The US web service processes requests for both. The reminder scheduler runs in Sweden and our email service processes delivery data in the US. After a move, the old region may retain a backup during its recovery window.": {
-    "es": "Los mapas, las cronologías y las historias públicas reúnen aportes de ambas regiones. El servicio web de EE. UU. procesa las solicitudes de ambas. Los recordatorios se programan en Suecia y el servicio de correo procesa los datos de entrega en EE. UU. Tras un traslado, la región anterior puede conservar copias durante el plazo de recuperación.",
-    "pt": "Os mapas, as linhas do tempo e as histórias públicas reúnem contribuições das duas regiões. O serviço web nos EUA processa as solicitações de ambas. Os lembretes são agendados na Suécia e o serviço de email processa os dados de entrega nos EUA. Após a transferência, a região anterior pode manter uma cópia durante o período de recuperação.",
-    "tl": "Pinagsasama ng mga pampublikong mapa, timeline at kuwento ang mga ambag mula sa dalawang rehiyon. Pinoproseso ng web service sa US ang mga kahilingan para sa dalawa. Sa Sweden nakaiskedyul ang mga paalala at sa US pinoproseso ang datos ng paghahatid ng email. Pagkatapos ng paglipat, maaaring may backup sa dating rehiyon habang maaari pang ibalik ang datos."
+  "Public maps, timelines and stories combine submissions from both regions. Our US web service handles requests for both. We schedule reminders in Sweden and process email delivery data in the US.": {
+    "es": "Los mapas, las cronologías y las historias públicas reúnen aportes de ambas regiones. Nuestro servicio web en EE. UU. atiende las solicitudes de ambas. Programamos los recordatorios en Suecia y procesamos los datos de entrega de correos en EE. UU.",
+    "pt": "Os mapas, as linhas do tempo e as histórias públicas reúnem contribuições das duas regiões. Nosso serviço web nos EUA atende às solicitações de ambas. Agendamos os lembretes na Suécia e processamos os dados de entrega de e-mails nos EUA.",
+    "tl": "Pinagsasama ng mga pampublikong mapa, timeline at kuwento ang mga isinumite mula sa dalawang rehiyon. Ang aming serbisyo sa web sa US ang humahawak ng mga kahilingan mula sa pareho. Sa Sweden namin iniiskedyul ang mga paalala at sa US namin pinoproseso ang datos ng paghahatid ng email."
   },
   "Your email is private. With your consent, your signature and timeline contribute to public statistics. You choose whether to publish your story and photos.": {
     "es": "Tu correo es privado. Con tu consentimiento, tu firma y tu cronología se incluyen en las estadísticas públicas. Tú decides si publicas tu historia y tus fotos.",
@@ -5699,15 +5699,10 @@
     "pt": "Mais histórias",
     "tl": "Higit pang kuwento"
   },
-  "Your account and signature have no automatic expiry. Stories, including unpublished drafts, stay until you delete them or your account. Sign-in links expire after 15 minutes and sessions expire after 30 days.": {
-    "es": "Tu cuenta y firma no caducan automáticamente. Los relatos, incluidos los borradores privados, se conservan hasta que los elimines o borres tu cuenta. Los enlaces de acceso caducan a los 15 minutos y las sesiones a los 30 días.",
-    "pt": "A conta e a assinatura não expiram automaticamente. As histórias, inclusive rascunhos não publicados, permanecem até você excluí-las ou apagar a conta. Os links de acesso expiram em 15 minutos e as sessões em 30 dias.",
-    "tl": "Walang awtomatikong pag-expire ang account at lagda mo. Mananatili ang mga kuwento, pati mga draft, hanggang burahin mo ang mga ito o ang account mo. Napapaso ang link sa pag-sign in pagkalipas ng 15 minuto at ang session pagkalipas ng 30 araw."
-  },
-  "Sign the petition using your own name. Get that person’s permission before publishing information about them. Visa applicants may use a nickname in their case details. You must be at least 18 to create an account.": {
-    "es": "Firma la petición con tu propio nombre. Debes tener permiso para publicar información sobre otra persona. Los solicitantes de visa pueden usar un apodo en los detalles de su caso. Debes tener al menos 18 años para crear una cuenta.",
-    "pt": "Assine a petição usando seu próprio nome. Você precisa ter permissão para publicar informações sobre outra pessoa. Solicitantes de visto podem usar um apelido nos detalhes do caso. É necessário ter pelo menos 18 anos para criar uma conta.",
-    "tl": "Lagdaan ang petisyon gamit ang sarili mong pangalan. Kailangan mong may pahintulot para maglathala ng impormasyon tungkol sa ibang tao. Maaaring gumamit ng palayaw ang mga aplikante ng visa sa mga detalye ng kanilang kaso. Dapat ay 18 taong gulang ka man lang para gumawa ng account."
+  "Your account and signature do not expire. Stories and drafts stay until you delete them or your account. Sign-in links expire after 15 minutes and sessions after 30 days.": {
+    "es": "Tu cuenta y tu firma no caducan. Las historias y los borradores se conservan hasta que los elimines o borres tu cuenta. Los enlaces de acceso caducan a los 15 minutos y las sesiones a los 30 días.",
+    "pt": "Sua conta e sua assinatura não expiram. As histórias e os rascunhos ficam salvos até você excluí-los ou excluir sua conta. Os links de acesso expiram após 15 minutos e as sessões após 30 dias.",
+    "tl": "Hindi nag-e-expire ang iyong account at lagda. Mananatili ang mga kuwento at draft hanggang burahin mo ang mga ito o ang iyong account. Magagamit ang link sa pag-sign in nang 15 minuto at ang sesyon ay tatagal nang 30 araw."
   },
   "Project feedback": {
     "es": "Comentarios sobre el proyecto",
