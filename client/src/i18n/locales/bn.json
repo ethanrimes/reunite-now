@@ -1171,5 +1171,14 @@
   "Name": "নাম",
   "Signed at": "স্বাক্ষরের তারিখ ও সময়",
   "Newer signatures": "নতুন স্বাক্ষর",
-  "Older signatures": "আগের স্বাক্ষর"
+  "Older signatures": "আগের স্বাক্ষর",
+  "Every petition signature is included. Signers who share their name and signing time appear first, newest first. All other signatures appear anonymously.": "এখানে আবেদনপত্রের সব স্বাক্ষর রয়েছে। যাঁরা নিজেদের নাম ও স্বাক্ষরের সময় প্রকাশ করেছেন তাঁদের স্বাক্ষর আগে দেখানো হয়, সাম্প্রতিকতম থেকে শুরু করে। বাকি স্বাক্ষরগুলো বেনামে দেখানো হয়।",
+  "Total signatures: {count}": "মোট স্বাক্ষর: {count}",
+  "Anonymous signer": "বেনামি স্বাক্ষরকারী",
+  "Private": "গোপন",
+  "Previous page": "আগের পৃষ্ঠা",
+  "Next page": "পরের পৃষ্ঠা",
+  "I consent to having my name and signing time published in the petition’s public signatory list. *": "আমি আবেদনপত্রের প্রকাশ্য স্বাক্ষরকারী তালিকায় আমার নাম এবং স্বাক্ষরের তারিখ ও সময় প্রকাশে সম্মতি দিচ্ছি। *",
+  "To sign, consent to publishing your name and signing time.": "স্বাক্ষর করতে আপনার নাম ও স্বাক্ষরের সময় প্রকাশের সম্মতি দিন।",
+  "Signing requires your consent to publish your name and signing time. You can hide them later in Account → Configuration. Earlier signatures appear anonymously unless the signer chose to be listed by name.": "স্বাক্ষর করতে আপনার নাম ও স্বাক্ষরের সময় প্রকাশে সম্মতি দিতে হবে। পরে অ্যাকাউন্ট → সেটিংস থেকে এগুলো লুকাতে পারেন। যাঁরা আগে স্বাক্ষর করেছেন, তাঁরা নাম প্রকাশের অনুমতি না দিলে তাঁদের স্বাক্ষর বেনামে দেখানো হয়।"
 }

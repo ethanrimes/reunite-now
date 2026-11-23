@@ -1171,5 +1171,14 @@
   "Name": "姓名",
   "Signed at": "連署時間",
   "Newer signatures": "較新的連署",
-  "Older signatures": "較早的連署"
+  "Older signatures": "較早的連署",
+  "Every petition signature is included. Signers who share their name and signing time appear first, newest first. All other signatures appear anonymously.": "這裡列出所有連署。選擇公開姓名和連署時間的人會優先顯示，並由新到舊排列。其餘連署以匿名方式顯示。",
+  "Total signatures: {count}": "連署總數：{count}",
+  "Anonymous signer": "匿名連署人",
+  "Private": "不公開",
+  "Previous page": "上一頁",
+  "Next page": "下一頁",
+  "I consent to having my name and signing time published in the petition’s public signatory list. *": "我同意在這份請願書的公開連署名單上公布我的姓名及連署日期和時間。 *",
+  "To sign, consent to publishing your name and signing time.": "連署前，請同意公開您的姓名和連署時間。",
+  "Signing requires your consent to publish your name and signing time. You can hide them later in Account → Configuration. Earlier signatures appear anonymously unless the signer chose to be listed by name.": "連署時，您必須同意公開姓名和連署時間。之後可在「帳戶 → 設定」中隱藏這些資料。先前的連署會匿名顯示，除非連署人曾選擇公開姓名。"
 }

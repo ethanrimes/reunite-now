@@ -5863,5 +5863,50 @@
     "es": "Firmas anteriores",
     "pt": "Assinaturas anteriores",
     "tl": "Mas naunang mga lagda"
+  },
+  "Every petition signature is included. Signers who share their name and signing time appear first, newest first. All other signatures appear anonymously.": {
+    "es": "Aquí aparecen todas las firmas de la petición. Primero se muestran, de más reciente a más antigua, las de quienes comparten su nombre y la hora en que firmaron. Las demás aparecen de forma anónima.",
+    "pt": "Todas as assinaturas da petição aparecem aqui. As de quem compartilha o nome e o horário da assinatura aparecem primeiro, da mais recente à mais antiga. As demais são anônimas.",
+    "tl": "Kasama rito ang lahat ng lumagda sa petisyon. Unang makikita ang mga nagbahagi ng kanilang pangalan at oras ng paglagda, mula sa pinakabago. Walang pangalan ang iba pang lagda."
+  },
+  "Total signatures: {count}": {
+    "es": "Total de firmas: {count}",
+    "pt": "Total de assinaturas: {count}",
+    "tl": "Kabuuang bilang ng mga lagda: {count}"
+  },
+  "Anonymous signer": {
+    "es": "Firmante anónimo",
+    "pt": "Signatário anônimo",
+    "tl": "Hindi pinangalanang lumagda"
+  },
+  "Private": {
+    "es": "Privado",
+    "pt": "Privado",
+    "tl": "Pribado"
+  },
+  "Previous page": {
+    "es": "Página anterior",
+    "pt": "Página anterior",
+    "tl": "Nakaraang pahina"
+  },
+  "Next page": {
+    "es": "Página siguiente",
+    "pt": "Próxima página",
+    "tl": "Susunod na pahina"
+  },
+  "I consent to having my name and signing time published in the petition’s public signatory list. *": {
+    "es": "Doy mi consentimiento para que mi nombre y la fecha y hora de mi firma se publiquen en la lista pública de firmantes de la petición. *",
+    "pt": "Autorizo a publicação do meu nome e da data e hora da minha assinatura na lista pública de signatários da petição. *",
+    "tl": "Pumapayag akong ilathala ang aking pangalan at ang petsa at oras ng aking paglagda sa pampublikong listahan ng mga lumagda sa petisyon. *"
+  },
+  "To sign, consent to publishing your name and signing time.": {
+    "es": "Para firmar, debes aceptar que se publiquen tu nombre y la fecha y hora de tu firma.",
+    "pt": "Para assinar, autorize a publicação do seu nome e da data e hora da assinatura.",
+    "tl": "Upang lumagda, kailangan mong pumayag na ilathala ang iyong pangalan at oras ng paglagda."
+  },
+  "Signing requires your consent to publish your name and signing time. You can hide them later in Account → Configuration. Earlier signatures appear anonymously unless the signer chose to be listed by name.": {
+    "es": "Para firmar, debes aceptar que se publiquen tu nombre y la fecha y hora de tu firma. Después puedes ocultarlos en Cuenta → Configuración. Las firmas anteriores aparecen de forma anónima, salvo que la persona haya elegido publicar su nombre.",
+    "pt": "Para assinar, você precisa autorizar a publicação do seu nome e da data e hora da assinatura. Depois, pode ocultá-los em Conta → Configuração. As assinaturas anteriores são anônimas, salvo quando a pessoa optou por publicar seu nome.",
+    "tl": "Upang lumagda, kailangang pumayag kang ilathala ang iyong pangalan at oras ng paglagda. Maaari mo itong itago kalaunan sa Account → Mga setting. Hindi ipinapakita ang pangalan ng mga naunang lumagda maliban kung pinili nilang ilathala ito."
   }
 }

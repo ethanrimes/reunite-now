@@ -79,6 +79,7 @@ test("two regional databases preserve sessions, visibility, private records and 
     personallyInvolved: false,
     signed: true,
     publicConsent: true,
+    listSignature: true,
     adultConsent: true,
     reminders: false,
     cases: [],

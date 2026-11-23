@@ -1,26 +1,34 @@
 import { useState } from "react";
-import { signatoryPage } from "../../../../shared/signatories";
+import {
+  anonymousRowsOnPage,
+  signatoryPage,
+  type SignatoryRoster,
+} from "../../../../shared/signatories";
 import { useData, usePublicView } from "../../app/api";
 import { previewMode } from "../../app/preview";
 import { PageIntro } from "../../components/ui";
-import { getLocale, t } from "../../i18n/i18n";
+import { getLocale, number, t } from "../../i18n/i18n";
 import { SignatureNavigation } from "./signature-navigation";
 
 export function Signatories() {
   const { profiles, loading } = useData();
   const [pages, setPages] = useState<string[]>([]);
+  const [anonymousPage, setAnonymousPage] = useState(0);
   const before = pages.at(-1);
-  const result = usePublicView<ReturnType<typeof signatoryPage>>(
+  const result = usePublicView<SignatoryRoster>(
     "/signatories" + (before ? "?" + new URLSearchParams({ before }) : ""),
   );
-  const data =
-    previewMode && !loading
-      ? signatoryPage(
-          profiles.filter((p) => p.listSignature),
-          before,
-        )
-      : result?.data;
+  let data = result?.data;
+  if (previewMode && !loading) {
+    const listed = profiles.filter((p) => p.listSignature);
+    data = {
+      ...signatoryPage(listed, before),
+      total: profiles.length,
+      anonymousCount: profiles.length - listed.length,
+    };
+  }
   const next = data?.next;
+  const anonymous = data && anonymousRowsOnPage(data, anonymousPage);
   const format = new Intl.DateTimeFormat(getLocale(), {
     year: "numeric",
     month: "short",
@@ -37,7 +45,7 @@ export function Signatories() {
         eyebrow={t("SIGNATURE COVERAGE")}
         title={t("Signatories")}
         text={t(
-          "People who chose to share their name and signing time, newest first.",
+          "Every petition signature is included. Signers who share their name and signing time appear first, newest first. All other signatures appear anonymously.",
         )}
       />
       <SignatureNavigation />
@@ -45,10 +53,13 @@ export function Signatories() {
         <p role="alert">{t("Something went wrong. Please try again.")}</p>
       ) : !data ? (
         <p role="status">{t("Loading…")}</p>
-      ) : data.signatories.length === 0 ? (
+      ) : data.total === 0 ? (
         <p>{t("No signatures to display.")}</p>
       ) : (
         <table className="signatories-table">
+          <caption>
+            {t("Total signatures: {count}", { count: number(data.total) })}
+          </caption>
           <thead>
             <tr>
               <th scope="col">{t("Name")}</th>
@@ -56,34 +67,49 @@ export function Signatories() {
             </tr>
           </thead>
           <tbody>
-            {data.signatories.map(({ name, signedAt }, i) => (
-              <tr key={signedAt + "-" + i}>
-                <td dir="auto">{name}</td>
-                <td>
-                  <time dateTime={signedAt}>
-                    {format.format(new Date(signedAt))}
-                  </time>
-                </td>
+            {anonymousPage === 0 &&
+              data.signatories.map(({ name, signedAt }, i) => (
+                <tr key={signedAt + "-" + i}>
+                  <td dir="auto">{name}</td>
+                  <td>
+                    <time dateTime={signedAt}>
+                      {format.format(new Date(signedAt))}
+                    </time>
+                  </td>
+                </tr>
+              ))}
+            {Array.from({ length: anonymous?.count ?? 0 }, (_, i) => (
+              <tr key={"anon-" + i}>
+                <td>{t("Anonymous signer")}</td>
+                <td>{t("Private")}</td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
       <div className="signatory-pagination">
-        {before && (
+        {(before || anonymousPage > 0) && (
           <button
             className="button outline"
-            onClick={() => setPages(pages.slice(0, -1))}
+            onClick={() =>
+              anonymousPage > 0
+                ? setAnonymousPage(anonymousPage - 1)
+                : setPages(pages.slice(0, -1))
+            }
           >
-            {t("Newer signatures")}
+            {t("Previous page")}
           </button>
         )}
-        {next && (
+        {(next || anonymous?.hasMore) && (
           <button
             className="button outline"
-            onClick={() => setPages([...pages, next])}
+            onClick={() =>
+              next
+                ? setPages([...pages, next])
+                : setAnonymousPage(anonymousPage + 1)
+            }
           >
-            {t("Older signatures")}
+            {t("Next page")}
           </button>
         )}
       </div>

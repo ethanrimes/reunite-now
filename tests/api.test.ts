@@ -65,6 +65,12 @@ test("email authentication, data privacy, ownership, update and deletion", async
     (await request("/api/feedback", "POST", { message: "  " })).status,
     400,
   );
+  const roster = async () => {
+    const response = await request("/api/signatories", "GET", undefined, false);
+    assert.equal(response.status, 200);
+    return response.json();
+  };
+  const baseline = await roster();
   const profile = {
     name: "Integration test only",
     legalStatus: "US citizen",
@@ -75,6 +81,7 @@ test("email authentication, data privacy, ownership, update and deletion", async
     personallyInvolved: true,
     signed: true,
     publicConsent: true,
+    listSignature: true,
     adultConsent: true,
     reminders: false,
     reminderEmails: [
@@ -146,7 +153,25 @@ test("email authentication, data privacy, ownership, update and deletion", async
       .status,
     400,
   );
+  for (const listSignature of [false, undefined]) {
+    const rejected = await request("/api/me/profile", "PUT", {
+      ...profile,
+      listSignature,
+    });
+    assert.equal(rejected.status, 400);
+    assert.match((await rejected.json()).error, /consent to publishing/);
+    assert.deepEqual(await roster(), baseline);
+  }
   assert.equal((await request("/api/me/profile", "PUT", profile)).status, 200);
+  assert.equal(
+    (
+      await request("/api/me/profile", "PUT", {
+        ...profile,
+        listSignature: undefined,
+      })
+    ).status,
+    200,
+  );
   assert.equal(
     (
       await request("/api/me/profile", "PUT", {
@@ -170,24 +195,15 @@ test("email authentication, data privacy, ownership, update and deletion", async
   );
   const me = await (await request("/api/me")).json();
   assert.equal(me.user.email, email);
-  const listed = async () => {
-    const response = await request("/api/signatories", "GET", undefined, false);
-    assert.equal(response.status, 200);
-    const { signatories } = await response.json();
+  const listed = async (anonymous: boolean) => {
+    const { total, anonymousCount, signatories } = await roster();
+    assert.equal(total, baseline.total + 1);
+    assert.equal(anonymousCount, baseline.anonymousCount + Number(anonymous));
     return signatories.filter(
       (row: { name: string }) => row.name === profile.name,
     );
   };
-  assert.deepEqual(await listed(), []);
-  assert.equal(
-    (
-      await request("/api/me/profile/settings", "PATCH", {
-        listSignature: true,
-      })
-    ).status,
-    200,
-  );
-  const [signature] = await listed();
+  const [signature] = await listed(false);
   assert.deepEqual(Object.keys(signature).sort(), ["name", "signedAt"]);
   assert.equal(new Date(signature.signedAt).toISOString(), me.profile.signedAt);
   assert.equal(
@@ -198,7 +214,7 @@ test("email authentication, data privacy, ownership, update and deletion", async
     ).status,
     200,
   );
-  assert.deepEqual(await listed(), []);
+  assert.deepEqual(await listed(true), []);
   assert.equal("city" in me.profile, false);
   assert.deepEqual(me.profile.reminderEmails, [
     "backup@example.test",
@@ -376,6 +392,7 @@ test("email authentication, data privacy, ownership, update and deletion", async
     (await request("/api/me", "DELETE", { confirmation: "DELETE" })).status,
     200,
   );
+  assert.deepEqual(await roster(), baseline);
   assert.equal((await (await request("/api/me")).json()).user, null);
   assert.equal((await request(storyPath)).status, 404);
   assert.equal((await request(published.photos[0])).status, 404);

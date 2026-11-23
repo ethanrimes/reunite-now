@@ -288,6 +288,7 @@ const emptyProfile = {
   personallyInvolved: true,
   signed: false,
   publicConsent: false,
+  listSignature: false,
   adultConsent: false,
   reminders: false,
   reminderEmails: [],
@@ -1586,13 +1587,19 @@ export function Account() {
               <label className="checkbox">
                 <input
                   type="checkbox"
+                  name="listSignature"
+                  required={signing}
                   checked={form.listSignature === true}
                   onChange={(e) => set("listSignature", e.target.checked)}
                 />
                 <span>
-                  {t(
-                    "Show my name and the date and time I signed in the public signatory list.",
-                  )}
+                  {signing
+                    ? t(
+                        "I consent to having my name and signing time published in the petition’s public signatory list. *",
+                      )
+                    : t(
+                        "Show my name and the date and time I signed in the public signatory list.",
+                      )}
                 </span>
               </label>
             </section>

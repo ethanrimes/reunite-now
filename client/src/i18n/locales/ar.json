@@ -1171,5 +1171,14 @@
   "Name": "الاسم",
   "Signed at": "تاريخ التوقيع ووقته",
   "Newer signatures": "توقيعات أحدث",
-  "Older signatures": "توقيعات أقدم"
+  "Older signatures": "توقيعات أقدم",
+  "Every petition signature is included. Signers who share their name and signing time appear first, newest first. All other signatures appear anonymously.": "تشمل القائمة جميع توقيعات العريضة. تظهر أولًا توقيعات من اختاروا مشاركة أسمائهم ووقت توقيعهم، بدءًا من الأحدث. وتظهر بقية التوقيعات بلا أسماء.",
+  "Total signatures: {count}": "إجمالي التوقيعات: {count}",
+  "Anonymous signer": "موقّع مجهول الاسم",
+  "Private": "خاص",
+  "Previous page": "الصفحة السابقة",
+  "Next page": "الصفحة التالية",
+  "I consent to having my name and signing time published in the petition’s public signatory list. *": "أوافق على نشر اسمي وتاريخ توقيعي ووقته في قائمة الموقّعين العلنية على العريضة. *",
+  "To sign, consent to publishing your name and signing time.": "للتوقيع، يجب أن توافق على نشر اسمك ووقت توقيعك.",
+  "Signing requires your consent to publish your name and signing time. You can hide them later in Account → Configuration. Earlier signatures appear anonymously unless the signer chose to be listed by name.": "يتطلب التوقيع موافقتك على نشر اسمك ووقت توقيعك. يمكنك إخفاؤهما لاحقًا في الحساب ← الإعدادات. تظهر التوقيعات السابقة بلا أسماء ما لم يختر أصحابها نشر أسمائهم."
 }

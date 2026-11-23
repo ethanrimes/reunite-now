@@ -465,10 +465,24 @@ app.put(
     await validateDistrict(data);
     const now = new Date().toISOString();
     data.cases = data.cases.map((c) => ({ ...c, updatedAt: now }));
-    await db.query(
-      `INSERT INTO profiles(user_id,data,consent_version) VALUES($1,$2,$3) ON CONFLICT(user_id) DO UPDATE SET data=EXCLUDED.data,updated_at=now()`,
-      [res.locals.user.id, JSON.stringify(data), consentVersion],
-    );
+    const profileValues = [res.locals.user.id, JSON.stringify(data)];
+    if (data.listSignature === true) {
+      await db.query(
+        `INSERT INTO profiles(user_id,data,consent_version) VALUES($1,$2,$3) ON CONFLICT(user_id) DO UPDATE SET data=EXCLUDED.data,updated_at=now()`,
+        [...profileValues, consentVersion],
+      );
+    } else {
+      // Older clients can update a signature without resending its publication choice.
+      const updated = await db.query(
+        `UPDATE profiles SET data=jsonb_strip_nulls(jsonb_build_object('listSignature',data->'listSignature')) || $2::jsonb,
+         updated_at=now() WHERE user_id=$1`,
+        profileValues,
+      );
+      if (!updated.rowCount)
+        return void res.status(400).json({
+          error: "To sign, consent to publishing your name and signing time.",
+        });
+    }
     res.json({ ok: true, updatedAt: now });
   }),
 );
@@ -670,20 +684,39 @@ app.get("/api/signatories", async (req, res) => {
     .parse(req.query);
   const results = await routed(false, () =>
     acrossRegions(() =>
-      publicDb.query<Signatory>(
-        `SELECT name, to_char(signed_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS "signedAt"
-       FROM public.rn_signatories
-       WHERE ($1::timestamptz IS NULL OR signed_at < $1)
-       ORDER BY signed_at DESC FETCH FIRST $2 ROWS WITH TIES`,
+      publicDb.query<{
+        signatories: Signatory[];
+        total: number;
+        listed: number;
+      }>(
+        `SELECT (SELECT coalesce(sum(count),0)::int FROM public.rn_signature_groups) AS total,
+                (SELECT count(*)::int FROM public.rn_signatories) AS listed,
+                ARRAY(SELECT row_to_json(entry) FROM (
+                  SELECT name, to_char(signed_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS "signedAt"
+                  FROM public.rn_signatories
+                  WHERE ($1::timestamptz IS NULL OR signed_at < $1)
+                  ORDER BY signed_at DESC FETCH FIRST $2 ROWS WITH TIES
+                ) entry) AS signatories`,
         [before ?? null, signatoryPageSize + 1],
       ),
     ),
   );
-  const rows = results.flatMap((result) => result.rows);
-  const samples = demo?.profiles.filter((p) => p.listSignature) ?? [];
-  res
-    .set("Cache-Control", "no-store")
-    .json(signatoryPage([...rows, ...samples], before));
+  const regions = results.flatMap((result) => result.rows);
+  const samples = demo?.profiles ?? [];
+  const listedSamples = samples.filter((p) => p.listSignature);
+  const total = regions.reduce((count, r) => count + r.total, samples.length);
+  const listed = regions.reduce(
+    (count, r) => count + r.listed,
+    listedSamples.length,
+  );
+  res.set("Cache-Control", "no-store").json({
+    ...signatoryPage(
+      [...regions.flatMap((r) => r.signatories), ...listedSamples],
+      before,
+    ),
+    total,
+    anonymousCount: total - listed,
+  });
 });
 app.get("/api/stats/coverage", async (req, res) => {
   const params = new URL(req.originalUrl, appUrl).searchParams;

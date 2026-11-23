@@ -9,7 +9,11 @@ import {
   isTerritory,
   usMapProjector,
 } from "../shared/coverage";
-import { signatoryPage, signatoryPageSize } from "../shared/signatories";
+import {
+  anonymousRowsOnPage,
+  signatoryPage,
+  signatoryPageSize,
+} from "../shared/signatories";
 import { isPreviewPath } from "../client/src/app/preview";
 import type { PublicProfile } from "../shared/schema";
 
@@ -165,4 +169,33 @@ test("the public list keeps simultaneous signatures across a page boundary", () 
     signatories: [older],
     next: null,
   });
+});
+
+test("anonymous rows fill the last named page and include each remaining signature", () => {
+  const four = Array.from({ length: 4 }, () => ({
+    name: "Test",
+    signedAt: "2026-01-01T00:00:00.000000Z",
+  }));
+  const roster = { ...signatoryPage(four), total: 29, anonymousCount: 25 };
+  assert.deepEqual(anonymousRowsOnPage(roster, 0), {
+    count: 25,
+    hasMore: false,
+  });
+  const larger = { ...roster, total: 110, anonymousCount: 106 };
+  assert.deepEqual(
+    [0, 1, 2].map((page) => anonymousRowsOnPage(larger, page)),
+    [
+      { count: 46, hasMore: true },
+      { count: 50, hasMore: true },
+      { count: 10, hasMore: false },
+    ],
+  );
+  assert.equal(
+    anonymousRowsOnPage({ ...larger, next: four[0].signedAt }, 0).count,
+    0,
+  );
+  assert.equal(
+    anonymousRowsOnPage({ ...roster, signatories: [], total: 25 }, 0).count,
+    25,
+  );
 });
