@@ -1,7 +1,7 @@
-import { t, getLocale } from "./i18n";
+import { t, getLocale } from "../i18n/i18n";
 import { useEffect, useRef, type ReactNode } from "react";
 import { X, ArrowUpRight } from "lucide-react";
-import type { VisaEvent } from "../../shared/schema";
+import type { VisaEvent } from "../../../shared/schema";
 export function External({
   href,
   children,

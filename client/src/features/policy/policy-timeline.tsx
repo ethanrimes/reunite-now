@@ -1,11 +1,11 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
-import type { PolicyEvent } from "../../shared/campaign";
-import { t } from "./i18n";
-import { useLanguage } from "./language";
-import { date, External } from "./ui";
-import { ScrollRail } from "./scroll-rail";
+import type { PolicyEvent } from "../../../../shared/campaign";
+import { t } from "../../i18n/i18n";
+import { useLanguage } from "../../i18n/language";
+import { date, External } from "../../components/ui";
+import { ScrollRail } from "../../components/scroll-rail";
 
 export function PolicyTimeline({ events }: { events: PolicyEvent[] }) {
   const language = useLanguage();

@@ -1,13 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import ts from "typescript";
 import { policyEvents, participation } from "../shared/campaign";
 import { policies } from "../shared/policies";
-import messages from "../client/src/locales/messages.json";
-import arabic from "../client/src/locales/ar.json";
-import bengali from "../client/src/locales/bn.json";
-import traditionalChinese from "../client/src/locales/zh-Hant.json";
+import messages from "../client/src/i18n/locales/messages.json";
+import arabic from "../client/src/i18n/locales/ar.json";
+import bengali from "../client/src/i18n/locales/bn.json";
+import traditionalChinese from "../client/src/i18n/locales/zh-Hant.json";
 import {
   translate,
   setLanguage,
@@ -17,7 +17,7 @@ import {
   validLanguage,
   languageDirection,
   languageNames,
-} from "../client/src/i18n";
+} from "../client/src/i18n/i18n";
 
 test("All language catalogs cover interface strings and preserve placeholders", () => {
   const catalog = messages as Record<
@@ -56,22 +56,12 @@ test("All language catalogs cover interface strings and preserve placeholders", 
       );
     }
   }
-  for (const name of [
-    "main",
-    "feedback",
-    "campaign",
-    "policy-timeline",
-    "scroll-rail",
-    "sources",
-    "pages",
-    "account",
-    "legislation",
-    "maps",
-    "ui",
-    "language",
-    "i18n",
-  ]) {
-    const filename = `client/src/${name}.${name === "i18n" ? "ts" : "tsx"}`;
+  for (const path of readdirSync("client/src", {
+    recursive: true,
+    encoding: "utf8",
+  })) {
+    if (!/\.tsx?$/.test(path)) continue;
+    const filename = `client/src/${path}`;
     const source = ts.createSourceFile(
       filename,
       readFileSync(filename, "utf8"),

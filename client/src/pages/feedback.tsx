@@ -1,10 +1,10 @@
 import { useState, type FormEvent } from "react";
-import { feedbackMessageLimit, maintainerEmail } from "../../shared/feedback";
+import { feedbackMessageLimit, maintainerEmail } from "../../../shared/feedback";
 import { Link } from "react-router-dom";
-import { api, useData } from "./api";
-import { t } from "./i18n";
-import { previewMode } from "./preview";
-import { Field, Notice } from "./ui";
+import { api, useData } from "../app/api";
+import { t } from "../i18n/i18n";
+import { previewMode } from "../app/preview";
+import { Field, Notice } from "../components/ui";
 
 export function Feedback() {
   const { me, loading } = useData();

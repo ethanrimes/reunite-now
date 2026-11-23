@@ -1,4 +1,4 @@
-import { t } from "./i18n";
+import { t } from "../../i18n/i18n";
 import { useState, useEffect, type FormEvent } from "react";
 import {
   Link,
@@ -19,8 +19,8 @@ import {
   Heart,
   ChevronDown,
 } from "lucide-react";
-import { api, useData } from "./api";
-import { PageIntro, Field, Notice, Modal } from "./ui";
+import { api, useData } from "../../app/api";
+import { PageIntro, Field, Notice, Modal } from "../../components/ui";
 import {
   states,
   legalStatuses,
@@ -33,7 +33,7 @@ import {
   type VisaCase,
   type VisaEvent,
   type Story,
-} from "../../shared/schema";
+} from "../../../../shared/schema";
 import {
   rolesFor,
   relationshipsFor,
@@ -45,10 +45,10 @@ import {
   pauseSteps,
   addPauseSteps,
   type CaseRole,
-} from "../../shared/visa-workflow";
-import postsDirectory from "../../shared/posts.json";
-import countries from "../../shared/countries.json";
-import { caseStatus } from "../../shared/metrics";
+} from "../../../../shared/visa-workflow";
+import postsDirectory from "../../../../shared/posts.json";
+import countries from "../../../../shared/countries.json";
+import { caseStatus } from "../../../../shared/metrics";
 export function Login() {
   const { me, config, loading } = useData();
   const [email, setEmail] = useState("");

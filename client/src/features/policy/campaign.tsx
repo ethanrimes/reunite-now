@@ -7,12 +7,12 @@ import {
   CalendarDays,
   Mail,
 } from "lucide-react";
-import { t } from "./i18n";
-import { ScrollRail } from "./scroll-rail";
-import { date, External } from "./ui";
+import { t } from "../../i18n/i18n";
+import { ScrollRail } from "../../components/scroll-rail";
+import { date, External } from "../../components/ui";
 import { PolicyTimeline } from "./policy-timeline";
-import { policies } from "../../shared/policies";
-import { participation, policyEvents, reviewedAt } from "../../shared/campaign";
+import { policies } from "../../../../shared/policies";
+import { participation, policyEvents, reviewedAt } from "../../../../shared/campaign";
 
 export function GovernmentTimeline() {
   const [filter, setFilter] = useState("All");

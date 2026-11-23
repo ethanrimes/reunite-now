@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
-import { t } from "./i18n";
-import { date, External } from "./ui";
+import { t } from "../../i18n/i18n";
+import { date, External } from "../../components/ui";
 import {
   legislation,
   legislativeTopics,
   topicForBill,
   billLabel,
   memberVote,
-} from "../../shared/legislation";
+} from "../../../../shared/legislation";
 export function BillRecord({ topicId }: { topicId: string }) {
   const topic = legislativeTopics.find((x) => x.id === topicId);
   if (!topic) return null;

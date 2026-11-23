@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { t, languageDirection } from "./i18n";
-import { useLanguage } from "./language";
+import { t, languageDirection } from "../i18n/i18n";
+import { useLanguage } from "../i18n/language";
 
 export function ScrollRail({
   title,

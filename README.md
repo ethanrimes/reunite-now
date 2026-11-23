@@ -34,40 +34,11 @@ npm run test:integration
 
 Tests cover timeline calculations, date validation, SQL transactions, deletion cascades, authentication, ownership, consent, public-data filtering, exports, no-change confirmation, and per-recipient reminder deduplication/retries/concurrency. Reminder tests use a fake sender and never send real email. The integration test creates and deletes its own synthetic local account.
 
-## Hosting
+## Project guides
 
-The backend stays on Azure: App Service (Node/Express and static React files), PostgreSQL Flexible Server, Azure Communication Services Email, and an Azure Logic Apps daily schedule. No Render service or third-party email provider is required.
-
-Infrastructure definitions are under `infra/`; provisioning, email configuration, and packaging scripts are under `scripts/`. See [operations](docs/OPERATIONS.md) before redeploying infrastructure or restoring a database.
-
-To finish Google sign-in, connect your domain, configure a branded Azure sender, and test email and monthly reminders, follow the [integration setup guide](docs/INTEGRATIONS.md). It includes the deployment's exact callback URL, settings, DNS steps, and troubleshooting.
-
-```sh
-npm run build
-python3 scripts/package.py
-az webapp deploy --resource-group reunite-now-rg --name reunite-now-9a04 --src-path work/reunite-now.zip --type zip --ignore-stack true
-```
-
-Production requires DATABASE_URL_EU (Sweden Central) and DATABASE_URL_US (North Central US). Both App Services use the same pair. Account settings can move a signer between regions. Public APIs combine consented submissions from both. Deploy the same ZIP to reunite-now-eu-9a04 in reunite-now-eu-rg as well. The app creates its SQL tables on first boot. Build artifacts, deployment packages, local databases, and secrets are excluded from Git.
-
-## Code map
-
-- `client/src/`: responsive light UI, account and story editing, Leaflet maps, tables.
-- `shared/schema.ts`: validated profiles, cases, milestones, and stories.
-- `shared/metrics.ts`: case state, date intervals, filters, and medians.
-- `shared/policies.ts`: manually reviewed policy and litigation entries with source links.
-- `server/`: authentication, PostgreSQL persistence, public projections, exports/deletion, Azure email, reminders.
-- `scripts/refresh-data.ts`: Census boundaries, current congressional members, and Natural Earth countries; source timestamps are stored alongside the data.
-
-## Current limits
-
-The canonical site is `https://visatransparencypetition.org`, with managed HTTPS and redirects from the old domain, `www`, and the Azure hostname. Google client credentials and the branded sender `ethan@visatransparencypetition.org` are configured. Google sign-in, delivery from the new sender, and an unattended monthly reminder still need end-to-end verification. See the integration guide for current settings, DNS records, and recovery steps.
-
-Policy updates are editorial, not an automatic docket feed. Member cards show the tracked bill's sponsorship and voting status; they are not a complete historical voting database. Syed v. Trump is marked as needing a current status check. The world map is generalized and omits some small countries; country selections and table statistics still accept them.
-
-Public statistics are self-reported, with metric-specific sample sizes and no invented signatories. Public profiles intentionally expose the fields described in the consent form; emails and authentication data remain private. The initial release loads public profiles to calculate aggregates in the browser. Larger deployments should move aggregation to indexed server queries and photo storage to Azure Blob Storage.
-
-Stories publish when their author opts in. There is no staffed moderation queue or automated content screening. Before outreach, establish a monitored contact and moderation process. See [data and privacy](docs/DATA.md).
+- [Architecture](docs/ARCHITECTURE.md) describes the frontend structure, regional request routing, authentication, deployment, email and recovery.
+- [User data](docs/DATA.md) follows a submission from collection through publication, regional transfer, export and deletion.
+- [Public data and sources](docs/PUBLIC-DATA.md) explains how to discover and verify legislation, votes, news and litigation, review case intake requests, and refresh maps and directories.
 
 ## Reminder recipients
 
@@ -77,4 +48,4 @@ In Account, enable monthly reminders and add up to five extra email addresses al
 
 The header selector supports English, Spanish, Brazilian Portuguese, Tagalog, Arabic, Bengali, and Traditional Chinese. English is the default; the choice is stored in this browser and survives navigation and reloads. Switching languages keeps unsaved form input and filters intact. The page language, title, dates, number formatting, controls, policy summaries, privacy text, and consent labels follow the selection. Arabic also switches the layout to right-to-left, including the timeline navigation; maps and email/date inputs retain their physical orientation. Bengali and Traditional Chinese use script-aware system fonts. No new integration or API key is needed for these languages.
 
-Translations are keyed by the English interface text. Spanish, Portuguese, and Tagalog are maintained in `client/src/locales/messages.json`; Arabic, Bengali, and Traditional Chinese each have a corresponding `ar.json`, `bn.json`, or `zh-Hant.json` catalog in the same directory. Add every new interface string to all catalogs. Use `t()` for display text and placeholders for variable values; keep API values, IDs, option values, and React keys unchanged. `tests/i18n.test.ts` checks catalog coverage, placeholders, and stable values. No translation service or additional integration is required. Personal stories, user-entered notes, names, source documents, and outgoing emails remain in their original language. The selector does not translate content submitted by participants.
+Translations are keyed by the English interface text. Spanish, Portuguese, and Tagalog are maintained in `client/src/i18n/locales/messages.json`; Arabic, Bengali, and Traditional Chinese each have a corresponding `ar.json`, `bn.json`, or `zh-Hant.json` catalog in the same directory. Add every new interface string to all catalogs. Use `t()` for display text and placeholders for variable values; keep API values, IDs, option values, and React keys unchanged. `tests/i18n.test.ts` checks catalog coverage, placeholders, and stable values. No translation service or additional integration is required. Personal stories, names, source documents, and outgoing emails remain in their original language. The selector does not translate content submitted by participants.

@@ -1,10 +1,10 @@
-import { t } from "./i18n";
-import { PageIntro, External, date } from "./ui";
-import { legislation } from "../../shared/legislation";
-import postsDirectory from "../../shared/posts.json";
-import { pauseSource } from "../../shared/visa-workflow";
-import { policies } from "../../shared/policies";
-import { policyEvents, reviewedAt } from "../../shared/campaign";
+import { t } from "../i18n/i18n";
+import { PageIntro, External, date } from "../components/ui";
+import { legislation } from "../../../shared/legislation";
+import postsDirectory from "../../../shared/posts.json";
+import { pauseSource } from "../../../shared/visa-workflow";
+import { policies } from "../../../shared/policies";
+import { policyEvents, reviewedAt } from "../../../shared/campaign";
 export const credits = [
   {
     title: "Maps and representation",

@@ -9,7 +9,7 @@ import {
   isTerritory,
   usMapProjector,
 } from "../shared/coverage";
-import { isPreviewPath } from "../client/src/preview";
+import { isPreviewPath } from "../client/src/app/preview";
 import type { PublicProfile } from "../shared/schema";
 
 test("signature filters intersect all dimensions and retain unspecified parties", () => {

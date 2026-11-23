@@ -1,8 +1,8 @@
-import { MemberVotes } from "./legislation";
-import { t, number } from "./i18n";
+import { MemberVotes } from "../policy/legislation";
+import { t, number } from "../../i18n/i18n";
 import { useState, useEffect, useRef, useMemo, type ReactNode } from "react";
 import L from "leaflet";
-import { useLanguage } from "./language";
+import { useLanguage } from "../../i18n/language";
 import "leaflet/dist/leaflet.css";
 import {
   Map as MapIcon,
@@ -23,14 +23,14 @@ import {
   territoryInsets,
   isTerritory,
   usMapProjector,
-} from "../../shared/coverage";
+} from "../../../../shared/coverage";
 import { Link } from "react-router-dom";
-import { previewMode } from "./preview";
-import { visaStatistics, type PlaceCount } from "../../shared/public-views";
-import { useData, usePublicView } from "./api";
-import { PageIntro, Modal, External, Empty, date } from "./ui";
-import { states, legalStatuses, visaCategories } from "../../shared/schema";
-import { metricLabels, type Metric } from "../../shared/metrics";
+import { previewMode } from "../../app/preview";
+import { visaStatistics, type PlaceCount } from "../../../../shared/public-views";
+import { useData, usePublicView } from "../../app/api";
+import { PageIntro, Modal, External, Empty, date } from "../../components/ui";
+import { states, legalStatuses, visaCategories } from "../../../../shared/schema";
+import { metricLabels, type Metric } from "../../../../shared/metrics";
 type Rep = {
   id: string;
   name: string;

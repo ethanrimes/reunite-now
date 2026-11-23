@@ -1,5 +1,5 @@
-import { t } from "./i18n";
-import { LanguageSelector, useLanguage } from "./language";
+import { t } from "./i18n/i18n";
+import { LanguageSelector, useLanguage } from "./i18n/language";
 import React, { useEffect, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import {
@@ -11,34 +11,38 @@ import {
   useLocation,
 } from "react-router-dom";
 import { ArrowUpRight, MoveUpRight } from "lucide-react";
-import { DataProvider, useData } from "./api";
-import { Feedback } from "./feedback";
-import { Home, Policies, PolicyDetail, Stories, DataUse, About } from "./pages";
+import { DataProvider, useData } from "./app/api";
+import { Feedback } from "./pages/feedback";
+import { Home } from "./pages/home";
+import { Policies, PolicyDetail } from "./features/policy/policies";
+import { Stories } from "./features/stories/stories";
+import { DataUse } from "./pages/data-use";
+import { About } from "./pages/about";
 const Coverage = lazy(() =>
-  import("./maps").then((m) => ({ default: m.Coverage })),
+  import("./features/maps/maps").then((m) => ({ default: m.Coverage })),
 );
 const VisaData = lazy(() =>
-  import("./maps").then((m) => ({ default: m.VisaData })),
+  import("./features/maps/maps").then((m) => ({ default: m.VisaData })),
 );
 const Account = lazy(() =>
-  import("./account").then((m) => ({ default: m.Account })),
+  import("./features/account/account").then((m) => ({ default: m.Account })),
 );
 const ThankYou = lazy(() =>
-  import("./account").then((m) => ({ default: m.ThankYou })),
+  import("./features/account/account").then((m) => ({ default: m.ThankYou })),
 );
 const Login = lazy(() =>
-  import("./account").then((m) => ({ default: m.Login })),
+  import("./features/account/account").then((m) => ({ default: m.Login })),
 );
 const Verify = lazy(() =>
-  import("./account").then((m) => ({ default: m.Verify })),
+  import("./features/account/account").then((m) => ({ default: m.Verify })),
 );
-import { BrandMark } from "./brand";
-import { Sources } from "./sources";
-import { previewMode } from "./preview";
-import "./styles.css";
-import "./campaign.css";
-import "./refinements.css";
-import "./languages.css";
+import { BrandMark } from "./components/brand";
+import { Sources } from "./pages/sources";
+import { previewMode } from "./app/preview";
+import "./styles/styles.css";
+import "./features/policy/campaign";
+import "./styles/refinements.css";
+import "./styles/languages.css";
 function PreviewGate() {
   return (
     <div className="page-shell preview-gate">

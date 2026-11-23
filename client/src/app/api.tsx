@@ -13,7 +13,7 @@ import type {
   PublicProfile,
   PublicStory,
   Story,
-} from "../../shared/schema";
+} from "../../../shared/schema";
 export async function api<T = any>(
   url: string,
   options: RequestInit = {},
