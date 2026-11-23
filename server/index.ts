@@ -23,7 +23,16 @@ import path from "node:path";
 import { readFile } from "node:fs/promises";
 import { Google, generateCodeVerifier, generateState } from "arctic";
 import { z } from "zod";
-import { db, transaction, migrate, dual, region, inRegion } from "./db";
+import {
+  db,
+  publicDb,
+  externalSchema,
+  transaction,
+  migrate,
+  dual,
+  region,
+  inRegion,
+} from "./db";
 import {
   acrossRegions,
   homeForEmail,
@@ -644,8 +653,6 @@ app.get("/api/demo", async (_req, res) => {
     throw error;
   }
 });
-const signedProfile =
-  "data->>'signed' = 'true' AND data->>'publicConsent' = 'true'";
 app.get("/api/stats/coverage", async (req, res) => {
   const params = new URL(req.originalUrl, appUrl).searchParams;
   const filters = {
@@ -656,15 +663,10 @@ app.get("/api/stats/coverage", async (req, res) => {
   const filtered = params.has("filtered");
   const result = await routed(false, () =>
     acrossRegions(() =>
-      db.query<PlaceCount>(
-        `SELECT data->>'country' AS country, coalesce(data->>'state','') AS state,
-     coalesce(data->>'district','') AS district, count(*)::int AS count FROM profiles
-     WHERE ${signedProfile} AND ($1::boolean OR (
-       data->>'legalStatus' = ANY($2::text[]) AND
-       (CASE WHEN data->>'personallyInvolved'='true' THEN 'Yes' ELSE 'No' END) = ANY($3::text[]) AND
-       (CASE WHEN data->>'legalStatus'='US citizen' AND data->>'affiliationConsent'='true'
-         THEN coalesce(data->>'politicalAffiliation','') ELSE '' END) = ANY($4::text[])
-     )) GROUP BY 1,2,3`,
+      publicDb.query<PlaceCount>(
+        `SELECT country,state,district,sum(count)::int AS count FROM public.rn_signature_groups
+         WHERE $1::boolean OR (status=ANY($2::text[]) AND connection=ANY($3::text[]) AND party=ANY($4::text[]))
+         GROUP BY 1,2,3`,
         [!filtered, filters.statuses, filters.involvement, filters.parties],
       ),
     ),
@@ -708,14 +710,7 @@ app.get("/api/stats/visas", async (req, res) => {
     .parse(req.query);
   const result = await routed(false, () =>
     acrossRegions(() =>
-      db.query(
-        `SELECT updated_at, (SELECT jsonb_agg(jsonb_build_object(
-            'post', c->'post', 'category', c->'category', 'nationality', c->'nationality', 'updatedAt', c->'updatedAt',
-            'events', (SELECT jsonb_agg(jsonb_build_object('date', e->'date', 'type', e->'type') ORDER BY position)
-                      FROM jsonb_array_elements(c->'events') WITH ORDINALITY AS events(e, position))
-          )) FROM jsonb_array_elements(data->'cases') AS c) AS cases
-         FROM profiles WHERE ${signedProfile} AND jsonb_array_length(data->'cases') > 0`,
-      ),
+      publicDb.query(`SELECT updated_at,cases FROM public.rn_visa_samples`),
     ),
   );
   const profiles = result.flatMap((r) =>
@@ -733,8 +728,6 @@ app.get("/api/stats/visas", async (req, res) => {
   );
 });
 
-const publishedStories = `FROM stories s JOIN profiles p ON p.user_id=s.user_id
-  WHERE s.data->>'publish'='true' AND p.data->>'signed'='true' AND p.data->>'publicConsent'='true'`;
 app.get("/api/story-cards", async (req, res) => {
   const { after, q } = z
     .object({
@@ -745,12 +738,10 @@ app.get("/api/story-cards", async (req, res) => {
   const pageSize = 9;
   const result = await routed(false, () =>
     acrossRegions(() =>
-      db.query(
-        `SELECT s.user_id AS id, s.data->>'title' AS title, p.data->>'country' AS country, p.data->>'name' AS name,
-       CASE WHEN s.data->>'photosCleaned'='true' THEN s.data->>'cover' END AS cover
-     ${publishedStories} AND s.user_id::text > $1 AND ($2='' OR strpos(lower(concat_ws(' ', s.data->>'title', s.data->>'body',
-       p.data->>'name', p.data->>'country', s.data->>'impacts')), lower($2)) > 0)
-     ORDER BY s.user_id LIMIT $3`,
+      publicDb.query(
+        `SELECT id,title,country,name,cover FROM public.rn_published_stories
+         WHERE id > $1 AND ($2='' OR strpos(lower(concat_ws(' ',title,body,name,country,impacts::text)),lower($2)) > 0)
+         ORDER BY id LIMIT $3`,
         [after, q, pageSize + 1],
       ),
     ),
@@ -792,8 +783,8 @@ app.get("/api/story/:id/photo/:index", async (req, res) => {
     return void res.sendStatus(404);
   const result = await routed(false, () =>
     acrossRegions(() =>
-      db.query(
-        `SELECT s.data->'photos'->>$2::int AS photo ${publishedStories} AND s.user_id=$1 AND s.data->>'photosCleaned'='true'`,
+      publicDb.query(
+        `SELECT photos->>$2::int AS photo FROM public.rn_published_stories WHERE id=$1`,
         [id, Number(index)],
       ),
     ),
@@ -812,13 +803,10 @@ app.get("/api/story/:id", async (req, res) => {
   const inlinePhotos = req.query.photos === "inline";
   const result = await routed(false, () =>
     acrossRegions(() =>
-      db.query(
-        `SELECT s.data->>'title' AS title, s.data->>'body' AS body, s.data->>'support' AS support,
-       s.data->'impacts' AS impacts,
-       CASE WHEN $2::boolean AND s.data->>'photosCleaned'='true' THEN s.data->'photos' END AS photos,
-       CASE WHEN s.data->>'photosCleaned'='true' THEN jsonb_array_length(s.data->'photos') ELSE 0 END AS photo_count,
-       s.updated_at,p.data->>'name' AS name,p.data->>'country' AS country
-     ${publishedStories} AND s.user_id=$1`,
+      publicDb.query(
+        `SELECT title,body,support,impacts,updated_at,name,country,
+            CASE WHEN $2::boolean THEN photos END AS photos, coalesce(jsonb_array_length(photos),0) AS photo_count
+         FROM public.rn_published_stories WHERE id=$1`,
         [id, inlinePhotos],
       ),
     ),
@@ -894,8 +882,34 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     error: err.status ? err.message : "Something went wrong. Please try again.",
   });
 });
-await migrate();
-await routed(false, () => acrossRegions(cleanHistoricalStoryPhotos));
+if (externalSchema) {
+  await acrossRegions(async () => {
+    // Check inherited grants too. A mistakenly configured admin login must
+    // fail startup even if its URL has the expected host and database.
+    const runtime =
+      await db.query(`SELECT has_schema_privilege('public','CREATE')
+      OR has_database_privilege(current_database(),'CREATE')
+      OR has_table_privilege('public.users','TRUNCATE') AS oversized`);
+    if (runtime.rows[0].oversized)
+      throw new Error("Runtime login has administrative privileges");
+    const reader =
+      await publicDb.query(`SELECT has_schema_privilege('public','CREATE')
+      OR EXISTS (SELECT FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
+        WHERE n.nspname='public' AND c.relkind='r' AND
+        (has_any_column_privilege(c.oid,'SELECT,INSERT,UPDATE') OR has_table_privilege(c.oid,'DELETE,TRUNCATE')))
+      AS oversized`);
+    if (reader.rows[0].oversized)
+      throw new Error("Reader login has private table or schema privileges");
+    await publicDb.query(
+      "SELECT country FROM public.rn_signature_groups LIMIT 0",
+    );
+    await publicDb.query("SELECT cases FROM public.rn_visa_samples LIMIT 0");
+    await publicDb.query("SELECT id FROM public.rn_published_stories LIMIT 0");
+  });
+} else {
+  await migrate();
+  await routed(false, () => acrossRegions(cleanHistoricalStoryPhotos));
+}
 async function purgeExpiredAuthentication() {
   await routed(false, () =>
     acrossRegions(async () => {

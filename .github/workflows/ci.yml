@@ -40,6 +40,19 @@ jobs:
           PORT: 3329
         run: |
           psql "$DATABASE_URL_EU" -c 'CREATE DATABASE petition_us'
+          psql "$DATABASE_URL_EU" -v ON_ERROR_STOP=1 <<'SQL'
+          CREATE ROLE rn_runtime;
+          CREATE ROLE rn_reader;
+          CREATE ROLE runtime_test LOGIN PASSWORD 'localtest' IN ROLE rn_runtime;
+          CREATE ROLE reader_test LOGIN PASSWORD 'localtest' IN ROLE rn_reader;
+          SQL
+          node dist/migrate.js --grant-app-roles
+          owner_eu=$DATABASE_URL_EU
+          owner_us=$DATABASE_URL_US
+          export DATABASE_READER_URL_EU=${owner_eu/postgres:localtest/reader_test:localtest}
+          export DATABASE_READER_URL_US=${owner_us/postgres:localtest/reader_test:localtest}
+          export DATABASE_URL_EU=${owner_eu/postgres:localtest/runtime_test:localtest}
+          export DATABASE_URL_US=${owner_us/postgres:localtest/runtime_test:localtest}
           node dist/server.js > /tmp/reunite-regional.log 2>&1 &
           API_PID=$!
           trap 'kill "$API_PID"' EXIT
@@ -47,4 +60,6 @@ jobs:
             if curl --fail --silent http://127.0.0.1:3329/api/health > /dev/null; then break; fi
             sleep 1
           done
-          npx tsx --test tests/regions.test.ts
+          npx tsx --test tests/db-roles.test.ts
+          TEST_API_URL=http://127.0.0.1:3329 npm run test:integration
+          DATABASE_URL_EU="$owner_eu" DATABASE_URL_US="$owner_us" npx tsx --test tests/regions.test.ts

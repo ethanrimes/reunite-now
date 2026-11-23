@@ -1,4 +1,5 @@
 import { AsyncLocalStorage } from "node:async_hooks";
+import { publicViews } from "./public-schema";
 import { Pool } from "pg";
 import type { PGlite } from "@electric-sql/pglite";
 import { mkdirSync } from "node:fs";
@@ -33,15 +34,63 @@ const options = {
   ssl: process.env.DB_SSL === "true" ? { rejectUnauthorized: true } : undefined,
 };
 const primary = eu || process.env.DATABASE_URL;
+const readerUrls = {
+  eu: process.env.DATABASE_READER_URL_EU,
+  us: process.env.DATABASE_READER_URL_US,
+};
+export const externalSchema = Boolean(readerUrls.eu || readerUrls.us);
+if (externalSchema) {
+  for (const r of ["eu", "us"] as const) {
+    const writer = r === "eu" ? eu : us;
+    if (!writer || !readerUrls[r])
+      throw new Error(
+        "Both regional reader and runtime connections are required",
+      );
+    const a = new URL(writer),
+      b = new URL(readerUrls[r]!);
+    if (
+      a.host !== b.host ||
+      a.pathname !== b.pathname ||
+      a.username === b.username
+    )
+      throw new Error(
+        "Each reader must use its regional database and a distinct login",
+      );
+  }
+}
 const pools = {
-  eu: primary ? new Pool({ ...options, connectionString: primary }) : null,
-  us: us ? new Pool({ ...options, connectionString: us }) : null,
+  eu: primary
+    ? new Pool({
+        ...options,
+        max: externalSchema ? 4 : 6,
+        connectionString: primary,
+      })
+    : null,
+  us: us
+    ? new Pool({
+        ...options,
+        max: externalSchema ? 4 : 6,
+        connectionString: us,
+      })
+    : null,
+};
+const readerPools = {
+  eu: readerUrls.eu
+    ? new Pool({ ...options, max: 2, connectionString: readerUrls.eu })
+    : null,
+  us: readerUrls.us
+    ? new Pool({ ...options, max: 2, connectionString: readerUrls.us })
+    : null,
 };
 // Dedicated connections avoid exhausting a region's query pool with callers waiting for a move.
 export const coordinator = dual
   ? new Pool({ ...options, max: 4, connectionString: eu })
   : null;
-for (const pool of [coordinator, ...Object.values(pools)])
+for (const pool of [
+  coordinator,
+  ...Object.values(pools),
+  ...Object.values(readerPools),
+])
   pool?.on("error", () => console.error("Idle database connection closed"));
 let lite: PGlite | undefined;
 if (!primary) {
@@ -60,6 +109,14 @@ export const db: Queryable = {
     }
     const r = await lite!.query(sql, params);
     return { rows: r.rows as any[], rowCount: r.affectedRows };
+  },
+};
+export const publicDb: Queryable = {
+  query: async (sql, params) => {
+    const reader = readerPools[region()];
+    if (!reader) return db.query(sql, params);
+    const result = await reader.query(sql, params);
+    return { rows: result.rows, rowCount: result.rowCount };
   },
 };
 export async function transaction<T>(
@@ -89,20 +146,26 @@ export async function transaction<T>(
 }
 export async function closeDb() {
   await Promise.all(
-    [coordinator, ...Object.values(pools)].map((p) => p?.end()),
+    [coordinator, ...Object.values(pools), ...Object.values(readerPools)].map(
+      (p) => p?.end(),
+    ),
   );
   if (lite) await lite.close();
 }
 export async function migrate() {
-  for (const r of regions) await inRegion(r, migrateRegionalSchema);
-  if (dual)
-    await inRegion("eu", () =>
-      db.query(
-        "CREATE TABLE IF NOT EXISTS account_moves (user_id text PRIMARY KEY, destination text NOT NULL CHECK (destination IN ('eu','us')))",
-      ),
+  for (const r of regions)
+    await inRegion(r, () =>
+      transaction(async (q) => {
+        if (pools[r]) await q.query("SELECT pg_advisory_xact_lock(721590113)");
+        await migrateRegionalSchema(q);
+        if (dual && r === "eu")
+          await q.query(
+            "CREATE TABLE IF NOT EXISTS account_moves (user_id text PRIMARY KEY, destination text NOT NULL CHECK (destination IN ('eu','us')))",
+          );
+      }),
     );
 }
-async function migrateRegionalSchema() {
+async function migrateRegionalSchema(q: Queryable) {
   for (const sql of [
     `CREATE TABLE IF NOT EXISTS users (id text PRIMARY KEY,email text NOT NULL UNIQUE,created_at timestamptz NOT NULL DEFAULT now())`,
     `CREATE TABLE IF NOT EXISTS sessions (token_hash text PRIMARY KEY,user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,expires_at timestamptz NOT NULL,created_at timestamptz NOT NULL DEFAULT now())`,
@@ -114,6 +177,7 @@ async function migrateRegionalSchema() {
     `CREATE TABLE IF NOT EXISTS reminder_recipient_deliveries (user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,period text NOT NULL,recipient_key text NOT NULL,status text NOT NULL DEFAULT 'pending',claimed_at timestamptz NOT NULL DEFAULT now(),sent_at timestamptz,PRIMARY KEY(user_id,period,recipient_key))`,
     `CREATE INDEX IF NOT EXISTS sessions_user_id ON sessions(user_id)`,
     `CREATE INDEX IF NOT EXISTS sessions_expiry ON sessions(expires_at)`,
+    ...publicViews,
   ])
-    await db.query(sql);
+    await q.query(sql);
 }
