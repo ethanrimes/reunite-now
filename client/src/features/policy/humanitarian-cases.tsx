@@ -1,4 +1,5 @@
 import { type CSSProperties, useState } from "react";
+import { t } from "../../i18n/i18n";
 import { Plus } from "lucide-react";
 import { SectionControls } from "./section-controls";
 
@@ -13,22 +14,22 @@ export function HumanitarianCases() {
   return (
     <section
       className="section humanitarian-cases"
-      lang="en"
-      dir="ltr"
       id="humanitarian-cases"
       aria-labelledby="humanitarian-title"
     >
-      <h2 id="humanitarian-title">{heading}</h2>
+      <h2 id="humanitarian-title">{t(heading)}</h2>
       <div id="humanitarian-list" className="humanitarian-grid">
         {cases.slice(0, visible).map((item, index) => (
           <div
             key={item.name}
             className="humanitarian-entry"
-            style={{
-              "--desktop-row": 2 * Math.floor(index / rowSize) + 1,
-              "--desktop-column": (index % rowSize) + 1,
-              "--mobile-row": 2 * index + 1,
-            } as CSSProperties}
+            style={
+              {
+                "--desktop-row": 2 * Math.floor(index / rowSize) + 1,
+                "--desktop-column": (index % rowSize) + 1,
+                "--mobile-row": 2 * index + 1,
+              } as CSSProperties
+            }
           >
             <button
               type="button"
@@ -39,15 +40,15 @@ export function HumanitarianCases() {
               onClick={() => setExpanded(expanded === index ? null : index)}
             >
               <span className="humanitarian-name">
-                {item.name}
+                {t(item.name)}
                 {item.note && (
                   <>
                     {" "}
-                    <em>{item.note}</em>
+                    <em>{t(item.note)}</em>
                   </>
                 )}
               </span>
-              <strong>{item.title}</strong>
+              <strong>{t(item.title)}</strong>
               <Plus aria-hidden="true" />
             </button>
             <div
@@ -57,8 +58,8 @@ export function HumanitarianCases() {
               aria-labelledby={"humanitarian-case-" + index}
               hidden={expanded !== index}
             >
-              <p>{item.detail}</p>
-              <a href={item.source.href}>{item.source.label}</a>
+              <p>{t(item.detail)}</p>
+              <a href={item.source.href}>{t(item.source.label)}</a>
             </div>
           </div>
         ))}
@@ -69,9 +70,9 @@ export function HumanitarianCases() {
           setVisible(rowSize);
           setExpanded(null);
         }}
-        noun="cases"
+        collapseLabel={t("Collapse cases")}
         contentId="humanitarian-list"
-        moreLabel={visible < cases.length ? "Show more cases" : undefined}
+        moreLabel={visible < cases.length ? t("Show more cases") : undefined}
         onMore={() => {
           setVisible(visible + rowSize);
           requestAnimationFrame(() =>

@@ -7,7 +7,7 @@ import {
   CalendarDays,
   Mail,
 } from "lucide-react";
-import { getLanguage, t } from "../../i18n/i18n";
+import { t } from "../../i18n/i18n";
 import { ScrollRail } from "../../components/scroll-rail";
 import { date, External } from "../../components/ui";
 import { PolicyTimeline } from "./policy-timeline";
@@ -85,11 +85,7 @@ export function Participate() {
   return (
     <section className="section participation" id="take-part">
       <div className="section-heading">
-        <h2>
-          {getLanguage() === "en"
-            ? "The action you can take"
-            : t("Make the case for change.")}
-        </h2>
+        <h2>{t("The action you can take")}</h2>
         <p>
           {t(
             "A signature shows support. A timeline documents the wait. A story makes the cost visible.",

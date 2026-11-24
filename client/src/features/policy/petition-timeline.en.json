@@ -1,9 +1,9 @@
 {
   "heading": "Recent federal policies have caused extraordinary visa delays",
   "intro": {
-    "before": "In February 2026, U.S. consulates issued ",
-    "emphasis": "48% fewer immigrant visas",
-    "after": " than in February 2025. Department of State hasn’t published any immigrant visa statistics since then."
+    "text": "In February 2026, U.S. consulates issued {statistic} than in February 2025. Department of State {publication}.",
+    "statistic": "48% fewer immigrant visas",
+    "publication": "hasn’t published any immigrant visa statistics since then"
   },
   "periods": [
     {

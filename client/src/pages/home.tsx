@@ -1,4 +1,4 @@
-import { getLanguage, t, number } from "../i18n/i18n";
+import { t, number } from "../i18n/i18n";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -143,9 +143,9 @@ export function Home() {
         <section className="demands section" id="our-demands">
           <div className="section-heading">
             <h2>
-              {getLanguage() === "en"
-                ? "This petition demands Congress require the State Department to:"
-                : t("Congress must require the State Department to:")}
+              {t(
+                "This petition demands Congress require the State Department to:",
+              )}
             </h2>
           </div>
           <div className="demands-grid">

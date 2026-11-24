@@ -4,6 +4,8 @@ import { readFileSync, readdirSync } from "node:fs";
 import ts from "typescript";
 import { policyEvents, participation } from "../shared/campaign";
 import { policies } from "../shared/policies";
+import background from "../client/src/features/policy/petition-timeline.en.json";
+import families from "../client/src/features/policy/humanitarian-cases.en.json";
 import messages from "../client/src/i18n/locales/messages.json";
 import arabic from "../client/src/i18n/locales/ar.json";
 import bengali from "../client/src/i18n/locales/bn.json";
@@ -153,6 +155,24 @@ test("translation interpolation, fallback, and locale selection", async () => {
 // These strings are passed dynamically to t(), so the JSX literal scan cannot see them.
 test("campaign events and participation copy are included in every catalog", () => {
   const keys = [
+    background.heading,
+    ...Object.values(background.intro),
+    ...background.periods.flatMap((period) => [
+      period.label,
+      ...period.events.flatMap((event) => [
+        event.title,
+        event.body,
+        ...event.sources.map((source) => source.label),
+      ]),
+    ]),
+    families.heading,
+    ...families.cases.flatMap((item) => [
+      item.name,
+      item.title,
+      item.detail,
+      item.source.label,
+      ...(item.note ? [item.note] : []),
+    ]),
     ...policyEvents.flatMap((e) => [
       e.kind,
       e.title,

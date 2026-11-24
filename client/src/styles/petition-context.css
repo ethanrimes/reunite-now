@@ -44,16 +44,17 @@
   position: absolute;
   top: -2px;
   bottom: calc(-1 * var(--trail-gap) - 2px);
-  left: 100%;
+  inset-inline-start: 100%;
   width: 1rem;
   border: 2px solid var(--trail-line);
-  border-left: 0;
-  border-radius: 0 1rem 1rem 0;
+  border-inline-start: 0;
+  border-start-end-radius: 1rem;
+  border-end-end-radius: 1rem;
   pointer-events: none;
 }
 .policy-row:nth-child(even)::after {
-  right: 100%;
-  left: auto;
+  inset-inline-end: 100%;
+  inset-inline-start: auto;
   transform: scaleX(-1);
 }
 .petition-stop {
@@ -79,14 +80,14 @@
   border-radius: 0.5rem;
   background: white;
   color: inherit;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
 }
 .petition-stop button::before {
   content: "";
   position: absolute;
   top: calc(-0.95rem - 6px);
-  left: 1rem;
+  inset-inline-start: 1rem;
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -126,7 +127,7 @@
   grid-row: 2;
   margin-top: 0.75rem;
   padding: clamp(1rem, 2.5vw, 2rem);
-  border-left: 3px solid var(--coral);
+  border-inline-start: 3px solid var(--coral);
   background: white;
   overflow-wrap: anywhere;
 }
@@ -180,7 +181,8 @@
   .policy-row {
     display: block;
     border: 0;
-    padding: 0 0 0 0.4rem;
+    padding: 0;
+    padding-inline-start: 0.4rem;
   }
   .policy-row::after {
     display: none;
@@ -188,12 +190,13 @@
   .petition-stop {
     position: relative;
     display: block;
-    border-left: 2px solid var(--trail-line);
-    padding: 0 0 0.75rem 1.1rem;
+    border-inline-start: 2px solid var(--trail-line);
+    padding-block-end: 0.75rem;
+    padding-inline-start: 1.1rem;
   }
   .petition-stop button::before {
     top: 1.15rem;
-    left: calc(-1.1rem - 8px);
+    inset-inline-start: calc(-1.1rem - 8px);
   }
   .policy-reading {
     margin-top: 0.4rem;
@@ -245,7 +248,8 @@
   position: relative;
   display: grid;
   gap: 0.5rem;
-  padding: 1.1rem 2.7rem 1.2rem 1.1rem;
+  padding-block: 1.1rem 1.2rem;
+  padding-inline: 1.1rem 2.7rem;
   cursor: pointer;
 }
 .humanitarian-grid {
@@ -265,7 +269,7 @@
 }
 .humanitarian-card svg {
   position: absolute;
-  right: 1rem;
+  inset-inline-end: 1rem;
   top: 1.15rem;
   width: 1.2rem;
   height: 1.2rem;

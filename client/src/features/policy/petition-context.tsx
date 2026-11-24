@@ -1,4 +1,5 @@
 import { useState, type CSSProperties } from "react";
+import { getLocale, t } from "../../i18n/i18n";
 import { Minus, Plus } from "lucide-react";
 import { SectionControls } from "./section-controls";
 import timeline from "./petition-timeline.en.json";
@@ -9,27 +10,40 @@ export function PetitionContext() {
   const [openDate, setOpenDate] = useState<string | null>(null);
   const nextPeriod = timeline.periods[visiblePeriods];
 
+  const dateFormat = new Intl.DateTimeFormat(getLocale(), {
+    dateStyle: "long",
+    timeZone: "UTC",
+  });
+
   return (
     <section
       className="section petition-context"
       id="why-the-wait"
-      lang="en"
-      dir="ltr"
       aria-labelledby="why-the-wait-title"
     >
       <header className="policy-intro">
-        <h2 id="why-the-wait-title">{timeline.heading}</h2>
+        <h2 id="why-the-wait-title">{t(timeline.heading)}</h2>
         <p>
-          {timeline.intro.before}
-          <strong>{timeline.intro.emphasis}</strong>
-          {timeline.intro.after}
+          {t(timeline.intro.text)
+            .split(/(\{statistic\}|\{publication\})/)
+            .map((part) => {
+              if (part === "{statistic}")
+                return (
+                  <strong key={part}>{t(timeline.intro.statistic)}</strong>
+                );
+              if (part === "{publication}")
+                return (
+                  <strong key={part}>{t(timeline.intro.publication)}</strong>
+                );
+              return part;
+            })}
         </p>
       </header>
       <div id="policy-periods" className="policy-trail">
         {timeline.periods.slice(0, visiblePeriods).map((period, row) => (
           <ol
             key={period.label}
-            aria-label={period.label}
+            aria-label={t(period.label)}
             className="policy-row"
             style={{ "--stops": period.events.length } as CSSProperties}
           >
@@ -52,8 +66,12 @@ export function PetitionContext() {
                       aria-controls={panelId}
                       onClick={() => setOpenDate(expanded ? null : event.date)}
                     >
-                      <time dateTime={event.date}>{event.dateLabel}: </time>
-                      <span className="petition-stop-title">{event.title}</span>
+                      <time dateTime={event.date}>
+                        {dateFormat.format(new Date(event.date))}:{" "}
+                      </time>
+                      <span className="petition-stop-title">
+                        {t(event.title)}
+                      </span>
                       {expanded ? (
                         <Minus aria-hidden="true" />
                       ) : (
@@ -68,10 +86,13 @@ export function PetitionContext() {
                     aria-labelledby={panelId + "-toggle"}
                     hidden={!expanded}
                   >
-                    <p>{event.body}</p>
+                    <p>{t(event.body)}</p>
                     {event.sources.map((source) => (
                       <p className="policy-source" key={source.url}>
-                        {source.label}: <a href={source.url}>{source.url}</a>
+                        {t(source.label)}:{" "}
+                        <a href={source.url} dir="ltr">
+                          {source.url}
+                        </a>
                       </p>
                     ))}
                   </div>
@@ -87,9 +108,11 @@ export function PetitionContext() {
           setVisiblePeriods(1);
           setOpenDate(null);
         }}
-        noun="timeline"
+        collapseLabel={t("Collapse timeline")}
         contentId="policy-periods"
-        moreLabel={nextPeriod && "Show " + nextPeriod.label}
+        moreLabel={
+          nextPeriod && t("Show {period}", { period: t(nextPeriod.label) })
+        }
         onMore={() => {
           setVisiblePeriods(visiblePeriods + 1);
           requestAnimationFrame(() =>

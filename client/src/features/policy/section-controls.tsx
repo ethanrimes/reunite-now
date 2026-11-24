@@ -4,7 +4,7 @@ import { ArrowDown, ChevronUp } from "lucide-react";
 type Props = {
   canCollapse: boolean;
   onCollapse: () => void;
-  noun: string;
+  collapseLabel: string;
   contentId: string;
   moreLabel?: string;
   onMore: () => void;
@@ -13,7 +13,7 @@ type Props = {
 export function SectionControls({
   canCollapse,
   onCollapse,
-  noun,
+  collapseLabel,
   contentId,
   moreLabel,
   onMore,
@@ -44,7 +44,7 @@ export function SectionControls({
           }}
         >
           <ChevronUp aria-hidden="true" />
-          {"Collapse " + noun}
+          {collapseLabel}
         </button>
       )}
     </div>

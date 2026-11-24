@@ -4065,9 +4065,9 @@
     "tl": "Paghihigpit"
   },
   "Diversity visa issuance paused": {
-    "es": "Pausa en la emisión de visas de diversidad",
-    "pt": "Pausa na emissão de vistos de diversidade",
-    "tl": "Pansamantalang paghinto sa pag-isyu ng diversity visa"
+    "es": "Se suspende la emisión de visas de diversidad",
+    "pt": "Emissão de vistos de diversidade é suspensa",
+    "tl": "Sinuspinde ang pag-isyu ng diversity visa"
   },
   "The State Department announced a pause on diversity visa issuance for a screening review. Its updated notice says the pause ended under a court order on August 28, 2026.": {
     "es": "El Departamento de Estado anunció una pausa en la emisión de visas de diversidad para revisar los controles. Su aviso actualizado indica que la pausa terminó por orden judicial el 28 de agosto de 2026.",
@@ -4082,7 +4082,7 @@
   "State Department notice": {
     "es": "Aviso del Departamento de Estado",
     "pt": "Aviso do Departamento de Estado",
-    "tl": "Abiso ng Department of State"
+    "tl": "Abiso ng Kagawaran ng Estado"
   },
   "Entry and visa restrictions expanded": {
     "es": "Ampliación de restricciones de entrada y visas",
@@ -4115,7 +4115,7 @@
     "tl": "Pinawalang-bisa noong Agosto 21, 2026"
   },
   "Court ruling": {
-    "es": "Fallo judicial",
+    "es": "Resolución judicial",
     "pt": "Decisão judicial",
     "tl": "Pasya ng hukuman"
   },
@@ -5933,5 +5933,455 @@
     "es": "El correo también incluye un código de un solo uso. Para resolver problemas de acceso, el personal autorizado puede consultar tu correo cuando se conoce, una referencia del enlace y el resultado o error en registros privados que se conservan unos siete días.",
     "pt": "O e-mail também inclui um código de uso único. Para diagnosticar problemas de acesso, operadores autorizados podem consultar seu e-mail quando conhecido, uma referência do link e o resultado ou erro em registros privados mantidos por cerca de sete dias.",
     "tl": "May code din sa email na isang beses lang magagamit. Para malutas ang mga problema sa pag-sign in, makikita ng mga awtorisadong tagapangasiwa ang iyong email kung alam ito, ang sanggunian ng link, at ang resulta o error sa pribadong talaang itinatago nang humigit-kumulang pitong araw."
+  },
+  "Recent federal policies have caused extraordinary visa delays": {
+    "es": "Las políticas federales recientes han provocado demoras extraordinarias en la tramitación de visas",
+    "pt": "Políticas federais recentes provocaram atrasos extraordinários na concessão de vistos",
+    "tl": "Nagdulot ng napakahabang paghihintay sa visa ang mga bagong patakaran ng pamahalaang pederal"
+  },
+  "In February 2026, U.S. consulates issued {statistic} than in February 2025. Department of State {publication}.": {
+    "es": "En febrero de 2026, los consulados de EE. UU. emitieron {statistic} que en febrero de 2025. El Departamento de Estado {publication}.",
+    "pt": "Em fevereiro de 2026, os consulados dos EUA emitiram {statistic} do que em fevereiro de 2025. O Departamento de Estado {publication}.",
+    "tl": "Noong Pebrero 2026, ang mga konsulado ng US ay nag-isyu ng {statistic} kumpara noong Pebrero 2025. Ang Kagawaran ng Estado ay {publication}."
+  },
+  "48% fewer immigrant visas": {
+    "es": "un 48 % menos de visas de inmigrante",
+    "pt": "48% menos vistos de imigrante",
+    "tl": "48% na mas kaunting immigrant visa"
+  },
+  "The Americans and their families paying the price": {
+    "es": "Los estadounidenses y sus familias que pagan el precio",
+    "pt": "Os americanos e as famílias que pagam o preço",
+    "tl": "Ang mga Amerikano at ang kanilang mga pamilyang apektado"
+  },
+  "This petition demands Congress require the State Department to:": {
+    "es": "Con esta petición pedimos al Congreso que exija al Departamento de Estado que:",
+    "pt": "Esta petição exige que o Congresso determine que o Departamento de Estado:",
+    "tl": "Hinihiling ng petisyong ito na atasan ng Kongreso ang Kagawaran ng Estado na:"
+  },
+  "The action you can take": {
+    "es": "Cómo puedes participar",
+    "pt": "Como você pode participar",
+    "tl": "Paano ka makatutulong"
+  },
+  "Collapse timeline": {
+    "es": "Contraer la cronología",
+    "pt": "Recolher a linha do tempo",
+    "tl": "Paikliin ang timeline"
+  },
+  "Show {period}": {
+    "es": "Mostrar {period}",
+    "pt": "Mostrar {period}",
+    "tl": "Ipakita ang {period}"
+  },
+  "Show more cases": {
+    "es": "Mostrar más casos",
+    "pt": "Ver mais casos",
+    "tl": "Magpakita pa ng mga kaso"
+  },
+  "Collapse cases": {
+    "es": "Contraer los casos",
+    "pt": "Recolher os casos",
+    "tl": "Paikliin ang listahan ng mga kaso"
+  },
+  "January – May 2025": {
+    "es": "enero – mayo de 2025",
+    "pt": "janeiro a maio de 2025",
+    "tl": "Enero hanggang Mayo 2025"
+  },
+  "August – September 2025": {
+    "es": "agosto – septiembre de 2025",
+    "pt": "agosto a setembro de 2025",
+    "tl": "Agosto hanggang Setyembre 2025"
+  },
+  "October – December 2025": {
+    "es": "octubre – diciembre de 2025",
+    "pt": "outubro a dezembro de 2025",
+    "tl": "Oktubre hanggang Disyembre 2025"
+  },
+  "January – August 2026": {
+    "es": "enero – agosto de 2026",
+    "pt": "janeiro a agosto de 2026",
+    "tl": "Enero hanggang Agosto 2026"
+  },
+  "A hiring freeze cuts the visa workforce by a third": {
+    "es": "La congelación de contrataciones reduce en un tercio el personal que tramita visas",
+    "pt": "Congelamento de contratações reduz em um terço o quadro que analisa vistos",
+    "tl": "Nabawasan ng isang-katlo ang mga opisyal na nagpoproseso ng visa nang ihinto ang pagkuha ng kawani"
+  },
+  "A federal hiring freeze, a reduction in force and attrition cut the number of consular officers working on nonimmigrant visas from 1,342 in FY2024 to 904 in FY2025, a 33% drop. In India, 68 officers handled 1.46 million applications, more than 21,000 each.": {
+    "es": "La congelación de contrataciones federales, los recortes de plantilla y las bajas sin reemplazo redujeron de 1.342 en el año fiscal 2024 a 904 en 2025 el número de funcionarios consulares que tramitaban visas de no inmigrante, una caída del 33 %. En India, 68 funcionarios atendieron 1,46 millones de solicitudes, más de 21.000 por persona.",
+    "pt": "O congelamento das contratações federais, os cortes de pessoal e as saídas sem reposição reduziram de 1.342 no ano fiscal de 2024 para 904 em 2025 o número de agentes consulares que analisavam vistos de não imigrante, uma queda de 33%. Na Índia, 68 agentes receberam 1,46 milhão de pedidos, mais de 21 mil para cada um.",
+    "tl": "Dahil sa paghinto ng pagkuha ng kawani, pagbawas ng posisyon at pag-alis ng mga empleyadong hindi napalitan, bumaba ang bilang ng mga opisyal na nagpoproseso ng nonimmigrant visa mula 1,342 noong taong piskal 2024 tungong 904 noong 2025, o 33%. Sa India, 68 opisyal ang humawak ng 1.46 milyong aplikasyon, mahigit 21,000 bawat isa."
+  },
+  "Visas suspended in Colombia over deportation flights": {
+    "es": "Se suspende la emisión de visas en Colombia por una disputa sobre vuelos de deportación",
+    "pt": "Emissão de vistos é suspensa na Colômbia em disputa por voos de deportação",
+    "tl": "Sinuspinde ang pag-isyu ng visa sa Colombia dahil sa alitan tungkol sa mga deportation flight"
+  },
+  "After Colombia refused two U.S. deportation flights, the State Department suspended all visa issuance at the U.S. Embassy in Bogotá, where appointment waits already ran up to two years. Colombia backed down the same day, but the consular section stayed closed until January 31, and hundreds of appointments were cancelled.": {
+    "es": "Después de que Colombia rechazara dos vuelos de deportación de EE. UU., el Departamento de Estado suspendió toda emisión de visas en la embajada en Bogotá, donde la espera para una cita ya llegaba a dos años. Colombia dio marcha atrás ese mismo día, pero la sección consular permaneció cerrada hasta el 31 de enero y se cancelaron cientos de citas.",
+    "pt": "Depois que a Colômbia recusou dois voos de deportação dos EUA, o Departamento de Estado suspendeu toda a emissão de vistos na embaixada em Bogotá, onde a espera por uma entrevista já chegava a dois anos. A Colômbia recuou no mesmo dia, mas a seção consular ficou fechada até 31 de janeiro e centenas de entrevistas foram canceladas.",
+    "tl": "Nang tanggihan ng Colombia ang dalawang eroplanong may sakay na mga ipinatapon mula sa US, itinigil ng Kagawaran ng Estado ang lahat ng pag-isyu ng visa sa embahada sa Bogotá, kung saan umaabot na sa dalawang taon ang paghihintay sa appointment. Nagbago ng pasya ang Colombia nang araw ding iyon, ngunit nanatiling sarado ang seksiyong konsular hanggang Enero 31 at daan-daang appointment ang nakansela."
+  },
+  "Student visa interviews frozen for three weeks": {
+    "es": "Se suspende durante tres semanas la programación de entrevistas para visas de estudiante",
+    "pt": "Agendamento de entrevistas para visto de estudante é suspenso por três semanas",
+    "tl": "Tatlong linggong itinigil ang pag-iskedyul ng panayam para sa student visa"
+  },
+  "The State Department stopped scheduling new student and exchange visitor interviews so it could expand social media vetting. Interviews resumed June 18, but only for applicants who made their social media profiles public. The backlog persisted: on August 11, 2026, 30 senators wrote to Secretary Rubio warning that students still couldn't get appointments in time for the academic year.": {
+    "es": "El Departamento de Estado dejó de programar entrevistas para estudiantes y visitantes de intercambio para ampliar la revisión de sus redes sociales. Las entrevistas se reanudaron el 18 de junio solo para quienes hicieron públicos sus perfiles. El atraso persistió. El 11 de agosto de 2026, 30 senadores advirtieron al secretario Rubio por carta que los estudiantes seguían sin conseguir citas a tiempo para el año académico.",
+    "pt": "O Departamento de Estado deixou de agendar novas entrevistas para estudantes e intercambistas a fim de ampliar a análise de redes sociais. As entrevistas recomeçaram em 18 de junho apenas para quem tornou públicos os seus perfis. A fila persistiu. Em 11 de agosto de 2026, 30 senadores alertaram o secretário Rubio por carta de que estudantes ainda não conseguiam agendar entrevistas a tempo do ano letivo.",
+    "tl": "Itinigil ng Kagawaran ng Estado ang pag-iskedyul ng mga bagong panayam para sa mga estudyante at kalahok sa mga palitan upang palawakin ang pagsusuri sa social media. Nagpatuloy ang mga panayam noong Hunyo 18 para lamang sa mga nagbukas sa publiko ng kanilang profile. Nanatili ang tambak na aplikasyon. Noong Agosto 11, 2026, sumulat ang 30 senador kay Kalihim Rubio dahil hindi pa rin makakuha ang mga estudyante ng appointment bago magsimula ang pasukan."
+  },
+  "USCIS hardens family-petition processing": {
+    "es": "USCIS endurece la tramitación de peticiones familiares",
+    "pt": "USCIS endurece a análise de petições familiares",
+    "tl": "Hinigpitan ng USCIS ang pagproseso ng mga petisyon para sa pamilya"
+  },
+  "USCIS rewrote its family-based guidance to say that a family petition gives no immigration status and does not prevent removal, and that it may refer removable beneficiaries to immigration court. Interviews increased under the new guidance. In July 2026, CLINIC reported that field offices were interviewing immediate-relative petitions that previously would have been approved on documents alone.": {
+    "es": "USCIS revisó sus directrices para aclarar que una petición familiar no otorga estatus migratorio ni impide la deportación, y que puede remitir a los beneficiarios sujetos a deportación a un tribunal de inmigración. Aumentaron las entrevistas. En julio de 2026, CLINIC informó que las oficinas locales citaban a entrevista a familiares inmediatos cuyas peticiones antes se habrían aprobado solo con documentos.",
+    "pt": "O USCIS reviu suas diretrizes para esclarecer que uma petição familiar não confere status migratório nem impede a deportação e que beneficiários sujeitos à deportação podem ser encaminhados à Justiça de imigração. As entrevistas aumentaram. Em julho de 2026, a CLINIC relatou que escritórios locais passaram a entrevistar parentes imediatos cujas petições antes seriam aprovadas apenas com documentos.",
+    "tl": "Nilinaw ng USCIS na ang petisyon ng kapamilya ay hindi nagbibigay ng legal na katayuan o pumipigil sa deportasyon. Maaari nitong isangguni sa hukuman sa imigrasyon ang mga benepisyaryong maaaring ipatapon. Dumami ang mga panayam. Noong Hulyo 2026, iniulat ng CLINIC na nagpapatawag na ng panayam ang mga lokal na tanggapan para sa mga petisyon ng malalapit na kamag-anak na dati ay naaaprubahan sa dokumento lamang."
+  },
+  "Interview waivers nearly eliminated": {
+    "es": "Se eliminan casi todas las exenciones de entrevista",
+    "pt": "Quase todas as dispensas de entrevista são eliminadas",
+    "tl": "Halos inalis ang mga eksepsiyon sa panayam"
+  },
+  "Most nonimmigrant visa applicants, including students, workers and people renewing a visa in the same category, must now interview in person. Even children under 14 and adults over 79 lost their exemption. In 2024, 40% of nonimmigrant visas were issued without an interview. In FY2025 that share fell to 26%, though the rule took effect only in the fiscal year's last month. At Mexico City, the share of visitor visas processed without an interview fell from 92% to 43%.": {
+    "es": "La mayoría de quienes solicitan visas de no inmigrante deben acudir a una entrevista presencial, incluidos estudiantes, trabajadores y quienes renuevan una visa de la misma categoría. Incluso los menores de 14 años y los mayores de 79 perdieron la exención. En 2024, el 40 % de estas visas se emitió sin entrevista. En el año fiscal 2025, la proporción bajó al 26 %, aunque la regla solo rigió durante el último mes. En Ciudad de México, el porcentaje de visas de visitante tramitadas sin entrevista bajó del 92 % al 43 %.",
+    "pt": "A maioria dos solicitantes de vistos de não imigrante precisa comparecer a uma entrevista, inclusive estudantes, trabalhadores e quem renova o visto na mesma categoria. Até menores de 14 anos e maiores de 79 perderam a dispensa. Em 2024, 40% desses vistos foram emitidos sem entrevista. No ano fiscal de 2025, o percentual caiu para 26%, embora a norma só tenha vigorado no último mês. Na Cidade do México, a parcela dos vistos de visitante processados sem entrevista caiu de 92% para 43%.",
+    "tl": "Kailangang magpainterbyu nang personal ang karamihan ng aplikante ng nonimmigrant visa, kabilang ang mga estudyante, manggagawa at nagre-renew sa parehong kategorya. Maging mga batang wala pang 14 at matatandang lampas 79 ay nawalan ng eksepsiyon. Noong 2024, 40% ng mga nonimmigrant visa ang naibigay nang walang panayam. Naging 26% ito noong taong piskal 2025 kahit sa huling buwan lang ipinatupad ang patakaran. Sa Mexico City, bumaba mula 92% tungong 43% ang bahagi ng mga visitor visa na naproseso nang walang panayam."
+  },
+  "Applicants barred from seeking faster posts abroad": {
+    "es": "Se impide solicitar una cita más rápida en consulados de terceros países",
+    "pt": "Solicitantes ficam impedidos de buscar consulados com filas menores em outros países",
+    "tl": "Hindi na maaaring pumili ng konsulado sa ibang bansa para mapabilis ang panayam"
+  },
+  "Nonimmigrant visa applicants must now apply in their country of nationality or residence. That ended the common practice of booking an interview at a less backlogged consulate in a third country, and it locks applicants into some of the world's longest queues. In FY2025 the average visitor visa wait was 597 days in Colombia, 447 in Honduras and 346 in India. A matching rule for immigrant visas took effect November 1, 2025.": {
+    "es": "Las solicitudes de visa de no inmigrante deben presentarse en el país de nacionalidad o residencia. Así terminó la práctica de buscar citas en consulados menos saturados de terceros países, lo que obliga a algunos solicitantes a soportar esperas que se cuentan entre las más largas del mundo. En el año fiscal 2025, la espera media para visas de visitante fue de 597 días en Colombia, 447 en Honduras y 346 en India. Una regla equivalente para visas de inmigrante entró en vigor el 1 de noviembre de 2025.",
+    "pt": "O visto de não imigrante deve ser solicitado no país de nacionalidade ou residência. A medida acabou com a prática de marcar entrevistas em consulados menos congestionados de terceiros países e prende alguns solicitantes a filas que estão entre as mais longas do mundo. No ano fiscal de 2025, a espera média por um visto de visitante foi de 597 dias na Colômbia, 447 em Honduras e 346 na Índia. Norma semelhante para vistos de imigrante entrou em vigor em 1º de novembro de 2025.",
+    "tl": "Kailangang mag-apply ng nonimmigrant visa sa bansang tinitirhan o kung saan mamamayan ang aplikante. Natapos ang karaniwang pagkuha ng appointment sa ibang bansang mas maikli ang pila. Para sa ilan, nangangahulugan ito ng pagpila sa mga konsuladong may pinakamahabang paghihintay sa mundo. Noong taong piskal 2025, ang karaniwang hintay para sa visitor visa ay 597 araw sa Colombia, 447 sa Honduras at 346 sa India. Noong Nobyembre 1, 2025, nagkabisa ang katulad na patakaran para sa immigrant visa."
+  },
+  "Automatic work permit extensions end": {
+    "es": "Terminan las prórrogas automáticas de los permisos de trabajo",
+    "pt": "Acabam as prorrogações automáticas das autorizações de trabalho",
+    "tl": "Natigil ang awtomatikong pagpapalawig ng mga permiso sa trabaho"
+  },
+  "DHS ended the automatic extension that let workers keep their employment authorization while a timely renewal was pending. During earlier USCIS backlogs, that extension had reached as long as 540 days. Now, if USCIS hasn't decided a renewal before the card expires, the worker loses the right to work until it does. DHS made the rule final, unchanged, on October 14, 2026.": {
+    "es": "El Departamento de Seguridad Nacional (DHS) eliminó la prórroga automática que permitía seguir trabajando mientras se resolvía una renovación solicitada a tiempo. Durante atrasos anteriores de USCIS, la prórroga llegó a 540 días. Ahora, si la tarjeta vence antes de que USCIS decida, el trabajador pierde el derecho a trabajar hasta que se resuelva la solicitud. El DHS adoptó la norma definitiva sin cambios el 14 de octubre de 2026.",
+    "pt": "O Departamento de Segurança Interna (DHS) encerrou a prorrogação que permitia trabalhar enquanto se aguardava uma renovação pedida no prazo. Em períodos de acúmulo de processos no USCIS, a extensão chegou a 540 dias. Agora, se o documento vencer antes da decisão, o trabalhador perde o direito de trabalhar até a conclusão da análise. O DHS tornou a norma definitiva, sem alterações, em 14 de outubro de 2026.",
+    "tl": "Tinapos ng DHS ang awtomatikong ekstensiyong nagpapahintulot na patuloy na magtrabaho habang hinihintay ang pag-renew na isinumite sa oras. Sa mga nakaraang pagkaantala sa USCIS, umabot sa 540 araw ang ekstensiyon. Ngayon, kapag napaso ang card bago makapagpasya ang USCIS, nawawala ang karapatang magtrabaho hanggang sa desisyon. Ginawang pinal ng DHS ang patakaran nang walang pagbabago noong Oktubre 14, 2026."
+  },
+  "USCIS freezes asylum and benefits for travel-ban nationals": {
+    "es": "USCIS paraliza las decisiones de asilo y las solicitudes de beneficios de nacionales de países vetados",
+    "pt": "USCIS paralisa decisões de asilo e benefícios para cidadãos dos países sujeitos à restrição de entrada",
+    "tl": "Itinigil ng USCIS ang mga pasya sa asylum at ang mga benepisyo para sa mamamayan ng mga bansang sakop ng travel ban"
+  },
+  "A USCIS memo (PM-602-0192) halted decisions on all pending asylum cases, whatever the applicant's nationality. It also halted all benefit applications (green cards, work permits, naturalization) for nationals of the 19 travel-ban countries. A Rhode Island federal court vacated the memo on June 5, 2026, and a California court blocked them nationwide on August 24, 2026.": {
+    "es": "El memorando PM-602-0192 de USCIS suspendió las decisiones sobre todas las solicitudes de asilo pendientes, con independencia de la nacionalidad. También paralizó las solicitudes de residencia, permisos de trabajo y naturalización de nacionales de los 19 países vetados. Un tribunal federal de Rhode Island anuló el memorando el 5 de junio de 2026. El 24 de agosto, un tribunal de California bloqueó las medidas en todo el país.",
+    "pt": "O memorando PM-602-0192 do USCIS suspendeu as decisões sobre todos os pedidos de asilo pendentes, independentemente da nacionalidade. Também paralisou todos os pedidos de benefícios, como residência permanente, autorização de trabalho e naturalização, de cidadãos dos 19 países sujeitos à restrição. Um tribunal federal de Rhode Island anulou o memorando em 5 de junho de 2026. Em 24 de agosto, um tribunal da Califórnia bloqueou as medidas em todo o país.",
+    "tl": "Itinigil ng memo ng USCIS na PM-602-0192 ang pagpapasya sa lahat ng nakabinbing kaso ng asylum anuman ang nasyonalidad. Itinigil din nito ang lahat ng aplikasyon para sa mga benepisyo, gaya ng green card, permiso sa trabaho at naturalisasyon, ng mga mamamayan ng 19 na bansang sakop ng travel ban. Pinawalang-bisa ng hukumang pederal sa Rhode Island ang memo noong Hunyo 5, 2026. Pinigil ng hukuman sa California ang mga hakbang sa buong bansa noong Agosto 24, 2026."
+  },
+  "The State Department stopped issuing diversity visas while it reviewed its vetting procedures. On August 28, 2026, a federal judge ordered the pause lifted (Medani v. Trump), barely a month before DV-2026 eligibility ran out for good on September 30. Even then, the department scheduled no interviews and issued no visas for nearly two weeks. From September 10 to 21, posts decided an average of 83 cases a day worldwide, compared with about 230 a day in September 2025. In the September 14–21 status reports, refusals outnumbered issuances 583 to 83. The court found the government's compliance \"less than substantial\" and ordered 10 more days of processing past the deadline.": {
+    "es": "El Departamento de Estado dejó de emitir estas visas mientras revisaba sus controles. El 28 de agosto de 2026, un juez federal ordenó levantar la suspensión en Medani contra Trump, apenas un mes antes del vencimiento definitivo del programa DV-2026 el 30 de septiembre. Aun así, durante casi dos semanas no se programaron entrevistas ni se emitieron visas. Del 10 al 21 de septiembre, los consulados resolvieron en promedio 83 casos diarios en todo el mundo, frente a unos 230 en septiembre de 2025. Los informes del 14 al 21 de septiembre registraron 583 denegaciones y 83 visas emitidas. El tribunal consideró insuficiente el cumplimiento del gobierno y ordenó diez días más de tramitación tras el vencimiento.",
+    "pt": "O Departamento de Estado interrompeu a emissão desses vistos para rever seus procedimentos de verificação. Em 28 de agosto de 2026, um juiz federal determinou a retomada no caso Medani contra Trump, pouco mais de um mês antes do prazo final do DV-2026, em 30 de setembro. Mesmo assim, por quase duas semanas não houve agendamentos nem emissões. De 10 a 21 de setembro, os postos decidiram em média 83 casos por dia no mundo, ante cerca de 230 em setembro de 2025. Os relatórios de 14 a 21 de setembro registraram 583 recusas e 83 emissões. O tribunal considerou insuficiente o cumprimento da ordem e determinou mais dez dias de análise após o prazo.",
+    "tl": "Itinigil ng Kagawaran ang pag-isyu ng diversity visa habang sinusuri nito ang mga pamamaraan ng pagsisiyasat. Noong Agosto 28, 2026, ipinag-utos ng hukom sa Medani v. Trump na alisin ang suspensiyon, isang buwan na lang bago tuluyang matapos ang pagiging kuwalipikado sa DV-2026 sa Setyembre 30. Gayunman, halos dalawang linggo itong hindi nag-iskedyul ng panayam o nag-isyu ng visa. Mula Setyembre 10 hanggang 21, may desisyon sa karaniwang 83 kaso bawat araw sa buong mundo, kumpara sa mga 230 noong Setyembre 2025. Sa mga ulat noong Setyembre 14–21, may 583 pagtanggi at 83 visa na inisyu. Napagpasyahan ng hukuman na kulang ang pagsunod ng pamahalaan at iniutos ang sampung karagdagang araw ng pagproseso lampas sa takdang petsa."
+  },
+  "Travel ban expanded to 39 countries": {
+    "es": "El veto de entrada se amplía a 39 países",
+    "pt": "Restrição de entrada passa a abranger 39 países",
+    "tl": "Pinalawak ang travel ban sa 39 na bansa"
+  },
+  "Proclamation 10998, signed December 16, 2025, imposed full or partial visa bans on nationals of 39 countries and on holders of Palestinian Authority travel documents. It also removed the automatic exception for immediate relatives of U.S. citizens (spouses, children and parents). Those families must now seek a discretionary national-interest exception instead. Families are challenging the ban in Chikumba v. Department of State.": {
+    "es": "La Proclamación 10998, firmada el 16 de diciembre de 2025, impuso vetos totales o parciales a las visas de nacionales de 39 países y de titulares de documentos de viaje de la Autoridad Palestina. Eliminó la excepción automática para cónyuges, hijos y padres de ciudadanos estadounidenses. Estas familias deben solicitar una excepción discrecional por interés nacional. Varias familias impugnan el veto en Chikumba contra el Departamento de Estado.",
+    "pt": "A Proclamação 10998, assinada em 16 de dezembro de 2025, impôs restrições totais ou parciais à concessão de vistos a cidadãos de 39 países e a portadores de documentos de viagem da Autoridade Palestina. Eliminou a exceção automática para cônjuges, filhos e pais de cidadãos americanos. Essas famílias precisam pedir uma exceção discricionária por interesse nacional. Famílias contestam a medida no caso Chikumba contra o Departamento de Estado.",
+    "tl": "Ang Proklamasyon 10998, na nilagdaan noong Disyembre 16, 2025, ay nagpataw ng buo o bahagyang pagbabawal sa visa para sa mga mamamayan ng 39 na bansa at mga may hawak ng dokumento sa paglalakbay ng Palestinian Authority. Inalis din ang awtomatikong eksepsiyon para sa mga asawa, anak at magulang ng mga mamamayan ng US. Kailangan na nilang humiling ng eksepsiyon batay sa pambansang interes, na nasa pagpapasya ng pamahalaan. Hinahamon ng mga pamilya ang pagbabawal sa Chikumba v. Department of State."
+  },
+  "Immigrant visas halted for 75 nationalities": {
+    "es": "Se suspenden las visas de inmigrante para 75 nacionalidades",
+    "pt": "Vistos de imigrante são suspensos para 75 nacionalidades",
+    "tl": "Itinigil ang immigrant visa para sa 75 nasyonalidad"
+  },
+  "The State Department told officers to refuse immigrant visas to nationals of 75 countries it considered at high risk of relying on public benefits. On August 21, 2026, a federal court in New York struck the policy down as unlawful (CLINIC v. Rubio) and set aside more than 43,000 refusals. Reprocessing has been slow: between August 21 and September 30, the department re-decided only 706 of those cases and approved 318. The government has appealed.": {
+    "es": "El Departamento de Estado ordenó denegar visas de inmigrante a nacionales de 75 países por considerar que corrían un alto riesgo de depender de prestaciones públicas. El 21 de agosto de 2026, un tribunal federal de Nueva York declaró ilegal la política en CLINIC contra Rubio y anuló más de 43.000 denegaciones. Entre el 21 de agosto y el 30 de septiembre, el Departamento solo volvió a resolver 706 casos y aprobó 318. El gobierno ha apelado.",
+    "pt": "O Departamento de Estado orientou os agentes a negar vistos de imigrante a cidadãos de 75 países que considerava sob alto risco de depender de benefícios públicos. Em 21 de agosto de 2026, um tribunal federal de Nova York declarou a medida ilegal no caso CLINIC contra Rubio e anulou mais de 43 mil recusas. Entre 21 de agosto e 30 de setembro, o Departamento só voltou a decidir 706 casos e aprovou 318. O governo recorreu.",
+    "tl": "Inatasan ng Kagawaran ang mga opisyal na tanggihan ang immigrant visa ng mga mamamayan ng 75 bansang itinuturing nitong malamang umasa sa pampublikong benepisyo. Noong Agosto 21, 2026, idineklarang labag sa batas ng hukumang pederal sa New York ang patakaran sa CLINIC v. Rubio at pinawalang-bisa ang mahigit 43,000 pagtanggi. Mula Agosto 21 hanggang Setyembre 30, 706 lamang ang muling napagpasyahan at 318 ang naaprubahan. Umapela ang pamahalaan."
+  },
+  "Visa processing pulled from 25 African posts": {
+    "es": "Se retira la tramitación de visas de 25 sedes en África",
+    "pt": "Análise de vistos é retirada de 25 postos na África",
+    "tl": "Inilipat mula sa 25 tanggapan sa Africa ang pagproseso ng visa"
+  },
+  "Routine immigrant and nonimmigrant visa services at 25 embassies and consulates moved to 20 regional hubs, several of them already among the region's most backlogged. Nigeria, Africa's most populous country, now has a single visa post, because applications that used to go to Abuja now go to Lagos. Applicants in many other affected countries must cross a border just to interview.": {
+    "es": "Los servicios ordinarios de visas de inmigrante y no inmigrante de 25 embajadas y consulados pasaron a 20 centros regionales, varios de ellos ya entre los más saturados de la región. Nigeria, el país más poblado de África, cuenta ahora con una sola sede porque las solicitudes de Abuya pasaron a Lagos. En muchos otros países afectados, los solicitantes deben cruzar una frontera solo para la entrevista.",
+    "pt": "Os serviços regulares de vistos de imigrante e não imigrante de 25 embaixadas e consulados foram transferidos para 20 centros regionais, vários deles já entre os mais sobrecarregados da região. A Nigéria, país mais populoso da África, ficou com um único posto, pois os pedidos antes enviados a Abuja agora vão para Lagos. Em muitos dos demais países afetados é preciso cruzar uma fronteira só para comparecer à entrevista.",
+    "tl": "Inilipat ang regular na serbisyo para sa immigrant at nonimmigrant visa mula sa 25 embahada at konsulado patungo sa 20 sentrong panrehiyon. Ang ilan sa mga sentro ay kabilang na sa may pinakamahabang pila sa rehiyon. Sa Nigeria, ang pinakamataong bansa sa Africa, iisa na lang ang tanggapan dahil sa Lagos na dinidinig ang mga aplikasyong dati ay sa Abuja. Sa marami pang apektadong bansa, kailangang tumawid ng hangganan para lamang sa panayam."
+  },
+  "Worldwide immigrant visa interview pause": {
+    "es": "Se suspenden las entrevistas para visas de inmigrante en todo el mundo",
+    "pt": "Entrevistas para vistos de imigrante são suspensas no mundo inteiro",
+    "tl": "Sinuspinde sa buong mundo ang mga panayam para sa immigrant visa"
+  },
+  "Four days after the 75-country ban was struck down, the State Department paused and began rescheduling immigrant visa interviews at embassies and consulates worldwide, citing mandatory officer training on public-charge screening. Officials first said the pause would end by early to mid-September. Three months later, interviews are still paused at many posts, restarts elsewhere have been uneven, and the department has announced no date for a full restart. On November 6, the plaintiffs in CLINIC v. Rubio amended their complaint to challenge the new directives.": {
+    "es": "Cuatro días después de que se anulara el veto a 75 países, el Departamento de Estado suspendió y empezó a reprogramar entrevistas en embajadas y consulados de todo el mundo. Alegó que los funcionarios debían capacitarse para evaluar la causal de carga pública. Al principio anunció que la suspensión terminaría entre principios y mediados de septiembre. Tres meses después, muchas sedes siguen sin entrevistar, otras han reanudado a ritmos distintos y no hay fecha para la reanudación total. El 6 de noviembre, los demandantes de CLINIC contra Rubio ampliaron su demanda para impugnar las nuevas directrices.",
+    "pt": "Quatro dias após a derrubada da restrição a 75 países, o Departamento de Estado suspendeu e começou a remarcar entrevistas em embaixadas e consulados de todo o mundo. Alegou que os agentes precisavam de treinamento obrigatório para avaliar a possibilidade de o solicitante depender de recursos públicos. A previsão inicial era retomar as entrevistas entre o início e meados de setembro. Três meses depois, muitos postos continuam sem entrevistar, a retomada nos demais tem sido irregular e não há data para a normalização. Em 6 de novembro, os autores do caso CLINIC contra Rubio aditaram a ação para contestar as novas diretrizes.",
+    "tl": "Apat na araw matapos mapawalang-bisa ang pagbabawal sa 75 bansa, sinuspinde at sinimulang ilipat ng Kagawaran ang mga iskedyul ng panayam sa buong mundo dahil sa sapilitang pagsasanay sa pagsusuri kung maaaring umasa ang aplikante sa tulong ng pamahalaan. Una nitong sinabing matatapos ito sa unang bahagi hanggang kalagitnaan ng Setyembre. Makalipas ang tatlong buwan, suspindido pa rin ang panayam sa maraming tanggapan, hindi pare-pareho ang pagbabalik sa iba, at walang petsa para sa ganap na pagpapatuloy. Noong Nobyembre 6, inamyendahan ng mga nagsakdal sa CLINIC v. Rubio ang reklamo upang tutulan ang mga bagong direktiba."
+  },
+  "The Ali family": {
+    "es": "La familia Ali",
+    "pt": "A família Ali",
+    "tl": "Ang pamilyang Ali"
+  },
+  "Same interview, same day. Only half the family made it home.": {
+    "es": "La misma entrevista, el mismo día. Solo la mitad de la familia pudo llegar a casa.",
+    "pt": "Mesma entrevista, mesmo dia. Só metade da família conseguiu chegar em casa.",
+    "tl": "Parehong panayam, parehong araw. Kalahati lang ng pamilya ang nakauwi."
+  },
+  "Wael Ali's wife and three children were all told their visas were approved at a single January 20 interview, but only the two sons' visas were issued before the pause took effect the next day. Ten months later, their mother and 16-year-old sister are still in Egypt, refused again in October on public-charge grounds.": {
+    "es": "El 20 de enero, en una sola entrevista, a la esposa y a los tres hijos de Wael Ali les comunicaron que sus visas estaban aprobadas. Solo se emitieron las de los dos hijos varones antes de que la suspensión entrara en vigor al día siguiente. Diez meses después, su madre y su hermana de 16 años siguen en Egipto. En octubre se les volvieron a denegar las visas por la causal de carga pública.",
+    "pt": "Na entrevista de 20 de janeiro, a esposa e os três filhos de Wael Ali foram informados de que seus vistos estavam aprovados. Só os vistos dos dois meninos foram emitidos antes da suspensão no dia seguinte. Dez meses depois, a mãe e a irmã de 16 anos continuam no Egito. Em outubro, seus vistos foram novamente negados por suposta possibilidade de dependerem de recursos públicos.",
+    "tl": "Sa iisang panayam noong Enero 20, sinabihan ang asawa at tatlong anak ni Wael Ali na aprubado ang kanilang mga visa. Ang sa dalawang anak na lalaki lamang ang naibigay bago ang suspensiyon kinabukasan. Sampung buwan ang lumipas, nasa Egypt pa rin ang kanilang ina at 16-anyos na kapatid na babae. Tinanggihan ulit sila noong Oktubre sa kadahilanang maaaring umasa sila sa tulong ng pamahalaan."
+  },
+  "CLINIC v. Rubio · Nov 6, 2026 · ¶¶ 233–235": {
+    "es": "CLINIC contra Rubio · 6 de noviembre de 2026 · párrs. 233–235",
+    "pt": "CLINIC contra Rubio · 6 de novembro de 2026 · parágrafos 233–235",
+    "tl": "CLINIC v. Rubio · Nobyembre 6, 2026 · mga talata 233–235"
+  },
+  "The Linares family": {
+    "es": "La familia Linares",
+    "pt": "A família Linares",
+    "tl": "Ang pamilyang Linares"
+  },
+  "Her first six weeks were in intensive care. Her father was barred from her side.": {
+    "es": "Pasó sus primeras seis semanas en cuidados intensivos. Su padre no pudo acompañarla.",
+    "pt": "Ela passou as primeiras seis semanas na UTI. O pai foi impedido de ficar ao seu lado.",
+    "tl": "Unang anim na linggo niya sa intensive care. Hindi makapunta sa tabi niya ang kanyang ama."
+  },
+  "Freddy Linares flew to Guatemala for his visa interview while his U.S. citizen wife, Yessica, was eight months pregnant, and the 75-country ban stopped him from coming home. Their newborn daughter went through surgery and six weeks of neonatal intensive care without him, and by November he still had not met her.": {
+    "es": "Freddy Linares viajó a Guatemala para su entrevista cuando su esposa Yessica, ciudadana estadounidense, estaba embarazada de ocho meses. El veto a 75 países le impidió regresar a casa. Su hija recién nacida pasó por una cirugía y seis semanas de cuidados intensivos neonatales sin él. En noviembre, aún no la conocía.",
+    "pt": "Freddy Linares viajou à Guatemala para a entrevista quando a esposa Yessica, cidadã americana, estava grávida de oito meses. A restrição a 75 países o impediu de voltar. A filha recém-nascida passou por cirurgia e seis semanas de terapia intensiva neonatal sem ele. Em novembro ele ainda não a conhecia.",
+    "tl": "Lumipad si Freddy Linares sa Guatemala para sa panayam nang walong buwang buntis ang asawa niyang si Yessica, isang mamamayan ng US. Hindi siya makauwi dahil sa pagbabawal sa 75 bansa. Inoperahan ang kanilang bagong silang na anak na babae at gumugol ng anim na linggo sa neonatal intensive care nang wala siya. Pagsapit ng Nobyembre, hindi pa rin niya nakikita ang bata."
+  },
+  "CLINIC v. Rubio · Nov 6, 2026 · ¶¶ 225–226": {
+    "es": "CLINIC contra Rubio · 6 de noviembre de 2026 · párrs. 225–226",
+    "pt": "CLINIC contra Rubio · 6 de novembro de 2026 · parágrafos 225–226",
+    "tl": "CLINIC v. Rubio · Nobyembre 6, 2026 · mga talata 225–226"
+  },
+  "The Rami–Laasri family": {
+    "es": "La familia Rami–Laasri",
+    "pt": "A família Rami–Laasri",
+    "tl": "Ang pamilyang Rami–Laasri"
+  },
+  "His daughter is an American citizen. He has never held her.": {
+    "es": "Su hija es estadounidense. Nunca la ha tenido en brazos.",
+    "pt": "Sua filha é cidadã americana. Ele nunca a segurou no colo.",
+    "tl": "Amerikano ang anak niyang babae. Hindi pa niya ito nakakalong."
+  },
+  "Hanan Rami gave birth in Delaware on August 28, weeks after a consular officer in Casablanca told her husband, Youness Laasri, that his visa would have been approved if not for the ban. The ban has since been struck down and the couple asked for expedited processing, but he is still waiting in Morocco.": {
+    "es": "Hanan Rami dio a luz en Delaware el 28 de agosto. Semanas antes, un funcionario consular en Casablanca le había dicho a su esposo, Youness Laasri, que sin el veto le habrían aprobado la visa. El veto ya fue anulado y la pareja pidió que se agilizara el trámite, pero él sigue esperando en Marruecos.",
+    "pt": "Hanan Rami deu à luz em Delaware em 28 de agosto. Semanas antes, um agente consular em Casablanca havia dito a seu marido, Youness Laasri, que, sem a restrição, seu visto teria sido aprovado. A medida foi anulada e o casal pediu urgência, mas ele continua esperando no Marrocos.",
+    "tl": "Nanganak si Hanan Rami sa Delaware noong Agosto 28. Ilang linggo bago iyon, sinabi ng opisyal sa Casablanca sa asawa niyang si Youness Laasri na naaprubahan sana ang visa kung walang pagbabawal. Napawalang-bisa na ito at humiling ang mag-asawa ng pinabilis na pagproseso, ngunit naghihintay pa rin siya sa Morocco."
+  },
+  "CLINIC v. Rubio · Nov 6, 2026 · ¶¶ 214–217": {
+    "es": "CLINIC contra Rubio · 6 de noviembre de 2026 · párrs. 214–217",
+    "pt": "CLINIC contra Rubio · 6 de novembro de 2026 · parágrafos 214–217",
+    "tl": "CLINIC v. Rubio · Nobyembre 6, 2026 · mga talata 214–217"
+  },
+  "The Mitchell–Baugh family": {
+    "es": "La familia Mitchell–Baugh",
+    "pt": "A família Mitchell–Baugh",
+    "tl": "Ang pamilyang Mitchell–Baugh"
+  },
+  "He's 92 and depends on his wife for care. She's stuck in Jamaica.": {
+    "es": "Tiene 92 años y depende de los cuidados de su esposa. Ella sigue en Jamaica.",
+    "pt": "Aos 92 anos, ele depende dos cuidados da esposa. Ela está retida na Jamaica.",
+    "tl": "Siya ay 92 anyos at umaasa sa pag-aalaga ng asawa. Nananatili sa Jamaica ang kanyang asawa."
+  },
+  "Carol Marie Baugh, 71, is the caregiver for her 92-year-old husband in Florida, who has multiple medical conditions, but she has been stranded abroad since traveling for her visa interview. Even after the ban was overturned, Kingston refused her visa again in October, and their son has had to take over his father's care.": {
+    "es": "Carol Marie Baugh, de 71 años, cuida en Florida a su esposo de 92, que padece varias enfermedades. Desde que viajó a su entrevista no ha podido regresar. Incluso después de anularse el veto, el consulado en Kingston volvió a denegarle la visa en octubre, y su hijo tuvo que hacerse cargo del cuidado de su padre.",
+    "pt": "Carol Marie Baugh, de 71 anos, cuida do marido de 92 na Flórida, onde ele convive com várias doenças. Desde que viajou para a entrevista, ela não consegue voltar. Mesmo após a anulação da medida, o consulado em Kingston voltou a negar o visto em outubro, e o filho teve de assumir os cuidados do pai.",
+    "tl": "Si Carol Marie Baugh, 71, ang nag-aalaga sa 92-anyos niyang asawang may ilang karamdaman sa Florida. Hindi na siya nakabalik mula nang bumiyahe para sa panayam. Kahit napawalang-bisa na ang pagbabawal, muling tinanggihan ng konsulado sa Kingston ang visa noong Oktubre. Ang anak nilang lalaki na ang nag-aalaga sa ama."
+  },
+  "CLINIC v. Rubio · Nov 6, 2026 · ¶ 231": {
+    "es": "CLINIC contra Rubio · 6 de noviembre de 2026 · párr. 231",
+    "pt": "CLINIC contra Rubio · 6 de novembro de 2026 · parágrafo 231",
+    "tl": "CLINIC v. Rubio · Nobyembre 6, 2026 · talata 231"
+  },
+  "The Temaj–Wilbanks family": {
+    "es": "La familia Temaj–Wilbanks",
+    "pt": "A família Temaj–Wilbanks",
+    "tl": "Ang pamilyang Temaj–Wilbanks"
+  },
+  "She left for a short trip to her visa interview. Her children started school without her.": {
+    "es": "Salió para un viaje corto a su entrevista. Sus hijos empezaron las clases sin ella.",
+    "pt": "Ela saiu para uma viagem curta, para a entrevista do visto. Os filhos começaram as aulas sem ela.",
+    "tl": "Umalis siya para sa maikling biyaheng kailangan sa panayam. Nagpasukan ang mga anak nang wala siya."
+  },
+  "In May 2026, Lorenza Temaj Jiguan left her husband and two children in Maryland for what should have been a routine immigrant visa interview in Guatemala. The trip turned into six months stranded abroad, and her children began a new school year without their mother.": {
+    "es": "En mayo de 2026, Lorenza Temaj Jiguan dejó a su esposo y a sus dos hijos en Maryland para acudir a lo que debía ser una entrevista de rutina en Guatemala. El viaje se convirtió en seis meses sin poder volver, y sus hijos comenzaron el nuevo año escolar sin su madre.",
+    "pt": "Em maio de 2026, Lorenza Temaj Jiguan deixou o marido e os dois filhos em Maryland para o que deveria ser uma entrevista de rotina na Guatemala. A viagem virou seis meses sem poder voltar. As crianças começaram o ano letivo sem a mãe.",
+    "tl": "Noong Mayo 2026, iniwan muna ni Lorenza Temaj Jiguan ang asawa at dalawang anak sa Maryland para sa inaakala niyang karaniwang panayam para sa immigrant visa sa Guatemala. Umabot sa anim na buwan ang hindi niya makauwi. Nagsimula ang bagong taon ng pag-aaral ng mga anak nang wala ang kanilang ina."
+  },
+  "The Washington Post · Aug 31, 2026": {
+    "es": "The Washington Post · 31 de agosto de 2026",
+    "pt": "The Washington Post · 31 de agosto de 2026",
+    "tl": "The Washington Post · Agosto 31, 2026"
+  },
+  "A Florida family": {
+    "es": "Una familia de Florida",
+    "pt": "Uma família da Flórida",
+    "tl": "Isang pamilya sa Florida"
+  },
+  "She lost her pregnancy alone. A visa pause kept her husband away.": {
+    "es": "Perdió el embarazo sola. La suspensión de visas mantuvo lejos a su esposo.",
+    "pt": "Ela perdeu o bebê sozinha. A suspensão dos vistos manteve o marido longe.",
+    "tl": "Nakunan siyang mag-isa. Hindi makasama ang asawa dahil sa suspensiyon ng visa."
+  },
+  "A U.S. citizen in Florida told a federal court that she suffered a miscarriage without her husband by her side, because his immigrant visa was caught in the 75-country pause.": {
+    "es": "Una ciudadana estadounidense de Florida contó ante un tribunal federal que sufrió un aborto espontáneo sin su esposo a su lado porque la suspensión que afectó a 75 países paralizó el trámite de su visa de inmigrante.",
+    "pt": "Uma cidadã americana da Flórida contou a um tribunal federal que sofreu um aborto espontâneo sem o marido ao seu lado porque o pedido de visto de imigrante dele foi atingido pela suspensão que afetou 75 países.",
+    "tl": "Sinabi ng isang mamamayan ng US sa Florida sa hukumang pederal na nakunan siya nang wala sa tabi niya ang asawa dahil kabilang ang immigrant visa nito sa mga naapektuhan ng suspensiyon sa 75 bansa."
+  },
+  "Storie v. Trump · District court opinion · Aug 25, 2026 · citing ECF No. 7-4 at 23–24": {
+    "es": "Storie contra Trump · Resolución del tribunal de distrito · 25 de agosto de 2026 · cita el documento ECF 7-4, págs. 23–24",
+    "pt": "Storie contra Trump · Decisão do tribunal distrital · 25 de agosto de 2026 · cita o documento ECF 7-4, págs. 23–24",
+    "tl": "Storie v. Trump · Pasya ng hukuman ng distrito · Agosto 25, 2026 · binabanggit ang ECF Blg. 7-4, pp. 23–24"
+  },
+  "Dr. Fernando Lizcano Losada": {
+    "es": "Dr. Fernando Lizcano Losada",
+    "pt": "Dr. Fernando Lizcano Losada",
+    "tl": "Dr. Fernando Lizcano Losada"
+  },
+  "The government called him \"extraordinary.\" Then it shut the door.": {
+    "es": "El gobierno calificó su capacidad de «extraordinaria». Luego le cerró la puerta.",
+    "pt": "O governo reconheceu sua capacidade como “extraordinária”. Depois fechou a porta.",
+    "tl": "Kinilala ng pamahalaan ang kanyang “pambihirang kakayahan”. Pagkatapos ay sinarhan siya ng pinto."
+  },
+  "In January 2025, USCIS approved the Colombian endocrinologist's EB-1A petition, a category reserved for people of extraordinary ability whose work will benefit the United States. A year later his visa was refused under the 75-country pause, and in late October 2026 he was still in Bogotá, waiting to bring his biomedical research to the United States.": {
+    "es": "En enero de 2025, USCIS aprobó la petición EB-1A del endocrinólogo colombiano, una categoría reservada a personas de capacidad extraordinaria cuyo trabajo beneficiará a EE. UU. Un año después se le denegó la visa por la suspensión a 75 países. A finales de octubre de 2026 seguía en Bogotá, a la espera de poder llevar su investigación biomédica a Estados Unidos.",
+    "pt": "Em janeiro de 2025, o USCIS aprovou a petição EB-1A do endocrinologista colombiano, categoria destinada a pessoas de capacidade extraordinária cujo trabalho beneficiará os Estados Unidos. Um ano depois, o visto foi negado por causa da suspensão para 75 países. No fim de outubro de 2026, ele ainda estava em Bogotá, esperando para levar sua pesquisa biomédica aos EUA.",
+    "tl": "Noong Enero 2025, inaprubahan ng USCIS ang petisyong EB-1A ng endocrinologist na taga-Colombia. Para ito sa mga taong may pambihirang kakayahan na ang gawain ay kapaki-pakinabang sa US. Makalipas ang isang taon, tinanggihan ang visa niya dahil sa suspensiyon sa 75 bansa. Noong huling bahagi ng Oktubre 2026, nasa Bogotá pa rin siya, naghihintay na madala sa US ang kanyang pananaliksik sa biomedisina."
+  },
+  "NPR interview · Oct 26, 2026": {
+    "es": "Entrevista de NPR · 26 de octubre de 2026",
+    "pt": "Entrevista à NPR · 26 de outubro de 2026",
+    "tl": "Panayam ng NPR · Oktubre 26, 2026"
+  },
+  "Fahimeh Mohajeri and Miad Ghaffari Ajrabadi": {
+    "es": "Fahimeh Mohajeri y Miad Ghaffari Ajrabadi",
+    "pt": "Fahimeh Mohajeri e Miad Ghaffari Ajrabadi",
+    "tl": "Fahimeh Mohajeri at Miad Ghaffari Ajrabadi"
+  },
+  "Two years after her interview and still without an answer. A federal judge called the wait reasonable.": {
+    "es": "Dos años después de su entrevista, aún no tenía respuesta. Un juez federal consideró razonable la espera.",
+    "pt": "Dois anos após a entrevista, ela continuava sem resposta. Um juiz federal considerou a espera razoável.",
+    "tl": "Dalawang taon matapos ang panayam, wala pa ring sagot. Para sa isang pederal na hukom, makatwiran ang paghihintay."
+  },
+  "Fahimeh Mohajeri, the wife of a U.S. citizen, was interviewed in Yerevan in April 2024 and then left in \"administrative processing\" with no decision. Twenty-six months later, a federal judge dismissed the couple's lawsuit to compel an answer, ruling that the wait did not count as unreasonable delay.": {
+    "es": "Fahimeh Mohajeri, esposa de un ciudadano estadounidense, acudió a su entrevista en Ereván en abril de 2024. Su caso quedó en «trámite administrativo» sin decisión. Veintiséis meses después, un juez federal desestimó la demanda con la que la pareja buscaba obtener una respuesta y concluyó que la demora no era irrazonable.",
+    "pt": "Fahimeh Mohajeri, esposa de um cidadão americano, foi entrevistada em Erevã em abril de 2024. Seu caso ficou em “processamento administrativo”, sem decisão. Vinte e seis meses depois, um juiz federal rejeitou a ação do casal para obter uma resposta, por entender que a espera não configurava demora excessiva.",
+    "tl": "Kinapanayam sa Yerevan noong Abril 2024 si Fahimeh Mohajeri, asawa ng isang mamamayan ng US. Pagkatapos ay nanatili ang aplikasyon sa “administrative processing” nang walang pasya. Makalipas ang 26 na buwan, ibinasura ng isang pederal na hukom ang demanda ng mag-asawa na humihiling ng desisyon, dahil hindi raw maituturing na di-makatwiran ang pagkaantala."
+  },
+  "Ghaffari Ajrabadi v. Rubio · District court opinion · Jun 18, 2026": {
+    "es": "Ghaffari Ajrabadi contra Rubio · Resolución del tribunal de distrito · 18 de junio de 2026",
+    "pt": "Ghaffari Ajrabadi contra Rubio · Decisão do tribunal distrital · 18 de junho de 2026",
+    "tl": "Ghaffari Ajrabadi v. Rubio · Pasya ng hukuman ng distrito · Hunyo 18, 2026"
+  },
+  "The Tonelli family": {
+    "es": "La familia Tonelli",
+    "pt": "A família Tonelli",
+    "tl": "Ang pamilyang Tonelli"
+  },
+  "The email said \"final interview.\" The same day, the door slammed shut.": {
+    "es": "El correo decía «entrevista final». Ese mismo día se cerró la puerta.",
+    "pt": "O e-mail dizia “entrevista final”. No mesmo dia, a porta se fechou.",
+    "tl": "“Panghuling panayam” ang sabi ng email. Nang araw ding iyon, biglang nagsara ang pinto."
+  },
+  "Music professor Mark Tonelli married Luciana in 2024 and filed a petition for her and his stepson to join him from Brazil about a week after the wedding. More than a year later, the couple got word they qualified for their final interview, the last step in the process. That same day, the State Department froze immigrant visas for 75 countries, Brazil among them. \"It's been agonizing every day,\" Tonelli told the Chicago Sun-Times in April 2026.": {
+    "es": "El profesor de música Mark Tonelli se casó con Luciana en 2024. Una semana después de la boda, solicitó que ella y su hijastro se reunieran con él desde Brasil. Más de un año después, les comunicaron que podían pasar a la entrevista final, el último paso. Ese mismo día, el Departamento de Estado suspendió las visas de inmigrante para 75 países, entre ellos Brasil. «Cada día ha sido una agonía», dijo Tonelli al Chicago Sun-Times en abril de 2026.",
+    "pt": "O professor de música Mark Tonelli se casou com Luciana em 2024 e, cerca de uma semana depois, pediu que ela e seu enteado pudessem vir do Brasil para morar com ele. Mais de um ano depois, o casal soube que poderia passar à entrevista final, a última etapa. No mesmo dia, o Departamento de Estado suspendeu os vistos de imigrante para 75 países, entre eles o Brasil. “Tem sido uma agonia todos os dias”, disse Tonelli ao Chicago Sun-Times em abril de 2026.",
+    "tl": "Pinakasalan ng propesor ng musika na si Mark Tonelli si Luciana noong 2024. Makalipas ang humigit-kumulang isang linggo, naghain siya ng petisyon upang makasama niya ang asawa at anak nito mula sa Brazil. Pagkaraan ng mahigit isang taon, nabalitaan nilang maaari na silang magpatuloy sa panghuling panayam. Nang araw ding iyon, sinuspinde ng Kagawaran ang immigrant visa para sa 75 bansa, kabilang ang Brazil. “Araw-araw itong napakasakit,” sinabi ni Tonelli sa Chicago Sun-Times noong Abril 2026."
+  },
+  "Chicago Sun-Times · Apr 28, 2026": {
+    "es": "Chicago Sun-Times · 28 de abril de 2026",
+    "pt": "Chicago Sun-Times · 28 de abril de 2026",
+    "tl": "Chicago Sun-Times · Abril 28, 2026"
+  },
+  "(names withheld)": {
+    "es": "(nombres reservados)",
+    "pt": "(nomes preservados)",
+    "tl": "(hindi isiniwalat ang mga pangalan)"
+  },
+  "GAO report": {
+    "es": "Informe de la GAO",
+    "pt": "Relatório do GAO",
+    "tl": "Ulat ng GAO"
+  },
+  "Reporting from Bogotá": {
+    "es": "Reportaje desde Bogotá",
+    "pt": "Reportagem de Bogotá",
+    "tl": "Ulat mula sa Bogotá"
+  },
+  "Senate letter": {
+    "es": "Carta del Senado",
+    "pt": "Carta do Senado",
+    "tl": "Liham ng Senado"
+  },
+  "USCIS policy alert": {
+    "es": "Aviso de política de USCIS",
+    "pt": "Comunicado do USCIS",
+    "tl": "Abiso ng USCIS tungkol sa patakaran"
+  },
+  "Updated guidance": {
+    "es": "Directrices actualizadas",
+    "pt": "Orientações atualizadas",
+    "tl": "Binagong mga alituntunin"
+  },
+  "Immigrant visa rule": {
+    "es": "Norma sobre visas de inmigrante",
+    "pt": "Norma sobre vistos de imigrante",
+    "tl": "Patakaran sa immigrant visa"
+  },
+  "Interim rule": {
+    "es": "Norma provisional",
+    "pt": "Norma provisória",
+    "tl": "Pansamantalang tuntunin"
+  },
+  "Final rule": {
+    "es": "Norma definitiva",
+    "pt": "Norma definitiva",
+    "tl": "Pinal na tuntunin"
+  },
+  "Congressional testimony": {
+    "es": "Testimonio ante el Congreso",
+    "pt": "Depoimento ao Congresso",
+    "tl": "Testimonya sa Kongreso"
+  },
+  "Chikumba v. U.S. Department of State": {
+    "es": "Chikumba contra el Departamento de Estado de EE. UU.",
+    "pt": "Chikumba contra o Departamento de Estado dos EUA",
+    "tl": "Chikumba v. Kagawaran ng Estado ng US"
+  },
+  "Court hearing": {
+    "es": "Audiencia judicial",
+    "pt": "Audiência judicial",
+    "tl": "Pagdinig sa hukuman"
+  },
+  "Appeal docket": {
+    "es": "Expediente de apelación",
+    "pt": "Andamento do recurso",
+    "tl": "Talaan ng apela"
+  },
+  "Regional hubs": {
+    "es": "Centros regionales",
+    "pt": "Centros regionais",
+    "tl": "Mga sentrong panrehiyon"
+  },
+  "hasn’t published any immigrant visa statistics since then": {
+    "es": "no ha publicado estadísticas sobre visas de inmigrante desde entonces",
+    "pt": "não publica estatísticas sobre vistos de imigrante desde então",
+    "tl": "wala pang inilalabas na estadistika tungkol sa immigrant visa mula noon"
   }
 }
