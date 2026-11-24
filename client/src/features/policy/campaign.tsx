@@ -7,12 +7,16 @@ import {
   CalendarDays,
   Mail,
 } from "lucide-react";
-import { t } from "../../i18n/i18n";
+import { getLanguage, t } from "../../i18n/i18n";
 import { ScrollRail } from "../../components/scroll-rail";
 import { date, External } from "../../components/ui";
 import { PolicyTimeline } from "./policy-timeline";
 import { policies } from "../../../../shared/policies";
-import { participation, policyEvents, reviewedAt } from "../../../../shared/campaign";
+import {
+  participation,
+  policyEvents,
+  reviewedAt,
+} from "../../../../shared/campaign";
 
 export function GovernmentTimeline() {
   const [filter, setFilter] = useState("All");
@@ -81,7 +85,11 @@ export function Participate() {
   return (
     <section className="section participation" id="take-part">
       <div className="section-heading">
-        <h2>{t("Make the case for change.")}</h2>
+        <h2>
+          {getLanguage() === "en"
+            ? "The action you can take"
+            : t("Make the case for change.")}
+        </h2>
         <p>
           {t(
             "A signature shows support. A timeline documents the wait. A story makes the cost visible.",

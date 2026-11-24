@@ -1,4 +1,4 @@
-import { t, number } from "../i18n/i18n";
+import { getLanguage, t, number } from "../i18n/i18n";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -11,11 +11,9 @@ import {
 } from "lucide-react";
 import { usePublicView, useData } from "../app/api";
 import { previewMode } from "../app/preview";
-import {
-  GovernmentTimeline,
-  Participate,
-  SupportActions,
-} from "../features/policy/campaign";
+import { Participate } from "../features/policy/campaign";
+import { HumanitarianCases } from "../features/policy/humanitarian-cases";
+import { PetitionContext } from "../features/policy/petition-context";
 import type { PlaceCount } from "../../../shared/public-views";
 
 const demands = [
@@ -137,14 +135,15 @@ export function Home() {
           <ArrowUpRight size={20} />
         </Link>
       </section>
+      <PetitionContext />
+      <HumanitarianCases />
       <section className="demands section" id="our-demands">
-        <p className="project-introduction">
-          {t(
-            "Reunite Now is a community-led petition for shorter U.S. visa waits. Families share their stories and visa timelines here, and supporters can show their representative how many people in their district have signed.",
-          )}
-        </p>
         <div className="section-heading">
-          <h2>{t("Congress must require the State Department to:")}</h2>
+          <h2>
+            {getLanguage() === "en"
+              ? "This petition demands Congress require the State Department to:"
+              : t("Congress must require the State Department to:")}
+          </h2>
         </div>
         <div className="demands-grid">
           {demands.map((d, i) => (
@@ -175,8 +174,6 @@ export function Home() {
         </div>
       </section>
       <Participate />
-      <GovernmentTimeline />
-      <SupportActions />
       <section className="join-banner">
         <h2>{t("Put your name behind the demand.")}</h2>
         <p>

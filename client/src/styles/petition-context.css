@@ -1,0 +1,287 @@
+.section.petition-context {
+  --trail-line: #bda69a;
+  --trail-gap: 1.7rem;
+  padding-block-end: 0;
+}
+.policy-intro {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  align-items: end;
+  gap: 2rem 7%;
+  margin-block-end: clamp(2rem, 4vw, 3.5rem);
+}
+.policy-intro h2 {
+  font-size: clamp(2rem, 4.2vw, 3.6rem);
+  line-height: 1.04;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+.policy-intro p,
+.policy-reading p {
+  margin: 0;
+  line-height: 1.6;
+}
+.policy-intro p {
+  color: var(--muted);
+}
+.policy-trail {
+  display: grid;
+  gap: var(--trail-gap);
+  padding-inline: 1rem;
+}
+.policy-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--stops), minmax(0, 1fr));
+  gap: 0 1rem;
+  margin: 0;
+  padding: 0.95rem 0 0;
+  border-top: 2px solid var(--trail-line);
+  list-style: none;
+}
+.policy-row:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  bottom: calc(-1 * var(--trail-gap) - 2px);
+  left: 100%;
+  width: 1rem;
+  border: 2px solid var(--trail-line);
+  border-left: 0;
+  border-radius: 0 1rem 1rem 0;
+  pointer-events: none;
+}
+.policy-row:nth-child(even)::after {
+  right: 100%;
+  left: auto;
+  transform: scaleX(-1);
+}
+.petition-stop {
+  display: contents;
+}
+.petition-stop h3 {
+  grid-column: var(--column);
+  grid-row: 1;
+  margin: 0;
+  font: inherit;
+}
+.petition-stop button {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1.35rem;
+  align-content: start;
+  align-items: start;
+  gap: 0.45rem 0.6rem;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  background: white;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.petition-stop button::before {
+  content: "";
+  position: absolute;
+  top: calc(-0.95rem - 6px);
+  left: 1rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid var(--coral);
+  background: white;
+  box-sizing: content-box;
+}
+.petition-stop time {
+  grid-column: 1;
+  color: var(--coral);
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+.petition-stop-title {
+  grid-column: 1 / -1;
+  font-size: clamp(1rem, 1.4vw, 1.28rem);
+  font-weight: 600;
+  line-height: 1.22;
+}
+.petition-stop button svg {
+  grid-column: 2;
+  grid-row: 1;
+  width: 1.2rem;
+  height: 1.2rem;
+  color: var(--coral);
+}
+.petition-stop button:hover,
+.petition-stop button[aria-expanded="true"] {
+  border-color: var(--coral);
+  background: #fcf6f2;
+}
+.petition-stop button[aria-expanded="true"]::before {
+  background: var(--coral);
+}
+.policy-reading {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  margin-top: 0.75rem;
+  padding: clamp(1rem, 2.5vw, 2rem);
+  border-left: 3px solid var(--coral);
+  background: white;
+  overflow-wrap: anywhere;
+}
+.policy-reading p {
+  max-width: 80ch;
+}
+.policy-reading .policy-source {
+  margin-top: 0.65rem;
+  font-size: 0.84rem;
+}
+.policy-source a {
+  color: var(--coral);
+  text-decoration: underline;
+}
+.policy-more {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 1.5rem auto 0;
+  padding: 0.7rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 2rem;
+  background: white;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.policy-more:hover {
+  border-color: var(--coral);
+}
+.policy-more svg {
+  width: 1rem;
+  height: 1rem;
+}
+.petition-context button:focus-visible,
+.policy-source a:focus-visible {
+  outline: 3px solid var(--coral);
+  outline-offset: 3px;
+}
+@media (max-width: 800px) {
+  .policy-intro {
+    display: block;
+  }
+  .policy-intro p {
+    margin-top: 1rem;
+  }
+  .policy-trail {
+    display: block;
+    padding: 0;
+  }
+  .policy-row {
+    display: block;
+    border: 0;
+    padding: 0 0 0 0.4rem;
+  }
+  .policy-row::after {
+    display: none;
+  }
+  .petition-stop {
+    position: relative;
+    display: block;
+    border-left: 2px solid var(--trail-line);
+    padding: 0 0 0.75rem 1.1rem;
+  }
+  .petition-stop button::before {
+    top: 1.15rem;
+    left: calc(-1.1rem - 8px);
+  }
+  .policy-reading {
+    margin-top: 0.4rem;
+  }
+}
+.petition-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-block-start: 1.25rem;
+}
+.petition-controls .policy-more {
+  margin: 0;
+}
+.petition-controls .policy-more:focus-visible,
+.humanitarian-card summary:focus-visible,
+.humanitarian-detail a:focus-visible {
+  outline: 3px solid var(--coral);
+  outline-offset: 3px;
+}
+.section.humanitarian-cases {
+  padding-block-end: 0;
+}
+.humanitarian-cases h2 {
+  margin-block-end: 1.5rem;
+}
+.humanitarian-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+.humanitarian-card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+}
+.humanitarian-card[open] {
+  border-color: var(--coral);
+}
+.humanitarian-card summary {
+  position: relative;
+  display: grid;
+  gap: 0.5rem;
+  padding: 1.1rem 2.7rem 1.2rem 1.1rem;
+  cursor: pointer;
+  list-style: none;
+}
+.humanitarian-card summary::-webkit-details-marker {
+  display: none;
+}
+.humanitarian-name {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--coral);
+}
+.humanitarian-card strong {
+  font-size: clamp(1.03rem, 1.4vw, 1.3rem);
+  line-height: 1.25;
+}
+.humanitarian-card svg {
+  position: absolute;
+  right: 1rem;
+  top: 1.15rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  color: var(--coral);
+}
+.humanitarian-card[open] svg {
+  transform: rotate(45deg);
+}
+.humanitarian-detail {
+  padding: 0 1.1rem 1.1rem;
+}
+.humanitarian-detail p {
+  margin: 0;
+  line-height: 1.55;
+}
+.humanitarian-detail a {
+  display: block;
+  margin-block-start: 0.7rem;
+  font-size: 0.85rem;
+  color: var(--coral);
+  text-decoration: underline;
+}
+@media (max-width: 800px) {
+  .humanitarian-grid {
+    grid-template-columns: 1fr;
+  }
+}

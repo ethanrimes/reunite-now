@@ -1,0 +1,201 @@
+{
+  "heading": "Recent federal policies have caused extraordinary visa delays",
+  "intro": "Since January 2025, staffing cuts, processing freezes, travel bans and pauses ordered by courts or agencies have piled up faster than consulates can clear them. In February 2026, U.S. consulates issued 48% fewer immigrant visas than in February 2025. Department of State hasn’t published any immigrant visa statistics since then.",
+  "periods": [
+    {
+      "label": "January – May 2025",
+      "events": [
+        {
+          "date": "2025-01-20",
+          "dateLabel": "January 20, 2025",
+          "title": "A hiring freeze cuts the visa workforce by a third",
+          "body": "A federal hiring freeze, a reduction in force and attrition cut the number of consular officers working on nonimmigrant visas from 1,342 in FY2024 to 904 in FY2025, a 33% drop. In India, 68 officers handled 1.46 million applications, more than 21,000 each.",
+          "sources": [
+            {
+              "label": "GAO report",
+              "url": "https://www.gao.gov/assets/gao-26-107902.pdf"
+            }
+          ]
+        },
+        {
+          "date": "2025-01-26",
+          "dateLabel": "January 26, 2025",
+          "title": "Visas suspended in Colombia over deportation flights",
+          "body": "After Colombia refused two U.S. deportation flights, the State Department suspended all visa issuance at the U.S. Embassy in Bogotá, where appointment waits already ran up to two years. Colombia backed down the same day, but the consular section stayed closed until January 31, and hundreds of appointments were cancelled.",
+          "sources": [
+            {
+              "label": "Reporting from Bogotá",
+              "url": "https://apnews.com/article/d98900b9626bc481daebe0561d8889e8"
+            }
+          ]
+        },
+        {
+          "date": "2025-05-27",
+          "dateLabel": "May 27, 2025",
+          "title": "Student visa interviews frozen for three weeks",
+          "body": "The State Department stopped scheduling new student and exchange visitor interviews so it could expand social media vetting. Interviews resumed June 18, but only for applicants who made their social media profiles public. The backlog persisted: on August 11, 2026, 30 senators wrote to Secretary Rubio warning that students still couldn't get appointments in time for the academic year.",
+          "sources": [
+            {
+              "label": "Senate letter",
+              "url": "https://www.kelly.senate.gov/wp-content/uploads/2026/08/State-Dept-Timely-Processing-of-Student-and-Exchange-Visitor-Nonimmigrant-Visas-8.11.26.pdf"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "August – September 2025",
+      "events": [
+        {
+          "date": "2025-08-01",
+          "dateLabel": "August 1, 2025",
+          "title": "USCIS hardens family-petition processing",
+          "body": "USCIS rewrote its family-based guidance to say that a family petition gives no immigration status and does not prevent removal, and that it may refer removable beneficiaries to immigration court. Interviews increased under the new guidance. In July 2026, CLINIC reported that field offices were interviewing immediate-relative petitions that previously would have been approved on documents alone.",
+          "sources": [
+            {
+              "label": "USCIS policy alert",
+              "url": "https://www.uscis.gov/sites/default/files/document/policy-manual-updates/20250801-FamilyBasedImmigrants.pdf"
+            }
+          ]
+        },
+        {
+          "date": "2025-09-02",
+          "dateLabel": "September 2, 2025",
+          "title": "Interview waivers nearly eliminated",
+          "body": "Most nonimmigrant visa applicants, including students, workers and people renewing a visa in the same category, must now interview in person. Even children under 14 and adults over 79 lost their exemption. In 2024, 40% of nonimmigrant visas were issued without an interview. In FY2025 that share fell to 26%, though the rule took effect only in the fiscal year's last month. At Mexico City, the share of visitor visas processed without an interview fell from 92% to 43%.",
+          "sources": [
+            {
+              "label": "State Department notice",
+              "url": "https://travel.state.gov/en/newsroom/visas/2025/interview-waiver-update-july-25-2025.html"
+            },
+            {
+              "label": "Updated guidance",
+              "url": "https://travel.state.gov/en/newsroom/visas/2025/interview-waiver-update-sept-18-2025.html"
+            }
+          ]
+        },
+        {
+          "date": "2025-09-06",
+          "dateLabel": "September 6, 2025",
+          "title": "Applicants barred from seeking faster posts abroad",
+          "body": "Nonimmigrant visa applicants must now apply in their country of nationality or residence. That ended the common practice of booking an interview at a less backlogged consulate in a third country, and it locks applicants into some of the world's longest queues. In FY2025 the average visitor visa wait was 597 days in Colombia, 447 in Honduras and 346 in India. A matching rule for immigrant visas took effect November 1, 2025.",
+          "sources": [
+            {
+              "label": "State Department notice",
+              "url": "https://iptp-production.s3.amazonaws.com/media/documents/2025.09.06_DOS_-_Adjudicating_Nonimmigrant_Applicants_in_Their_Country_of_Residence.pdf"
+            },
+            {
+              "label": "Immigrant visa rule",
+              "url": "https://travel.state.gov/en/newsroom/visas/2025/adjudicating-iv-applicants-in-their-country-of-residence.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "October – December 2025",
+      "events": [
+        {
+          "date": "2025-10-30",
+          "dateLabel": "October 30, 2025",
+          "title": "Automatic work permit extensions end",
+          "body": "DHS ended the automatic extension that let workers keep their employment authorization while a timely renewal was pending. During earlier USCIS backlogs, that extension had reached as long as 540 days. Now, if USCIS hasn't decided a renewal before the card expires, the worker loses the right to work until it does. DHS made the rule final, unchanged, on October 14, 2026.",
+          "sources": [
+            {
+              "label": "Interim rule",
+              "url": "https://www.govinfo.gov/content/pkg/FR-2025-10-30/html/2025-19702.htm"
+            },
+            {
+              "label": "Final rule",
+              "url": "https://www.govinfo.gov/content/pkg/FR-2026-10-14/html/2026-20955.htm"
+            }
+          ]
+        },
+        {
+          "date": "2025-12-02",
+          "dateLabel": "December 2, 2025",
+          "title": "USCIS freezes asylum and benefits for travel-ban nationals",
+          "body": "A USCIS memo (PM-602-0192) halted decisions on all pending asylum cases, whatever the applicant's nationality. It also halted all benefit applications (green cards, work permits, naturalization) for nationals of the 19 travel-ban countries. A Rhode Island federal court vacated the memo on June 5, 2026, and a California court blocked them nationwide on August 24, 2026.",
+          "sources": [
+            {
+              "label": "Congressional testimony",
+              "url": "https://www.govinfo.gov/content/pkg/CHRG-119hhrg63777/html/CHRG-119hhrg63777.htm"
+            },
+            {
+              "label": "Court ruling",
+              "url": "https://www.govinfo.gov/content/pkg/USCOURTS-cand-3_26-cv-04850/pdf/USCOURTS-cand-3_26-cv-04850-4.pdf"
+            }
+          ]
+        },
+        {
+          "date": "2025-12-23",
+          "dateLabel": "December 23, 2025",
+          "title": "Diversity visa issuance paused",
+          "body": "The State Department stopped issuing diversity visas while it reviewed its vetting procedures. On August 28, 2026, a federal judge ordered the pause lifted (Medani v. Trump), barely a month before DV-2026 eligibility ran out for good on September 30. Even then, the department scheduled no interviews and issued no visas for nearly two weeks. From September 10 to 21, posts decided an average of 83 cases a day worldwide, compared with about 230 a day in September 2025. In the September 14–21 status reports, refusals outnumbered issuances 583 to 83. The court found the government's compliance \"less than substantial\" and ordered 10 more days of processing past the deadline.",
+          "sources": [
+            {
+              "label": "Court ruling",
+              "url": "https://www.govinfo.gov/content/pkg/USCOURTS-cand-5_26-cv-06332/pdf/USCOURTS-cand-5_26-cv-06332-3.pdf"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "January – August 2026",
+      "events": [
+        {
+          "date": "2026-01-01",
+          "dateLabel": "January 1, 2026",
+          "title": "Travel ban expanded to 39 countries",
+          "body": "Proclamation 10998, signed December 16, 2025, imposed full or partial visa bans on nationals of 39 countries and on holders of Palestinian Authority travel documents. It also removed the automatic exception for immediate relatives of U.S. citizens (spouses, children and parents). Those families must now seek a discretionary national-interest exception instead. Families are challenging the ban in Chikumba v. Department of State.",
+          "sources": [
+            {
+              "label": "State Department notice",
+              "url": "https://travel.state.gov/en/newsroom/visas/2026/suspension-of-visa-issuance-to-foreign-nationals-to-protect-the-security-of-the-united-states.html"
+            },
+            {
+              "label": "Chikumba v. U.S. Department of State",
+              "url": "https://www.endthetravelban.org/wp-content/uploads/2026/11/11-Response-to-Motion-to-Dismiss_Redacted.pdf"
+            }
+          ]
+        },
+        {
+          "date": "2026-01-21",
+          "dateLabel": "January 21, 2026",
+          "title": "Immigrant visas halted for 75 nationalities",
+          "body": "The State Department told officers to refuse immigrant visas to nationals of 75 countries it considered at high risk of relying on public benefits. On August 21, 2026, a federal court in New York struck the policy down as unlawful (CLINIC v. Rubio) and set aside more than 43,000 refusals. Reprocessing has been slow: between August 21 and September 30, the department re-decided only 706 of those cases and approved 318. The government has appealed.",
+          "sources": [
+            {
+              "label": "Court hearing",
+              "url": "https://media.nilc.org/2026/11/2026-10-14-CLINIC-v.-Rubio-26-cv-858-OSC-Conference-Transcript.pdf"
+            },
+            {
+              "label": "Appeal docket",
+              "url": "https://dockets.justia.com/docket/circuit-courts/ca2/26-2573"
+            }
+          ]
+        },
+        {
+          "date": "2026-08-01",
+          "dateLabel": "August 1, 2026",
+          "title": "Visa processing pulled from 25 African posts",
+          "body": "Routine immigrant and nonimmigrant visa services at 25 embassies and consulates moved to 20 regional hubs, several of them already among the region's most backlogged. Nigeria, Africa's most populous country, now has a single visa post, because applications that used to go to Abuja now go to Lagos. Applicants in many other affected countries must cross a border just to interview.",
+          "sources": [
+            {
+              "label": "Regional hubs",
+              "url": "https://travel.state.gov/en/newsroom/visas/2026/realignment-of-u-s--visa-services-in-africa-to-regional-hubs.html"
+            }
+          ]
+        },
+        {
+          "date": "2026-08-25",
+          "dateLabel": "August 25, 2026",
+          "title": "Worldwide immigrant visa interview pause",
+          "body": "Four days after the 75-country ban was struck down, the State Department paused and began rescheduling immigrant visa interviews at embassies and consulates worldwide, citing mandatory officer training on public-charge screening. Officials first said the pause would end by early to mid-September. Three months later, interviews are still paused at many posts, restarts elsewhere have been uneven, and the department has announced no date for a full restart. On November 6, the plaintiffs in CLINIC v. Rubio amended their complaint to challenge the new directives.",
+          "sources": []
+        }
+      ]
+    }
+  ]
+}
