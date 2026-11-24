@@ -1,6 +1,10 @@
 {
   "heading": "Recent federal policies have caused extraordinary visa delays",
-  "intro": "Since January 2025, staffing cuts, processing freezes, travel bans and pauses ordered by courts or agencies have piled up faster than consulates can clear them. In February 2026, U.S. consulates issued 48% fewer immigrant visas than in February 2025. Department of State hasn’t published any immigrant visa statistics since then.",
+  "intro": {
+    "before": "In February 2026, U.S. consulates issued ",
+    "emphasis": "48% fewer immigrant visas",
+    "after": " than in February 2025. Department of State hasn’t published any immigrant visa statistics since then."
+  },
   "periods": [
     {
       "label": "January – May 2025",

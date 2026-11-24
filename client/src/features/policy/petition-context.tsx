@@ -19,7 +19,11 @@ export function PetitionContext() {
     >
       <header className="policy-intro">
         <h2 id="why-the-wait-title">{timeline.heading}</h2>
-        <p>{timeline.intro}</p>
+        <p>
+          {timeline.intro.before}
+          <strong>{timeline.intro.emphasis}</strong>
+          {timeline.intro.after}
+        </p>
       </header>
       <div id="policy-periods" className="policy-trail">
         {timeline.periods.slice(0, visiblePeriods).map((period, row) => (
