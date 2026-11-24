@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { type CSSProperties, useState } from "react";
 import { Plus } from "lucide-react";
 import { SectionControls } from "./section-controls";
 
@@ -9,6 +9,7 @@ const rowSize = 3;
 
 export function HumanitarianCases() {
   const [visible, setVisible] = useState(rowSize);
+  const [expanded, setExpanded] = useState<number | null>(null);
   return (
     <section
       className="section humanitarian-cases"
@@ -20,12 +21,23 @@ export function HumanitarianCases() {
       <h2 id="humanitarian-title">{heading}</h2>
       <div id="humanitarian-list" className="humanitarian-grid">
         {cases.slice(0, visible).map((item, index) => (
-          <details
+          <div
             key={item.name}
-            className="humanitarian-card"
-            name="humanitarian-case"
+            className="humanitarian-entry"
+            style={{
+              "--desktop-row": 2 * Math.floor(index / rowSize) + 1,
+              "--desktop-column": (index % rowSize) + 1,
+              "--mobile-row": 2 * index + 1,
+            } as CSSProperties}
           >
-            <summary id={"humanitarian-case-" + index}>
+            <button
+              type="button"
+              className="humanitarian-card"
+              id={"humanitarian-case-" + index}
+              aria-expanded={expanded === index}
+              aria-controls={"humanitarian-detail-" + index}
+              onClick={() => setExpanded(expanded === index ? null : index)}
+            >
               <span className="humanitarian-name">
                 {item.name}
                 {item.note && (
@@ -37,17 +49,26 @@ export function HumanitarianCases() {
               </span>
               <strong>{item.title}</strong>
               <Plus aria-hidden="true" />
-            </summary>
-            <div className="humanitarian-detail">
+            </button>
+            <div
+              className="humanitarian-detail"
+              id={"humanitarian-detail-" + index}
+              role="region"
+              aria-labelledby={"humanitarian-case-" + index}
+              hidden={expanded !== index}
+            >
               <p>{item.detail}</p>
               <a href={item.source.href}>{item.source.label}</a>
             </div>
-          </details>
+          </div>
         ))}
       </div>
       <SectionControls
         canCollapse={visible > rowSize}
-        onCollapse={() => setVisible(rowSize)}
+        onCollapse={() => {
+          setVisible(rowSize);
+          setExpanded(null);
+        }}
         noun="cases"
         contentId="humanitarian-list"
         moreLabel={visible < cases.length ? "Show more cases" : undefined}

@@ -210,7 +210,7 @@
   margin: 0;
 }
 .petition-controls .policy-more:focus-visible,
-.humanitarian-card summary:focus-visible,
+.humanitarian-card:focus-visible,
 .humanitarian-detail a:focus-visible {
   outline: 3px solid var(--coral);
   outline-offset: 3px;
@@ -224,27 +224,35 @@
 .humanitarian-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-  align-items: start;
+  /* Equal headline rows alternate with content-sized detail rows. */
+  grid-auto-rows: 1fr auto;
+  column-gap: 1rem;
+}
+.humanitarian-entry {
+  display: contents;
+  --case-row: var(--desktop-row);
 }
 .humanitarian-card {
+  grid-row: var(--case-row);
+  grid-column: var(--desktop-column);
   background: white;
   border: 1px solid var(--line);
   border-radius: 0.5rem;
-}
-.humanitarian-card[open] {
-  border-color: var(--coral);
-}
-.humanitarian-card summary {
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  align-content: start;
   position: relative;
   display: grid;
   gap: 0.5rem;
   padding: 1.1rem 2.7rem 1.2rem 1.1rem;
   cursor: pointer;
-  list-style: none;
 }
-.humanitarian-card summary::-webkit-details-marker {
-  display: none;
+.humanitarian-grid {
+  row-gap: 0.5rem;
+}
+.humanitarian-card[aria-expanded="true"] {
+  border-color: var(--coral);
 }
 .humanitarian-name {
   font-size: 0.86rem;
@@ -263,11 +271,16 @@
   height: 1.2rem;
   color: var(--coral);
 }
-.humanitarian-card[open] svg {
+.humanitarian-card[aria-expanded="true"] svg {
   transform: rotate(45deg);
 }
 .humanitarian-detail {
-  padding: 0 1.1rem 1.1rem;
+  grid-row: calc(var(--case-row) + 1);
+  grid-column: 1 / -1;
+  margin-block-start: 0.5rem;
+  padding: 1rem 1.1rem;
+  background: white;
+  border-inline-start: 3px solid var(--coral);
 }
 .humanitarian-detail p {
   margin: 0;
@@ -282,7 +295,13 @@
 }
 @media (max-width: 800px) {
   .humanitarian-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .humanitarian-entry {
+    --case-row: var(--mobile-row);
+  }
+  .humanitarian-card {
+    grid-column: 1;
   }
 }
 
@@ -294,8 +313,8 @@
   padding-block-start: clamp(2rem, 4vw, 4rem);
 }
 .petition-demands-band {
-  background: #53251f;
-  color: #fffaf3;
+  background: #f4ebe4;
+  border-block: 1px solid #e3d6cc;
 }
 .petition-demands-band .demands,
 .petition-action-band .participation {
@@ -303,32 +322,23 @@
   padding-block: clamp(2.75rem, 6vw, 5.75rem);
 }
 .petition-demands-band .demands .section-heading h2 {
-  max-width: 29ch;
-  color: #fffaf3;
-  font-size: clamp(2rem, 3.8vw, 3.25rem);
+  max-width: 32ch;
+  border-inline-start: 5px solid var(--coral);
+  padding-inline-start: clamp(0.85rem, 2vw, 1.5rem);
+  font-size: clamp(1.85rem, 3.2vw, 2.75rem);
   text-wrap: balance;
 }
 .petition-demands-band .demands-grid article {
-  background: transparent;
-  border-color: transparent;
-  border-block-start: 2px solid #dba792;
+  background: #fffdf9;
+  border: 1px solid #e3d6cc;
+  border-block-start: 2px solid var(--coral);
 }
-.petition-demands-band .demands-grid h3,
-.petition-demands-band .demand-icon,
-.petition-demands-band .petition-note a {
-  color: #fffaf3;
+.petition-demands-band .demand-icon {
+  border: 0;
 }
-.petition-demands-band .demands-grid p,
 .petition-demands-band .demand-icon span,
-.petition-demands-band .petition-note > span {
-  color: #f1ded2;
-}
-.petition-demands-band .demand-icon,
-.petition-demands-band .petition-note {
-  border-color: #98685c;
-}
-.petition-demands-band .petition-note .text-button {
-  border-color: #dba792;
+.petition-demands-band .demand-icon svg {
+  color: var(--coral);
 }
 .petition-action-band {
   background: #fff;
