@@ -135,45 +135,51 @@ export function Home() {
           <ArrowUpRight size={20} />
         </Link>
       </section>
-      <PetitionContext />
-      <HumanitarianCases />
-      <section className="demands section" id="our-demands">
-        <div className="section-heading">
-          <h2>
-            {getLanguage() === "en"
-              ? "This petition demands Congress require the State Department to:"
-              : t("Congress must require the State Department to:")}
-          </h2>
-        </div>
-        <div className="demands-grid">
-          {demands.map((d, i) => (
-            <article key={d.title}>
-              <div className="demand-icon">
-                <d.icon size={24} />
-                <span>0{i + 1}</span>
-              </div>
-              <h3>{t(d.title)}</h3>
-              <p>{t(d.text)}</p>
-            </article>
-          ))}
-        </div>
-        <div className="petition-note">
-          <span>
-            {t("Our demands build on the")}{" "}
-            <Link to="/policies/reducing-visa-delays-act">
-              {t("Reducing Visa Delays Act, H.R. 10711")}
+      <div className="petition-motivation">
+        <PetitionContext />
+        <HumanitarianCases />
+      </div>
+      <div className="petition-demands-band">
+        <section className="demands section" id="our-demands">
+          <div className="section-heading">
+            <h2>
+              {getLanguage() === "en"
+                ? "This petition demands Congress require the State Department to:"
+                : t("Congress must require the State Department to:")}
+            </h2>
+          </div>
+          <div className="demands-grid">
+            {demands.map((d, i) => (
+              <article key={d.title}>
+                <div className="demand-icon">
+                  <d.icon size={24} />
+                  <span>0{i + 1}</span>
+                </div>
+                <h3>{t(d.title)}</h3>
+                <p>{t(d.text)}</p>
+              </article>
+            ))}
+          </div>
+          <div className="petition-note">
+            <span>
+              {t("Our demands build on the")}{" "}
+              <Link to="/policies/reducing-visa-delays-act">
+                {t("Reducing Visa Delays Act, H.R. 10711")}
+              </Link>
+              {t(
+                ", with additional community calls for measurable progress and humane communication.",
+              )}
+            </span>
+            <Link className="text-button" to="/login?intent=sign">
+              {t("I stand with this petition ")}
+              <ArrowUpRight size={17} />
             </Link>
-            {t(
-              ", with additional community calls for measurable progress and humane communication.",
-            )}
-          </span>
-          <Link className="text-button" to="/login?intent=sign">
-            {t("I stand with this petition ")}
-            <ArrowUpRight size={17} />
-          </Link>
-        </div>
-      </section>
-      <Participate />
+          </div>
+        </section>
+      </div>
+      <div className="petition-action-band">
+        <Participate />
+      </div>
       <section className="join-banner">
         <h2>{t("Put your name behind the demand.")}</h2>
         <p>
