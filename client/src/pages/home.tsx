@@ -12,7 +12,8 @@ import {
 import { usePublicView, useData } from "../app/api";
 import { previewMode } from "../app/preview";
 import { Participate } from "../features/policy/campaign";
-import { HumanitarianCases } from "../features/policy/humanitarian-cases";
+// HumanitarianCases ("The Americans and their families paying the price") is
+// intentionally not rendered here; keep the component for future use.
 import { PetitionContext } from "../features/policy/petition-context";
 import type { PlaceCount } from "../../../shared/public-views";
 
@@ -137,7 +138,6 @@ export function Home() {
       </section>
       <div className="petition-motivation">
         <PetitionContext />
-        <HumanitarianCases />
       </div>
       <div className="petition-demands-band">
         <section className="demands section" id="our-demands">

@@ -1,12 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  ArrowUpRight,
-  PenLine,
-  Camera,
-  CalendarDays,
-  Mail,
-} from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { t } from "../../i18n/i18n";
 import { ScrollRail } from "../../components/scroll-rail";
 import { date, External } from "../../components/ui";
@@ -81,35 +75,25 @@ export function GovernmentTimeline() {
   );
 }
 export function Participate() {
-  const icons = [PenLine, CalendarDays, Camera];
   return (
     <section className="section participation" id="take-part">
       <div className="section-heading">
         <h2>{t("The action you can take")}</h2>
-        <p>
-          {t(
-            "A signature shows support. A timeline documents the wait. A story makes the cost visible.",
-          )}
-        </p>
       </div>
       <div className="participation-grid">
-        {participation.map((item, i) => {
-          const Icon = icons[i] || Mail;
-          return (
-            <article key={item.to}>
-              <Icon size={24} />
-              <h3>{t(item.title)}</h3>
-              <p>{t(item.text)}</p>
-              {item.to.startsWith("https://") ? (
-                <External href={item.to}>{t(item.action)}</External>
-              ) : (
-                <Link className="text-button" to={item.to}>
-                  {t(item.action)} <ArrowUpRight size={17} />
-                </Link>
-              )}
-            </article>
-          );
-        })}
+        {participation.map((item) => (
+          <article key={item.to}>
+            <h3>{t(item.title)}</h3>
+            <p>{t(item.text)}</p>
+            {item.to.startsWith("https://") ? (
+              <External href={item.to}>{t(item.action)}</External>
+            ) : (
+              <Link className="text-button" to={item.to}>
+                {t(item.action)} <ArrowUpRight size={17} />
+              </Link>
+            )}
+          </article>
+        ))}
       </div>
     </section>
   );

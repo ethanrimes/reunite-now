@@ -489,3 +489,133 @@
 .signatory-pagination { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-block: 1.25rem; }
 
 .signatories-table caption { text-align: start; font-weight: 600; padding-block: 0 0.75rem; }
+
+/* Landing polish: one heading scale, readable small text, restrained accent use. */
+.policy-intro h2,
+.petition-demands-band .demands .section-heading h2,
+.petition-action-band .section-heading h2,
+.join-banner h2 {
+  font-size: clamp(1.65rem, 2.3vw, 2.2rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.petition-demands-band .demands .section-heading h2 {
+  border-inline-start: 0;
+  padding-inline-start: 0;
+  max-width: 30ch;
+}
+.photo-copy .photo-caption {
+  font-size: clamp(22px, 1.9vw, 27px);
+  line-height: 1.22;
+  max-width: 16em;
+  overflow-wrap: normal;
+  text-wrap: balance;
+}
+.photo-shade {
+  height: 50%;
+  background: linear-gradient(transparent, rgb(0 0 0 / 62%));
+}
+.hero-footnote,
+.photo-credit,
+.impact-strip > a,
+.petition-note > span {
+  font-size: 13px;
+}
+.petition-note > span {
+  line-height: 1.6;
+}
+
+.impact-strip {
+  padding-block: 34px;
+}
+.impact-strip strong {
+  font-size: 48px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.impact-strip > div {
+  gap: 8px;
+}
+.impact-strip span {
+  font-size: 13px;
+  color: #4a4a45;
+}
+
+.petition-stop button {
+  border-radius: 2px;
+}
+.petition-stop button svg {
+  color: #1c1c1c;
+}
+.policy-row:not(:last-child)::after {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+.policy-more {
+  border-radius: 2px;
+}
+
+.petition-demands-band {
+  background: var(--cream);
+  border-block-color: var(--line);
+}
+.petition-demands-band .demands-grid article {
+  background: #fff;
+  border-color: var(--line);
+  border-block-start: 2px solid var(--coral);
+}
+.petition-demands-band .demand-icon {
+  margin-bottom: 20px;
+}
+.petition-demands-band .demand-icon span,
+.petition-demands-band .demand-icon svg {
+  color: #1c1c1c;
+}
+.petition-demands-band .demand-icon span {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.petition-demands-band .demands-grid p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #3a3a36;
+}
+
+.participation-grid article {
+  border-top-color: #1c1c1c;
+}
+.participation-grid p {
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.join-banner {
+  background: #1f3a2f;
+  color: #f4f3f0;
+  border: 0;
+  padding: 76px 8% 80px;
+}
+.join-banner h2 {
+  color: #ffffff;
+}
+.join-banner p {
+  color: #d9e2dc;
+  font-size: 16px;
+  max-width: 44ch;
+  margin: 14px auto 28px;
+}
+
+@media (max-width: 650px) {
+  .impact-strip strong {
+    font-size: 34px;
+  }
+  .impact-strip span {
+    font-size: 12px;
+  }
+  .join-banner {
+    padding: 56px 6% 60px;
+  }
+}
