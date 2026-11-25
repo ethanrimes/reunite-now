@@ -6114,15 +6114,25 @@
     "pt": "Os serviços regulares de vistos de imigrante e não imigrante de 25 embaixadas e consulados foram transferidos para 20 centros regionais, vários deles já entre os mais sobrecarregados da região. A Nigéria, país mais populoso da África, ficou com um único posto, pois os pedidos antes enviados a Abuja agora vão para Lagos. Em muitos dos demais países afetados é preciso cruzar uma fronteira só para comparecer à entrevista.",
     "tl": "Inilipat ang regular na serbisyo para sa immigrant at nonimmigrant visa mula sa 25 embahada at konsulado patungo sa 20 sentrong panrehiyon. Ang ilan sa mga sentro ay kabilang na sa may pinakamahabang pila sa rehiyon. Sa Nigeria, ang pinakamataong bansa sa Africa, iisa na lang ang tanggapan dahil sa Lagos na dinidinig ang mga aplikasyong dati ay sa Abuja. Sa marami pang apektadong bansa, kailangang tumawid ng hangganan para lamang sa panayam."
   },
-  "Worldwide immigrant visa interview pause": {
-    "es": "Se suspenden las entrevistas para visas de inmigrante en todo el mundo",
-    "pt": "Entrevistas para vistos de imigrante são suspensas no mundo inteiro",
-    "tl": "Sinuspinde sa buong mundo ang mga panayam para sa immigrant visa"
+  "Worldwide immigrant visa interview pause due to public-charge training": {
+    "es": "Se suspenden en todo el mundo las entrevistas para visas de inmigrante por la capacitación sobre carga pública",
+    "pt": "Entrevistas para vistos de imigrante são suspensas no mundo inteiro por treinamento sobre encargo público",
+    "tl": "Sinuspinde sa buong mundo ang mga panayam para sa immigrant visa dahil sa pagsasanay sa public charge"
   },
-  "Four days after the 75-country ban was struck down, the State Department paused and began rescheduling immigrant visa interviews at embassies and consulates worldwide, citing mandatory officer training on public-charge screening. Officials first said the pause would end by early to mid-September. Three months later, interviews are still paused at many posts, restarts elsewhere have been uneven, and the department has announced no date for a full restart. On November 6, the plaintiffs in CLINIC v. Rubio amended their complaint to challenge the new directives.": {
-    "es": "Cuatro días después de que se anulara el veto a 75 países, el Departamento de Estado suspendió y empezó a reprogramar entrevistas en embajadas y consulados de todo el mundo. Alegó que los funcionarios debían capacitarse para evaluar la causal de carga pública. Al principio anunció que la suspensión terminaría entre principios y mediados de septiembre. Tres meses después, muchas sedes siguen sin entrevistar, otras han reanudado a ritmos distintos y no hay fecha para la reanudación total. El 6 de noviembre, los demandantes de CLINIC contra Rubio ampliaron su demanda para impugnar las nuevas directrices.",
-    "pt": "Quatro dias após a derrubada da restrição a 75 países, o Departamento de Estado suspendeu e começou a remarcar entrevistas em embaixadas e consulados de todo o mundo. Alegou que os agentes precisavam de treinamento obrigatório para avaliar a possibilidade de o solicitante depender de recursos públicos. A previsão inicial era retomar as entrevistas entre o início e meados de setembro. Três meses depois, muitos postos continuam sem entrevistar, a retomada nos demais tem sido irregular e não há data para a normalização. Em 6 de novembro, os autores do caso CLINIC contra Rubio aditaram a ação para contestar as novas diretrizes.",
-    "tl": "Apat na araw matapos mapawalang-bisa ang pagbabawal sa 75 bansa, sinuspinde at sinimulang ilipat ng Kagawaran ang mga iskedyul ng panayam sa buong mundo dahil sa sapilitang pagsasanay sa pagsusuri kung maaaring umasa ang aplikante sa tulong ng pamahalaan. Una nitong sinabing matatapos ito sa unang bahagi hanggang kalagitnaan ng Setyembre. Makalipas ang tatlong buwan, suspindido pa rin ang panayam sa maraming tanggapan, hindi pare-pareho ang pagbabalik sa iba, at walang petsa para sa ganap na pagpapatuloy. Noong Nobyembre 6, inamyendahan ng mga nagsakdal sa CLINIC v. Rubio ang reklamo upang tutulan ang mga bagong direktiba."
+  "Fragomen client alert": {
+    "es": "Alerta para clientes de Fragomen",
+    "pt": "Alerta a clientes da Fragomen",
+    "tl": "Abiso ng Fragomen sa mga kliyente"
+  },
+  "Boundless Immigration report": {
+    "es": "Informe de Boundless Immigration",
+    "pt": "Relatório da Boundless Immigration",
+    "tl": "Ulat ng Boundless Immigration"
+  },
+  "Four days after the 75-country ban was struck down, the State Department paused and began rescheduling immigrant visa interviews at embassies and consulates worldwide, citing mandatory officer training on public-charge screening. Officials first said the pause would end by early to mid-September. Three months later, interviews are still paused at many posts, restarts elsewhere have been uneven, and the department has announced no date for a full restart.": {
+    "es": "Cuatro días después de que se anulara el veto a 75 países, el Departamento de Estado suspendió y empezó a reprogramar entrevistas en embajadas y consulados de todo el mundo. Alegó que los funcionarios debían capacitarse para evaluar la causal de carga pública. Al principio anunció que la suspensión terminaría entre principios y mediados de septiembre. Tres meses después, muchas sedes siguen sin entrevistar, otras han reanudado a ritmos distintos y no hay fecha para la reanudación total.",
+    "pt": "Quatro dias após a derrubada da restrição a 75 países, o Departamento de Estado suspendeu e começou a remarcar entrevistas em embaixadas e consulados de todo o mundo. Alegou que os agentes precisavam de treinamento obrigatório para avaliar a possibilidade de o solicitante depender de recursos públicos. A previsão inicial era retomar as entrevistas entre o início e meados de setembro. Três meses depois, muitos postos continuam sem entrevistar, a retomada nos demais tem sido irregular e não há data para a normalização.",
+    "tl": "Apat na araw matapos mapawalang-bisa ang pagbabawal sa 75 bansa, sinuspinde at sinimulang ilipat ng Kagawaran ang mga iskedyul ng panayam sa buong mundo dahil sa sapilitang pagsasanay sa pagsusuri kung maaaring umasa ang aplikante sa tulong ng pamahalaan. Una nitong sinabing matatapos ito sa unang bahagi hanggang kalagitnaan ng Setyembre. Makalipas ang tatlong buwan, suspindido pa rin ang panayam sa maraming tanggapan, hindi pare-pareho ang pagbabalik sa iba, at walang petsa para sa ganap na pagpapatuloy."
   },
   "The Ali family": {
     "es": "La familia Ali",

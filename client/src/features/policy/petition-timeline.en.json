@@ -195,9 +195,18 @@
         {
           "date": "2026-08-25",
           "dateLabel": "August 25, 2026",
-          "title": "Worldwide immigrant visa interview pause",
-          "body": "Four days after the 75-country ban was struck down, the State Department paused and began rescheduling immigrant visa interviews at embassies and consulates worldwide, citing mandatory officer training on public-charge screening. Officials first said the pause would end by early to mid-September. Three months later, interviews are still paused at many posts, restarts elsewhere have been uneven, and the department has announced no date for a full restart. On November 6, the plaintiffs in CLINIC v. Rubio amended their complaint to challenge the new directives.",
-          "sources": []
+          "title": "Worldwide immigrant visa interview pause due to public-charge training",
+          "body": "Four days after the 75-country ban was struck down, the State Department paused and began rescheduling immigrant visa interviews at embassies and consulates worldwide, citing mandatory officer training on public-charge screening. Officials first said the pause would end by early to mid-September. Three months later, interviews are still paused at many posts, restarts elsewhere have been uneven, and the department has announced no date for a full restart.",
+          "sources": [
+            {
+              "label": "Fragomen client alert",
+              "url": "https://www.fragomen.com/insights/united-states-state-department-temporarily-pauses-immigrant-visa-interviews-worldwide.html"
+            },
+            {
+              "label": "Boundless Immigration report",
+              "url": "https://www.boundless.com/blog/immigrant-visa-appointments-paused-worldwide"
+            }
+          ]
         }
       ]
     }

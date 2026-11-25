@@ -593,7 +593,7 @@
 }
 
 .join-banner {
-  background: #1f3a2f;
+  background: #1c1c1c;
   color: #f4f3f0;
   border: 0;
   padding: 76px 8% 80px;
@@ -602,7 +602,7 @@
   color: #ffffff;
 }
 .join-banner p {
-  color: #d9e2dc;
+  color: #c9c7c0;
   font-size: 16px;
   max-width: 44ch;
   margin: 14px auto 28px;
