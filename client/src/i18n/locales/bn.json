@@ -1,4 +1,6 @@
 {
+  "Reported waits across all update dates": "সব সময়ের প্রতিবেদনে অপেক্ষার সময়",
+  "Includes eligible active cases from earlier submissions. Individual timelines below require separate permission.": "আগে জমা দেওয়া যোগ্য সক্রিয় কেসগুলো অন্তর্ভুক্ত। নিচে কোনো কেসের নিজস্ব সময়রেখা দেখাতে আলাদা অনুমতি প্রয়োজন।",
   "View timeline": "টাইমলাইন দেখুন",
   "Also share the dates and types of all completed milestones in this case’s public timeline.": "এই কেসের প্রকাশ্য টাইমলাইনে সম্পন্ন সব ধাপের তারিখ ও ধরনও শেয়ার করুন।",
   "A case timeline shows the dates and types of all completed milestones only if the owner chooses to share that history.": "মালিক ইতিহাস শেয়ার করতে সম্মত হলেই কেসের টাইমলাইনে সম্পন্ন সব ধাপের তারিখ ও ধরন দেখা যায়।",

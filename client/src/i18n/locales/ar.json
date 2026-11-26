@@ -1,4 +1,6 @@
 {
+  "Reported waits across all update dates": "مدد الانتظار المبلّغ عنها لجميع تواريخ التحديث",
+  "Includes eligible active cases from earlier submissions. Individual timelines below require separate permission.": "تشمل الإحصاءات الحالات النشطة المؤهلة التي أُرسلت سابقًا. ويتطلب عرض التسلسل الزمني لكل حالة أدناه إذنًا منفصلًا.",
   "View timeline": "عرض التسلسل الزمني",
   "Also share the dates and types of all completed milestones in this case’s public timeline.": "مشاركة تواريخ وأنواع جميع المراحل المكتملة في الجدول الزمني العام لهذه الحالة أيضًا.",
   "A case timeline shows the dates and types of all completed milestones only if the owner chooses to share that history.": "لا يعرض الجدول الزمني للحالة تواريخ وأنواع جميع المراحل المكتملة إلا إذا اختار صاحبها مشاركة هذا السجل.",

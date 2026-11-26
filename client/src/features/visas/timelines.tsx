@@ -281,6 +281,42 @@ export default function VisaTimelines() {
           "Compare self-reported timelines by visa category and consular post. These are community reports, not State Department estimates.",
         )}
       />
+      {stats && (
+        <section className="wait-panel">
+          <h2>{t("Reported waits across all update dates")}</h2>
+          <p>
+            {t(
+              "Includes eligible active cases from earlier submissions. Individual timelines below require separate permission.",
+            )}
+          </p>
+          <div className="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  {["Metric", "Cases", "Median wait"].map((label) => (
+                    <th key={label} scope="col">
+                      {t(label)}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {stats.overview.map(({ metric, count, medianDays }) => (
+                  <tr key={metric}>
+                    <th scope="row">{t(metricText[metric][0])}</th>
+                    <td>{number(count)}</td>
+                    <td>
+                      {medianDays === null
+                        ? t("No data")
+                        : t("{days} days", { days: number(medianDays) })}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
       <div className="wait-filters">
         <Picker
           label="Visa category"

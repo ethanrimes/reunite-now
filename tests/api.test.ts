@@ -269,6 +269,29 @@ test("email authentication, data privacy, ownership, update and deletion", async
   assert.equal("rows" in aggregate, false);
   const stats = await (await request("/api/stats/visas/rows?days=0")).json();
   assert.deepEqual(stats.rows, []);
+  const legacySnapshot = await (
+    await request("/api/stats/visas/snapshot")
+  ).json();
+  assert.deepEqual(
+    legacySnapshot.overview.find(
+      (item: { metric: string }) => item.metric === "nvc",
+    ),
+    {
+      metric: "nvc",
+      count: 1,
+      medianDays:
+        (Date.parse(legacySnapshot.asOf) - Date.parse("2026-03-01")) / 86400000,
+    },
+  );
+  for (const value of [
+    me.user.id,
+    profile.name,
+    "Test applicant",
+    "test-case",
+    "2026-03-01",
+    "Bogotá",
+  ])
+    assert.ok(!JSON.stringify(legacySnapshot).includes(value));
   const currentSnapshot = async () =>
     (await (await request("/api/stats/visas/snapshot")).json()).metrics;
   assert.deepEqual((await currentSnapshot()).nvc, []);

@@ -1,4 +1,6 @@
 {
+  "Reported waits across all update dates": "所有更新日期的通報等候時間",
+  "Includes eligible active cases from earlier submissions. Individual timelines below require separate permission.": "包含先前提交且符合條件的進行中案件。下方個別案件的時間軸須另行取得同意。",
   "View timeline": "查看時間表",
   "Also share the dates and types of all completed milestones in this case’s public timeline.": "也在此案件的公開時間表中分享所有已完成里程碑的日期及類型。",
   "A case timeline shows the dates and types of all completed milestones only if the owner chooses to share that history.": "只有案件擁有者選擇分享歷程時，時間表才會顯示所有已完成里程碑的日期及類型。",

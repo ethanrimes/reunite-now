@@ -1,4 +1,4 @@
-import { orderedEvents, type CaseReport } from "./metrics";
+import { median, orderedEvents, type CaseReport } from "./metrics";
 import { visaCategories } from "./schema";
 
 export const waitMetrics = ["nvc", "post", "reinterview"] as const;
@@ -61,6 +61,7 @@ function collectWaits(
   requested: readonly WaitMetric[],
   days: number,
   now = new Date(),
+  aggregateDays?: Record<WaitMetric, number[]>,
 ) {
   const asOf = now.toISOString().slice(0, 10);
   const posts = new Set<string>();
@@ -72,27 +73,31 @@ function collectWaits(
   const today = Date.parse(asOf);
   for (const profile of profiles) {
     for (const c of profile.cases) {
+      const shared = c.shareTimelineRow === true;
       if (
-        c.shareTimelineRow !== true ||
+        (!shared && !aggregateDays) ||
         !timelineCategories.includes(c.category)
       )
         continue;
-      posts.add(c.post);
+      if (shared) posts.add(c.post);
       const age = (+now - Date.parse(c.updatedAt || profile.updatedAt)) / dayMs;
       if (days && !(age <= days)) continue;
       const events = orderedEvents(c, now);
       const history =
-        c.shareTimelineHistory === true
+        shared && c.shareTimelineHistory === true
           ? events.map(({ type, date }) => ({ type, date }))
           : undefined;
       for (const metric of requested) {
         const start = waitStart(events, metric);
         if (!start) continue;
+        const duration = (today - Date.parse(start)) / dayMs;
+        aggregateDays?.[metric].push(duration);
+        if (!shared) continue;
         metrics[metric].push({
           category: c.category,
           post: c.post,
           start,
-          days: (today - Date.parse(start)) / dayMs,
+          days: duration,
           window: [30, 60, 90].find((limit) => age <= limit) ?? 0,
           ...(history ? { history } : {}),
         });
@@ -126,7 +131,18 @@ export function visaTimelines(
 }
 
 export function timelineSnapshot(profiles: CaseReport[], now = new Date()) {
-  return collectWaits(profiles, waitMetrics, 0, now);
+  const durations: Record<WaitMetric, number[]> = {
+    nvc: [],
+    post: [],
+    reinterview: [],
+  };
+  const snapshot = collectWaits(profiles, waitMetrics, 0, now, durations);
+  const overview = waitMetrics.map((metric) => ({
+    metric,
+    count: durations[metric].length,
+    medianDays: median(durations[metric]),
+  }));
+  return { ...snapshot, overview };
 }
 
 // Linear interpolation at (n - 1) * p; whiskers show the full reported range.

@@ -1,4 +1,14 @@
 {
+  "Reported waits across all update dates": {
+    "es": "Tiempos de espera de todos los períodos",
+    "pt": "Tempos de espera de todos os períodos",
+    "tl": "Mga naiulat na tagal ng paghihintay sa lahat ng panahon"
+  },
+  "Includes eligible active cases from earlier submissions. Individual timelines below require separate permission.": {
+    "es": "Incluye casos activos elegibles enviados anteriormente. Las cronologías individuales que aparecen abajo requieren un permiso aparte.",
+    "pt": "Inclui casos ativos elegíveis enviados anteriormente. As cronologias individuais abaixo exigem autorização separada.",
+    "tl": "Kasama ang mga kwalipikadong aktibong kasong naunang isinumite. Kailangan ng hiwalay na pahintulot para sa mga indibidwal na timeline sa ibaba."
+  },
   "View timeline": {
     "es": "Ver cronología",
     "pt": "Ver cronologia",
