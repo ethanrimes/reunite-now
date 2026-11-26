@@ -1,4 +1,5 @@
 {
+  "Only the wait start dates are public for this case.": "لا تُعرض للعامة في هذه الحالة سوى تواريخ بدء فترات الانتظار.",
   "Saving a visa case publishes a row with its visa category and consular post. When a wait can be calculated, the row also shows its starting date and duration. Names, nicknames and case IDs stay private.": "يؤدي حفظ حالة تأشيرة إلى نشر صف يضم فئة التأشيرة والبعثة القنصلية. وإذا أمكن حساب مدة الانتظار، يعرض الصف أيضًا تاريخ بدايتها ومدتها. وتظل الأسماء والألقاب ومعرّفات الحالات خاصة.",
   "Earlier submissions are included. Each median uses only active cases with the required milestone. A sample of one shows that case’s wait.": "تشمل الإحصاءات الحالات المقدمة سابقًا. ويُحسب كل وسيط من الحالات النشطة التي وصلت إلى المرحلة المطلوبة فقط. وإذا تضمنت العينة حالة واحدة فالوسيط هو مدة انتظارها.",
   "Reported waits across all update dates": "مدد الانتظار المبلّغ عنها لجميع تواريخ التحديث",

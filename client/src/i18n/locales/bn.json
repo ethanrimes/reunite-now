@@ -1,4 +1,5 @@
 {
+  "Only the wait start dates are public for this case.": "এই কেসের জন্য শুধু অপেক্ষা শুরুর তারিখগুলোই প্রকাশ করা হয়েছে।",
   "Saving a visa case publishes a row with its visa category and consular post. When a wait can be calculated, the row also shows its starting date and duration. Names, nicknames and case IDs stay private.": "ভিসার কেস সংরক্ষণ করলে তার ভিসার শ্রেণি ও কনস্যুলার দপ্তর একটি প্রকাশ্য সারিতে দেখা যায়। অপেক্ষার সময় গণনা করা গেলে শুরুর তারিখ ও সময়কালও দেখানো হয়। নাম, ডাকনাম ও কেস আইডি ব্যক্তিগত থাকে।",
   "Earlier submissions are included. Each median uses only active cases with the required milestone. A sample of one shows that case’s wait.": "আগে জমা দেওয়া কেসও অন্তর্ভুক্ত। প্রতিটি মধ্যক গণনায় শুধু প্রয়োজনীয় ধাপে পৌঁছানো সক্রিয় কেস ধরা হয়। একটি কেস থাকলে তার অপেক্ষার সময়ই মধ্যক।",
   "Reported waits across all update dates": "সব সময়ের প্রতিবেদনে অপেক্ষার সময়",

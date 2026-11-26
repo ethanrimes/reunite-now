@@ -1,4 +1,5 @@
 {
+  "Only the wait start dates are public for this case.": "此案件僅公開各段等候期的開始日期。",
   "Saving a visa case publishes a row with its visa category and consular post. When a wait can be calculated, the row also shows its starting date and duration. Names, nicknames and case IDs stay private.": "儲存簽證案件後，系統會公開列出簽證類別及領事館處。可計算等候時間時，該列也會顯示起始日期與等候時間。姓名、暱稱及案件識別碼均保密。",
   "Earlier submissions are included. Each median uses only active cases with the required milestone. A sample of one shows that case’s wait.": "先前提交的案件也包含在內。各項中位數僅採計具有所需里程碑的進行中案件。若樣本只有一件，中位數即為該案的等候時間。",
   "Reported waits across all update dates": "所有更新日期的通報等候時間",

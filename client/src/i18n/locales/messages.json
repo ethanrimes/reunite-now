@@ -1,4 +1,9 @@
 {
+  "Only the wait start dates are public for this case.": {
+    "es": "Solo son públicas las fechas de inicio de las esperas de este caso.",
+    "pt": "Apenas as datas de início das esperas deste caso são públicas.",
+    "tl": "Ang mga petsa lang ng pagsisimula ng paghihintay ang pampubliko para sa kasong ito."
+  },
   "Saving a visa case publishes a row with its visa category and consular post. When a wait can be calculated, the row also shows its starting date and duration. Names, nicknames and case IDs stay private.": {
     "es": "Al guardar un caso de visa se publica una fila con su categoría y oficina consular. Si se puede calcular la espera, también se muestran la fecha de inicio y la duración. Los nombres, apodos e identificadores de caso son privados.",
     "pt": "Salvar um caso de visto publica uma linha com a categoria e o posto consular. Quando é possível calcular a espera, a linha também mostra a data inicial e a duração. Nomes, apelidos e identificadores de casos ficam privados.",

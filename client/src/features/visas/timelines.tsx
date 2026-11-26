@@ -298,6 +298,14 @@ export default function VisaTimelines() {
     [rows, metric, stats],
   );
   const activeStart = activeRow?.starts[metric];
+  const milestones =
+    activeRow?.history ??
+    waitMetrics
+      .flatMap((m) => {
+        const date = activeRow?.starts[m];
+        return date ? [{ type: metricText[m][1], date }] : [];
+      })
+      .sort((a, b) => a.date.localeCompare(b.date));
   const pending = failed ? (
     <p role="alert">{t("Something went wrong. Please try again.")}</p>
   ) : (
@@ -413,7 +421,7 @@ export default function VisaTimelines() {
                     {rows.map((r, i) => (
                       <tr key={i}>
                         <td>
-                          {r.starts[metric] || r.history?.length ? (
+                          {Object.keys(r.starts).length || r.history?.length ? (
                             <button
                               className="text-button"
                               onClick={() => setActiveRow(r)}
@@ -460,21 +468,19 @@ export default function VisaTimelines() {
             <strong>{activeRow.category}</strong> · {t(activeRow.post)}
           </p>
           <ol className="case-milestones">
-            {(
-              activeRow.history ??
-              (activeStart
-                ? [{ type: metricText[metric][1], date: activeStart }]
-                : [])
-            ).map((event, i) => (
+            {milestones.map((event, i) => (
               <li key={i}>
                 <time dateTime={event.date}>{date(event.date)}</time>{" "}
                 <strong>{t(event.type)}</strong>
               </li>
             ))}
           </ol>
+          {!activeRow.history && (
+            <p>{t("Only the wait start dates are public for this case.")}</p>
+          )}
           {activeStart && (
             <p>
-              {t("Time waiting")}: {waitLabel(activeStart, stats.asOf)}
+              {t(metricText[metric][0])}: {waitLabel(activeStart, stats.asOf)}
             </p>
           )}
         </Modal>

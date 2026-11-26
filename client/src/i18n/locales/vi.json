@@ -1,4 +1,5 @@
 {
+  "Only the wait start dates are public for this case.": "Chỉ các ngày bắt đầu chờ của hồ sơ này được công khai.",
   "Saving a visa case publishes a row with its visa category and consular post. When a wait can be calculated, the row also shows its starting date and duration. Names, nicknames and case IDs stay private.": "Khi bạn lưu hồ sơ thị thực, một dòng công khai sẽ hiển thị loại thị thực và cơ quan lãnh sự. Nếu tính được thời gian chờ, dòng đó cũng hiển thị ngày bắt đầu và thời gian chờ. Tên, biệt danh và mã hồ sơ được giữ riêng.",
   "Earlier submissions are included. Each median uses only active cases with the required milestone. A sample of one shows that case’s wait.": "Bao gồm cả hồ sơ đã gửi trước đây. Mỗi trung vị chỉ tính từ hồ sơ đang xử lý có mốc cần thiết. Nếu chỉ có một hồ sơ, trung vị là thời gian chờ của hồ sơ đó.",
   "Reported waits across all update dates": "Thời gian chờ được báo cáo trong mọi kỳ cập nhật",
