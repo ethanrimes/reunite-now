@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import { previewMode } from "./preview";
 import { keyedSnapshotCache, snapshotCache } from "./snapshot-cache";
 import type { SignatureGroup } from "../../../shared/coverage";
-import type { PublishedStoryEntry } from "../../../shared/public-views";
+import type { StoryPage } from "../../../shared/public-views";
 import type { SignatoryRoster } from "../../../shared/signatories";
 import type { timelineSnapshot } from "../../../shared/visa-timelines";
 import {
@@ -52,8 +52,8 @@ export async function api<T = any>(
       visaSnapshot.clear();
     }
     if (profile || deleted || url === "/me/story") {
-      storiesSnapshot.clear();
-      storyPhotoSnapshots.clear();
+      storyPages.clear();
+      storyDetails.clear();
     }
   }
   return data;
@@ -64,13 +64,17 @@ export const coverageSnapshot = snapshotCache(() =>
 export const visaSnapshot = snapshotCache(() =>
   api<ReturnType<typeof timelineSnapshot>>("/stats/visas/snapshot"),
 );
-export const storiesSnapshot = snapshotCache(() =>
-  api<PublishedStoryEntry[]>("/stories/snapshot"),
-);
-const storyPhotoSnapshots = keyedSnapshotCache<string[]>(4);
-export function readStoryPhotos(id: string, updatedAt: string) {
-  return storyPhotoSnapshots.read(JSON.stringify([id, updatedAt]), () =>
-    api<string[]>(`/story/${encodeURIComponent(id)}/photos`),
+const storyPages = keyedSnapshotCache<StoryPage>(8);
+const storyDetails = keyedSnapshotCache<PublicStory>(4);
+export function readStoryPage(q: string, after: string) {
+  const params = new URLSearchParams({ q, after }).toString();
+  return storyPages.read(params, () =>
+    api<StoryPage>("/story-cards?" + params),
+  );
+}
+export function readStoryDetail(id: string) {
+  return storyDetails.read(id, () =>
+    api<PublicStory>("/story/" + encodeURIComponent(id)),
   );
 }
 const signatorySnapshots = keyedSnapshotCache<SignatoryRoster>(8);

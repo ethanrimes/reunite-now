@@ -1,21 +1,18 @@
 import { ScrollRail } from "../../components/scroll-rail";
 import { t, number } from "../../i18n/i18n";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Heart, Plus, Search, Clock3 } from "lucide-react";
 import {
-  storiesSnapshot,
-  readStoryPhotos,
-  useData,
+  readStoryPage,
+  readStoryDetail,
   useSnapshot,
+  useData,
 } from "../../app/api";
 import { previewMode } from "../../app/preview";
 import { PageIntro, Modal, Notice, date } from "../../components/ui";
-import {
-  matchesStory,
-  storyPageSize,
-  type PublishedStoryEntry,
-} from "../../../../shared/public-views";
+import { matchesStory } from "../../../../shared/public-views";
+import { type PublicStory } from "../../../../shared/schema";
 
 export function Stories() {
   const {
@@ -24,30 +21,31 @@ export function Stories() {
     error: sampleError,
   } = useData();
   const [q, setQ] = useState("");
-  const [page, setPage] = useState(0);
+  const [query, setQuery] = useState("");
+  useEffect(() => {
+    if (q === query) return;
+    const timer = setTimeout(() => {
+      setQuery(q);
+      setCursors([""]);
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [q, query]);
+  const [cursors, setCursors] = useState([""]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const snapshot = useSnapshot(storiesSnapshot, !previewMode);
-  const entries = useMemo(
-    () =>
-      previewMode
-        ? sampleStories.map(({ photos, ...story }) => ({
-            ...story,
-            cover: photos[0] ?? null,
-            photoCount: photos.length,
-          }))
-        : (snapshot?.data ?? []),
-    [sampleStories, snapshot?.data],
+  const cursor = cursors.at(-1) ?? "";
+  const source = useMemo(
+    () => ({ read: () => readStoryPage(query, cursor) }),
+    [query, cursor],
   );
-  const matches = useMemo(() => {
-    const query = q.toLowerCase();
-    return query ? entries.filter((s) => matchesStory(s, query)) : entries;
-  }, [entries, q]);
-  const offset = page * storyPageSize;
-  const items = matches.slice(offset, offset + storyPageSize);
-  const next = offset + storyPageSize < matches.length;
-  const selected = entries.find((s) => s.id === selectedId);
-  const loading = previewMode ? sampleLoading : !snapshot;
-  const failed = previewMode ? !!sampleError : snapshot?.error;
+  const page = useSnapshot(source, !previewMode);
+  const items = previewMode
+    ? sampleStories
+        .filter((s) => matchesStory(s, q.toLowerCase()))
+        .map((s) => ({ ...s, cover: s.photos[0] }))
+    : (page?.data?.cards ?? []);
+  const loading = previewMode ? sampleLoading : !page;
+  const failed = previewMode ? !!sampleError : page?.error;
+  const next = page?.data?.next;
   return (
     <div className="page-shell">
       <PageIntro
@@ -68,12 +66,12 @@ export function Stories() {
       </PageIntro>
       <div className="toolbar">
         <span>
-          {loading || failed
+          {loading || failed || next || cursors.length > 1
             ? null
-            : matches.length === 1
+            : items.length === 1
               ? t("1 community story")
               : t("{count} community stories", {
-                  count: number(matches.length),
+                  count: number(items.length),
                 })}
         </span>
         <label className="search">
@@ -84,7 +82,6 @@ export function Stories() {
             maxLength={250}
             onChange={(e) => {
               setQ(e.target.value);
-              setPage(0);
             }}
             placeholder={t("Search places, stories, or experiences")}
           />
@@ -157,12 +154,12 @@ export function Stories() {
           </div>
         </div>
       )}
-      {(next || page > 0) && (
+      {(next || cursors.length > 1) && (
         <div className="story-navigation">
-          {page > 0 && (
+          {cursors.length > 1 && (
             <button
               className="button outline"
-              onClick={() => setPage((p) => p - 1)}
+              onClick={() => setCursors((c) => c.slice(0, -1))}
             >
               {t("Previous stories")}
             </button>
@@ -170,7 +167,7 @@ export function Stories() {
           {next && (
             <button
               className="button outline"
-              onClick={() => setPage((p) => p + 1)}
+              onClick={() => setCursors((c) => [...c, next])}
             >
               {t("More stories")}
             </button>
@@ -185,11 +182,11 @@ export function Stories() {
           "Stories are self-reported and are not independently verified. Sharing here does not send your story to a lawyer, political group, or representative.",
         )}
       </p>
-      {selected && (
+      {selectedId && (
         <StoryDialog
-          key={selected.id}
-          selected={selected}
-          samplePhotos={sampleStories.find((s) => s.id === selected.id)?.photos}
+          key={selectedId}
+          id={selectedId}
+          sample={sampleStories.find((s) => s.id === selectedId)}
           onClose={() => setSelectedId(null)}
         />
       )}
@@ -198,88 +195,84 @@ export function Stories() {
 }
 
 function StoryDialog({
-  selected,
-  samplePhotos,
+  id,
+  sample,
   onClose,
 }: {
-  selected: PublishedStoryEntry;
-  samplePhotos?: string[];
+  id: string;
+  sample?: PublicStory;
   onClose: () => void;
 }) {
-  const source = useMemo(
-    () => ({
-      read: () => readStoryPhotos(selected.id, selected.updatedAt),
-    }),
-    [selected.id, selected.updatedAt],
-  );
-  const loadPhotos = !previewMode && selected.photoCount > 0;
-  const media = useSnapshot(source, loadPhotos);
-  const photos = samplePhotos ?? media?.data ?? [];
+  const source = useMemo(() => ({ read: () => readStoryDetail(id) }), [id]);
+  const detail = useSnapshot(source, !previewMode);
+  const selected = previewMode ? sample : detail?.data;
   return (
     <Modal title={t("A COMMUNITY STORY")} wide onClose={onClose}>
-      <div className="story-modal">
-        {media?.error ? (
-          <Notice tone="error">
-            {t("Something went wrong. Please try again.")}
-          </Notice>
-        ) : loadPhotos && !media ? (
-          <p role="status">{t("Loading…")}</p>
-        ) : null}
-        {photos.length > 0 && (
-          <div className="story-photos">
-            {photos.length === 1 ? (
-              <img
-                src={photos[0]}
-                alt={t("Photo shared by {name}", { name: selected.name })}
-              />
-            ) : (
-              <ScrollRail
-                id="story-photo-carousel"
-                title={t("Story photos")}
-                previousLabel={t("Previous photo")}
-                nextLabel={t("Next photo")}
-              >
-                {photos.map((src, i) => (
-                  <img
-                    key={i}
-                    src={src}
-                    alt={t("Photo {count} shared by {name}", {
-                      count: i + 1,
-                      name: selected.name,
-                    })}
-                  />
-                ))}
-              </ScrollRail>
-            )}
+      {detail?.error ? (
+        <Notice tone="error">
+          {t("Something went wrong. Please try again.")}
+        </Notice>
+      ) : !selected ? (
+        <p role="status">{t("Loading…")}</p>
+      ) : null}
+      {selected && (
+        <div className="story-modal">
+          {selected.photos.length > 0 && (
+            <div className="story-photos">
+              {selected.photos.length === 1 ? (
+                <img
+                  src={selected.photos[0]}
+                  alt={t("Photo shared by {name}", { name: selected.name })}
+                />
+              ) : (
+                <ScrollRail
+                  id="story-photo-carousel"
+                  title={t("Story photos")}
+                  previousLabel={t("Previous photo")}
+                  nextLabel={t("Next photo")}
+                >
+                  {selected.photos.map((src, i) => (
+                    <img
+                      key={i}
+                      src={src}
+                      alt={t("Photo {count} shared by {name}", {
+                        count: i + 1,
+                        name: selected.name,
+                      })}
+                    />
+                  ))}
+                </ScrollRail>
+              )}
+            </div>
+          )}
+          <span className="eyebrow">
+            {selected.name} · {t(selected.country)}
+          </span>
+          <h2 dir="auto">{selected.title}</h2>
+          <p className="preserve-lines" dir="auto">
+            {selected.body}
+          </p>
+          <div className="tags">
+            {selected.impacts.map((x) => (
+              <span className="tag" key={x}>
+                {x}
+              </span>
+            ))}
           </div>
-        )}
-        <span className="eyebrow">
-          {selected.name} · {t(selected.country)}
-        </span>
-        <h2 dir="auto">{selected.title}</h2>
-        <p className="preserve-lines" dir="auto">
-          {selected.body}
-        </p>
-        <div className="tags">
-          {selected.impacts.map((x) => (
-            <span className="tag" key={x}>
-              {x}
-            </span>
-          ))}
+          {selected.support && (
+            <>
+              <h3>{t("The support they’re looking for")}</h3>
+              <p className="preserve-lines" dir="auto">
+                {selected.support}
+              </p>
+            </>
+          )}
+          <small>
+            {t("Story last updated ")}
+            {date(selected.updatedAt)}
+          </small>
         </div>
-        {selected.support && (
-          <>
-            <h3>{t("The support they’re looking for")}</h3>
-            <p className="preserve-lines" dir="auto">
-              {selected.support}
-            </p>
-          </>
-        )}
-        <small>
-          {t("Story last updated ")}
-          {date(selected.updatedAt)}
-        </small>
-      </div>
+      )}
     </Modal>
   );
 }

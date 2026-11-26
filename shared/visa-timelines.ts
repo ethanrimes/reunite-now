@@ -20,8 +20,10 @@ export type TimelineRow = WaitRow & {
 };
 const dayMs = 86400000;
 
-function waitStart(c: ReportedCase, metric: WaitMetric, now: Date) {
-  const events = orderedEvents(c, now);
+function waitStart(
+  events: ReturnType<typeof orderedEvents>,
+  metric: WaitMetric,
+) {
   const lastDecision = events.findLast((e) =>
     [
       "Approved",
@@ -56,13 +58,18 @@ function waitStart(c: ReportedCase, metric: WaitMetric, now: Date) {
 
 function collectWaits(
   profiles: CaseReport[],
-  metric: WaitMetric,
+  requested: readonly WaitMetric[],
   days: number,
   now = new Date(),
 ) {
   const asOf = now.toISOString().slice(0, 10);
   const posts = new Set<string>();
-  const rows: TimelineRow[] = [];
+  const metrics: Record<WaitMetric, TimelineRow[]> = {
+    nvc: [],
+    post: [],
+    reinterview: [],
+  };
+  const today = Date.parse(asOf);
   for (const profile of profiles) {
     for (const c of profile.cases) {
       if (
@@ -73,32 +80,33 @@ function collectWaits(
       posts.add(c.post);
       const age = (+now - Date.parse(c.updatedAt || profile.updatedAt)) / dayMs;
       if (days && !(age <= days)) continue;
-      const start = waitStart(c, metric, now);
-      if (start)
-        rows.push({
+      const events = orderedEvents(c, now);
+      const history =
+        c.shareTimelineHistory === true
+          ? events.map(({ type, date }) => ({ type, date }))
+          : undefined;
+      for (const metric of requested) {
+        const start = waitStart(events, metric);
+        if (!start) continue;
+        metrics[metric].push({
           category: c.category,
           post: c.post,
           start,
-          days: (Date.parse(asOf) - Date.parse(start)) / dayMs,
+          days: (today - Date.parse(start)) / dayMs,
           window: [30, 60, 90].find((limit) => age <= limit) ?? 0,
-          ...(c.shareTimelineHistory === true
-            ? {
-                history: orderedEvents(c, now).map(({ type, date }) => ({
-                  type,
-                  date,
-                })),
-              }
-            : {}),
+          ...(history ? { history } : {}),
         });
+      }
     }
   }
-  rows.sort(
-    (a, b) =>
-      b.days - a.days ||
-      a.category.localeCompare(b.category) ||
-      a.post.localeCompare(b.post),
-  );
-  return { asOf, posts: [...posts].sort(), rows };
+  for (const metric of requested)
+    metrics[metric].sort(
+      (a, b) =>
+        b.days - a.days ||
+        a.category.localeCompare(b.category) ||
+        a.post.localeCompare(b.post),
+    );
+  return { asOf, posts: [...posts].sort(), metrics };
 }
 
 export function visaTimelines(
@@ -107,24 +115,18 @@ export function visaTimelines(
   days: number,
   now = new Date(),
 ) {
-  const result = collectWaits(profiles, metric, days, now);
+  const result = collectWaits(profiles, [metric], days, now);
   return {
-    ...result,
-    rows: result.rows.map(({ window: _, history: _history, ...row }) => row),
+    asOf: result.asOf,
+    posts: result.posts,
+    rows: result.metrics[metric].map(
+      ({ window: _, history: _history, ...row }) => row,
+    ),
   };
 }
 
 export function timelineSnapshot(profiles: CaseReport[], now = new Date()) {
-  const nvc = collectWaits(profiles, "nvc", 0, now);
-  return {
-    asOf: nvc.asOf,
-    posts: nvc.posts,
-    metrics: {
-      nvc: nvc.rows,
-      post: collectWaits(profiles, "post", 0, now).rows,
-      reinterview: collectWaits(profiles, "reinterview", 0, now).rows,
-    },
-  };
+  return collectWaits(profiles, waitMetrics, 0, now);
 }
 
 // Linear interpolation at (n - 1) * p; whiskers show the full reported range.

@@ -19,7 +19,7 @@ The public API groups signature counts by residence. A separate list shows only 
 
 The visa timelines chart and table use the same voluntarily shared active immigrant and K visa cases. The owner can withdraw sharing in the case editor. Missing milestones contribute no duration, and future interviews are appointments rather than completed interviews. The [metric definitions](../shared/visa-timelines.ts) govern the three waits. A small sample may describe one person and is not a forecast.
 
-The story gallery loads published text and small covers for local search, and loads full photos when someone opens a story. All these requests check publication and consent. The browser may reuse the results for one minute between visits, and already-open pages can retain the content they received. The server validates and re-encodes supported images, drops embedded metadata and produces a smaller cover. An unreadable historical photo can remain in the owner's export while being withheld from public display. People can copy material while it is public.
+The story gallery requests one page of matching cards at a time and loads the text and full photos when someone opens a story. All these requests check publication and consent. The browser may reuse the results for one minute between visits, and already-open pages can retain the content they received. The server validates and re-encodes supported images, drops embedded metadata and produces a smaller cover. An unreadable historical photo can remain in the owner's export while being withheld from public display. People can copy material while it is public.
 
 ## Storage and retention
 

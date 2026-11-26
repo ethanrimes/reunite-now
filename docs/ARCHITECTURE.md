@@ -5,7 +5,7 @@ Reunite Now serves a React application and an Express API from the same origin. 
 ## Follow a request
 
 1. Vite builds the browser entry point in `client/src/main.tsx`. React Router selects the page. The account and map routes load their code on demand. The Express server serves the built files and supports direct links to nested routes.
-2. The gallery loads published text and small covers once for local search and pagination. Full photos load only when a story opens. The homepage and signature map share grouped counts, and the visa dashboard filters a shared snapshot in the browser. Public snapshots are reused in browser memory for one minute between visits; private account responses are not cached there.
+2. The gallery requests matching cards by cursor. Story text and full photos load when a story opens. The homepage and signature map share grouped counts, and the visa dashboard filters a shared snapshot in the browser. Public snapshots are reused in browser memory for one minute between visits; private account responses are not cached there.
 3. Express validates input, resolves the signed-in session for private operations and runs parameterized queries using the regional pool. Public queries select consented records in both regions. Regional results are combined before responding. A failed regional read fails the request so an incomplete count cannot look like the full count.
 4. The read-only preview under `/demo` serves synthetic data generated in memory. It bypasses live account reads and editing. Local developers can separately enable sample data with `npm run dev:demo`.
 
