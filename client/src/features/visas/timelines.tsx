@@ -50,6 +50,12 @@ const metricText: Record<WaitMetric, [string, string]> = {
   post: ["Time since arrival at post", "Post arrival date"],
   reinterview: ["221(g) wait for reinterview", "First interview date"],
 };
+const updateWindows = [
+  [0, "Any time"],
+  [30, "Within 30 days"],
+  [60, "Within 60 days"],
+  [90, "Within 90 days"],
+] as const;
 const sources = [
   [
     "VisaMoves",
@@ -190,10 +196,7 @@ function Picker({
 
 function BoxPlot({ rows }: { rows: WaitRow[] }) {
   const summary = useMemo(() => fiveNumberSummary(rows), [rows]);
-  if (!summary)
-    return (
-      <p className="wait-empty">{t("No cases match these filters yet")}</p>
-    );
+  if (!summary) return null;
   const [min, q1, median, q3, max] = summary;
   const x = (n: number) =>
     min === max ? 50 : 2 + (96 * (n - min)) / (max - min);
@@ -320,35 +323,43 @@ export default function VisaTimelines() {
           "Compare self-reported timelines by visa category and consular post. These are community reports, not State Department estimates.",
         )}
       />
-      <div className="wait-filters">
-        <Picker
-          label="Visa category"
-          groups={groups}
-          selected={categories}
-          change={setCategories}
-          searchLabel="Search visa categories"
-        />
-        <Picker
-          label="Consular post"
-          groups={[{ options: stats?.posts ?? [] }]}
-          selected={posts}
-          change={setPosts}
-          searchLabel="Search consular posts"
-        />
-        <label className="field">
-          <span>{t("Last updated")}</span>
-          <select
-            value={days}
-            onChange={(e) => setDays(Number(e.target.value))}
-          >
-            <option value="30">{t("Within 30 days")}</option>
-            <option value="60">{t("Within 60 days")}</option>
-            <option value="90">{t("Within 90 days")}</option>
-            <option value="0">{t("Any time")}</option>
-          </select>
-        </label>
-      </div>
-      <section className="wait-panel">
+      <section className="wait-panel" aria-label={t("Visa timelines")}>
+        <div className="wait-filters">
+          <Picker
+            label="Visa category"
+            groups={groups}
+            selected={categories}
+            change={setCategories}
+            searchLabel="Search visa categories"
+          />
+          <Picker
+            label="Consular post"
+            groups={[{ options: stats?.posts ?? [] }]}
+            selected={posts}
+            change={setPosts}
+            searchLabel="Search consular posts"
+          />
+          <div className="wait-window">
+            <label htmlFor="timeline-window">{t("Last updated")}</label>
+            <div className="wait-window-value">
+              <span aria-hidden="true">
+                {t(updateWindows.find(([value]) => value === days)![1])}
+              </span>
+              <select
+                id="timeline-window"
+                value={days}
+                onChange={(e) => setDays(Number(e.target.value))}
+              >
+                {updateWindows.map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {t(label)}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={16} aria-hidden="true" />
+            </div>
+          </div>
+        </div>
         <h2>{t("Active cases")}</h2>
         <div className="segmented" role="group" aria-label={t("Metric")}>
           {waitMetrics.map((m) => (
@@ -373,9 +384,10 @@ export default function VisaTimelines() {
         </p>
         {stats ? (
           <>
-            <strong>
-              {t("{count} active cases in this view", {
+            <strong role="status">
+              {t("Filtered cases with a measurable wait ({count} of {total})", {
                 count: number(measured.length),
+                total: number(rows.length),
               })}
             </strong>
             <BoxPlot rows={measured} />
@@ -383,8 +395,6 @@ export default function VisaTimelines() {
         ) : (
           pending
         )}
-      </section>
-      <section className="wait-panel">
         <details
           id="individual-cases"
           open={expanded}

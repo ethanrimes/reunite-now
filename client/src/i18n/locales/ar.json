@@ -1,4 +1,5 @@
 {
+  "Filtered cases with a measurable wait ({count} of {total})": "الحالات المطابقة للتصفية التي يمكن حساب مدة انتظارها ({count} من {total})",
   "If you’re waiting for a first visa interview or a reinterview, share the milestone dates you know. They help show how long people are still waiting. If your case is closed, you can sign as a supporter.": "إذا كنت تنتظر أول مقابلة للتأشيرة أو مقابلة أخرى، فشارِك التواريخ التي تعرفها لمراحل طلبك. فهي تساعد في إظهار المدة التي قضاها المتقدمون في الانتظار حتى الآن. وإذا أُغلق ملفك، فيمكنك توقيع العريضة بصفتك داعمًا.",
   "Only the wait start dates are public for this case.": "لا تُعرض للعامة في هذه الحالة سوى تواريخ بدء فترات الانتظار.",
   "Saving a visa case publishes a row with its visa category and consular post. When a wait can be calculated, the row also shows its starting date and duration. Names, nicknames and case IDs stay private.": "يؤدي حفظ حالة تأشيرة إلى نشر صف يضم فئة التأشيرة والبعثة القنصلية. وإذا أمكن حساب مدة الانتظار، يعرض الصف أيضًا تاريخ بدايتها ومدتها. وتظل الأسماء والألقاب ومعرّفات الحالات خاصة.",

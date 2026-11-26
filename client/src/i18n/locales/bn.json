@@ -1,4 +1,5 @@
 {
+  "Filtered cases with a measurable wait ({count} of {total})": "ফিল্টারে মেলা যেসব কেসের অপেক্ষার সময় হিসাব করা যায় (মোট {total}টির মধ্যে {count}টি)",
   "If you’re waiting for a first visa interview or a reinterview, share the milestone dates you know. They help show how long people are still waiting. If your case is closed, you can sign as a supporter.": "আপনি যদি ভিসার প্রথম সাক্ষাৎকার বা পুনরায় সাক্ষাৎকারের অপেক্ষায় থাকেন, তাহলে আবেদনের বিভিন্ন ধাপের যেসব তারিখ জানেন সেগুলো জানান। এতে বোঝা যায় আবেদনকারীরা কত দিন ধরে অপেক্ষা করছেন। আপনার কেসটি বন্ধ হয়ে গেলে আপনি সমর্থক হিসেবে স্বাক্ষর করতে পারেন।",
   "Only the wait start dates are public for this case.": "এই কেসের জন্য শুধু অপেক্ষা শুরুর তারিখগুলোই প্রকাশ করা হয়েছে।",
   "Saving a visa case publishes a row with its visa category and consular post. When a wait can be calculated, the row also shows its starting date and duration. Names, nicknames and case IDs stay private.": "ভিসার কেস সংরক্ষণ করলে তার ভিসার শ্রেণি ও কনস্যুলার দপ্তর একটি প্রকাশ্য সারিতে দেখা যায়। অপেক্ষার সময় গণনা করা গেলে শুরুর তারিখ ও সময়কালও দেখানো হয়। নাম, ডাকনাম ও কেস আইডি ব্যক্তিগত থাকে।",

@@ -1,4 +1,5 @@
 {
+  "Filtered cases with a measurable wait ({count} of {total})": "符合篩選條件且可計算等候時間的案件（共 {total} 件，其中 {count} 件可計算）",
   "If you’re waiting for a first visa interview or a reinterview, share the milestone dates you know. They help show how long people are still waiting. If your case is closed, you can sign as a supporter.": "如果您正在等候首次簽證面談或再次面談，請分享您記得的申請進度日期。這有助於呈現申請人至今已等候多久。如果您的案件已結案，您仍可用支持者身分連署。",
   "Only the wait start dates are public for this case.": "此案件僅公開各段等候期的開始日期。",
   "Saving a visa case publishes a row with its visa category and consular post. When a wait can be calculated, the row also shows its starting date and duration. Names, nicknames and case IDs stay private.": "儲存簽證案件後，系統會公開列出簽證類別及領事館處。可計算等候時間時，該列也會顯示起始日期與等候時間。姓名、暱稱及案件識別碼均保密。",

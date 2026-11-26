@@ -1,4 +1,5 @@
 {
+  "Filtered cases with a measurable wait ({count} of {total})": "Hồ sơ khớp bộ lọc có thể tính được thời gian chờ ({count} trên {total})",
   "If you’re waiting for a first visa interview or a reinterview, share the milestone dates you know. They help show how long people are still waiting. If your case is closed, you can sign as a supporter.": "Nếu bạn đang chờ phỏng vấn thị thực lần đầu hoặc phỏng vấn lại, hãy chia sẻ ngày của những mốc bạn biết. Các mốc này giúp cho thấy người nộp đơn đã chờ bao lâu. Nếu hồ sơ đã đóng, bạn vẫn có thể ký tên ủng hộ.",
   "Only the wait start dates are public for this case.": "Chỉ các ngày bắt đầu chờ của hồ sơ này được công khai.",
   "Saving a visa case publishes a row with its visa category and consular post. When a wait can be calculated, the row also shows its starting date and duration. Names, nicknames and case IDs stay private.": "Khi bạn lưu hồ sơ thị thực, một dòng công khai sẽ hiển thị loại thị thực và cơ quan lãnh sự. Nếu tính được thời gian chờ, dòng đó cũng hiển thị ngày bắt đầu và thời gian chờ. Tên, biệt danh và mã hồ sơ được giữ riêng.",

@@ -3,7 +3,7 @@
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
   gap: 16px;
   margin-bottom: 24px;
-  align-items: end;
+  align-items: stretch;
 }
 .wait-picker.multi-select {
   min-width: 0;
@@ -11,14 +11,50 @@
   margin: 0;
 }
 .wait-picker summary,
+.wait-window,
 .wait-panel {
   border: 1px solid var(--line);
   background: var(--white);
   padding: 12px 16px;
   border-radius: var(--radius-control);
 }
-.wait-filters .field {
-  margin: 0;
+.wait-window {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  font-size: 11px;
+}
+.wait-window-value {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 500;
+}
+.wait-window select:focus-visible {
+  outline: none;
+}
+.wait-window:has(select:focus-visible) {
+  outline: 2px solid var(--coral);
+  outline-offset: 4px;
+}
+.wait-window select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.wait-window-value svg {
+  flex-shrink: 0;
+  pointer-events: none;
+}
+.wait-window label {
+  cursor: pointer;
 }
 .wait-picker .multi-options {
   width: 100%;
