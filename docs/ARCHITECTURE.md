@@ -2,6 +2,73 @@
 
 Reunite Now serves a React application and an Express API from the same origin. The petition uses two PostgreSQL databases. Reference maps, legislation and editorial content ship with the application. Visitors can read these without an account.
 
+## Production services
+
+The browser loads React, Leaflet maps and bundled reference files from the same origin as the Express API. The canonical domain points to the US app. Both regional App Services run the same Node.js package and can reach both regional databases.
+
+```mermaid
+flowchart TB
+    browser["Visitor browser · React and React Router"]
+    dns["Cloudflare DNS"]
+    browser -. "resolve project domain" .-> dns
+    browser -->|"HTTPS · static files and /api"| us["Azure App Service · North Central US"]
+    eu["Azure App Service · Sweden Central"]
+    scheduler["Azure Logic Apps · Sweden Central"] -->|"daily reminder POST"| us
+    us --> app["Express runtime in each deployment"]
+    eu --> app
+    app -->|"regional reads and writes"| usdb[("Azure PostgreSQL · US accounts")]
+    app -->|"regional reads, writes and move journal"| eudb[("Azure PostgreSQL · EU accounts")]
+    app -->|"choose initial storage region"| geo["Bundled DB-IP Country Lite"]
+    app -->|"email sign-in diagnostics"| logs["Private App Service filesystem"]
+    app -->|"generate /demo"| demo["In-memory sample data"]
+    browser -->|"optional sign-in"| google["Google OAuth and OpenID Connect"]
+    google -->|"callback through browser"| browser
+    app -->|"exchange code and fetch user info"| google
+    app -->|"sign-in, reminder and feedback mail"| mail["Azure Communication Services Email"]
+    mail -->|"sign-in and reminders"| recipients["Participant mailboxes"]
+    mail -->|"feedback to project address"| forwarding["Cloudflare Email Routing"]
+    sender["Incoming project correspondence"] --> forwarding
+    forwarding --> inbox["Maintainer inbox · Gmail"]
+```
+
+Public database reads use consent-filtered views. Account operations use the runtime writer. Story photo processing runs inside Express using Sharp. The local DB-IP lookup keeps visitor IP addresses within the app. The mailbox migration described below is a planned alternative to forwarding.
+
+## Reference data, delivery and local development
+
+The refresh scripts and editorial process produce versioned files. The deployed app serves those files alongside the frontend. GitHub Actions validates the repository, and the release operator packages and deploys a verified build.
+
+```mermaid
+flowchart TB
+    maps["Census TIGERweb and Natural Earth"] --> refresh["Map and roster refresh"]
+    members["Congress Legislators · GitHub"] --> refresh
+    members --> legislation["Legislation and votes refresh"]
+    bills["GovInfo, House Clerk and US Senate"] --> legislation
+    editorial["State Department directories and guidance,<br/>court orders, counsel updates and editorial sources"] --> assets["Versioned data, content and assets"]
+    localdata["DB-IP Country Lite and illustrative photography"] --> assets
+    refresh --> assets
+    legislation --> assets
+    assets --> repo["GitHub repository"]
+    repo --> ci["GitHub Actions · build and test"]
+    ci --> fixtures[("PGlite and disposable regional PostgreSQL test databases")]
+    repo --> build["Release build · npm ci, TypeScript, Vite and esbuild"]
+    build --> zip["Linux deployment ZIP"]
+    zip -->|"schema-owner migration"| db[("Both regional PostgreSQL databases")]
+    zip -->|"same package to both regions"| web["US and Swedish App Services"]
+    infra["Bicep and Azure CLI setup scripts"] -->|"provision and configure"| azure["App Service plans, PostgreSQL, firewall rules,<br/>email resources, domains and reminder workflow"]
+    check["Post-release checks"] --> web
+```
+
+```mermaid
+flowchart LR
+    browser["Local browser"] --> vite["Vite · port 5173"]
+    vite -->|"proxy /api"| api["Express · port 3001"]
+    api -->|"default"| embedded[("PGlite · .local/postgres")]
+    api -->|"configured alternative"| pg[("Development PostgreSQL")]
+    api -->|"/demo"| samples["In-memory fixtures"]
+```
+
+The [source inventory](PUBLIC-DATA.md) identifies each reference dataset and its refresh process. The [CI workflow](../.github/workflows/ci.yml), [infrastructure templates](../infra/) and [packaging script](../scripts/package.py) define the build and release paths.
+
 ## Follow a request
 
 1. Vite builds the browser entry point in `client/src/main.tsx`. React Router selects the page. The account and map routes load their code on demand. The Express server serves the built files and supports direct links to nested routes.
@@ -14,7 +81,7 @@ Reunite Now serves a React application and an Express API from the same origin. 
 | `client/src/app/` and `main.tsx` | API access, data context, preview detection, navigation and routes |
 | `client/src/features/` | Account and sign-in flows, maps, policy tracking and story browsing |
 | `client/src/pages/` | Landing page, About, Data Use, Sources and Feedback |
-| `client/src/components/`, `i18n/`, `styles/` | Reusable controls, seven-language interface, locale catalogs and CSS |
+| `client/src/components/`, `i18n/`, `styles/` | Reusable controls, eight-language interface, locale catalogs and CSS |
 | `shared/` | Validated record formats, statistics, public response types and source-backed content |
 | `server/index.ts`, `server/http/`, `server/stories/` | HTTP entry point, middleware, public story routes and photo processing |
 | `server/storage/`, `server/data/` | Database access, schema, regional routing and IP-country lookup data |
