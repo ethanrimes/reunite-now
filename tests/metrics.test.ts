@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { caseStatus, metricDays, median, filterCases } from "../shared/metrics";
 import {
   visaTimelines,
+  metricRows,
   timelineSnapshot,
   calendarWait,
   fiveNumberSummary,
@@ -14,7 +15,7 @@ import {
   type PublicProfile,
 } from "../shared/schema";
 const now = new Date("2026-11-11T12:00:00Z");
-test("timeline samples use shared active immigrant and K cases with a dated milestone, longest first", () => {
+test("timeline samples use active immigrant and K cases with a dated milestone, longest first", () => {
   const a = { ...visa([["At NVC", "2026-11-11"]]), shareTimelineRow: true };
   const b = {
     ...a,
@@ -47,16 +48,23 @@ test("timeline samples use shared active immigrant and K cases with a dated mile
   const nvc = visaTimelines(profiles, "nvc", 30, now);
   assert.deepEqual(nvc.rows, [
     { category: "F1", post: "Bogotá", start: "2026-10-12", days: 30 },
+    { category: "F1", post: "Bogotá", start: "2026-10-12", days: 30 },
     { category: "K-1", post: "Bogotá", start: "2026-11-11", days: 0 },
   ]);
-  assert.deepEqual(fiveNumberSummary(nvc.rows), [0, 7.5, 15, 22.5, 30]);
+  assert.deepEqual(fiveNumberSummary(nvc.rows), [0, 15, 30, 30, 30]);
   const post = visaTimelines(profiles, "post", 30, now);
   assert.deepEqual(fiveNumberSummary(post.rows), [10, 10, 10, 10, 10]);
   assert.equal(fiveNumberSummary([]), null);
   const snapshot = timelineSnapshot(profiles, now);
+  assert.equal(snapshot.cases.length, profiles[0].cases.length);
+  assert.ok(
+    snapshot.cases.some(
+      (c) => c.category === "Other" && Object.keys(c.starts).length === 0,
+    ),
+  );
   for (const days of [0, 30, 60, 90]) {
     for (const metric of ["nvc", "post", "reinterview"] as const) {
-      const visible = snapshot.metrics[metric]
+      const visible = metricRows(snapshot, metric)
         .filter((row) => !days || (row.window > 0 && row.window <= days))
         .map(({ window: _, ...row }) => row);
       assert.deepEqual(
@@ -79,7 +87,6 @@ test("221(g) counts from the interview only while a reinterview is pending", () 
                 ["Administrative processing / 221(g)", "2026-09-04"],
                 ...extra,
               ]),
-              shareTimelineRow: true,
             },
           ],
         },
@@ -99,17 +106,18 @@ test("completed histories need separate sharing and contain only milestone dates
     ["Filed", "2026-09-01"],
   ]);
   function rows(shareTimelineRow: boolean, shareTimelineHistory: boolean) {
+    const storedCase = { ...c, shareTimelineRow, shareTimelineHistory };
     return timelineSnapshot(
       [
         {
           updatedAt: now.toISOString(),
-          cases: [{ ...c, shareTimelineRow, shareTimelineHistory }],
+          cases: [storedCase],
         },
       ],
       now,
-    ).metrics.nvc;
+    ).cases;
   }
-  assert.deepEqual(rows(false, true), []);
+  assert.deepEqual(rows(false, true), rows(true, true));
   assert.equal("history" in rows(true, false)[0], false);
   assert.deepEqual(rows(true, true)[0].history, [
     { type: "Filed", date: "2026-09-01" },

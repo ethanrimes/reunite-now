@@ -12,8 +12,10 @@ import {
   waitMetrics,
   type WaitMetric,
   type WaitRow,
-  type TimelineRow,
+  type TimelineCase,
+  waitDays,
 } from "../../../../shared/visa-timelines";
+import { visaCategories } from "../../../../shared/schema";
 import "./timelines.css";
 
 type Group = { label?: string; options: readonly string[] };
@@ -37,6 +39,10 @@ const groups: Group[] = [
   {
     label: "Diversity visas",
     options: timelineCategories.filter((c) => c === "DV"),
+  },
+  {
+    label: "Other",
+    options: visaCategories.filter((c) => !timelineCategories.includes(c)),
   },
 ];
 const metricText: Record<WaitMetric, [string, string]> = {
@@ -241,11 +247,11 @@ function Loading() {
 export default function VisaTimelines() {
   const { profiles, loading, error } = useData();
   const [metric, setMetric] = useState<WaitMetric>("nvc");
-  const [days, setDays] = useState(90);
+  const [days, setDays] = useState(0);
   const [categories, setCategories] = useState<string[] | null>(null);
   const [posts, setPosts] = useState<string[] | null>(null);
   const [expanded, setExpanded] = useState(true);
-  const [activeRow, setActiveRow] = useState<TimelineRow | null>(null);
+  const [activeRow, setActiveRow] = useState<TimelineCase | null>(null);
   const [showSources, setShowSources] = useState(false);
   const remote = useSnapshot(visaSnapshot, !previewMode);
   const sample = useMemo(
@@ -259,14 +265,39 @@ export default function VisaTimelines() {
   const failed = previewMode ? !!error : remote?.error;
   const rows = useMemo(
     () =>
-      stats?.metrics[metric].filter(
-        (row) =>
-          (!days || (row.window !== 0 && row.window <= days)) &&
-          (!categories || categories.includes(row.category)) &&
-          (!posts || posts.includes(row.post)),
-      ) ?? [],
+      stats?.cases
+        .filter(
+          (row) =>
+            (!days || (row.window !== 0 && row.window <= days)) &&
+            (!categories || categories.includes(row.category)) &&
+            (!posts || posts.includes(row.post)),
+        )
+        .sort(
+          (a, b) =>
+            (a.starts[metric] ?? "9999").localeCompare(
+              b.starts[metric] ?? "9999",
+            ) ||
+            a.category.localeCompare(b.category) ||
+            a.post.localeCompare(b.post),
+        ) ?? [],
     [stats, metric, days, categories, posts],
   );
+  const measured = useMemo(
+    () =>
+      rows.flatMap((r) =>
+        r.starts[metric] && stats
+          ? [
+              {
+                ...r,
+                start: r.starts[metric],
+                days: waitDays(r.starts[metric], stats.asOf),
+              },
+            ]
+          : [],
+      ),
+    [rows, metric, stats],
+  );
+  const activeStart = activeRow?.starts[metric];
   const pending = failed ? (
     <p role="alert">{t("Something went wrong. Please try again.")}</p>
   ) : (
@@ -286,7 +317,7 @@ export default function VisaTimelines() {
           <h2>{t("Reported waits across all update dates")}</h2>
           <p>
             {t(
-              "Includes eligible active cases from earlier submissions. Individual timelines below require separate permission.",
+              "Earlier submissions are included. Each median uses only active cases with the required milestone. A sample of one shows that case’s wait.",
             )}
           </p>
           <div className="table-wrap">
@@ -372,25 +403,27 @@ export default function VisaTimelines() {
           <>
             <strong>
               {t("{count} active cases in this view", {
-                count: number(rows.length),
+                count: number(measured.length),
               })}
             </strong>
-            <BoxPlot rows={rows} />
+            <BoxPlot rows={measured} />
           </>
         ) : (
-          !expanded && pending
+          pending
         )}
+      </section>
+      <section className="wait-panel">
         <details
           id="individual-cases"
           open={expanded}
           className="methodology wait-cases"
           onToggle={(e) => setExpanded(e.currentTarget.open)}
         >
-          <summary>{t("Individual cases")}</summary>
+          <summary>
+            {t("Individual cases")} ({number(rows.length)})
+          </summary>
           {expanded &&
-            (!stats ? (
-              pending
-            ) : rows.length ? (
+            (!stats ? null : rows.length ? (
               <div
                 className="table-wrap"
                 tabIndex={0}
@@ -416,18 +449,32 @@ export default function VisaTimelines() {
                     {rows.map((r, i) => (
                       <tr key={i}>
                         <td>
-                          <button
-                            className="text-button"
-                            onClick={() => setActiveRow(r)}
-                          >
-                            {r.category} <span>{t("View timeline")}</span>
-                          </button>
+                          {r.starts[metric] || r.history?.length ? (
+                            <button
+                              className="text-button"
+                              onClick={() => setActiveRow(r)}
+                            >
+                              {r.category} <span>{t("View timeline")}</span>
+                            </button>
+                          ) : (
+                            r.category
+                          )}
                         </td>
                         <td>{t(r.post)}</td>
                         <td>
-                          <time dateTime={r.start}>{date(r.start)}</time>
+                          {r.starts[metric] ? (
+                            <time dateTime={r.starts[metric]}>
+                              {date(r.starts[metric])}
+                            </time>
+                          ) : (
+                            "—"
+                          )}
                         </td>
-                        <td>{waitLabel(r.start, stats.asOf)}</td>
+                        <td>
+                          {r.starts[metric]
+                            ? waitLabel(r.starts[metric], stats.asOf)
+                            : "—"}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -439,7 +486,7 @@ export default function VisaTimelines() {
         </details>
         <p className="method-note">
           {t(
-            "Only cases shared for the public timelines table appear here. Each row shows the visa type, consular post, milestone date and wait, without a name.",
+            "Saving a visa case publishes a row with its visa category and consular post. When a wait can be calculated, the row also shows its starting date and duration. Names, nicknames and case IDs stay private.",
           )}
         </p>
       </section>
@@ -450,9 +497,10 @@ export default function VisaTimelines() {
           </p>
           <ol className="case-milestones">
             {(
-              activeRow.history ?? [
-                { type: metricText[metric][1], date: activeRow.start },
-              ]
+              activeRow.history ??
+              (activeStart
+                ? [{ type: metricText[metric][1], date: activeStart }]
+                : [])
             ).map((event, i) => (
               <li key={i}>
                 <time dateTime={event.date}>{date(event.date)}</time>{" "}
@@ -460,9 +508,11 @@ export default function VisaTimelines() {
               </li>
             ))}
           </ol>
-          <p>
-            {t("Time waiting")}: {waitLabel(activeRow.start, stats.asOf)}
-          </p>
+          {activeStart && (
+            <p>
+              {t("Time waiting")}: {waitLabel(activeStart, stats.asOf)}
+            </p>
+          )}
         </Modal>
       )}
       <button className="text-button" onClick={() => setShowSources(true)}>

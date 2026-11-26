@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { caseRoles, rolesFor, relationshipsFor } from "./visa-workflow";
-export const consentVersion = "2026-11-23T05:51:00Z";
+export const consentVersion = "2026-11-26T00:00:00Z";
 export const legalStatuses = [
   "US citizen",
   "Permanent resident",
@@ -154,7 +154,6 @@ export const caseSchema = z
     role: z.enum(caseRoles).optional(),
     category: z.enum(visaCategories),
     post: z.string().trim().min(2).max(120),
-    shareTimelineRow: z.boolean().optional(),
     shareTimelineHistory: z.boolean().optional(),
     events: z
       .array(eventSchema)

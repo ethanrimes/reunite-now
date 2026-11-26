@@ -268,7 +268,7 @@ test("email authentication, data privacy, ownership, update and deletion", async
   assert.equal(aggregate.countries.Colombia.sample, 1);
   assert.equal("rows" in aggregate, false);
   const stats = await (await request("/api/stats/visas/rows?days=0")).json();
-  assert.deepEqual(stats.rows, []);
+  assert.equal(stats.rows.length, 1);
   const legacySnapshot = await (
     await request("/api/stats/visas/snapshot")
   ).json();
@@ -288,13 +288,23 @@ test("email authentication, data privacy, ownership, update and deletion", async
     profile.name,
     "Test applicant",
     "test-case",
-    "2026-03-01",
-    "Bogotá",
+    "2026-01-01",
   ])
     assert.ok(!JSON.stringify(legacySnapshot).includes(value));
+  const caseRoster = await (
+    await request("/api/stats/visas/snapshot?view=cases")
+  ).json();
+  assert.deepEqual(caseRoster.cases, [
+    {
+      category: "K-1",
+      post: "Bogotá",
+      starts: { nvc: "2026-03-01" },
+      window: 30,
+    },
+  ]);
   const currentSnapshot = async () =>
     (await (await request("/api/stats/visas/snapshot")).json()).metrics;
-  assert.deepEqual((await currentSnapshot()).nvc, []);
+  assert.equal((await currentSnapshot()).nvc.length, 1);
   for (const value of [
     me.user.id,
     profile.name,
@@ -357,9 +367,9 @@ test("email authentication, data privacy, ownership, update and deletion", async
   );
   assert.deepEqual(
     (await (await request("/api/stats/visas/rows?days=0")).json()).rows,
-    [],
+    timeline.rows,
   );
-  assert.deepEqual((await currentSnapshot()).nvc, []);
+  assert.equal((await currentSnapshot()).nvc.length, 1);
   const originalPhoto = await sharp({
     create: { width: 20, height: 10, channels: 3, background: "#aabbcc" },
   })

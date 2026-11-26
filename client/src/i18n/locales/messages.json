@@ -1,23 +1,18 @@
 {
-  "If you agreed to public statistics when you signed, your eligible active cases can contribute to the case count and median wait for each milestone. This includes earlier submissions, even if you keep your individual timeline private. A count of one means the median is that case’s wait.": {
-    "es": "Si aceptaste el uso de tus datos en estadísticas públicas al firmar, tus casos activos que cumplan los requisitos pueden contribuir al recuento y a la mediana de espera de cada hito. Esto incluye casos enviados anteriormente, aunque mantengas privada tu cronología individual. Si el recuento es uno, la mediana es la espera de ese caso.",
-    "pt": "Se você concordou com o uso dos seus dados em estatísticas públicas ao assinar, seus casos ativos elegíveis podem entrar na contagem e na mediana do tempo de espera de cada etapa. Isso inclui casos enviados anteriormente, mesmo que sua linha do tempo individual seja privada. Se a contagem for um, a mediana será a espera desse caso.",
-    "tl": "Kung pumayag kang gamitin ang iyong datos sa pampublikong estadistika noong lumagda ka, maaaring isama ang iyong mga kwalipikadong aktibong kaso sa bilang at median na tagal ng paghihintay para sa bawat yugto. Kasama rito ang mga naunang isinumite kahit pribado ang iyong sariling timeline. Kung iisa ang kaso, ang median ay ang tagal ng paghihintay ng kasong iyon."
+  "Saving a visa case publishes a row with its visa category and consular post. When a wait can be calculated, the row also shows its starting date and duration. Names, nicknames and case IDs stay private.": {
+    "es": "Al guardar un caso de visa se publica una fila con su categoría y oficina consular. Si se puede calcular la espera, también se muestran la fecha de inicio y la duración. Los nombres, apodos e identificadores de caso son privados.",
+    "pt": "Salvar um caso de visto publica uma linha com a categoria e o posto consular. Quando é possível calcular a espera, a linha também mostra a data inicial e a duração. Nomes, apelidos e identificadores de casos ficam privados.",
+    "tl": "Kapag nag-save ka ng kaso ng visa, ilalathala ang kategorya nito at tanggapan ng konsulado sa isang hanay. Kung makakalkula ang paghihintay, makikita rin ang petsa ng simula at tagal nito. Pribado ang mga pangalan, palayaw at ID ng kaso."
   },
-  "If you choose to share an individual case in the case editor, its public row shows the visa category, consular post, milestone date and wait. Names, nicknames and case IDs stay private in both timeline views. You can turn off individual sharing in the case editor.": {
-    "es": "Si eliges compartir un caso individual en el editor de casos, su fila pública muestra la categoría de visa, la oficina consular, la fecha del hito y la espera. Los nombres, apodos e identificadores de caso permanecen privados en ambas vistas de cronologías. Puedes dejar de compartir el caso individual en el editor.",
-    "pt": "Se você optar por compartilhar um caso individual no editor de casos, a linha pública mostrará a categoria do visto, o posto consular, a data da etapa e o tempo de espera. Nomes, apelidos e identificadores de casos ficam privados nas duas visualizações de cronologias. Você pode desativar o compartilhamento individual no editor de casos.",
-    "tl": "Kung pipiliin mong ibahagi ang isang kaso sa editor ng kaso, makikita sa pampublikong hanay ang kategorya ng visa, tanggapan ng konsulado, petsa ng yugto at tagal ng paghihintay. Pribado ang mga pangalan, palayaw at ID ng kaso sa parehong tanawin ng timeline. Maaari mong ihinto ang pagbabahagi ng indibidwal na kaso sa editor."
+  "Earlier submissions are included. Each median uses only active cases with the required milestone. A sample of one shows that case’s wait.": {
+    "es": "Se incluyen casos enviados anteriormente. Cada mediana usa solo casos activos con el hito requerido. Si solo hay un caso, la mediana muestra su espera.",
+    "pt": "Casos enviados anteriormente estão incluídos. Cada mediana usa apenas casos ativos com a etapa necessária. Uma amostra de um caso mostra a espera desse caso.",
+    "tl": "Kasama ang mga naunang isinumite. Ang bawat median ay mula lamang sa mga aktibong kasong may kinakailangang yugto. Kung iisa ang kaso, ang median ay ang tagal ng paghihintay nito."
   },
   "Reported waits across all update dates": {
     "es": "Tiempos de espera de todos los períodos",
     "pt": "Tempos de espera de todos os períodos",
     "tl": "Mga naiulat na tagal ng paghihintay sa lahat ng panahon"
-  },
-  "Includes eligible active cases from earlier submissions. Individual timelines below require separate permission.": {
-    "es": "Incluye casos activos elegibles enviados anteriormente. Las cronologías individuales que aparecen abajo requieren un permiso aparte.",
-    "pt": "Inclui casos ativos elegíveis enviados anteriormente. As cronologias individuais abaixo exigem autorização separada.",
-    "tl": "Kasama ang mga kwalipikadong aktibong kasong naunang isinumite. Kailangan ng hiwalay na pahintulot para sa mga indibidwal na timeline sa ibaba."
   },
   "View timeline": {
     "es": "Ver cronología",
@@ -178,16 +173,6 @@
     "es": "La caja cubre el 50 % central de las esperas. La marca interior es la mediana; los extremos indican la espera mínima y máxima.",
     "pt": "A caixa cobre os 50% centrais das esperas. A marca interna é a mediana; as pontas mostram a menor e a maior espera.",
     "tl": "Saklaw ng kahon ang gitnang kalahati ng mga tagal. Ang guhit sa loob ang median; ang mga dulo ang pinakamaikli at pinakamatagal."
-  },
-  "Only cases shared for the public timelines table appear here. Each row shows the visa type, consular post, milestone date and wait, without a name.": {
-    "es": "Aquí solo aparecen los casos compartidos para la tabla pública. Cada fila indica el tipo de visa, consulado, fecha del hito y espera, sin nombre.",
-    "pt": "Somente casos compartilhados para a tabela pública aparecem aqui. Cada linha mostra tipo de visto, posto consular, data da etapa e espera, sem nome.",
-    "tl": "Mga kasong ibinahagi para sa pampublikong talaan lamang ang makikita rito. Bawat hanay ay may uri ng visa, konsulado, petsa ng yugto at tagal ng paghihintay, walang pangalan."
-  },
-  "Share this case’s visa type, consular post, milestone date and wait in the public timelines table, without a name. I can turn this off at any time.": {
-    "es": "Compartir sin nombre el tipo de visa, consulado, fecha del hito y espera de este caso en la tabla pública. Puedo desactivarlo en cualquier momento.",
-    "pt": "Compartilhar sem nome o tipo de visto, posto consular, data da etapa e espera deste caso na tabela pública. Posso desativar isso a qualquer momento.",
-    "tl": "Ibahagi sa pampublikong talaan ang uri ng visa, konsulado, petsa ng yugto at tagal ng paghihintay ng kasong ito nang walang pangalan. Maaari ko itong ihinto anumang oras."
   },
   "Community reports on administrative processing after interview, organized by consulate.": {
     "es": "Informes comunitarios sobre el trámite administrativo posterior a la entrevista, por consulado.",

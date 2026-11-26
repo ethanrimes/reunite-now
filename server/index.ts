@@ -6,6 +6,7 @@ import express, {
 import { visaStatistics, type PlaceCount } from "../shared/public-views";
 import {
   timelineSnapshot,
+  metricRows,
   visaTimelines,
   waitMetrics,
 } from "../shared/visa-timelines";
@@ -966,8 +967,16 @@ app.get("/api/stats/visas/rows", async (req, res) => {
     .parse(req.query);
   res.json(visaTimelines(await timelineProfiles(), metric, days));
 });
-app.get("/api/stats/visas/snapshot", async (_req, res) => {
-  res.json(timelineSnapshot(await timelineProfiles()));
+app.get("/api/stats/visas/snapshot", async (req, res) => {
+  const snapshot = timelineSnapshot(await timelineProfiles());
+  if (req.query.view === "cases") return void res.json(snapshot);
+  const { cases, ...summary } = snapshot;
+  res.json({
+    ...summary,
+    metrics: Object.fromEntries(
+      waitMetrics.map((metric) => [metric, metricRows(snapshot, metric)]),
+    ),
+  });
 });
 app.use("/api", publicStoryRoutes(demo?.stories ?? []));
 app.post("/api/jobs/reminders", async (req, res) => {

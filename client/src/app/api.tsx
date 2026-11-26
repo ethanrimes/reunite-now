@@ -62,7 +62,7 @@ export const coverageSnapshot = snapshotCache(() =>
   api<SignatureGroup[]>("/stats/coverage/groups"),
 );
 export const visaSnapshot = snapshotCache(() =>
-  api<ReturnType<typeof timelineSnapshot>>("/stats/visas/snapshot"),
+  api<ReturnType<typeof timelineSnapshot>>("/stats/visas/snapshot?view=cases"),
 );
 const storyPages = keyedSnapshotCache<StoryPage>(8);
 const storyDetails = keyedSnapshotCache<PublicStory>(4);

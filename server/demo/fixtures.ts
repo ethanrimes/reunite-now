@@ -128,7 +128,6 @@ export async function createDemoData(now = new Date()) {
       country,
       nationality: country,
       role: "Other relationship to the applicant",
-      shareTimelineRow: true,
       shareTimelineHistory: true,
       post,
       category,

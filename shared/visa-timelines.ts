@@ -14,7 +14,8 @@ export type WaitRow = {
   days: number;
 };
 type ReportedCase = CaseReport["cases"][number];
-export type TimelineRow = WaitRow & {
+export type TimelineCase = Pick<WaitRow, "category" | "post"> & {
+  starts: Partial<Record<WaitMetric, string>>;
   window: number;
   history?: ReportedCase["events"];
 };
@@ -56,62 +57,69 @@ function waitStart(
   return interviews[0].date;
 }
 
-function collectWaits(
-  profiles: CaseReport[],
-  requested: readonly WaitMetric[],
-  days: number,
-  now = new Date(),
-  aggregateDays?: Record<WaitMetric, number[]>,
-) {
+export function timelineSnapshot(profiles: CaseReport[], now = new Date()) {
   const asOf = now.toISOString().slice(0, 10);
   const posts = new Set<string>();
-  const metrics: Record<WaitMetric, TimelineRow[]> = {
+  const cases: TimelineCase[] = [];
+  const durations: Record<WaitMetric, number[]> = {
     nvc: [],
     post: [],
     reinterview: [],
   };
-  const today = Date.parse(asOf);
   for (const profile of profiles) {
     for (const c of profile.cases) {
-      const shared = c.shareTimelineRow === true;
-      if (
-        (!shared && !aggregateDays) ||
-        !timelineCategories.includes(c.category)
-      )
-        continue;
-      if (shared) posts.add(c.post);
-      const age = (+now - Date.parse(c.updatedAt || profile.updatedAt)) / dayMs;
-      if (days && !(age <= days)) continue;
       const events = orderedEvents(c, now);
-      const history =
-        shared && c.shareTimelineHistory === true
-          ? events.map(({ type, date }) => ({ type, date }))
-          : undefined;
-      for (const metric of requested) {
-        const start = waitStart(events, metric);
-        if (!start) continue;
-        const duration = (today - Date.parse(start)) / dayMs;
-        aggregateDays?.[metric].push(duration);
-        if (!shared) continue;
-        metrics[metric].push({
-          category: c.category,
-          post: c.post,
-          start,
-          days: duration,
-          window: [30, 60, 90].find((limit) => age <= limit) ?? 0,
-          ...(history ? { history } : {}),
-        });
+      const age = (+now - Date.parse(c.updatedAt || profile.updatedAt)) / dayMs;
+      const starts: TimelineCase["starts"] = {};
+      if (timelineCategories.includes(c.category)) {
+        for (const metric of waitMetrics) {
+          const start = waitStart(events, metric);
+          if (!start) continue;
+          starts[metric] = start;
+          durations[metric].push(waitDays(start, asOf));
+        }
       }
+      posts.add(c.post);
+      cases.push({
+        category: c.category,
+        post: c.post,
+        starts,
+        window: [30, 60, 90].find((limit) => age <= limit) ?? 0,
+        ...(c.shareTimelineHistory === true
+          ? { history: events.map(({ type, date }) => ({ type, date })) }
+          : {}),
+      });
     }
   }
-  for (const metric of requested)
-    metrics[metric].sort(
+  const overview = waitMetrics.map((metric) => ({
+    metric,
+    count: durations[metric].length,
+    medianDays: median(durations[metric]),
+  }));
+  return { asOf, posts: [...posts].sort(), cases, overview };
+}
+
+export function waitDays(start: string, asOf: string) {
+  return (Date.parse(asOf) - Date.parse(start)) / dayMs;
+}
+
+export function metricRows(
+  snapshot: ReturnType<typeof timelineSnapshot>,
+  metric: WaitMetric,
+) {
+  return snapshot.cases
+    .flatMap(({ starts, ...entry }) => {
+      const start = starts[metric];
+      return start
+        ? [{ ...entry, start, days: waitDays(start, snapshot.asOf) }]
+        : [];
+    })
+    .sort(
       (a, b) =>
         b.days - a.days ||
         a.category.localeCompare(b.category) ||
         a.post.localeCompare(b.post),
     );
-  return { asOf, posts: [...posts].sort(), metrics };
 }
 
 export function visaTimelines(
@@ -120,29 +128,27 @@ export function visaTimelines(
   days: number,
   now = new Date(),
 ) {
-  const result = collectWaits(profiles, [metric], days, now);
+  const snapshot = timelineSnapshot(
+    profiles.map((p) => ({
+      ...p,
+      cases: p.cases.filter(
+        (c) =>
+          !days ||
+          (+now - Date.parse(c.updatedAt || p.updatedAt)) / dayMs <= days,
+      ),
+    })),
+    now,
+  );
+  const rows = metricRows(snapshot, metric).map(
+    ({ window: _, history: _history, ...row }) => row,
+  );
   return {
-    asOf: result.asOf,
-    posts: result.posts,
-    rows: result.metrics[metric].map(
-      ({ window: _, history: _history, ...row }) => row,
-    ),
+    asOf: snapshot.asOf,
+    posts: [
+      ...new Set(profiles.flatMap((p) => p.cases.map((c) => c.post))),
+    ].sort(),
+    rows,
   };
-}
-
-export function timelineSnapshot(profiles: CaseReport[], now = new Date()) {
-  const durations: Record<WaitMetric, number[]> = {
-    nvc: [],
-    post: [],
-    reinterview: [],
-  };
-  const snapshot = collectWaits(profiles, waitMetrics, 0, now, durations);
-  const overview = waitMetrics.map((metric) => ({
-    metric,
-    count: durations[metric].length,
-    medianDays: median(durations[metric]),
-  }));
-  return { ...snapshot, overview };
 }
 
 // Linear interpolation at (n - 1) * p; whiskers show the full reported range.

@@ -2,12 +2,7 @@ import type { VisaCase, VisaEvent } from "./schema";
 type Timeline = { events: Pick<VisaEvent, "date" | "type">[] };
 type ReportedCase = Pick<
   VisaCase,
-  | "post"
-  | "category"
-  | "nationality"
-  | "updatedAt"
-  | "shareTimelineRow"
-  | "shareTimelineHistory"
+  "post" | "category" | "nationality" | "updatedAt" | "shareTimelineHistory"
 > &
   Timeline;
 export type CaseReport = { cases: ReportedCase[]; updatedAt: string };

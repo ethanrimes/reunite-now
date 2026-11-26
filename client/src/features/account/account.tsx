@@ -574,35 +574,22 @@ function VisaEditor({
         <div className="timeline-editor-title">
           <h4>{t("Visa timeline")}</h4>
         </div>
+        <p>
+          {t(
+            "Saving a visa case publishes a row with its visa category and consular post. When a wait can be calculated, the row also shows its starting date and duration. Names, nicknames and case IDs stay private.",
+          )}
+        </p>
+
         <label className="checkbox">
           <input
             type="checkbox"
-            checked={value.shareTimelineRow === true}
-            onChange={(e) =>
-              onChange({
-                ...value,
-                shareTimelineRow: e.target.checked,
-                shareTimelineHistory:
-                  e.target.checked && value.shareTimelineHistory === true,
-              })
-            }
+            checked={value.shareTimelineHistory === true}
+            onChange={(e) => set("shareTimelineHistory", e.target.checked)}
           />
           {t(
-            "Share this case’s visa type, consular post, milestone date and wait in the public timelines table, without a name. I can turn this off at any time.",
+            "Also share the dates and types of all completed milestones in this case’s public timeline.",
           )}
         </label>
-        {value.shareTimelineRow && (
-          <label className="checkbox">
-            <input
-              type="checkbox"
-              checked={value.shareTimelineHistory === true}
-              onChange={(e) => set("shareTimelineHistory", e.target.checked)}
-            />
-            {t(
-              "Also share the dates and types of all completed milestones in this case’s public timeline.",
-            )}
-          </label>
-        )}
         <p>
           {t(
             "Delete any milestone you haven’t reached yet. Enter a date for at least one milestone.",
