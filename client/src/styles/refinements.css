@@ -646,3 +646,8 @@
 .signin-providers small {
   font-weight: 400;
 }
+
+.signin-verification > h1,
+.signin-verification > form {
+  margin-block-end: 12px;
+}

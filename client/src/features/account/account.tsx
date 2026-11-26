@@ -332,7 +332,7 @@ export function Verify() {
   }
 
   return (
-    <div className="page-shell narrow">
+    <div className="page-shell narrow signin-verification">
       <h1>{t(useCode ? "Enter a sign-in code" : "Finish signing in")}</h1>
       {useCode && !manual && (
         <Notice>
