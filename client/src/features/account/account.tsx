@@ -1269,16 +1269,6 @@ export function Account() {
               )
         }
       >
-        {signing && (
-          <Link
-            className="text-button"
-            to="/data-use"
-            target="_blank"
-            rel="noopener"
-          >
-            {t("Privacy & data use")}
-          </Link>
-        )}
         <button
           className="text-button"
           onClick={async () => {
@@ -1521,12 +1511,24 @@ export function Account() {
           {(signing || tab === "cases") && (
             <>
               <section className="account-section">
-                <fieldset className="involvement">
+                <fieldset
+                  className="involvement"
+                  aria-describedby={
+                    signing ? "interview-wait-guidance" : undefined
+                  }
+                >
                   <legend>
                     {t(
                       "Are you applying for a U.S. visa or sponsoring an applicant? *",
                     )}
                   </legend>
+                  {signing && (
+                    <p id="interview-wait-guidance">
+                      {t(
+                        "If you’re waiting for a first visa interview or a reinterview, share the milestone dates you know. They help show how long people are still waiting. If your case is closed, you can sign as a supporter.",
+                      )}
+                    </p>
+                  )}
                   <label>
                     <input
                       type="radio"
@@ -1607,61 +1609,76 @@ export function Account() {
               )}
             </>
           )}
-          {signing && (
-            <section className="account-section consent-section">
-              <span className="eyebrow">{t("CONSENT & PREFERENCES")}</span>
-              <h2>{t("Confirm your signature")}</h2>
-              <p className="petition-statement">
-                {t(
-                  "I support transparent visa processing times, meaningful accountability for the Department of State, and the staffing and resources needed to reduce unnecessary delays.",
-                )}
-              </p>
-              <label className="checkbox">
-                <input
-                  type="checkbox"
-                  required
-                  checked={form.signed}
-                  onChange={(e) => set("signed", e.target.checked)}
-                />
-                <span>
-                  {t("I am signing this petition with my real name. *")}
-                </span>
-              </label>
-              <label className="checkbox">
-                <input
-                  type="checkbox"
-                  required
-                  checked={form.publicConsent}
-                  onChange={(e) => set("publicConsent", e.target.checked)}
-                />
-                <span>
-                  {t("I have read the")}{" "}
-                  <Link to="/data-use" target="_blank">
-                    {t("data use agreement")}
-                  </Link>{" "}
-                  {t(
-                    "and consent to the use of my signature, profile and visa timelines in public statistics. My email stays private. *",
-                  )}
-                </span>
-              </label>
-              <label className="checkbox">
-                <input
-                  type="checkbox"
-                  required
-                  checked={form.adultConsent}
-                  onChange={(e) => set("adultConsent", e.target.checked)}
-                />
-                <span>
-                  {t(
-                    "I am at least 18 and have permission to publish information about any other applicants I add. *",
-                  )}
-                </span>
-              </label>
-            </section>
-          )}
           {(signing || tab === "settings") && (
-            <section className="account-section">
-              <h2>{t("Public signatory list")}</h2>
+            <section
+              className={
+                signing ? "account-section consent-section" : "account-section"
+              }
+            >
+              {signing ? (
+                <>
+                  <span className="eyebrow">{t("CONSENT & PREFERENCES")}</span>
+                  <div className="row-between" id="confirm-signature">
+                    <h2>{t("Confirm your signature")}</h2>
+                    <Link
+                      className="button outline small"
+                      to="/data-use"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      {t("Privacy & data use")}
+                    </Link>
+                  </div>
+                  <p className="petition-statement">
+                    {t(
+                      "I support transparent visa processing times, meaningful accountability for the Department of State, and the staffing and resources needed to reduce unnecessary delays.",
+                    )}
+                  </p>
+                  <label className="checkbox">
+                    <input
+                      type="checkbox"
+                      required
+                      checked={form.signed}
+                      onChange={(e) => set("signed", e.target.checked)}
+                    />
+                    <span>
+                      {t("I am signing this petition with my real name. *")}
+                    </span>
+                  </label>
+                  <label className="checkbox">
+                    <input
+                      type="checkbox"
+                      required
+                      checked={form.publicConsent}
+                      onChange={(e) => set("publicConsent", e.target.checked)}
+                    />
+                    <span>
+                      {t("I have read the")}{" "}
+                      <Link to="/data-use" target="_blank">
+                        {t("data use agreement")}
+                      </Link>{" "}
+                      {t(
+                        "and consent to the use of my signature, profile and visa timelines in public statistics. My email stays private. *",
+                      )}
+                    </span>
+                  </label>
+                  <label className="checkbox">
+                    <input
+                      type="checkbox"
+                      required
+                      checked={form.adultConsent}
+                      onChange={(e) => set("adultConsent", e.target.checked)}
+                    />
+                    <span>
+                      {t(
+                        "I am at least 18 and have permission to publish information about any other applicants I add. *",
+                      )}
+                    </span>
+                  </label>
+                </>
+              ) : (
+                <h2>{t("Public signatory list")}</h2>
+              )}
               <label className="checkbox">
                 <input
                   type="checkbox"
