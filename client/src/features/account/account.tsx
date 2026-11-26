@@ -174,12 +174,20 @@ export function Login() {
                               : undefined
                           }
                         >
-                          {t("Continue with {provider}", {
-                            provider: providerNames[provider],
-                          })}
-                          {!loading && !enabled && (
-                            <small>{t("Unavailable")}</small>
-                          )}
+                          <img
+                            src={`/auth/${provider}.svg`}
+                            alt=""
+                            width={20}
+                            height={20}
+                          />
+                          <span>
+                            {t("Continue with {provider}", {
+                              provider: providerNames[provider],
+                            })}
+                            {!loading && !enabled && (
+                              <small> {t("Unavailable")}</small>
+                            )}
+                          </span>
                         </a>
                       );
                     },

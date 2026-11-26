@@ -632,6 +632,17 @@
   row-gap: 26px;
   margin-block-end: 12px;
 }
+.signin-providers .button {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) 20px;
+  gap: 8px;
+  text-align: center;
+}
+.signin-providers img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
 .signin-providers small {
   font-weight: 400;
 }
