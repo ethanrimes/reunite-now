@@ -85,7 +85,11 @@ import {
   states,
   type Profile,
 } from "../shared/schema";
-import { signInProviders } from "../shared/auth-providers";
+import {
+  mailboxProvider,
+  signInProviders,
+  type Provider,
+} from "../shared/auth-providers";
 import * as oidc from "./auth/providers";
 const production = process.env.NODE_ENV === "production";
 const appUrl = process.env.APP_URL || "http://127.0.0.1:5173";
@@ -255,38 +259,37 @@ const emailConflict = () =>
 async function createSession(
   email: string,
   connection: Queryable,
-  identity?: string,
+  identities: string[],
   linked?: LinkedAccount,
 ) {
-  if (linked) {
-    // Preserve signatures, cases and the original storage region of older Microsoft accounts.
-    const updated = await connection.query(
-      "UPDATE users SET email=$1 WHERE id=$2 AND (email IS NULL OR email=$1) AND NOT EXISTS (SELECT 1 FROM users WHERE email=$1 AND id<>$2) RETURNING id",
-      [email, linked.id],
-    );
-    if (!updated.rows.length) throw emailConflict();
-    return issueSession(linked.id, connection);
-  }
-  const u = await connection.query(
-    "INSERT INTO users(id,email) VALUES($1,$2) ON CONFLICT(email) DO UPDATE SET email=EXCLUDED.email RETURNING id",
-    [randomUUID(), email],
-  );
-  if (identity) {
+  // Keep the original user ID and all profile data when enrolling a legacy account.
+  const account = linked
+    ? await connection.query(
+        "UPDATE users SET email=$1 WHERE id=$2 AND (email IS NULL OR email=$1) AND NOT EXISTS (SELECT 1 FROM users WHERE email=$1 AND id<>$2) RETURNING id",
+        [email, linked.id],
+      )
+    : await connection.query(
+        "INSERT INTO users(id,email) VALUES($1,$2) ON CONFLICT(email) DO UPDATE SET email=EXCLUDED.email RETURNING id",
+        [randomUUID(), email],
+      );
+  const userId = account.rows[0]?.id;
+  if (!userId) throw emailConflict();
+  for (const identity of identities) {
     await connection.query(
       "INSERT INTO oauth_identities(identity_key,user_id) VALUES($1,$2) ON CONFLICT DO NOTHING",
-      [identity, u.rows[0].id],
+      [identity, userId],
     );
     if (
       !(
         await connection.query(
           "SELECT 1 FROM oauth_identities WHERE identity_key=$1 AND user_id=$2",
-          [identity, u.rows[0].id],
+          [identity, userId],
         )
       ).rows.length
     )
       throw Error("Identity already linked");
   }
-  return issueSession(u.rows[0].id, connection);
+  return issueSession(userId, connection);
 }
 async function issueSession(userId: string, connection: Queryable) {
   const raw = token();
@@ -299,8 +302,8 @@ async function issueSession(userId: string, connection: Queryable) {
 async function signInAtHome(
   email: string,
   fallback: "eu" | "us",
-  sourceTransaction?: Queryable,
-  identity?: string,
+  sourceTransaction: Queryable | undefined,
+  identities: string[],
   linked?: LinkedAccount,
 ) {
   const home = await homeForEmail(email, linked?.home ?? fallback);
@@ -319,10 +322,10 @@ async function signInAtHome(
     );
   }
   if (home === fallback && sourceTransaction)
-    return createSession(email, sourceTransaction, identity, linked);
+    return createSession(email, sourceTransaction, identities, linked);
   return inRegion(home, () =>
     transaction((connection) =>
-      createSession(email, connection, identity, linked),
+      createSession(email, connection, identities, linked),
     ),
   );
 }
@@ -540,7 +543,13 @@ app.post("/api/auth/verify", authLimit, async (req, res) => {
         }
         trace.email = email;
         trace.stage = "create_session";
-        return signInAtHome(email, sourceRegion, connection, identity, linked);
+        return signInAtHome(
+          email,
+          sourceRegion,
+          connection,
+          identity ? [identity] : [],
+          linked,
+        );
       }),
     );
   });
@@ -586,22 +595,23 @@ app.post(
     res.sendStatus(204);
   },
 );
-async function microsoftGmailLink(cookie: unknown) {
-  const cfg = oidc.config("microsoft", appUrl);
+async function pendingProviderLink(provider: Provider, cookie: unknown) {
+  const cfg = oidc.config(provider, appUrl);
   if (!cfg || typeof cookie !== "string") return;
   const pending = await oidc
-    .readTicket(cfg, "microsoft", "link", cookie)
+    .readTicket(cfg, provider, "link", cookie)
     .catch(() => null);
   if (
     typeof pending?.identity !== "string" ||
     typeof pending.address !== "string" ||
-    !pending.address.endsWith("@gmail.com")
+    !pending.address
   )
     return;
   return {
     identity: pending.identity,
     address: pending.address,
     digest: hash(cookie),
+    provider,
   };
 }
 for (const provider of signInProviders) {
@@ -616,12 +626,10 @@ for (const provider of signInProviders) {
   app.get(start, authLimit, async (req, res) => {
     const cfg = oidc.config(provider, appUrl);
     if (!cfg) return res.redirect("/login?error=oauth");
-    const connectingMicrosoft =
-      provider === "google" && req.query.connect === "microsoft";
-    const pending = connectingMicrosoft
-      ? await microsoftGmailLink(req.cookies.rn_oidc_link)
-      : undefined;
-    if (connectingMicrosoft && !pending)
+    const origin = signInProviders.find((name) => name === req.query.connect);
+    const pending =
+      origin && (await pendingProviderLink(origin, req.cookies.rn_oidc_link));
+    if (req.query.connect !== undefined && (!pending || origin === provider))
       return res.redirect("/login?error=oauth");
     const flow = await oidc.begin(
       provider,
@@ -655,45 +663,48 @@ for (const provider of signInProviders) {
         req.method === "POST" ? req.body : req.query,
       );
       const pending =
-        info.microsoftLink &&
-        (await microsoftGmailLink(req.cookies.rn_oidc_link));
+        info.link &&
+        (await pendingProviderLink(
+          info.link.provider,
+          req.cookies.rn_oidc_link,
+        ));
       if (
-        info.microsoftLink &&
-        (provider !== "google" ||
-          !pending ||
-          pending.digest !== info.microsoftLink ||
-          !info.authoritative ||
-          info.address !== pending.address)
+        info.link &&
+        (!pending ||
+          pending.digest !== info.link.digest ||
+          pending.provider === provider)
       ) {
-        return res.redirect(
-          303,
-          "/login?connect=microsoft&error=oauth" +
-            (info.destination === "/feedback" ? "&intent=feedback" : ""),
-        );
+        return res.redirect(303, "/login?error=oauth");
       }
       const result = await routed(true, async () => {
         const linked = await linkedAccount(info.identity);
         if (pending) {
-          // Both callbacks must belong to the same browser and agree on the Gmail address.
-          if (linked && linked.email !== pending.address) throw emailConflict();
-          const microsoftAccount = await linkedAccount(pending.identity);
+          // An enrolled identity proves access to its original account. A new verifier
+          // must attest to the exact address in the first provider's browser-bound ticket.
+          if (
+            linked
+              ? linked.email !== pending.address
+              : !info.authoritative || info.address !== pending.address
+          )
+            return { retry: true } as const;
+          const originalAccount = await linkedAccount(pending.identity);
           const session = await signInAtHome(
             pending.address,
             detectedRegion(req),
             undefined,
-            pending.identity,
-            microsoftAccount,
+            [pending.identity, info.identity],
+            originalAccount,
           );
           return { session, needsEmail: false };
         }
         if (linked) {
-          if (!linked.email && info.authoritative && provider === "microsoft") {
+          if (!linked.email && info.authoritative) {
             try {
               const session = await signInAtHome(
                 info.address,
                 linked.home,
                 undefined,
-                info.identity,
+                [info.identity],
                 linked,
               );
               return { session, needsEmail: false };
@@ -716,12 +727,20 @@ for (const provider of signInProviders) {
             info.address,
             detectedRegion(req),
             undefined,
-            info.identity,
+            [info.identity],
           );
           return { session, needsEmail: false };
         }
         return { session: undefined, needsEmail: true };
       });
+      if (result.retry && pending)
+        return res.redirect(
+          303,
+          "/login?connect=" +
+            pending.provider +
+            "&method=email&error=oauth" +
+            (info.destination === "/feedback" ? "&intent=feedback" : ""),
+        );
       if (result.session) {
         res.cookie("rn_session", result.session, {
           ...cookieOptions,
@@ -730,23 +749,32 @@ for (const provider of signInProviders) {
       }
       res.clearCookie("rn_oidc_proof", cookieOptions);
       if (result.needsEmail) {
+        const host = mailboxProvider(info.address);
+        const verifier =
+          host && host !== provider && oidc.config(host, appUrl)
+            ? host
+            : undefined;
         res.cookie(
           "rn_oidc_link",
           await oidc.ticket(cfg, provider, "link", {
             identity: info.identity,
             address: info.address,
           }),
-          { ...cookieOptions, maxAge: 900000 },
+          {
+            ...cookieOptions,
+            ...(provider !== "apple" &&
+              oidc.config("apple", appUrl) && {
+                sameSite: "none" as const,
+                secure: true,
+              }),
+            maxAge: 900000,
+          },
         );
         return res.redirect(
           303,
           "/login?connect=" +
             provider +
-            (provider === "microsoft" &&
-            info.address.endsWith("@gmail.com") &&
-            oidc.config("google", appUrl)
-              ? "&method=google"
-              : "") +
+            (verifier ? "&method=" + verifier : "") +
             (info.destination === "/feedback" ? "&intent=feedback" : ""),
         );
       }

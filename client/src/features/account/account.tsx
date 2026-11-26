@@ -1,4 +1,5 @@
 import {
+  mailboxProvider,
   signInProviders,
   providerNames,
 } from "../../../../shared/auth-providers";
@@ -66,12 +67,23 @@ export function Login() {
   const connectProvider = signInProviders.find(
     (p) => p === params.get("connect"),
   );
-  const connectWithGoogle =
-    connectProvider === "microsoft" &&
-    (params.get("method") === "google" ||
-      (config.googleAuth && providerEmail.endsWith("@gmail.com")));
+  const method = params.get("method");
+  const suggested = mailboxProvider(providerEmail);
+  const verifier =
+    connectProvider &&
+    method !== "email" &&
+    signInProviders.find(
+      (p) =>
+        p !== connectProvider &&
+        (method === p ||
+          (!method &&
+            suggested === p &&
+            (p === "google"
+              ? config.googleAuth
+              : config.oauthProviders?.includes(p)))),
+    );
   useEffect(() => {
-    if (!connectProvider || params.get("method") === "google") return;
+    if (!connectProvider || signInProviders.some((p) => p === method)) return;
     const controller = new AbortController();
     api<{ email: string }>("/auth/" + connectProvider + "/pending-email", {
       signal: controller.signal,
@@ -84,7 +96,7 @@ export function Login() {
       })
       .catch(() => {});
     return () => controller.abort();
-  }, [connectProvider, params]);
+  }, [connectProvider, method]);
   async function submit(e: FormEvent) {
     e.preventDefault();
     setBusy(true);
@@ -154,41 +166,43 @@ export function Login() {
           </Link>
         ) : (
           <>
-            {connectWithGoogle ? (
-              <>
-                <Notice>
-                  {t(
-                    "Connect Microsoft to your petition account with Google. Future Microsoft sign-ins will open your account directly.",
-                  )}
-                </Notice>
-                <a
-                  className="button google"
-                  href={
-                    "/api/auth/google?connect=microsoft" +
-                    (forFeedback ? "&intent=feedback" : "")
-                  }
-                >
-                  <img src="/auth/google.svg" alt="" width={20} height={20} />
-                  {t("Continue with {provider}", {
-                    provider: providerNames.google,
-                  })}
-                </a>
-              </>
-            ) : connectProvider ? (
+            {connectProvider && (
               <Notice>
-                {t(
-                  "To connect {provider}, verify your petition email once in this browser. You can use the code from the email.",
-                  { provider: providerNames[connectProvider] },
-                )}
+                {verifier
+                  ? t(
+                      "Connect {provider} to your petition account with {verifier}. Future {provider} sign-ins will open your account directly.",
+                      {
+                        provider: providerNames[connectProvider],
+                        verifier: providerNames[verifier],
+                      },
+                    )
+                  : providerEmail
+                    ? t(
+                        "Connect {provider} using a sign-in method you already use for this email address.",
+                        { provider: providerNames[connectProvider] },
+                      )
+                    : t(
+                        "To connect {provider}, verify your petition email once in this browser. You can use the code from the email.",
+                        { provider: providerNames[connectProvider] },
+                      )}
               </Notice>
-            ) : (
+            )}
+            {(!connectProvider || verifier || providerEmail) && (
               <>
                 <div className="signin-providers">
-                  {signInProviders.map((provider) => {
+                  {(verifier ? [verifier] : signInProviders).map((provider) => {
                     const enabled =
                       provider === "google"
                         ? config.googleAuth
                         : config.oauthProviders?.includes(provider);
+                    if (
+                      connectProvider &&
+                      (provider === connectProvider || !enabled)
+                    )
+                      return null;
+                    const query = new URLSearchParams();
+                    if (connectProvider) query.set("connect", connectProvider);
+                    if (forFeedback) query.set("intent", "feedback");
                     return (
                       <a
                         key={provider}
@@ -196,7 +210,9 @@ export function Login() {
                         aria-disabled={!enabled}
                         href={
                           enabled
-                            ? `/api/auth/${provider}${forFeedback ? "?intent=feedback" : ""}`
+                            ? "/api/auth/" +
+                              provider +
+                              (query.size ? "?" + query : "")
                             : undefined
                         }
                       >
@@ -218,14 +234,16 @@ export function Login() {
                     );
                   })}
                 </div>
-                <div className="or">
-                  <span />
-                  {t("or use your email")}
-                  <span />
-                </div>
+                {!verifier && (
+                  <div className="or">
+                    <span />
+                    {t("or use your email")}
+                    <span />
+                  </div>
+                )}
               </>
             )}
-            {!connectWithGoogle && (
+            {!verifier && (
               <>
                 <form className="signin-email" onSubmit={submit}>
                   <Field label={t("Email address")}>

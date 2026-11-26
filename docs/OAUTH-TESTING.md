@@ -13,7 +13,7 @@ Register a **Web** redirect URL for each test client using exactly the origin in
 
 Sign in by email and record the petition profile. Sign out, then use a provider with the same verified email and confirm the same profile and cases open. Repeat in reverse order with a fresh address. If the provider cannot establish mailbox ownership, complete the email check in the browser that started sign-in. The next sign-in with that provider should open the linked profile directly. Test a different verified address to confirm it gets a separate account.
 
-For a personal Microsoft account using Gmail, a signed verified Gmail address opens the matching profile directly. When Microsoft returns only a suggested Gmail address, choose **Continue with Google** once and use the matching Google account. Sign out and confirm that Microsoft alone now opens the same profile.
+Test Google, Apple, Yahoo and Microsoft against the same Gmail profile. A verified Gmail address opens the matching profile directly. If the first provider supplies only a suggested address hosted by another supported sign-in provider, use the offered provider to connect once. A later sign-in with the original provider should open the same profile. Apple private relay addresses match only that exact relay address.
 
 An older Microsoft-only profile can add a verified email on its next Microsoft sign-in. If a different petition profile already owns that address, both profiles retain their records. On the loopback preview, the email form displays a local verification link when no email sender is configured. Inbox delivery requires a configured sender.
 

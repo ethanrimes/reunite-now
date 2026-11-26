@@ -1,8 +1,13 @@
 {
-  "Connect Microsoft to your petition account with Google. Future Microsoft sign-ins will open your account directly.": {
-    "es": "Usa Google para vincular Microsoft a tu cuenta de la petición. La próxima vez podrás entrar directamente con Microsoft.",
-    "pt": "Use o Google para vincular a Microsoft à sua conta da petição. Nas próximas vezes, você poderá entrar diretamente com a Microsoft.",
-    "tl": "Gamitin ang Google para iugnay ang Microsoft sa iyong account sa petisyon. Sa susunod, direkta ka nang makakapasok gamit ang Microsoft."
+  "Connect {provider} using a sign-in method you already use for this email address.": {
+    "es": "Vincula {provider} con un método de acceso que ya uses para este correo electrónico.",
+    "pt": "Vincule {provider} usando um método de login que você já usa para este e-mail.",
+    "tl": "Iugnay ang {provider} gamit ang paraan ng pag-sign in na ginagamit mo na para sa email na ito."
+  },
+  "Connect {provider} to your petition account with {verifier}. Future {provider} sign-ins will open your account directly.": {
+    "es": "Usa {verifier} para vincular {provider} a tu cuenta de la petición. La próxima vez podrás entrar directamente con {provider}.",
+    "pt": "Use o {verifier} para vincular a {provider} à sua conta da petição. Nas próximas vezes, você poderá entrar diretamente com a {provider}.",
+    "tl": "Gamitin ang {verifier} para iugnay ang {provider} sa iyong account sa petisyon. Sa susunod, direkta ka nang makakapasok gamit ang {provider}."
   },
   "This email is already connected to another petition profile. Your existing profiles are separate.": {
     "es": "Este correo ya está vinculado a otro perfil de la petición. Tus perfiles siguen separados.",

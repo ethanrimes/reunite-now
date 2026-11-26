@@ -1,6 +1,7 @@
 import test from "node:test";
+import type { Provider } from "../shared/auth-providers";
 import assert from "node:assert/strict";
-import { exportJWK, generateKeyPair, SignJWT } from "jose";
+import { exportJWK, exportPKCS8, generateKeyPair, SignJWT } from "jose";
 
 test("Verified email unifies first and returning sign-ins while retaining legacy Microsoft profiles", async (t) => {
   assert.ok(
@@ -15,7 +16,15 @@ test("Verified email unifies first and returning sign-ins while retaining legacy
   process.env.MICROSOFT_CLIENT_SECRET = "profile-test-secret";
   process.env.GOOGLE_CLIENT_ID = "google-profile-client";
   process.env.GOOGLE_CLIENT_SECRET = "google-profile-secret";
-  process.env.APP_URL = "http://127.0.0.1:5173";
+  process.env.APP_URL = "https://127.0.0.1:5173";
+  process.env.APPLE_CLIENT_ID = "apple-profile-client";
+  process.env.APPLE_PRIVATE_KEY = await exportPKCS8(
+    (await generateKeyPair("ES256", { extractable: true })).privateKey,
+  );
+  process.env.APPLE_KEY_ID = "apple-test-key";
+  process.env.APPLE_TEAM_ID = "apple-test-team";
+  process.env.YAHOO_CLIENT_ID = "yahoo-profile-client";
+  process.env.YAHOO_CLIENT_SECRET = "yahoo-test-secret";
   const { server } = await import("../server/index");
   const { db, closeDb } = await import("../server/storage/db");
   t.after(async () => {
@@ -48,22 +57,35 @@ test("Verified email unifies first and returning sign-ins while retaining legacy
           },
         ],
       });
-    const google = String(url) === "https://oauth2.googleapis.com/token";
-    if (!google)
-      assert.equal(
-        String(url),
-        "https://login.microsoftonline.com/consumers/oauth2/v2.0/token",
-      );
+    const endpoints: Record<string, [Provider, string]> = {
+      "https://oauth2.googleapis.com/token": [
+        "google",
+        "https://accounts.google.com",
+      ],
+      "https://api.login.yahoo.com/oauth2/get_token": [
+        "yahoo",
+        "https://api.login.yahoo.com",
+      ],
+      "https://appleid.apple.com/auth/token": [
+        "apple",
+        "https://appleid.apple.com",
+      ],
+      "https://login.microsoftonline.com/consumers/oauth2/v2.0/token": [
+        "microsoft",
+        issuer,
+      ],
+    };
+    const [provider, tokenIssuer] = endpoints[String(url)];
     const id_token = await new SignJWT({
       nonce,
       email,
-      ...(google
-        ? { email_verified: true }
-        : { verified_primary_email: verifiedPrimary }),
+      ...(provider === "microsoft"
+        ? { verified_primary_email: verifiedPrimary }
+        : { email_verified: emailVerified }),
     })
       .setProtectedHeader({ alg: "RS256", kid: "profile-test-key" })
-      .setIssuer(google ? "https://accounts.google.com" : issuer)
-      .setAudience(google ? "google-profile-client" : "profile-test-client")
+      .setIssuer(tokenIssuer)
+      .setAudience(process.env[provider.toUpperCase() + "_CLIENT_ID"]!)
       .setSubject(subject)
       .setIssuedAt()
       .setExpirationTime("5m")
@@ -76,39 +98,53 @@ test("Verified email unifies first and returning sign-ins while retaining legacy
       .find((c) => c.startsWith(name + "=") && !c.startsWith(name + "=;"))
       ?.split(";")[0];
   }
+  let emailVerified = true;
   let verifiedPrimary: string | undefined;
   let client = 0;
   async function signIn(
     sub: string,
     claim?: string,
-    provider: "google" | "microsoft" = "microsoft",
-    connect?: { cookie: string; callbackCookie?: string },
+    provider: Provider = "microsoft",
+    connect?: { cookie: string; callbackCookie?: string; origin?: Provider },
   ) {
     client++;
     const headers = { "X-Forwarded-For": "192.0.2." + client };
     const start = await http(
-      base + "/api/auth/" + provider + (connect ? "?connect=microsoft" : ""),
+      base +
+        "/api/auth/" +
+        provider +
+        (connect ? "?connect=" + (connect.origin ?? "microsoft") : ""),
       {
         redirect: "manual",
         headers: { ...headers, Cookie: connect?.cookie ?? "" },
       },
     );
     const params = new URL(start.headers.get("location")!).searchParams;
-    assert.equal(params.get("scope"), "openid email");
-    if (connect) assert.equal(params.get("login_hint"), "member@gmail.com");
+    assert.equal(
+      params.get("scope"),
+      provider === "apple" ? "email" : "openid email",
+    );
+    if (connect && provider === "google")
+      assert.equal(params.get("login_hint"), "member@gmail.com");
     nonce = params.get("nonce")!;
     subject = sub;
     email = claim;
+    const paramsBack = new URLSearchParams({
+      code: "test",
+      state: params.get("state")!,
+    });
     return http(
       base +
         "/api/auth/" +
         provider +
-        "/callback?code=test&state=" +
-        params.get("state"),
+        "/callback" +
+        (provider === "apple" ? "" : "?" + paramsBack),
       {
         redirect: "manual",
+        ...(provider === "apple" && { method: "POST", body: paramsBack }),
         headers: {
           ...headers,
+          ...(provider === "apple" && { Origin: "https://appleid.apple.com" }),
           Cookie: [
             cookie(start, "rn_flow_" + provider),
             connect?.callbackCookie ?? connect?.cookie,
@@ -236,6 +272,71 @@ test("Verified email unifies first and returning sign-ins while retaining legacy
     gmailUser.id,
   );
 
+  for (const provider of ["apple", "yahoo"] as const) {
+    const verified = await signIn("verified", "MEMBER@gmail.com", provider);
+    assert.equal((await user(verified)).id, gmailUser.id);
+    emailVerified = false;
+    const first = await signIn("unverified", "member@gmail.com", provider);
+    assert.equal(
+      first.headers.get("location"),
+      "/login?connect=" + provider + "&method=google",
+    );
+    emailVerified = true;
+    const linked = await signIn("google-member", "member@gmail.com", "google", {
+      origin: provider,
+      cookie: cookie(first, "rn_oidc_link")!,
+    });
+    assert.equal((await user(linked)).id, gmailUser.id);
+    assert.equal(
+      (await user(await signIn("unverified", undefined, provider))).id,
+      gmailUser.id,
+    );
+  }
+  for (const [host, address] of [
+    ["apple", "member@icloud.com"],
+    ["yahoo", "member@yahoo.com"],
+    ["microsoft", "member@outlook.com"],
+  ] as const) {
+    const existing = await user(await mailbox(address));
+    const google = await signIn("external-" + host, address, "google");
+    assert.equal(
+      google.headers.get("location"),
+      "/login?connect=google&method=" + host,
+    );
+    if (host === "apple")
+      assert.match(
+        google.headers
+          .getSetCookie()
+          .find((c) => c.startsWith("rn_oidc_link="))!,
+        /SameSite=None/i,
+      );
+    verifiedPrimary = address;
+    const linked = await signIn("host-" + host, address, host, {
+      origin: "google",
+      cookie: cookie(google, "rn_oidc_link")!,
+    });
+    assert.equal((await user(linked)).id, existing.id);
+    assert.equal(
+      (await user(await signIn("external-" + host, undefined, "google"))).id,
+      existing.id,
+    );
+    verifiedPrimary = undefined;
+    assert.equal(
+      (await user(await signIn("host-" + host, undefined, host))).id,
+      existing.id,
+    );
+  }
+  // A previously linked sign-in can also prove access for an independent email domain.
+  const suggestedCustom = await signIn("new-yahoo", collision, "yahoo");
+  const knownMicrosoft = await signIn("first", undefined, "microsoft", {
+    origin: "yahoo",
+    cookie: cookie(suggestedCustom, "rn_oidc_link")!,
+  });
+  assert.equal((await user(knownMicrosoft)).id, "existing-user");
+  assert.equal(
+    (await user(await signIn("new-yahoo", undefined, "yahoo"))).id,
+    "existing-user",
+  );
   // Legacy provider-only users keep their original id and records. A different
   // account owning the chosen address must never be overwritten.
   const { createHash } = await import("node:crypto");

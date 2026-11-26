@@ -1,5 +1,6 @@
 {
-  "Connect Microsoft to your petition account with Google. Future Microsoft sign-ins will open your account directly.": "Dùng Google để liên kết Microsoft với tài khoản kiến nghị của bạn. Lần sau, bạn có thể đăng nhập trực tiếp bằng Microsoft.",
+  "Connect {provider} using a sign-in method you already use for this email address.": "Liên kết {provider} bằng phương thức đăng nhập bạn đang dùng cho địa chỉ email này.",
+  "Connect {provider} to your petition account with {verifier}. Future {provider} sign-ins will open your account directly.": "Dùng {verifier} để liên kết {provider} với tài khoản kiến nghị của bạn. Lần sau, bạn có thể đăng nhập trực tiếp bằng {provider}.",
   "This email is already connected to another petition profile. Your existing profiles are separate.": "Địa chỉ email này đã được liên kết với một hồ sơ khác của bản kiến nghị. Các hồ sơ của bạn vẫn riêng biệt.",
   "Continue with {provider}": "Tiếp tục với {provider}",
   "Unavailable": "Chưa khả dụng",

@@ -1,5 +1,6 @@
 {
-  "Connect Microsoft to your petition account with Google. Future Microsoft sign-ins will open your account directly.": "استخدم Google لربط Microsoft بحسابك في العريضة. بعد ذلك، سيفتح تسجيل الدخول باستخدام Microsoft حسابك مباشرةً.",
+  "Connect {provider} using a sign-in method you already use for this email address.": "اربط {provider} باستخدام طريقة تسجيل دخول تستخدمها بالفعل لعنوان البريد الإلكتروني هذا.",
+  "Connect {provider} to your petition account with {verifier}. Future {provider} sign-ins will open your account directly.": "استخدم {verifier} لربط {provider} بحسابك في العريضة. بعد ذلك، سيفتح تسجيل الدخول باستخدام {provider} حسابك مباشرةً.",
   "This email is already connected to another petition profile. Your existing profiles are separate.": "هذا البريد الإلكتروني مرتبط بالفعل بملف آخر في العريضة. يظل ملفاك منفصلين.",
   "Continue with {provider}": "المتابعة باستخدام {provider}",
   "Unavailable": "غير متاح",

@@ -1,7 +1,11 @@
 import { createHash, randomBytes } from "node:crypto";
 import { createRemoteJWKSet, importPKCS8, jwtVerify, SignJWT } from "jose";
 import { z } from "zod";
-import { signInProviders, type Provider } from "../../shared/auth-providers";
+import {
+  mailboxProvider,
+  signInProviders,
+  type Provider,
+} from "../../shared/auth-providers";
 
 const consumerTenant = "9188040d-6c67-4c5b-b112-36a304b66dad";
 const ms = "https://login.microsoftonline.com/";
@@ -91,7 +95,7 @@ export async function begin(
   p: Provider,
   c: Config,
   feedback: boolean,
-  microsoftLink?: { digest: string; address: string },
+  link?: { digest: string; address: string; provider: Provider },
 ) {
   const state = random(),
     nonce = random(),
@@ -105,8 +109,7 @@ export async function begin(
     state,
     nonce,
   }).toString();
-  if (p === "google" && microsoftLink)
-    url.searchParams.set("login_hint", microsoftLink.address);
+  if (p === "google" && link) url.searchParams.set("login_hint", link.address);
   if (p === "microsoft") {
     url.searchParams.set(
       "claims",
@@ -127,7 +130,7 @@ export async function begin(
       state,
       nonce,
       verifier,
-      ...(microsoftLink && { microsoftLink: microsoftLink.digest }),
+      ...(link && { linkDigest: link.digest, linkProvider: link.provider }),
       destination: feedback ? "/feedback" : "/account",
     }),
   };
@@ -220,41 +223,33 @@ export async function finish(
     ? primary
     : z.email().max(254).safeParse(claims.email);
   const address = email.success ? email.data.toLowerCase() : "";
-  const domain = address.split("@")[1];
+  const mailbox = mailboxProvider(address);
   const verified =
-    claims.email_verified === true || claims.email_verified === "true";
+    claims.email_verified === true ||
+    claims.email_verified === "true" ||
+    primary?.success === true;
   const authoritative =
     Boolean(address) &&
-    ((p === "microsoft" &&
-      (primary?.success === true || verified) &&
-      [
-        "outlook.com",
-        "hotmail.com",
-        "live.com",
-        "msn.com",
-        "gmail.com",
-      ].includes(domain)) ||
-      (verified &&
-        ((p === "google" &&
-          (domain === "gmail.com" ||
-            (typeof claims.hd === "string" && claims.hd.length > 0))) ||
-          (p === "yahoo" &&
-            ["yahoo.com", "ymail.com", "rocketmail.com"].includes(domain)) ||
-          (p === "apple" &&
-            [
-              "icloud.com",
-              "me.com",
-              "mac.com",
-              "privaterelay.appleid.com",
-              "private.icloud.com",
-            ].includes(domain)))));
+    verified &&
+    (mailbox === p ||
+      mailbox === "google" ||
+      (p === "google" &&
+        typeof claims.hd === "string" &&
+        claims.hd.length > 0));
+  // Existing Google callbacks can finish links started on the previous release.
+  const linkProvider =
+    signInProviders.find((provider) => provider === saved.linkProvider) ??
+    (typeof saved.microsoftLink === "string" ? "microsoft" : undefined);
+  const linkDigest = saved.linkDigest ?? saved.microsoftLink;
   return {
     identity,
     address,
     emailVerified: Boolean(address) && verified,
     authoritative,
-    microsoftLink:
-      typeof saved.microsoftLink === "string" ? saved.microsoftLink : undefined,
+    link:
+      linkProvider && typeof linkDigest === "string"
+        ? { provider: linkProvider, digest: linkDigest }
+        : undefined,
     destination: saved.destination === "/feedback" ? "/feedback" : "/account",
   };
 }
