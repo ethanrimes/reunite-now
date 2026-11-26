@@ -619,3 +619,19 @@
     padding: 56px 6% 60px;
   }
 }
+
+.signin-providers,
+.signin-email {
+  display: grid;
+  gap: 12px;
+}
+.signin-email .field {
+  margin: 0;
+}
+.signin-email {
+  row-gap: 26px;
+  margin-block-end: 12px;
+}
+.signin-providers small {
+  font-weight: 400;
+}

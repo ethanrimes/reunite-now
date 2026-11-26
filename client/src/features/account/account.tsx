@@ -1,3 +1,7 @@
+import {
+  additionalProviders,
+  providerNames,
+} from "../../../../shared/auth-providers";
 import { t } from "../../i18n/i18n";
 import { useState, useEffect, useRef, type FormEvent } from "react";
 import {
@@ -58,6 +62,22 @@ export function Login() {
   const [devLink, setDevLink] = useState("");
   const [params] = useSearchParams();
   const forFeedback = params.get("intent") === "feedback";
+  const connectProvider = additionalProviders.find(
+    (p) => p === params.get("connect"),
+  );
+  useEffect(() => {
+    if (!connectProvider) return;
+    const controller = new AbortController();
+    api<{ email: string }>("/auth/" + connectProvider + "/pending-email", {
+      signal: controller.signal,
+    })
+      .then(({ email: suggested }) => {
+        if (!controller.signal.aborted && suggested)
+          setEmail((current) => current || suggested);
+      })
+      .catch(() => {});
+    return () => controller.abort();
+  }, [connectProvider]);
   async function submit(e: FormEvent) {
     e.preventDefault();
     setBusy(true);
@@ -67,6 +87,7 @@ export function Login() {
         method: "POST",
         body: JSON.stringify({
           email,
+          connectProvider,
           intent: forFeedback ? "feedback" : undefined,
         }),
       });
@@ -104,11 +125,9 @@ export function Login() {
         </h2>
         <p>
           {forFeedback
-            ? t(
-                "Use your email link or Google account to return to the feedback form.",
-              )
+            ? t("Sign in to return to the feedback form.")
             : t(
-                "Sign in or create an account with a secure email link or Google. New members complete their petition profile next.",
+                "Choose a sign-in method. New members complete their petition profile next.",
               )}
         </p>
         <div className="auth-privacy">
@@ -128,31 +147,52 @@ export function Login() {
           </Link>
         ) : (
           <>
-            <a
-              className={`button google ${!config.googleAuth ? "disabled" : ""}`}
-              href={
-                config.googleAuth
-                  ? forFeedback
-                    ? "/api/auth/google?intent=feedback"
-                    : "/api/auth/google"
-                  : undefined
-              }
-              aria-disabled={!config.googleAuth}
-            >
-              <span className="google-g">{t("G")}</span>
-              {t(" Continue with Google")}
-            </a>
-            {!loading && !config.googleAuth && (
-              <small className="availability">
-                {t("Google sign-in is awaiting connection.")}
-              </small>
+            {connectProvider ? (
+              <Notice>
+                {t(
+                  "To connect {provider}, verify your petition email once in this browser. You can use the code from the email.",
+                  { provider: providerNames[connectProvider] },
+                )}
+              </Notice>
+            ) : (
+              <>
+                <div className="signin-providers">
+                  {(["google", ...additionalProviders] as const).map(
+                    (provider) => {
+                      const enabled =
+                        provider === "google"
+                          ? config.googleAuth
+                          : config.oauthProviders?.includes(provider);
+                      return (
+                        <a
+                          key={provider}
+                          className={`button google ${enabled ? "" : "disabled"}`}
+                          aria-disabled={!enabled}
+                          href={
+                            enabled
+                              ? `/api/auth/${provider}${forFeedback ? "?intent=feedback" : ""}`
+                              : undefined
+                          }
+                        >
+                          {t("Continue with {provider}", {
+                            provider: providerNames[provider],
+                          })}
+                          {!loading && !enabled && (
+                            <small>{t("Unavailable")}</small>
+                          )}
+                        </a>
+                      );
+                    },
+                  )}
+                </div>
+                <div className="or">
+                  <span />
+                  {t("or use your email")}
+                  <span />
+                </div>
+              </>
             )}
-            <div className="or">
-              <span />
-              {t("or use your email")}
-              <span />
-            </div>
-            <form onSubmit={submit}>
+            <form className="signin-email" onSubmit={submit}>
               <Field label={t("Email address")}>
                 <input
                   type="email"
@@ -369,7 +409,7 @@ function newCase(): DraftCase {
     country: "",
     category: "",
     post: "",
-    events: [],
+    events: [{ id: crypto.randomUUID(), type: "Filed", date: "" }],
   };
 }
 function VisaEditor({
@@ -575,21 +615,16 @@ function VisaEditor({
           <h4>{t("Visa timeline")}</h4>
         </div>
         <p>
-          {t(
-            "Saving a visa case publishes a row with its visa category and consular post. When a wait can be calculated, the row also shows its starting date and duration. Names, nicknames and case IDs stay private.",
-          )}
+          <Link
+            className="source-link"
+            to="/data-use#visa-timelines"
+            target="_blank"
+            rel="noopener"
+          >
+            {t("How we use visa timeline data")}
+            <ArrowUpRight size={15} aria-hidden="true" />
+          </Link>
         </p>
-
-        <label className="checkbox">
-          <input
-            type="checkbox"
-            checked={value.shareTimelineHistory === true}
-            onChange={(e) => set("shareTimelineHistory", e.target.checked)}
-          />
-          {t(
-            "Also share the dates and types of all completed milestones in this case’s public timeline.",
-          )}
-        </label>
         <p>
           {t(
             "Delete any milestone you haven’t reached yet. Enter a date for at least one milestone.",
@@ -1187,6 +1222,7 @@ export function Account() {
                 c.role === "Applicant"
                   ? (me.profile?.name ?? form.name)
                   : c.applicantName,
+              shareTimelineHistory: true,
               events: c.events.filter((event) => event.date),
             }))
           : [],
@@ -1330,14 +1366,24 @@ export function Account() {
                     onChange={(e) => set("name", e.target.value)}
                   />
                 </Field>
-                <Field
-                  label={t("Email · private")}
-                  hint={t(
-                    "Verified through your sign-in method. This is your unique account email.",
-                  )}
-                >
-                  <input disabled type="email" value={me.user.email} />
-                </Field>
+                {(me.user.email || me.user.microsoftEmail) && (
+                  <Field
+                    label={t("Email · private")}
+                    hint={
+                      me.user.email
+                        ? t(
+                            "Verified through your sign-in method. This is your unique account email.",
+                          )
+                        : undefined
+                    }
+                  >
+                    <input
+                      disabled
+                      type="email"
+                      value={me.user.email || me.user.microsoftEmail}
+                    />
+                  </Field>
+                )}
                 <Field label={t("U.S. citizenship or immigration status *")}>
                   <select
                     value={form.legalStatus}
@@ -1711,7 +1757,9 @@ export function Account() {
                       ...profile,
                       reminders: e.target.checked,
                       reminderEmails: e.target.checked
-                        ? profile.reminderEmails
+                        ? !me.user?.email && !profile.reminderEmails.length
+                          ? [""]
+                          : profile.reminderEmails
                         : profile.reminderEmails.filter(
                             (email) =>
                               reminderEmailSchema.safeParse(email).success,
@@ -1752,11 +1800,13 @@ export function Account() {
               {form.reminders && (
                 <fieldset className="reminder-emails">
                   <legend>{t("Additional reminder emails")}</legend>
-                  <p className="small-copy">
-                    {t("Reminders go to your sign-in email: {email}.", {
-                      email: me.user?.email || "",
-                    })}
-                  </p>
+                  {me.user.email && (
+                    <p className="small-copy">
+                      {t("Reminders go to your sign-in email: {email}.", {
+                        email: me.user.email,
+                      })}
+                    </p>
+                  )}
                   <p className="small-copy">
                     {t(
                       "Add up to 5 other addresses you own or have permission to notify. Each gets a separate email. These addresses stay private.",
@@ -1788,6 +1838,9 @@ export function Account() {
                       <button
                         type="button"
                         className="icon-button"
+                        disabled={
+                          !me.user?.email && form.reminderEmails.length === 1
+                        }
                         aria-label={t("Remove reminder email {number}", {
                           number: index + 1,
                         })}

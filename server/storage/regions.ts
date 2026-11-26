@@ -38,6 +38,7 @@ export async function homeForEmail(email: string, fallback: Region) {
 
 const accountTables = [
   ["users", "id"],
+  ["oauth_identities", "user_id"],
   ["profiles", "user_id"],
   ["stories", "user_id"],
   ["sessions", "user_id"],

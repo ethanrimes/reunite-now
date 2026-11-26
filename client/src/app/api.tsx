@@ -114,7 +114,12 @@ const demoSnapshot = snapshotCache(() =>
   api<{ profiles: PublicProfile[]; stories: PublicStory[] }>("/demo"),
 );
 export type Me = {
-  user: { id: string; email?: string; storageRegion?: "eu" | "us" } | null;
+  user: {
+    id: string;
+    email?: string | null;
+    microsoftEmail?: string;
+    storageRegion?: "eu" | "us";
+  } | null;
   profile: (Profile & { updatedAt: string; signedAt: string }) | null;
   story: Story | null;
 };
@@ -122,6 +127,7 @@ type Config = {
   demoData: boolean;
   emailAuth: boolean;
   googleAuth: boolean;
+  oauthProviders?: string[];
   devAuth: boolean;
   reminders: boolean;
 };

@@ -86,6 +86,8 @@ import {
   states,
   type Profile,
 } from "../shared/schema";
+import { additionalProviders } from "../shared/auth-providers";
+import * as oidc from "./auth/providers";
 const production = process.env.NODE_ENV === "production";
 const appUrl = process.env.APP_URL || "http://127.0.0.1:5173";
 const devAuth = !production && process.env.DEV_AUTH !== "false";
@@ -163,7 +165,11 @@ app.use("/api", (req, res, next) => {
     !req.path.startsWith("/jobs/")
   ) {
     const origin = req.get("origin");
-    if (origin !== new URL(appUrl).origin)
+    const appleCallback =
+      req.method === "POST" &&
+      req.path === "/auth/apple/callback" &&
+      origin === "https://appleid.apple.com";
+    if (!appleCallback && origin !== new URL(appUrl).origin)
       return void res.status(403).json({ error: "Request origin not allowed" });
   }
   next();
@@ -204,8 +210,12 @@ function accountRoute(
     return routed(exclusive, async () => {
       const matches = (
         await acrossRegions(async () => {
-          const result = await db.query<{ id: string; email: string }>(
-            `SELECT u.id,u.email FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.expires_at>now()`,
+          const result = await db.query<{
+            id: string;
+            email: string | null;
+            microsoft_email: string | null;
+          }>(
+            `SELECT u.id,u.email,u.microsoft_email FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=$1 AND s.expires_at>now()`,
             [tokenHash],
           );
           return result.rows.map((user) => ({ user, storage: region() }));
@@ -219,16 +229,43 @@ function accountRoute(
     });
   };
 }
-async function createSession(email: string, connection: Queryable) {
+async function createSession(
+  email: string,
+  connection: Queryable,
+  identity?: string,
+  newAccountOnly = false,
+) {
   const uid = randomUUID();
+  const onConflict = newAccountOnly
+    ? "DO NOTHING"
+    : "DO UPDATE SET email=EXCLUDED.email";
   const u = await connection.query(
-    `INSERT INTO users(id,email) VALUES($1,$2) ON CONFLICT(email) DO UPDATE SET email=EXCLUDED.email RETURNING id`,
+    `INSERT INTO users(id,email) VALUES($1,$2) ON CONFLICT(email) ${onConflict} RETURNING id`,
     [uid, email],
   );
+  if (!u.rows.length) return;
+  if (identity) {
+    await connection.query(
+      "INSERT INTO oauth_identities(identity_key,user_id) VALUES($1,$2) ON CONFLICT DO NOTHING",
+      [identity, u.rows[0].id],
+    );
+    if (
+      !(
+        await connection.query(
+          "SELECT 1 FROM oauth_identities WHERE identity_key=$1 AND user_id=$2",
+          [identity, u.rows[0].id],
+        )
+      ).rows.length
+    )
+      throw Error("Identity already linked");
+  }
+  return issueSession(u.rows[0].id, connection);
+}
+async function issueSession(userId: string, connection: Queryable) {
   const raw = token();
   await connection.query(
     `INSERT INTO sessions(token_hash,user_id,expires_at) VALUES($1,$2,now()+interval '30 days')`,
-    [hash(raw), u.rows[0].id],
+    [hash(raw), userId],
   );
   return raw;
 }
@@ -236,6 +273,8 @@ async function signInAtHome(
   email: string,
   fallback: "eu" | "us",
   sourceTransaction?: Queryable,
+  identity?: string,
+  newAccountOnly = false,
 ) {
   const home = await homeForEmail(email, fallback);
   if (dual) {
@@ -252,9 +291,11 @@ async function signInAtHome(
     );
   }
   if (home === fallback && sourceTransaction)
-    return createSession(email, sourceTransaction);
+    return createSession(email, sourceTransaction, identity, newAccountOnly);
   return inRegion(home, () =>
-    transaction((connection) => createSession(email, connection)),
+    transaction((connection) =>
+      createSession(email, connection, identity, newAccountOnly),
+    ),
   );
 }
 app.get("/api/health", async (_req, res) => {
@@ -264,6 +305,7 @@ app.get("/api/health", async (_req, res) => {
 app.get("/api/config", (_req, res) =>
   res.json({
     emailAuth: emailReady(),
+    oauthProviders: additionalProviders.filter((p) => oidc.config(p, appUrl)),
     googleAuth: !!(
       process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
     ),
@@ -298,9 +340,9 @@ app.post(
       await sendEmail(
         maintainerEmail,
         "Reunite Now project feedback",
-        `Submitted through the project feedback form.\nSigned-in account: ${email}\n\n${message}`,
+        `Submitted through the project feedback form.\nSigned-in account: ${email ?? "Microsoft account (no reply email)"}\n\n${message}`,
         randomUUID(),
-        email,
+        email ?? undefined,
       );
     } catch {
       return res.status(503).json({
@@ -312,9 +354,10 @@ app.post(
   },
 );
 app.post("/api/auth/email", authLimit, async (req, res) => {
-  const { email, intent } = z
+  const { email, intent, connectProvider } = z
     .object({
       intent: z.literal("feedback").optional(),
+      connectProvider: z.enum(additionalProviders).optional(),
       email: z
         .email()
         .max(254)
@@ -336,6 +379,30 @@ app.post("/api/auth/email", authLimit, async (req, res) => {
   const code = newSignInCode();
   const raw = tokenFromCode(code)!;
   trace.linkId = linkReference(raw);
+  if (connectProvider) {
+    const cfg = oidc.config(connectProvider, appUrl);
+    if (!cfg)
+      return void res
+        .status(400)
+        .json({ error: "Sign-in could not be completed." });
+    const pending = await oidc
+      .readTicket(cfg, connectProvider, "link", req.cookies.rn_oidc_link)
+      .catch(() => null);
+    if (typeof pending?.identity !== "string")
+      return void res
+        .status(400)
+        .json({ error: "Sign-in could not be completed." });
+    res.cookie(
+      "rn_oidc_proof",
+      connectProvider +
+        "." +
+        (await oidc.ticket(cfg, connectProvider, "proof", {
+          identity: pending.identity,
+          hash: hash(raw),
+        })),
+      { ...cookieOptions, maxAge: 900000 },
+    );
+  }
   trace.stage = "store_link";
   await routed(false, async () =>
     inRegion(await homeForEmail(email, detectedRegion(req)), () => {
@@ -396,7 +463,28 @@ app.post("/api/auth/verify", authLimit, async (req, res) => {
   }
   trace.linkId = linkReference(raw);
   trace.stage = "find_link";
+  let identity: string | undefined;
+  const proof = req.cookies.rn_oidc_proof;
+  if (typeof proof === "string") {
+    const cut = proof.indexOf(".");
+    const provider = additionalProviders.find((p) => p === proof.slice(0, cut));
+    const cfg = provider && oidc.config(provider, appUrl);
+    if (provider && cfg) {
+      const pending = await oidc
+        .readTicket(cfg, provider, "proof", proof.slice(cut + 1))
+        .catch(() => null);
+      if (pending?.hash === hash(raw) && typeof pending.identity === "string")
+        identity = pending.identity;
+    }
+  }
   const verified = await routed(true, async () => {
+    if (
+      identity &&
+      (await locate("SELECT 1 FROM oauth_identities WHERE identity_key=$1", [
+        identity,
+      ]))
+    )
+      identity = undefined;
     const source = await locate(
       "SELECT 1 FROM login_tokens WHERE token_hash=$1",
       [hash(raw)],
@@ -420,7 +508,7 @@ app.post("/api/auth/verify", authLimit, async (req, res) => {
         }
         trace.email = email;
         trace.stage = "create_session";
-        return signInAtHome(email, source, connection);
+        return signInAtHome(email, source, connection, identity);
       }),
     );
   });
@@ -434,6 +522,8 @@ app.post("/api/auth/verify", authLimit, async (req, res) => {
     ...cookieOptions,
     maxAge: 30 * 86400000,
   });
+  if (proof) res.clearCookie("rn_oidc_proof", cookieOptions);
+  if (req.cookies.rn_oidc_link) res.clearCookie("rn_oidc_link", cookieOptions);
   trace.stage = "session_created";
   res.json({ ok: true });
 });
@@ -533,6 +623,131 @@ app.get("/api/auth/google/callback", authLimit, async (req, res) => {
     res.redirect("/login?error=oauth");
   }
 });
+for (const provider of additionalProviders) {
+  const start = "/api/auth/" + provider;
+  const flowCookie = "rn_flow_" + provider;
+  const options = {
+    ...cookieOptions,
+    secure: appUrl.startsWith("https://"),
+    sameSite: provider === "apple" ? ("none" as const) : ("lax" as const),
+    path: start + "/callback",
+  };
+  app.get(start, authLimit, async (req, res) => {
+    const cfg = oidc.config(provider, appUrl);
+    if (!cfg) return res.redirect("/login?error=oauth");
+    const flow = await oidc.begin(
+      provider,
+      cfg,
+      req.query.intent === "feedback",
+    );
+    res.cookie(flowCookie, flow.cookie, { ...options, maxAge: 600000 });
+    res.redirect(flow.url);
+  });
+  app.get(start + "/pending-email", async (req, res) => {
+    const cfg = oidc.config(provider, appUrl);
+    const pending =
+      cfg &&
+      (await oidc
+        .readTicket(cfg, provider, "link", req.cookies.rn_oidc_link)
+        .catch(() => null));
+    res.json({
+      email: typeof pending?.address === "string" ? pending.address : "",
+    });
+  });
+  const callback: Handler = async (req, res) => {
+    res.clearCookie(flowCookie, options);
+    const cfg = oidc.config(provider, appUrl);
+    try {
+      if (!cfg) throw Error("Unavailable provider");
+      const info = await oidc.finish(
+        provider,
+        cfg,
+        req.cookies[flowCookie],
+        req.method === "POST" ? req.body : req.query,
+      );
+      const session = await routed(true, async () => {
+        const sql =
+          "SELECT user_id FROM oauth_identities WHERE identity_key=$1";
+        const home = await locate(sql, [info.identity]);
+        if (home || provider === "microsoft")
+          return inRegion(home ?? (dual ? detectedRegion(req) : region()), () =>
+            transaction(async (q) => {
+              if (!home && !dual) {
+                // Dual-region routing already serializes account creation.
+                await q.query(
+                  "SELECT pg_advisory_xact_lock(hashtextextended($1,0))",
+                  [info.identity],
+                );
+              }
+              const existing = (await q.query(sql, [info.identity])).rows[0];
+              if (existing) {
+                if (provider === "microsoft" && info.address) {
+                  await q.query(
+                    "UPDATE users SET microsoft_email=$1 WHERE id=$2 AND microsoft_email IS DISTINCT FROM $1",
+                    [info.address, existing.user_id],
+                  );
+                }
+                return issueSession(existing.user_id, q);
+              }
+              if (provider !== "microsoft")
+                throw Error("Missing provider identity");
+              const userId = randomUUID();
+              await q.query(
+                "INSERT INTO users(id,microsoft_email) VALUES($1,$2)",
+                [userId, info.address || null],
+              );
+              await q.query(
+                "INSERT INTO oauth_identities(identity_key,user_id) VALUES($1,$2)",
+                [info.identity, userId],
+              );
+              return issueSession(userId, q);
+            }),
+          );
+        if (info.emailVerified)
+          return signInAtHome(
+            info.address,
+            detectedRegion(req),
+            undefined,
+            info.identity,
+            !info.authoritative,
+          );
+      });
+      if (!session) {
+        res.cookie(
+          "rn_oidc_link",
+          await oidc.ticket(cfg, provider, "link", {
+            identity: info.identity,
+            address: info.address,
+          }),
+          { ...cookieOptions, maxAge: 900000 },
+        );
+        return res.redirect(
+          303,
+          "/login?connect=" +
+            provider +
+            (info.destination === "/feedback" ? "&intent=feedback" : ""),
+        );
+      }
+      res.cookie("rn_session", session, {
+        ...cookieOptions,
+        maxAge: 30 * 86400000,
+      });
+      res.clearCookie("rn_oidc_link", cookieOptions);
+      res.clearCookie("rn_oidc_proof", cookieOptions);
+      res.redirect(303, info.destination);
+    } catch {
+      res.redirect(303, "/login?error=oauth");
+    }
+  };
+  if (provider === "apple")
+    app.post(
+      start + "/callback",
+      authLimit,
+      express.urlencoded({ extended: false, limit: "8kb" }),
+      callback,
+    );
+  else app.get(start + "/callback", authLimit, callback);
+}
 app.post("/api/auth/logout", async (req, res) => {
   if (req.cookies.rn_session)
     await routed(false, () =>
@@ -570,6 +785,7 @@ app.get(
         user: {
           id: u.id,
           email: u.email,
+          ...(u.microsoft_email && { microsoftEmail: u.microsoft_email }),
           storageRegion: dual ? region() : undefined,
         },
         profile: p.rows[0]
@@ -607,7 +823,7 @@ app.put(
   accountRoute(async (req, res) => {
     const data = profileWriteSchema.parse(req.body);
     data.reminderEmails = data.reminderEmails.filter(
-      (email) => email !== res.locals.user.email.trim().toLowerCase(),
+      (email) => email !== res.locals.user.email?.trim().toLowerCase(),
     );
     await validateDistrict(data);
     const now = new Date().toISOString();
@@ -664,7 +880,7 @@ app.patch(
       if (section === "profile") await validateDistrict(data);
       if (section === "settings")
         data.reminderEmails = data.reminderEmails.filter(
-          (email) => email !== user.email.toLowerCase(),
+          (email) => email !== user.email?.toLowerCase(),
         );
       const now = new Date().toISOString();
       if (section !== "settings")
@@ -756,7 +972,7 @@ app.get(
   accountRoute(async (_req, res) => {
     const userId = res.locals.user.id;
     const { rows } = await db.query(
-      `SELECT u.email, u.created_at,
+      `SELECT u.email, u.microsoft_email, u.created_at,
        (SELECT jsonb_build_object('data',p.data,'updated_at',p.updated_at,'signed_at',p.signed_at,'consent_version',p.consent_version) FROM profiles p WHERE p.user_id=u.id) AS profile,
        (SELECT s.data FROM stories s WHERE s.user_id=u.id) AS story,
        (SELECT jsonb_agg(jsonb_build_object('createdAt', created_at, 'expiresAt', expires_at) ORDER BY created_at) FROM sessions WHERE user_id=u.id) AS sessions,
@@ -768,6 +984,7 @@ app.get(
     const record = rows[0];
     res.attachment("reunite-now-data.json").json({
       email: record.email,
+      ...(record.microsoft_email && { microsoftEmail: record.microsoft_email }),
       accountCreatedAt: record.created_at,
       storageRegion: dual ? region() : undefined,
       profile: record.profile,
@@ -1085,7 +1302,7 @@ setInterval(
   },
   60 * 60 * 1000,
 ).unref();
-app.listen(
+export const server = app.listen(
   Number(process.env.PORT || 3001),
   production ? "0.0.0.0" : "127.0.0.1",
   () =>

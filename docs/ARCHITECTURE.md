@@ -4,70 +4,181 @@ Reunite Now serves a React application and an Express API from the same origin. 
 
 ## Production services
 
-The browser loads React, Leaflet maps and bundled reference files from the same origin as the Express API. The canonical domain points to the US app. Both regional App Services run the same Node.js package and can reach both regional databases.
+### Where a request runs
+
+Cloudflare resolves the public hostname to the US App Service. Each regional App Service serves the React frontend and runs its own copy of Express. Both can read and write in either storage region. An account’s home determines where its records live.
 
 ```mermaid
 flowchart TB
-    browser["Visitor browser · React and React Router"]
+    subgraph clients["Request sources"]
+        browser["Visitor browser<br/>React, React Router and Leaflet"]
+        timer["Azure Logic Apps · Sweden Central<br/>Daily reminder schedule"]
+    end
     dns["Cloudflare DNS"]
-    browser -. "resolve project domain" .-> dns
-    browser -->|"HTTPS · static files and /api"| us["Azure App Service · North Central US"]
-    eu["Azure App Service · Sweden Central"]
-    scheduler["Azure Logic Apps · Sweden Central"] -->|"daily reminder POST"| us
-    us --> app["Express runtime in each deployment"]
-    eu --> app
-    app -->|"regional reads and writes"| usdb[("Azure PostgreSQL · US accounts")]
-    app -->|"regional reads, writes and move journal"| eudb[("Azure PostgreSQL · EU accounts")]
-    app -->|"choose initial storage region"| geo["Bundled DB-IP Country Lite"]
-    app -->|"email sign-in diagnostics"| logs["Private App Service filesystem"]
-    app -->|"generate /demo"| demo["In-memory sample data"]
-    browser -->|"optional sign-in"| google["Google OAuth and OpenID Connect"]
-    google -->|"callback through browser"| browser
-    app -->|"exchange code and fetch user info"| google
-    app -->|"sign-in, reminder and feedback mail"| mail["Azure Communication Services Email"]
-    mail -->|"sign-in and reminders"| recipients["Participant mailboxes"]
-    mail -->|"feedback to project address"| forwarding["Cloudflare Email Routing"]
-    sender["Incoming project correspondence"] --> forwarding
-    forwarding --> inbox["Maintainer inbox · Gmail"]
+    subgraph web["Web tier · same Node.js package in each region"]
+        usApp["Azure App Service · North Central US<br/>Express API and static files"]
+        euApp["Azure App Service · Sweden Central<br/>Express API and static files"]
+    end
+    subgraph storage["Account storage · Azure Database for PostgreSQL"]
+        usDb[("North Central US<br/>US-region accounts")]
+        euDb[("Sweden Central<br/>EU-region accounts and move journal")]
+    end
+    browser -. "resolves public hostname" .-> dns
+    browser -->|"HTTPS · pages and API"| usApp
+    timer -->|"POST /api/jobs/reminders"| usApp
+    usApp --> usDb
+    usApp --> euDb
+    euApp --> euDb
+    euApp --> usDb
 ```
 
-Public database reads use consent-filtered views. Account operations use the runtime writer. Story photo processing runs inside Express using Sharp. The local DB-IP lookup keeps visitor IP addresses within the app. The mailbox migration described below is a planned alternative to forwarding.
+### What runs inside each web app
 
-## Reference data, delivery and local development
-
-The refresh scripts and editorial process produce versioned files. The deployed app serves those files alongside the frontend. GitHub Actions validates the repository, and the release operator packages and deploys a verified build.
+Express serves the built frontend and handles both public and authenticated API requests. The diagram groups its components by responsibility. The database roles shown here apply in both storage regions.
 
 ```mermaid
 flowchart TB
-    maps["Census TIGERweb and Natural Earth"] --> refresh["Map and roster refresh"]
-    members["Congress Legislators · GitHub"] --> refresh
-    members --> legislation["Legislation and votes refresh"]
-    bills["GovInfo, House Clerk and US Senate"] --> legislation
-    editorial["State Department directories and guidance,<br/>court orders, counsel updates and editorial sources"] --> assets["Versioned data, content and assets"]
-    localdata["DB-IP Country Lite and illustrative photography"] --> assets
-    refresh --> assets
-    legislation --> assets
-    assets --> repo["GitHub repository"]
-    repo --> ci["GitHub Actions · build and test"]
-    ci --> fixtures[("PGlite and disposable regional PostgreSQL test databases")]
-    repo --> build["Release build · npm ci, TypeScript, Vite and esbuild"]
-    build --> zip["Linux deployment ZIP"]
-    zip -->|"schema-owner migration"| db[("Both regional PostgreSQL databases")]
-    zip -->|"same package to both regions"| web["US and Swedish App Services"]
-    infra["Bicep and Azure CLI setup scripts"] -->|"provision and configure"| azure["App Service plans, PostgreSQL, firewall rules,<br/>email resources, domains and reminder workflow"]
-    check["Post-release checks"] --> web
+    express["Express · HTTP routes"]
+    subgraph publicRead["Public content"]
+        site["Built frontend and reference files"]
+        views["Public statistics and stories<br/>Consent-filtered database views"]
+        demo["Sample site · in-memory fixtures"]
+    end
+    subgraph accounts["Account operations"]
+        writer["Private account reads and writes<br/>Regional runtime login"]
+        geo["Initial storage assignment<br/>Bundled DB-IP Country Lite"]
+        photos["Story photo processing<br/>Sharp"]
+    end
+    subgraph messaging["Authentication and messaging"]
+        auth["Email and provider sign-in"]
+        trace["Email sign-in diagnostics<br/>Private App Service filesystem"]
+        jobs["Reminder job and feedback delivery"]
+        auth --> trace
+    end
+    express --> publicRead
+    express --> accounts
+    express --> messaging
 ```
+
+### Sign-in and email delivery
+
+Provider sign-in involves both the browser and Express. For email sign-in, reminders and feedback, Express sends mail through Azure Communication Services. Incoming mail to the project address takes the forwarding path below.
+
+```mermaid
+flowchart TB
+    subgraph auth["Provider sign-in"]
+        browser["Participant browser"]
+        providers["Google, Apple, Yahoo and Microsoft"]
+        authApi["Express · provider sign-in routes"]
+        browser -->|"authorize"| providers
+        providers -->|"redirect via browser"| authApi
+        authApi -->|"exchange code and request user info"| providers
+    end
+    subgraph outbound["Application email"]
+        producer["Express · email sign-in, reminders and feedback"]
+        mail["Azure Communication Services Email"]
+        participant["Participant mailbox"]
+        producer -->|"send"| mail
+        mail -->|"sign-in link or reminder"| participant
+    end
+    subgraph inbound["Project correspondence"]
+        sender["External correspondent"]
+        forwarding["Cloudflare Email Routing<br/>Project address"]
+        inbox["Maintainer inbox · Gmail"]
+        sender --> forwarding
+        forwarding --> inbox
+    end
+    mail -->|"feedback addressed to the project"| forwarding
+```
+
+## How reference data reaches the application
+
+The refresh scripts and editors update versioned inputs. The release includes these files, so serving a map or policy page does not require a live request to a source. The [source inventory](PUBLIC-DATA.md) lists the datasets and how each is maintained.
 
 ```mermaid
 flowchart LR
-    browser["Local browser"] --> vite["Vite · port 5173"]
-    vite -->|"proxy /api"| api["Express · port 3001"]
-    api -->|"default"| embedded[("PGlite · .local/postgres")]
-    api -->|"configured alternative"| pg[("Development PostgreSQL")]
-    api -->|"/demo"| samples["In-memory fixtures"]
+    subgraph sources["Reference sources"]
+        geography["Census TIGERweb and Natural Earth"]
+        roster["Congress Legislators · GitHub"]
+        votes["GovInfo, House Clerk and US Senate"]
+        guidance["State Department guidance and directories,<br/>court orders and counsel updates"]
+        bundled["DB-IP Country Lite and photography"]
+    end
+    subgraph preparation["Repository updates"]
+        maps["Map and roster refresh"]
+        bills["Legislation and vote refresh"]
+        editors["Editorial review"]
+        files["Versioned data, content and assets"]
+        maps --> files
+        bills --> files
+        editors --> files
+    end
+    geography --> maps
+    roster --> maps
+    roster --> bills
+    votes --> bills
+    guidance --> editors
+    bundled --> files
 ```
 
-The [source inventory](PUBLIC-DATA.md) identifies each reference dataset and its refresh process. The [CI workflow](../.github/workflows/ci.yml), [infrastructure templates](../infra/) and [packaging script](../scripts/package.py) define the build and release paths.
+## How a release reaches production
+
+GitHub Actions validates a revision with disposable databases. The release operator packages the verified revision, applies migrations with the schema-owner credentials, then deploys the same ZIP to the regional web apps one at a time.
+
+```mermaid
+flowchart TB
+    repo["GitHub repository<br/>App, versioned inputs and infrastructure definitions"]
+    subgraph ci["Continuous integration · GitHub Actions"]
+        validate["Build and run unit and integration tests"]
+        testDb[("PGlite and disposable regional PostgreSQL databases")]
+        validate --> testDb
+    end
+    subgraph release["Application release · operator"]
+        build["Build and package for Linux<br/>TypeScript, Vite and esbuild"]
+        zip["Deployment ZIP"]
+        migrate["Run packaged migration as schema owner"]
+        rollout["Roll out web apps and verify health"]
+        build --> zip
+        zip --> migrate
+        zip --> rollout
+        migrate -. "complete before rollout" .-> rollout
+    end
+    provision["Infrastructure setup · Bicep and Azure CLI"]
+    subgraph azure["Production targets"]
+        databases[("Regional PostgreSQL databases")]
+        apps["US and Swedish App Services"]
+        resources["App Service plans, firewall rules, email,<br/>domain bindings and reminder workflow"]
+    end
+    repo --> validate
+    repo -->|"verified revision"| build
+    repo --> provision
+    migrate --> databases
+    rollout --> apps
+    provision -->|"provisions and configures"| azure
+```
+
+See the [CI workflow](../.github/workflows/ci.yml), [infrastructure templates](../infra/) and [packaging script](../scripts/package.py) for implementation details.
+
+## Local development
+
+```mermaid
+flowchart LR
+    browser["Local browser"]
+    subgraph dev["Development servers"]
+        vite["Vite · port 5173"]
+        api["Express · port 3001"]
+        vite -->|"proxy /api"| api
+    end
+    subgraph data["Development data"]
+        embedded[("PGlite · .local/postgres")]
+        pg[("Configured PostgreSQL")]
+        samples["In-memory sample fixtures"]
+    end
+    browser --> vite
+    api -->|"default"| embedded
+    api -->|"optional database"| pg
+    api -->|"/demo"| samples
+```
 
 ## Follow a request
 
@@ -99,7 +210,7 @@ An account move takes an exclusive PostgreSQL advisory lock. A journal in Sweden
 ## Authentication, domains and email
 
 - The canonical origin is `https://visatransparencypetition.org`. Custom hostnames need DNS, an Azure hostname binding and TLS. For a cutover, check the apex and www, redirects preserving deep links, `APP_URL`, and the Google OAuth callback at `/api/auth/google/callback`. The checked-in zone file describes an earlier cutover. Compare it with current DNS before importing any records.
-- Email sign-in consumes a single-use token on a confirmation POST. Google sign-in verifies the identity through OAuth. Production sessions use a secure HTTP-only cookie. Store OAuth credentials, database credentials and the job secret in restricted service configuration. Browser bundles and Git are public.
+- Email sign-in consumes a single-use token on a confirmation POST. The provider callbacks verify identity and establish a petition session. Production sessions use a secure HTTP-only cookie. Store OAuth credentials, database credentials and the job secret in restricted service configuration. Browser bundles and Git are public.
 - Azure Communication Services sends sign-in mail, feedback and reminders from the verified project sender. It supports a connection string or a configured endpoint with an authorized managed identity. Cloudflare Email Routing forwards incoming project correspondence. Incoming routing and the Azure sender have separate DNS requirements. Preserve Azure DKIM records and use a single SPF policy for authorized senders.
 - The daily Logic App in Sweden calls `/api/jobs/reminders` using `CRON_SECRET`. Keep a single active schedule. After changing the canonical URL or secret, review and run `scripts/configure-reminders.py`. If delivery is uncertain, check the provider before retrying. The job reuses deterministic operation IDs and leaves pending claims older than 23 hours for manual reconciliation.
 

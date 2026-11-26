@@ -167,7 +167,10 @@ export async function migrate() {
 }
 async function migrateRegionalSchema(q: Queryable) {
   for (const sql of [
-    `CREATE TABLE IF NOT EXISTS users (id text PRIMARY KEY,email text NOT NULL UNIQUE,created_at timestamptz NOT NULL DEFAULT now())`,
+    `CREATE TABLE IF NOT EXISTS users (id text PRIMARY KEY,email text UNIQUE,created_at timestamptz NOT NULL DEFAULT now())`,
+    `ALTER TABLE users ALTER COLUMN email DROP NOT NULL`,
+    `ALTER TABLE users ADD COLUMN IF NOT EXISTS microsoft_email text`,
+    `CREATE TABLE IF NOT EXISTS oauth_identities (identity_key text PRIMARY KEY,user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE)`,
     `CREATE TABLE IF NOT EXISTS sessions (token_hash text PRIMARY KEY,user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,expires_at timestamptz NOT NULL,created_at timestamptz NOT NULL DEFAULT now())`,
     `CREATE TABLE IF NOT EXISTS login_tokens (token_hash text PRIMARY KEY,email text NOT NULL,expires_at timestamptz NOT NULL,created_at timestamptz NOT NULL DEFAULT now())`,
     `CREATE TABLE IF NOT EXISTS profiles (user_id text PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,data jsonb NOT NULL,signed_at timestamptz NOT NULL DEFAULT now(),updated_at timestamptz NOT NULL DEFAULT now(),consent_version text NOT NULL DEFAULT '2026-11-11')`,

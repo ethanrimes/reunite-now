@@ -1,4 +1,29 @@
 {
+  "Continue with {provider}": {
+    "es": "Continuar con {provider}",
+    "pt": "Continuar com {provider}",
+    "tl": "Magpatuloy gamit ang {provider}"
+  },
+  "Unavailable": {
+    "es": "No disponible",
+    "pt": "Indisponível",
+    "tl": "Hindi available"
+  },
+  "Choose a sign-in method. New members complete their petition profile next.": {
+    "es": "Elige cómo iniciar sesión. Los nuevos miembros completarán su perfil a continuación.",
+    "pt": "Escolha como entrar. Novos membros preenchem o perfil da petição em seguida.",
+    "tl": "Pumili kung paano mag-sign in. Susunod na kukumpletuhin ng mga bagong miyembro ang kanilang profile."
+  },
+  "Sign in to return to the feedback form.": {
+    "es": "Inicia sesión para volver al formulario de comentarios.",
+    "pt": "Entre para voltar ao formulário de comentários.",
+    "tl": "Mag-sign in upang bumalik sa feedback form."
+  },
+  "To connect {provider}, verify your petition email once in this browser. You can use the code from the email.": {
+    "es": "Para conectar {provider}, verifica una vez tu correo de la petición en este navegador. Puedes usar el código del mensaje.",
+    "pt": "Para conectar {provider}, confirme uma vez o e-mail da petição neste navegador. Você pode usar o código recebido.",
+    "tl": "Para ikonekta ang {provider}, kumpirmahin ang email ng petisyon sa browser na ito nang isang beses. Maaari mong gamitin ang code sa email."
+  },
   "Filtered cases with a measurable wait ({count} of {total})": {
     "es": "Casos filtrados con una espera medible ({count} de {total})",
     "pt": "Casos filtrados com tempo de espera calculável ({count} de {total})",
@@ -14,10 +39,10 @@
     "pt": "Apenas as datas de início das esperas deste caso são públicas.",
     "tl": "Ang mga petsa lang ng pagsisimula ng paghihintay ang pampubliko para sa kasong ito."
   },
-  "Saving a visa case publishes a row with its visa category and consular post. When a wait can be calculated, the row also shows its starting date and duration. Names, nicknames and case IDs stay private.": {
-    "es": "Al guardar un caso de visa se publica una fila con su categoría y oficina consular. Si se puede calcular la espera, también se muestran la fecha de inicio y la duración. Los nombres, apodos e identificadores de caso son privados.",
-    "pt": "Salvar um caso de visto publica uma linha com a categoria e o posto consular. Quando é possível calcular a espera, a linha também mostra a data inicial e a duração. Nomes, apelidos e identificadores de casos ficam privados.",
-    "tl": "Kapag nag-save ka ng kaso ng visa, ilalathala ang kategorya nito at tanggapan ng konsulado sa isang hanay. Kung makakalkula ang paghihintay, makikita rin ang petsa ng simula at tagal nito. Pribado ang mga pangalan, palayaw at ID ng kaso."
+  "Saving a visa case publishes a row with its visa category and consular post. When a wait can be calculated, the row also shows its starting date and duration. Applicant names and nicknames stay private.": {
+    "es": "Al guardar un caso de visa se publica una fila con su categoría y oficina consular. Si se puede calcular la espera, también se muestran la fecha de inicio y la duración. Los nombres y apodos de los solicitantes son privados.",
+    "pt": "Salvar um caso de visto publica uma linha com a categoria e o posto consular. Quando é possível calcular a espera, a linha também mostra a data inicial e a duração. Os nomes e apelidos dos solicitantes ficam privados.",
+    "tl": "Kapag nag-save ka ng kaso ng visa, ilalathala ang kategorya nito at tanggapan ng konsulado sa isang hanay. Kung makakalkula ang paghihintay, makikita rin ang petsa ng simula at tagal nito. Pribado ang mga pangalan at palayaw ng mga aplikante."
   },
   "Earlier submissions are included. Each median uses only active cases with the required milestone. A sample of one shows that case’s wait.": {
     "es": "Se incluyen casos enviados anteriormente. Cada mediana usa solo casos activos con el hito requerido. Si solo hay un caso, la mediana muestra su espera.",
@@ -34,15 +59,10 @@
     "pt": "Ver cronologia",
     "tl": "Tingnan ang timeline"
   },
-  "Also share the dates and types of all completed milestones in this case’s public timeline.": {
-    "es": "Compartir también las fechas y los tipos de todos los hitos completados en la cronología pública de este caso.",
-    "pt": "Compartilhar também as datas e os tipos de todas as etapas concluídas na cronologia pública deste caso.",
-    "tl": "Ibahagi rin sa pampublikong timeline ng kasong ito ang mga petsa at uri ng lahat ng nakumpletong yugto."
-  },
-  "A case timeline shows the dates and types of all completed milestones only if the owner chooses to share that history.": {
-    "es": "La cronología de un caso muestra las fechas y los tipos de todos los hitos completados solo si su titular decide compartir ese historial.",
-    "pt": "A cronologia do caso mostra as datas e os tipos de todas as etapas concluídas somente se o titular optar por compartilhar esse histórico.",
-    "tl": "Makikita lang ang mga petsa at uri ng lahat ng nakumpletong yugto kung pinili ng may-ari na ibahagi ang kasaysayan ng kaso."
+  "Saving these cases publishes the type and date of each completed milestone in the public visa timeline.": {
+    "es": "Al guardar estos casos, se publican el tipo y la fecha de cada hito completado en la cronología pública de visas.",
+    "pt": "Ao salvar estes casos, o tipo e a data de cada etapa concluída são publicados na linha do tempo pública de vistos.",
+    "tl": "Kapag na-save ang mga kasong ito, ilalathala sa pampublikong timeline ng visa ang uri at petsa ng bawat natapos na hakbang."
   },
   "The timeline explorer uses fictional cases.": {
     "es": "El explorador de plazos usa casos ficticios.",
@@ -5719,10 +5739,10 @@
     "pt": "Seu e-mail de acesso e os endereços para lembretes ficam fora dos perfis públicos, mapas e histórias. Nós os armazenamos para administrar sua conta e enviar as mensagens que você solicita. Quem tem acesso ao banco de dados de contas pode ler esses endereços, inclusive o responsável pelo projeto, se tiver esse acesso.",
     "tl": "Hindi lumalabas sa mga pampublikong profile, mapa, o kuwento ang email address na gamit mo sa pag-sign in at ang mga address para sa mga paalala. Iniimbak namin ang mga ito para mapatakbo ang account mo at maipadala ang mga email na hiniling mo. Mababasa ang mga address ng sinumang may access sa database ng mga account, pati ng tagapangasiwa ng proyekto kung mayroon siyang ganoong access."
   },
-  "For email sign-in, Reunite Now verifies a single-use link delivered by Azure Communication Services. If you choose Google sign-in, Google verifies your identity and provides your verified email address to Reunite Now.": {
-    "es": "Para iniciar sesión por correo, Reunite Now verifica un enlace de un solo uso enviado por Azure Communication Services. Si eliges iniciar sesión con Google, Google verifica tu identidad y proporciona tu dirección de correo verificada a Reunite Now.",
-    "pt": "No acesso por e-mail, o Reunite Now verifica um link de uso único enviado pelo Azure Communication Services. Se você optar por entrar com o Google, o Google verifica sua identidade e fornece seu e-mail verificado ao Reunite Now.",
-    "tl": "Kung email ang gamit mo sa pag-sign in, bineberipika ng Reunite Now ang link na isang beses lang magagamit at ipinadala ng Azure Communication Services. Kung Google ang pipiliin mo, ibeberipika ng Google ang pagkakakilanlan mo at ibibigay sa Reunite Now ang beripikadong email address mo."
+  "For email sign-in, Reunite Now verifies a single-use link delivered by Azure Communication Services. If you sign in with Google, Apple, Yahoo, or Microsoft, the provider verifies your identity and may share an email address.": {
+    "es": "Para iniciar sesión por correo, Reunite Now verifica un enlace de un solo uso enviado por Azure Communication Services. Si accedes con Google, Apple, Yahoo o Microsoft, el proveedor verifica tu identidad y puede compartir una dirección de correo.",
+    "pt": "No acesso por e-mail, o Reunite Now verifica um link de uso único enviado pelo Azure Communication Services. Se você entrar com Google, Apple, Yahoo ou Microsoft, o provedor verifica sua identidade e pode compartilhar um endereço de e-mail.",
+    "tl": "Kung email ang gamit mo sa pag-sign in, bineberipika ng Reunite Now ang link na isang beses lang magagamit at ipinadala ng Azure Communication Services. Kung gagamit ka ng Google, Apple, Yahoo o Microsoft, ibeberipika ng provider ang iyong pagkakakilanlan at maaari itong magbahagi ng email address."
   },
   "The version accepted with your signature is recorded. This is an independent advocacy project, not a law firm or government service.": {
     "es": "Se registra la versión aceptada al firmar. Este es un proyecto independiente de incidencia pública, no un bufete ni un servicio del gobierno.",
@@ -5744,10 +5764,10 @@
     "pt": "O Reunite Now é uma petição da comunidade para reduzir a espera por vistos dos EUA. As famílias compartilham aqui suas histórias e as datas de seus processos. Quem apoia a petição pode mostrar ao seu representante quantas pessoas do distrito assinaram.",
     "tl": "Ang Reunite Now ay petisyong pinangungunahan ng komunidad para mapaikli ang paghihintay sa visa ng US. Ibinabahagi rito ng mga pamilya ang kanilang kuwento at mga petsa sa proseso ng visa. Maipapakita ng mga tagasuporta sa kanilang kinatawan kung ilan na ang lumagda sa kanilang distrito."
   },
-  "Microsoft Azure hosts the application, database, and scheduled work. Azure Communication Services handles email when enabled. Google handles Google sign-in if you choose it. Public policy links and contact links take you to external organizations. We do not share submissions with those organizations.": {
-    "es": "Microsoft Azure aloja la aplicación, la base de datos y las tareas programadas. Azure Communication Services gestiona el correo cuando está habilitado. Google gestiona el inicio de sesión con Google si lo eliges. Los enlaces de políticas y de contacto llevan a organizaciones externas. No compartimos los envíos con esas organizaciones.",
-    "pt": "O Microsoft Azure hospeda a aplicação, o banco de dados e as tarefas agendadas. O Azure Communication Services cuida dos e-mails quando habilitado. O Google cuida do acesso com Google, se você o escolher. Links de políticas e de contato levam a organizações externas. Não compartilhamos os envios com essas organizações.",
-    "tl": "Nasa Microsoft Azure ang aplikasyon, database, at mga nakaiskedyul na gawain. Pinangangasiwaan ng Azure Communication Services ang email kapag pinagana. Pinangangasiwaan ng Google ang pag-sign in gamit ang Google kung pipiliin mo ito. Dinadala ka ng mga link ng patakaran at pakikipag-ugnayan sa mga panlabas na organisasyon. Hindi namin ibinabahagi sa kanila ang mga isinumite."
+  "Microsoft Azure hosts the application, database, and scheduled work. Azure Communication Services handles email when enabled. Public policy links and contact links take you to external organizations. We do not share submissions with those organizations.": {
+    "es": "Microsoft Azure aloja la aplicación, la base de datos y las tareas programadas. Azure Communication Services gestiona el correo cuando está habilitado. Los enlaces de políticas y de contacto llevan a organizaciones externas. No compartimos los envíos con esas organizaciones.",
+    "pt": "O Microsoft Azure hospeda a aplicação, o banco de dados e as tarefas agendadas. O Azure Communication Services cuida dos e-mails quando habilitado. Links de políticas e de contato levam a organizações externas. Não compartilhamos os envios com essas organizações.",
+    "tl": "Nasa Microsoft Azure ang aplikasyon, database, at mga nakaiskedyul na gawain. Pinangangasiwaan ng Azure Communication Services ang email kapag pinagana. Dinadala ka ng mga link ng patakaran at pakikipag-ugnayan sa mga panlabas na organisasyon. Hindi namin ibinabahagi sa kanila ang mga isinumite."
   },
   "Find your congressional district on House.gov": {
     "es": "Busca tu distrito congresional en House.gov",
@@ -6598,5 +6618,10 @@
     "es": "no ha publicado estadísticas sobre visas de inmigrante desde entonces",
     "pt": "não publica estatísticas sobre vistos de imigrante desde então",
     "tl": "wala pang inilalabas na estadistika tungkol sa immigrant visa mula noon"
+  },
+  "How we use visa timeline data": {
+    "es": "Cómo usamos los datos de los plazos de visa",
+    "pt": "Como usamos os dados dos prazos de visto",
+    "tl": "Paano namin ginagamit ang datos ng timeline ng visa"
   }
 }

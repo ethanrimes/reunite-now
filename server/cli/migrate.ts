@@ -37,12 +37,14 @@ try {
             "GRANT SELECT ON public.rn_signature_groups, public.rn_signatories, public.rn_visa_samples, public.rn_published_stories TO rn_reader",
           );
           await q.query(
-            "GRANT SELECT, INSERT ON public.users, public.sessions, public.login_tokens, public.profiles, public.stories, public.reminder_deliveries, public.reminder_recipient_deliveries TO rn_runtime",
+            "GRANT SELECT, INSERT ON public.oauth_identities, public.users, public.sessions, public.login_tokens, public.profiles, public.stories, public.reminder_deliveries, public.reminder_recipient_deliveries TO rn_runtime",
           );
           await q.query(
             "GRANT DELETE ON public.users, public.sessions, public.login_tokens, public.stories TO rn_runtime",
           );
-          await q.query("GRANT UPDATE (email) ON public.users TO rn_runtime");
+          await q.query(
+            "GRANT UPDATE (email, microsoft_email) ON public.users TO rn_runtime",
+          );
           await q.query(
             "GRANT UPDATE (data, updated_at) ON public.profiles, public.stories TO rn_runtime",
           );

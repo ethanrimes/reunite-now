@@ -5,16 +5,25 @@ import { acrossRegions, routed } from "../storage/regions";
 import { caseStatus } from "../../shared/metrics";
 import type { Profile } from "../../shared/schema";
 
-export function reminderRecipients(email: string, additional: string[] = []) {
+export function reminderRecipients(
+  email: string | null,
+  additional: string[] = [],
+) {
   return [
     ...new Set(
-      [email, ...additional].map((value) => value.trim().toLowerCase()),
+      (email ? [email, ...additional] : additional).map((value) =>
+        value.trim().toLowerCase(),
+      ),
     ),
   ];
 }
 const recipientKey = (email: string) =>
   createHash("sha256").update(email).digest("hex");
-type Account = { email: string; data: Profile; updated_at: Date | string };
+type Account = {
+  email: string | null;
+  data: Profile;
+  updated_at: Date | string;
+};
 type Claim = { status: string; claimed_at: Date | string };
 
 export async function sendReminders(
@@ -59,13 +68,14 @@ async function sendRegionalReminders(
   for (const user of users.rows) {
     const initial = await account(db, user.id);
     if (!eligible(initial)) continue;
-    await db.query(
-      `INSERT INTO reminder_deliveries(user_id,period,claimed_at) VALUES($1,$2,$3) ON CONFLICT DO NOTHING`,
-      [user.id, period, now.toISOString()],
-    );
     const recipients = reminderRecipients(
       initial.email,
       initial.data.reminderEmails,
+    );
+    if (!recipients.length) continue;
+    await db.query(
+      `INSERT INTO reminder_deliveries(user_id,period,claimed_at) VALUES($1,$2,$3) ON CONFLICT DO NOTHING`,
+      [user.id, period, now.toISOString()],
     );
     for (const recipient of recipients) {
       try {
@@ -107,7 +117,7 @@ async function sendRegionalReminders(
             "Your monthly Reunite Now case check-in",
             `Has anything changed in your visa process?\n\nVisit ${url}/account to add a milestone and its date, or confirm that nothing has changed. A confirmation updates the case's last-checked timestamp, not its original event dates.\n\nThis address was selected for monthly reminders in a Reunite Now account. The account owner can turn reminders off or remove additional addresses in Account. We never include applicant names, case details, documents, or other recipients' addresses in reminder emails.\n\nReunite Now`,
             // Retain the old operation ID for the primary address on upgrades.
-            recipient === current.email.trim().toLowerCase()
+            recipient === current.email?.trim().toLowerCase()
               ? `reminder/${user.id}/${period}`
               : `reminder/${user.id}/${period}/${key}`,
           );

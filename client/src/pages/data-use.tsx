@@ -112,6 +112,7 @@ export function DataUse() {
             "Signing requires your consent to publish your name and signing time. You can hide them later in Account → Configuration. Earlier signatures appear anonymously unless the signer chose to be listed by name.",
           )}
         </p>
+        <h3 id="visa-timelines">{t("Visa timelines")}</h3>
         <p>
           {t(
             "Earlier submissions are included. Each median uses only active cases with the required milestone. A sample of one shows that case’s wait.",
@@ -119,12 +120,12 @@ export function DataUse() {
         </p>
         <p>
           {t(
-            "Saving a visa case publishes a row with its visa category and consular post. When a wait can be calculated, the row also shows its starting date and duration. Names, nicknames and case IDs stay private.",
+            "Saving a visa case publishes a row with its visa category and consular post. When a wait can be calculated, the row also shows its starting date and duration. Applicant names and nicknames stay private.",
           )}
         </p>
         <p>
           {t(
-            "A case timeline shows the dates and types of all completed milestones only if the owner chooses to share that history.",
+            "Saving these cases publishes the type and date of each completed milestone in the public visa timeline.",
           )}
         </p>
         <h2>{t("What stays private")}</h2>
@@ -135,7 +136,7 @@ export function DataUse() {
         </p>
         <p>
           {t(
-            "For email sign-in, Reunite Now verifies a single-use link delivered by Azure Communication Services. If you choose Google sign-in, Google verifies your identity and provides your verified email address to Reunite Now.",
+            "For email sign-in, Reunite Now verifies a single-use link delivered by Azure Communication Services. If you sign in with Google, Apple, Yahoo, or Microsoft, the provider verifies your identity and may share an email address.",
           )}
         </p>
         <p>
@@ -170,7 +171,7 @@ export function DataUse() {
         </p>
         <p>
           {t(
-            "Microsoft Azure hosts the application, database, and scheduled work. Azure Communication Services handles email when enabled. Google handles Google sign-in if you choose it. Public policy links and contact links take you to external organizations. We do not share submissions with those organizations.",
+            "Microsoft Azure hosts the application, database, and scheduled work. Azure Communication Services handles email when enabled. Public policy links and contact links take you to external organizations. We do not share submissions with those organizations.",
           )}
         </p>
         <h2>{t("Agreement version")}</h2>

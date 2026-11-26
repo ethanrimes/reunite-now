@@ -468,7 +468,7 @@ export default function VisaTimelines() {
         </details>
         <p className="method-note">
           {t(
-            "Saving a visa case publishes a row with its visa category and consular post. When a wait can be calculated, the row also shows its starting date and duration. Names, nicknames and case IDs stay private.",
+            "Saving a visa case publishes a row with its visa category and consular post. When a wait can be calculated, the row also shows its starting date and duration. Applicant names and nicknames stay private.",
           )}
         </p>
       </section>

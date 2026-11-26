@@ -1,5 +1,8 @@
 import { useState, type FormEvent } from "react";
-import { feedbackMessageLimit, maintainerEmail } from "../../../shared/feedback";
+import {
+  feedbackMessageLimit,
+  maintainerEmail,
+} from "../../../shared/feedback";
 import { Link } from "react-router-dom";
 import { api, useData } from "../app/api";
 import { t } from "../i18n/i18n";
@@ -73,12 +76,14 @@ export function Feedback() {
             setError("");
           }}
         >
-          <dl className="feedback-identity">
-            <dt>{t("Reply email")}</dt>
-            <dd>
-              <bdi dir="ltr">{me.user.email}</bdi>
-            </dd>
-          </dl>
+          {me.user.email && (
+            <dl className="feedback-identity">
+              <dt>{t("Reply email")}</dt>
+              <dd>
+                <bdi dir="ltr">{me.user.email}</bdi>
+              </dd>
+            </dl>
+          )}
           <Field
             label={t("Your message")}
             hint={t(
