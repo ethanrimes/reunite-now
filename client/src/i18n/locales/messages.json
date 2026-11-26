@@ -1,4 +1,14 @@
 {
+  "If you agreed to public statistics when you signed, your eligible active cases can contribute to the case count and median wait for each milestone. This includes earlier submissions, even if you keep your individual timeline private. A count of one means the median is that case’s wait.": {
+    "es": "Si aceptaste el uso de tus datos en estadísticas públicas al firmar, tus casos activos que cumplan los requisitos pueden contribuir al recuento y a la mediana de espera de cada hito. Esto incluye casos enviados anteriormente, aunque mantengas privada tu cronología individual. Si el recuento es uno, la mediana es la espera de ese caso.",
+    "pt": "Se você concordou com o uso dos seus dados em estatísticas públicas ao assinar, seus casos ativos elegíveis podem entrar na contagem e na mediana do tempo de espera de cada etapa. Isso inclui casos enviados anteriormente, mesmo que sua linha do tempo individual seja privada. Se a contagem for um, a mediana será a espera desse caso.",
+    "tl": "Kung pumayag kang gamitin ang iyong datos sa pampublikong estadistika noong lumagda ka, maaaring isama ang iyong mga kwalipikadong aktibong kaso sa bilang at median na tagal ng paghihintay para sa bawat yugto. Kasama rito ang mga naunang isinumite kahit pribado ang iyong sariling timeline. Kung iisa ang kaso, ang median ay ang tagal ng paghihintay ng kasong iyon."
+  },
+  "If you choose to share an individual case in the case editor, its public row shows the visa category, consular post, milestone date and wait. Names, nicknames and case IDs stay private in both timeline views. You can turn off individual sharing in the case editor.": {
+    "es": "Si eliges compartir un caso individual en el editor de casos, su fila pública muestra la categoría de visa, la oficina consular, la fecha del hito y la espera. Los nombres, apodos e identificadores de caso permanecen privados en ambas vistas de cronologías. Puedes dejar de compartir el caso individual en el editor.",
+    "pt": "Se você optar por compartilhar um caso individual no editor de casos, a linha pública mostrará a categoria do visto, o posto consular, a data da etapa e o tempo de espera. Nomes, apelidos e identificadores de casos ficam privados nas duas visualizações de cronologias. Você pode desativar o compartilhamento individual no editor de casos.",
+    "tl": "Kung pipiliin mong ibahagi ang isang kaso sa editor ng kaso, makikita sa pampublikong hanay ang kategorya ng visa, tanggapan ng konsulado, petsa ng yugto at tagal ng paghihintay. Pribado ang mga pangalan, palayaw at ID ng kaso sa parehong tanawin ng timeline. Maaari mong ihinto ang pagbabahagi ng indibidwal na kaso sa editor."
+  },
   "Reported waits across all update dates": {
     "es": "Tiempos de espera de todos los períodos",
     "pt": "Tempos de espera de todos os períodos",

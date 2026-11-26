@@ -1,4 +1,6 @@
 {
+  "If you agreed to public statistics when you signed, your eligible active cases can contribute to the case count and median wait for each milestone. This includes earlier submissions, even if you keep your individual timeline private. A count of one means the median is that case’s wait.": "如果您簽署時同意將資料用於公開統計，您符合條件的進行中案件可能會計入各里程碑的案件數和等候時間中位數。即使您將個別案件時間軸設為不公開，先前提交的案件也可能納入。若只有一件案件，中位數就是該案件的等候時間。",
+  "If you choose to share an individual case in the case editor, its public row shows the visa category, consular post, milestone date and wait. Names, nicknames and case IDs stay private in both timeline views. You can turn off individual sharing in the case editor.": "如果您在案件編輯器中選擇分享個別案件，公開資料列會顯示簽證類別、領事館處、里程碑日期及等候時間。兩種時間軸檢視都會將姓名、暱稱和案件識別碼保密。您可以在案件編輯器中關閉個別案件分享。",
   "Reported waits across all update dates": "所有更新日期的通報等候時間",
   "Includes eligible active cases from earlier submissions. Individual timelines below require separate permission.": "包含先前提交且符合條件的進行中案件。下方個別案件的時間軸須另行取得同意。",
   "View timeline": "查看時間表",

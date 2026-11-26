@@ -114,7 +114,12 @@ export function DataUse() {
         </p>
         <p>
           {t(
-            "Only cases shared for the public timelines table appear here. Each row shows the visa type, consular post, milestone date and wait, without a name.",
+            "If you agreed to public statistics when you signed, your eligible active cases can contribute to the case count and median wait for each milestone. This includes earlier submissions, even if you keep your individual timeline private. A count of one means the median is that case’s wait.",
+          )}
+        </p>
+        <p>
+          {t(
+            "If you choose to share an individual case in the case editor, its public row shows the visa category, consular post, milestone date and wait. Names, nicknames and case IDs stay private in both timeline views. You can turn off individual sharing in the case editor.",
           )}
         </p>
         <p>
