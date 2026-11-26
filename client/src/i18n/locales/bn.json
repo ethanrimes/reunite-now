@@ -1,4 +1,6 @@
 {
+  "Connect {provider} using a sign-in method you already use for this email address.": "এই ইমেল ঠিকানার জন্য আগে থেকেই ব্যবহার করেন এমন একটি সাইন-ইন পদ্ধতি দিয়ে {provider} যুক্ত করুন।",
+  "Connect {provider} to your petition account with {verifier}. Future {provider} sign-ins will open your account directly.": "{verifier} দিয়ে আপনার পিটিশন অ্যাকাউন্টের সঙ্গে {provider} যুক্ত করুন। এরপর {provider} দিয়ে সাইন ইন করলে সরাসরি আপনার অ্যাকাউন্ট খুলবে।",
   "This email is already connected to another petition profile. Your existing profiles are separate.": "এই ইমেল ঠিকানাটি ইতিমধ্যেই পিটিশনের অন্য একটি প্রোফাইলের সঙ্গে যুক্ত। আপনার প্রোফাইলগুলো আলাদাই আছে।",
   "Continue with {provider}": "{provider} দিয়ে এগিয়ে যান",
   "Unavailable": "অনুপলব্ধ",

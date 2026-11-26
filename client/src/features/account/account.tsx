@@ -1,4 +1,5 @@
 import {
+  mailboxProvider,
   signInProviders,
   providerNames,
 } from "../../../../shared/auth-providers";
@@ -56,6 +57,7 @@ import { caseStatus } from "../../../../shared/metrics";
 export function Login() {
   const { me, config, loading } = useData();
   const [email, setEmail] = useState("");
+  const [providerEmail, setProviderEmail] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [sent, setSent] = useState(false);
@@ -65,19 +67,36 @@ export function Login() {
   const connectProvider = signInProviders.find(
     (p) => p === params.get("connect"),
   );
+  const method = params.get("method");
+  const suggested = mailboxProvider(providerEmail);
+  const verifier =
+    connectProvider &&
+    method !== "email" &&
+    signInProviders.find(
+      (p) =>
+        p !== connectProvider &&
+        (method === p ||
+          (!method &&
+            suggested === p &&
+            (p === "google"
+              ? config.googleAuth
+              : config.oauthProviders?.includes(p)))),
+    );
   useEffect(() => {
-    if (!connectProvider) return;
+    if (!connectProvider || signInProviders.some((p) => p === method)) return;
     const controller = new AbortController();
     api<{ email: string }>("/auth/" + connectProvider + "/pending-email", {
       signal: controller.signal,
     })
       .then(({ email: suggested }) => {
-        if (!controller.signal.aborted && suggested)
+        if (!controller.signal.aborted && suggested) {
+          setProviderEmail(suggested);
           setEmail((current) => current || suggested);
+        }
       })
       .catch(() => {});
     return () => controller.abort();
-  }, [connectProvider]);
+  }, [connectProvider, method]);
   async function submit(e: FormEvent) {
     e.preventDefault();
     setBusy(true);
@@ -147,21 +166,43 @@ export function Login() {
           </Link>
         ) : (
           <>
-            {connectProvider ? (
+            {connectProvider && (
               <Notice>
-                {t(
-                  "To connect {provider}, verify your petition email once in this browser. You can use the code from the email.",
-                  { provider: providerNames[connectProvider] },
-                )}
+                {verifier
+                  ? t(
+                      "Connect {provider} to your petition account with {verifier}. Future {provider} sign-ins will open your account directly.",
+                      {
+                        provider: providerNames[connectProvider],
+                        verifier: providerNames[verifier],
+                      },
+                    )
+                  : providerEmail
+                    ? t(
+                        "Connect {provider} using a sign-in method you already use for this email address.",
+                        { provider: providerNames[connectProvider] },
+                      )
+                    : t(
+                        "To connect {provider}, verify your petition email once in this browser. You can use the code from the email.",
+                        { provider: providerNames[connectProvider] },
+                      )}
               </Notice>
-            ) : (
+            )}
+            {(!connectProvider || verifier || providerEmail) && (
               <>
                 <div className="signin-providers">
-                  {signInProviders.map((provider) => {
+                  {(verifier ? [verifier] : signInProviders).map((provider) => {
                     const enabled =
                       provider === "google"
                         ? config.googleAuth
                         : config.oauthProviders?.includes(provider);
+                    if (
+                      connectProvider &&
+                      (provider === connectProvider || !enabled)
+                    )
+                      return null;
+                    const query = new URLSearchParams();
+                    if (connectProvider) query.set("connect", connectProvider);
+                    if (forFeedback) query.set("intent", "feedback");
                     return (
                       <a
                         key={provider}
@@ -169,7 +210,9 @@ export function Login() {
                         aria-disabled={!enabled}
                         href={
                           enabled
-                            ? `/api/auth/${provider}${forFeedback ? "?intent=feedback" : ""}`
+                            ? "/api/auth/" +
+                              provider +
+                              (query.size ? "?" + query : "")
                             : undefined
                         }
                       >
@@ -191,58 +234,66 @@ export function Login() {
                     );
                   })}
                 </div>
-                <div className="or">
-                  <span />
-                  {t("or use your email")}
-                  <span />
-                </div>
+                {!verifier && (
+                  <div className="or">
+                    <span />
+                    {t("or use your email")}
+                    <span />
+                  </div>
+                )}
               </>
             )}
-            <form className="signin-email" onSubmit={submit}>
-              <Field label={t("Email address")}>
-                <input
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={email}
-                  placeholder={t("you@example.com")}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </Field>
-              <button
-                className="button full"
-                disabled={
-                  busy || loading || (!config.emailAuth && !config.devAuth)
-                }
-              >
-                {busy ? t("Sending your link…") : t("Email me a sign-in link")}
-                <Mail size={18} />
-              </button>
-            </form>
-            {!loading && !config.emailAuth && !config.devAuth && (
-              <Notice>
-                {t(
-                  "Email sign-in opens once the project’s email domain is connected. You can explore the petition, policies, and maps now.",
+            {!verifier && (
+              <>
+                <form className="signin-email" onSubmit={submit}>
+                  <Field label={t("Email address")}>
+                    <input
+                      type="email"
+                      autoComplete="email"
+                      required
+                      value={email}
+                      placeholder={t("you@example.com")}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </Field>
+                  <button
+                    className="button full"
+                    disabled={
+                      busy || loading || (!config.emailAuth && !config.devAuth)
+                    }
+                  >
+                    {busy
+                      ? t("Sending your link…")
+                      : t("Email me a sign-in link")}
+                    <Mail size={18} />
+                  </button>
+                </form>
+                {!loading && !config.emailAuth && !config.devAuth && (
+                  <Notice>
+                    {t(
+                      "Email sign-in opens once the project’s email domain is connected. You can explore the petition, policies, and maps now.",
+                    )}
+                  </Notice>
                 )}
-              </Notice>
-            )}
-            {sent && (
-              <Notice tone="success">
-                {t(
-                  "Check your inbox for your sign-in link. If you don’t see it, check your spam folder. The link expires in 15 minutes and works once.",
+                {sent && (
+                  <Notice tone="success">
+                    {t(
+                      "Check your inbox for your sign-in link. If you don’t see it, check your spam folder. The link expires in 15 minutes and works once.",
+                    )}
+                  </Notice>
                 )}
-              </Notice>
+                <Link
+                  className="text-link"
+                  to={
+                    forFeedback
+                      ? "/auth/verify?method=code&intent=feedback"
+                      : "/auth/verify?method=code"
+                  }
+                >
+                  {t("Enter a sign-in code")}
+                </Link>
+              </>
             )}
-            <Link
-              className="text-link"
-              to={
-                forFeedback
-                  ? "/auth/verify?method=code&intent=feedback"
-                  : "/auth/verify?method=code"
-              }
-            >
-              {t("Enter a sign-in code")}
-            </Link>
             {me.user && connectProvider && (
               <Link
                 className="text-link"

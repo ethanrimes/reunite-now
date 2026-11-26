@@ -1,4 +1,6 @@
 {
+  "Connect {provider} using a sign-in method you already use for this email address.": "請使用您已用於此電子郵件地址的登入方式來連結 {provider}。",
+  "Connect {provider} to your petition account with {verifier}. Future {provider} sign-ins will open your account directly.": "使用 {verifier} 將 {provider} 連結至您的連署帳戶。下次使用 {provider} 登入時，即可直接進入帳戶。",
   "This email is already connected to another petition profile. Your existing profiles are separate.": "此電子郵件地址已連結至另一個連署資料檔。您的資料檔仍各自獨立。",
   "Continue with {provider}": "使用 {provider} 繼續",
   "Unavailable": "暫不可用",
