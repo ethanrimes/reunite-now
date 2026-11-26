@@ -2,10 +2,10 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { exportJWK, exportPKCS8, generateKeyPair, SignJWT } from "jose";
-import { additionalProviders } from "../shared/auth-providers";
+import { signInProviders } from "../shared/auth-providers";
 import { begin, finish, readTicket } from "../server/auth/providers";
 
-for (const provider of additionalProviders) {
+for (const provider of signInProviders) {
   test(
     provider +
       " verifies the authorization callback and resolves the account identity",
@@ -18,9 +18,11 @@ for (const provider of additionalProviders) {
       const microsoft = provider === "microsoft";
       const issuer = microsoft
         ? "https://login.microsoftonline.com/9188040d-6c67-4c5b-b112-36a304b66dad/v2.0"
-        : apple
-          ? "https://appleid.apple.com"
-          : "https://api.login." + provider + ".com";
+        : provider === "google"
+          ? "https://accounts.google.com"
+          : apple
+            ? "https://appleid.apple.com"
+            : "https://api.login." + provider + ".com";
       const secret = apple
         ? await exportPKCS8(
             (await generateKeyPair("ES256", { extractable: true })).privateKey,
@@ -51,8 +53,15 @@ for (const provider of additionalProviders) {
       let nonce = params.get("nonce");
       let email =
         "test@" +
-        (apple ? "icloud.com" : microsoft ? "outlook.com" : provider + ".com");
+        (apple
+          ? "icloud.com"
+          : microsoft
+            ? "outlook.com"
+            : provider === "google"
+              ? "gmail.com"
+              : provider + ".com");
       let verified: boolean | string = true;
+      let additionalClaims: Record<string, string> = {};
       t.mock.method(
         globalThis,
         "fetch",
@@ -64,7 +73,8 @@ for (const provider of additionalProviders) {
             );
             const id_token = await new SignJWT({
               nonce,
-              ...(apple || microsoft
+              ...additionalClaims,
+              ...(provider !== "yahoo"
                 ? { email, email_verified: verified }
                 : {}),
             })
@@ -100,7 +110,7 @@ for (const provider of additionalProviders) {
       const input = { state: saved.state, code: "code" };
       const info = await finish(provider, cfg, flow.cookie, input);
       assert.equal(info.address, email);
-      assert.equal(info.authoritative, !microsoft);
+      assert.equal(info.authoritative, true);
       assert.equal(info.destination, "/feedback");
       assert.match(info.identity, /^[a-f0-9]{64}$/);
       email = "person@example.org";
@@ -114,6 +124,15 @@ for (const provider of additionalProviders) {
         (await finish(provider, cfg, flow.cookie, input)).emailVerified,
         false,
       );
+      if (provider === "google" || microsoft) {
+        additionalClaims = microsoft
+          ? { verified_primary_email: "member@outlook.com" }
+          : { hd: "example.org" };
+        verified = !microsoft;
+        const managed = await finish(provider, cfg, flow.cookie, input);
+        assert.equal(managed.authoritative, true);
+        assert.equal(managed.address, microsoft ? "member@outlook.com" : email);
+      }
       nonce = "different-nonce";
       await assert.rejects(
         finish(provider, cfg, flow.cookie, input),

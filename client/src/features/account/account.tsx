@@ -1,5 +1,5 @@
 import {
-  additionalProviders,
+  signInProviders,
   providerNames,
 } from "../../../../shared/auth-providers";
 import { t } from "../../i18n/i18n";
@@ -62,7 +62,7 @@ export function Login() {
   const [devLink, setDevLink] = useState("");
   const [params] = useSearchParams();
   const forFeedback = params.get("intent") === "feedback";
-  const connectProvider = additionalProviders.find(
+  const connectProvider = signInProviders.find(
     (p) => p === params.get("connect"),
   );
   useEffect(() => {
@@ -138,7 +138,7 @@ export function Login() {
             {t(" before signing.")}
           </p>
         </div>
-        {me.user ? (
+        {me.user && !connectProvider ? (
           <Link className="button" to={forFeedback ? "/feedback" : "/account"}>
             {forFeedback
               ? t("Use the project feedback form")
@@ -157,41 +157,39 @@ export function Login() {
             ) : (
               <>
                 <div className="signin-providers">
-                  {(["google", ...additionalProviders] as const).map(
-                    (provider) => {
-                      const enabled =
-                        provider === "google"
-                          ? config.googleAuth
-                          : config.oauthProviders?.includes(provider);
-                      return (
-                        <a
-                          key={provider}
-                          className={`button google ${enabled ? "" : "disabled"}`}
-                          aria-disabled={!enabled}
-                          href={
-                            enabled
-                              ? `/api/auth/${provider}${forFeedback ? "?intent=feedback" : ""}`
-                              : undefined
-                          }
-                        >
-                          <img
-                            src={`/auth/${provider}.svg`}
-                            alt=""
-                            width={20}
-                            height={20}
-                          />
-                          <span>
-                            {t("Continue with {provider}", {
-                              provider: providerNames[provider],
-                            })}
-                            {!loading && !enabled && (
-                              <small> {t("Unavailable")}</small>
-                            )}
-                          </span>
-                        </a>
-                      );
-                    },
-                  )}
+                  {signInProviders.map((provider) => {
+                    const enabled =
+                      provider === "google"
+                        ? config.googleAuth
+                        : config.oauthProviders?.includes(provider);
+                    return (
+                      <a
+                        key={provider}
+                        className={`button google ${enabled ? "" : "disabled"}`}
+                        aria-disabled={!enabled}
+                        href={
+                          enabled
+                            ? `/api/auth/${provider}${forFeedback ? "?intent=feedback" : ""}`
+                            : undefined
+                        }
+                      >
+                        <img
+                          src={`/auth/${provider}.svg`}
+                          alt=""
+                          width={20}
+                          height={20}
+                        />
+                        <span>
+                          {t("Continue with {provider}", {
+                            provider: providerNames[provider],
+                          })}
+                          {!loading && !enabled && (
+                            <small> {t("Unavailable")}</small>
+                          )}
+                        </span>
+                      </a>
+                    );
+                  })}
                 </div>
                 <div className="or">
                   <span />
@@ -245,6 +243,14 @@ export function Login() {
             >
               {t("Enter a sign-in code")}
             </Link>
+            {me.user && connectProvider && (
+              <Link
+                className="text-link"
+                to={forFeedback ? "/feedback" : "/account"}
+              >
+                {t("Continue to your account ")}
+              </Link>
+            )}
             {devLink && (
               <Notice>
                 <strong>{t("Local development only")}</strong>

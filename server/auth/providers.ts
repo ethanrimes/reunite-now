@@ -1,14 +1,17 @@
 import { createHash, randomBytes } from "node:crypto";
 import { createRemoteJWKSet, importPKCS8, jwtVerify, SignJWT } from "jose";
 import { z } from "zod";
-import {
-  additionalProviders,
-  type Provider,
-} from "../../shared/auth-providers";
+import { signInProviders, type Provider } from "../../shared/auth-providers";
 
 const consumerTenant = "9188040d-6c67-4c5b-b112-36a304b66dad";
 const ms = "https://login.microsoftonline.com/";
 const services = {
+  google: {
+    issuer: "https://accounts.google.com",
+    authorize: "https://accounts.google.com/o/oauth2/v2/auth",
+    token: "https://oauth2.googleapis.com/token",
+    keys: "https://www.googleapis.com/oauth2/v3/certs",
+  },
   apple: {
     issuer: "https://appleid.apple.com",
     authorize: "https://appleid.apple.com/auth/authorize",
@@ -29,7 +32,7 @@ const services = {
   },
 };
 const keys = new Map(
-  additionalProviders.map((p) => [
+  signInProviders.map((p) => [
     p,
     createRemoteJWKSet(new URL(services[p].keys)),
   ]),
@@ -97,6 +100,12 @@ export async function begin(p: Provider, c: Config, feedback: boolean) {
     state,
     nonce,
   }).toString();
+  if (p === "microsoft") {
+    url.searchParams.set(
+      "claims",
+      JSON.stringify({ id_token: { verified_primary_email: null } }),
+    );
+  }
   if (p === "apple") url.searchParams.set("response_mode", "form_post");
   else {
     url.searchParams.set(
@@ -156,7 +165,10 @@ export async function finish(
   if (!response.ok) throw Error("Code exchange failed");
   const tokens = await response.json();
   const { payload } = await jwtVerify(tokens.id_token, keys.get(p)!, {
-    issuer: services[p].issuer,
+    issuer:
+      p === "google"
+        ? [services.google.issuer, "accounts.google.com"]
+        : services[p].issuer,
     audience: c.id,
     algorithms: ["RS256", "ES256"],
     requiredClaims: ["sub", "exp", "iat", "nonce"],
@@ -191,23 +203,37 @@ export async function finish(
       claims = user;
     }
   }
-  const email = z.email().max(254).safeParse(claims.email);
+  // Only a signed authoritative address may grant access to another sign-in's profile.
+  const primary =
+    p === "microsoft"
+      ? z.email().max(254).safeParse(claims.verified_primary_email)
+      : undefined;
+  const email = primary?.success
+    ? primary
+    : z.email().max(254).safeParse(claims.email);
   const address = email.success ? email.data.toLowerCase() : "";
   const domain = address.split("@")[1];
   const verified =
     claims.email_verified === true || claims.email_verified === "true";
   const authoritative =
-    verified &&
-    ((p === "yahoo" &&
-      ["yahoo.com", "ymail.com", "rocketmail.com"].includes(domain)) ||
-      (p === "apple" &&
-        [
-          "icloud.com",
-          "me.com",
-          "mac.com",
-          "privaterelay.appleid.com",
-          "private.icloud.com",
-        ].includes(domain)));
+    Boolean(address) &&
+    ((p === "microsoft" &&
+      (primary?.success === true || verified) &&
+      ["outlook.com", "hotmail.com", "live.com", "msn.com"].includes(domain)) ||
+      (verified &&
+        ((p === "google" &&
+          (domain === "gmail.com" ||
+            (typeof claims.hd === "string" && claims.hd.length > 0))) ||
+          (p === "yahoo" &&
+            ["yahoo.com", "ymail.com", "rocketmail.com"].includes(domain)) ||
+          (p === "apple" &&
+            [
+              "icloud.com",
+              "me.com",
+              "mac.com",
+              "privaterelay.appleid.com",
+              "private.icloud.com",
+            ].includes(domain)))));
   return {
     identity,
     address,

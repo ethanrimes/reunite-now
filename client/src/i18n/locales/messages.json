@@ -1,4 +1,9 @@
 {
+  "This email is already connected to another petition profile. Your existing profiles are separate.": {
+    "es": "Este correo ya está vinculado a otro perfil de la petición. Tus perfiles siguen separados.",
+    "pt": "Este e-mail já está vinculado a outro perfil da petição. Seus perfis continuam separados.",
+    "tl": "Nakaugnay na ang email na ito sa ibang profile sa petisyon. Magkahiwalay pa rin ang iyong mga profile."
+  },
   "Continue with {provider}": {
     "es": "Continuar con {provider}",
     "pt": "Continuar com {provider}",

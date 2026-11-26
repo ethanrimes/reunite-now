@@ -33,7 +33,6 @@ import {
 } from "node:crypto";
 import path from "node:path";
 import { readFile } from "node:fs/promises";
-import { Google, generateCodeVerifier, generateState } from "arctic";
 import { z } from "zod";
 import {
   db,
@@ -86,7 +85,7 @@ import {
   states,
   type Profile,
 } from "../shared/schema";
-import { additionalProviders } from "../shared/auth-providers";
+import { signInProviders } from "../shared/auth-providers";
 import * as oidc from "./auth/providers";
 const production = process.env.NODE_ENV === "production";
 const appUrl = process.env.APP_URL || "http://127.0.0.1:5173";
@@ -229,21 +228,49 @@ function accountRoute(
     });
   };
 }
+const linkedUserSql =
+  "SELECT u.id,u.email FROM oauth_identities i JOIN users u ON u.id=i.user_id WHERE i.identity_key=$1";
+async function linkedAccount(identity: string) {
+  const home = await locate(linkedUserSql, [identity]);
+  if (!home) return;
+  const user = await inRegion(
+    home,
+    async () =>
+      (
+        await db.query<{ id: string; email: string | null }>(linkedUserSql, [
+          identity,
+        ])
+      ).rows[0],
+  );
+  return user && { ...user, home };
+}
+type LinkedAccount = Awaited<ReturnType<typeof linkedAccount>>;
+const emailConflict = () =>
+  Object.assign(
+    new Error(
+      "This email is already connected to another petition profile. Your existing profiles are separate.",
+    ),
+    { status: 409 },
+  );
 async function createSession(
   email: string,
   connection: Queryable,
   identity?: string,
-  newAccountOnly = false,
+  linked?: LinkedAccount,
 ) {
-  const uid = randomUUID();
-  const onConflict = newAccountOnly
-    ? "DO NOTHING"
-    : "DO UPDATE SET email=EXCLUDED.email";
+  if (linked) {
+    // Preserve signatures, cases and the original storage region of older Microsoft accounts.
+    const updated = await connection.query(
+      "UPDATE users SET email=$1 WHERE id=$2 AND (email IS NULL OR email=$1) AND NOT EXISTS (SELECT 1 FROM users WHERE email=$1 AND id<>$2) RETURNING id",
+      [email, linked.id],
+    );
+    if (!updated.rows.length) throw emailConflict();
+    return issueSession(linked.id, connection);
+  }
   const u = await connection.query(
-    `INSERT INTO users(id,email) VALUES($1,$2) ON CONFLICT(email) ${onConflict} RETURNING id`,
-    [uid, email],
+    "INSERT INTO users(id,email) VALUES($1,$2) ON CONFLICT(email) DO UPDATE SET email=EXCLUDED.email RETURNING id",
+    [randomUUID(), email],
   );
-  if (!u.rows.length) return;
   if (identity) {
     await connection.query(
       "INSERT INTO oauth_identities(identity_key,user_id) VALUES($1,$2) ON CONFLICT DO NOTHING",
@@ -274,9 +301,10 @@ async function signInAtHome(
   fallback: "eu" | "us",
   sourceTransaction?: Queryable,
   identity?: string,
-  newAccountOnly = false,
+  linked?: LinkedAccount,
 ) {
-  const home = await homeForEmail(email, fallback);
+  const home = await homeForEmail(email, linked?.home ?? fallback);
+  if (linked && home !== linked.home) throw emailConflict();
   if (dual) {
     // Before first verification multiple devices may request links in different regions.
     // Revoke any pre-registration links held outside the verified account's home.
@@ -291,10 +319,10 @@ async function signInAtHome(
     );
   }
   if (home === fallback && sourceTransaction)
-    return createSession(email, sourceTransaction, identity, newAccountOnly);
+    return createSession(email, sourceTransaction, identity, linked);
   return inRegion(home, () =>
     transaction((connection) =>
-      createSession(email, connection, identity, newAccountOnly),
+      createSession(email, connection, identity, linked),
     ),
   );
 }
@@ -305,7 +333,9 @@ app.get("/api/health", async (_req, res) => {
 app.get("/api/config", (_req, res) =>
   res.json({
     emailAuth: emailReady(),
-    oauthProviders: additionalProviders.filter((p) => oidc.config(p, appUrl)),
+    oauthProviders: signInProviders.filter(
+      (p) => p !== "google" && oidc.config(p, appUrl),
+    ),
     googleAuth: !!(
       process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
     ),
@@ -357,7 +387,7 @@ app.post("/api/auth/email", authLimit, async (req, res) => {
   const { email, intent, connectProvider } = z
     .object({
       intent: z.literal("feedback").optional(),
-      connectProvider: z.enum(additionalProviders).optional(),
+      connectProvider: z.enum(signInProviders).optional(),
       email: z
         .email()
         .max(254)
@@ -379,6 +409,7 @@ app.post("/api/auth/email", authLimit, async (req, res) => {
   const code = newSignInCode();
   const raw = tokenFromCode(code)!;
   trace.linkId = linkReference(raw);
+  let tokenHash = hash(raw);
   if (connectProvider) {
     const cfg = oidc.config(connectProvider, appUrl);
     if (!cfg)
@@ -392,6 +423,7 @@ app.post("/api/auth/email", authLimit, async (req, res) => {
       return void res
         .status(400)
         .json({ error: "Sign-in could not be completed." });
+    tokenHash = hash(raw + ":" + pending.identity);
     res.cookie(
       "rn_oidc_proof",
       connectProvider +
@@ -409,7 +441,7 @@ app.post("/api/auth/email", authLimit, async (req, res) => {
       trace.region = region();
       return db.query(
         `INSERT INTO login_tokens(token_hash,email,expires_at) VALUES($1,$2,now()+interval '15 minutes')`,
-        [hash(raw), email],
+        [tokenHash, email],
       );
     }),
   );
@@ -467,7 +499,7 @@ app.post("/api/auth/verify", authLimit, async (req, res) => {
   const proof = req.cookies.rn_oidc_proof;
   if (typeof proof === "string") {
     const cut = proof.indexOf(".");
-    const provider = additionalProviders.find((p) => p === proof.slice(0, cut));
+    const provider = signInProviders.find((p) => p === proof.slice(0, cut));
     const cfg = provider && oidc.config(provider, appUrl);
     if (provider && cfg) {
       const pending = await oidc
@@ -478,28 +510,28 @@ app.post("/api/auth/verify", authLimit, async (req, res) => {
     }
   }
   const verified = await routed(true, async () => {
-    if (
-      identity &&
-      (await locate("SELECT 1 FROM oauth_identities WHERE identity_key=$1", [
-        identity,
-      ]))
-    )
-      identity = undefined;
-    const source = await locate(
-      "SELECT 1 FROM login_tokens WHERE token_hash=$1",
-      [hash(raw)],
-    );
+    const linked = identity ? await linkedAccount(identity) : undefined;
+    // A linking code must be redeemed in the browser that authenticated the provider.
+    const tokenLookup = "SELECT 1 FROM login_tokens WHERE token_hash=$1";
+    let tokenHash = hash(identity ? raw + ":" + identity : raw);
+    let source = await locate(tokenLookup, [tokenHash]);
+    if (!source && identity) {
+      // Honor still-valid codes issued before linking codes were bound to the identity.
+      tokenHash = hash(raw);
+      source = await locate(tokenLookup, [tokenHash]);
+    }
     if (!source) {
       trace.reason = "unknown_or_consumed";
       return false;
     }
-    trace.region = source;
+    const sourceRegion = source;
+    trace.region = sourceRegion;
     trace.stage = "redeem_link";
-    return inRegion(source, () =>
+    return inRegion(sourceRegion, () =>
       transaction(async (connection) => {
         const result = await connection.query(
           "DELETE FROM login_tokens WHERE token_hash=$1 AND expires_at>now() RETURNING email",
-          [hash(raw)],
+          [tokenHash],
         );
         const email = result.rows[0]?.email;
         if (!email) {
@@ -508,7 +540,7 @@ app.post("/api/auth/verify", authLimit, async (req, res) => {
         }
         trace.email = email;
         trace.stage = "create_session";
-        return signInAtHome(email, source, connection, identity);
+        return signInAtHome(email, sourceRegion, connection, identity, linked);
       }),
     );
   });
@@ -554,76 +586,7 @@ app.post(
     res.sendStatus(204);
   },
 );
-function google() {
-  return new Google(
-    process.env.GOOGLE_CLIENT_ID!,
-    process.env.GOOGLE_CLIENT_SECRET!,
-    `${appUrl}/api/auth/google/callback`,
-  );
-}
-app.get("/api/auth/google", authLimit, (req, res) => {
-  if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET)
-    return void res.redirect("/login?error=google-unavailable");
-  const state = generateState(),
-    verifier = generateCodeVerifier();
-  res.cookie(
-    "rn_oauth",
-    JSON.stringify({
-      state,
-      verifier,
-      feedback: req.query.intent === "feedback",
-    }),
-    {
-      ...cookieOptions,
-      maxAge: 600000,
-    },
-  );
-  res.redirect(
-    google()
-      .createAuthorizationURL(state, verifier, ["openid", "email", "profile"])
-      .toString(),
-  );
-});
-app.get("/api/auth/google/callback", authLimit, async (req, res) => {
-  let saved;
-  try {
-    saved = JSON.parse(req.cookies.rn_oauth || "{}");
-  } catch {
-    return void res.redirect("/login?error=oauth");
-  }
-  res.clearCookie("rn_oauth", cookieOptions);
-  if (
-    typeof req.query.code !== "string" ||
-    req.query.state !== saved.state ||
-    !saved.verifier
-  )
-    return void res.redirect("/login?error=oauth");
-  try {
-    const tokens = await google().validateAuthorizationCode(
-      req.query.code,
-      saved.verifier,
-    );
-    const r = await fetch("https://openidconnect.googleapis.com/v1/userinfo", {
-      headers: { Authorization: `Bearer ${tokens.accessToken()}` },
-      signal: AbortSignal.timeout(10000),
-    });
-    if (!r.ok) throw new Error("Google userinfo failed");
-    const info = await r.json();
-    if (info.email_verified !== true || typeof info.email !== "string")
-      throw new Error("Unverified email");
-    const session = await routed(true, () =>
-      signInAtHome(info.email.toLowerCase(), detectedRegion(req)),
-    );
-    res.cookie("rn_session", session, {
-      ...cookieOptions,
-      maxAge: 30 * 86400000,
-    });
-    res.redirect(saved.feedback === true ? "/feedback" : "/account");
-  } catch {
-    res.redirect("/login?error=oauth");
-  }
-});
-for (const provider of additionalProviders) {
+for (const provider of signInProviders) {
   const start = "/api/auth/" + provider;
   const flowCookie = "rn_flow_" + provider;
   const options = {
@@ -665,54 +628,33 @@ for (const provider of additionalProviders) {
         req.cookies[flowCookie],
         req.method === "POST" ? req.body : req.query,
       );
-      const session = await routed(true, async () => {
-        const sql =
-          "SELECT user_id FROM oauth_identities WHERE identity_key=$1";
-        const home = await locate(sql, [info.identity]);
-        if (home || provider === "microsoft")
-          return inRegion(home ?? (dual ? detectedRegion(req) : region()), () =>
-            transaction(async (q) => {
-              if (!home && !dual) {
-                // Dual-region routing already serializes account creation.
-                await q.query(
-                  "SELECT pg_advisory_xact_lock(hashtextextended($1,0))",
-                  [info.identity],
-                );
-              }
-              const existing = (await q.query(sql, [info.identity])).rows[0];
-              if (existing) {
-                if (provider === "microsoft" && info.address) {
-                  await q.query(
-                    "UPDATE users SET microsoft_email=$1 WHERE id=$2 AND microsoft_email IS DISTINCT FROM $1",
-                    [info.address, existing.user_id],
-                  );
-                }
-                return issueSession(existing.user_id, q);
-              }
-              if (provider !== "microsoft")
-                throw Error("Missing provider identity");
-              const userId = randomUUID();
-              await q.query(
-                "INSERT INTO users(id,microsoft_email) VALUES($1,$2)",
-                [userId, info.address || null],
-              );
-              await q.query(
-                "INSERT INTO oauth_identities(identity_key,user_id) VALUES($1,$2)",
-                [info.identity, userId],
-              );
-              return issueSession(userId, q);
-            }),
+      const result = await routed(true, async () => {
+        const linked = await linkedAccount(info.identity);
+        if (linked) {
+          const session = await inRegion(linked.home, () =>
+            transaction((q) => issueSession(linked.id, q)),
           );
-        if (info.emailVerified)
-          return signInAtHome(
+          return { session, needsEmail: !linked.email };
+        }
+        if (info.authoritative) {
+          const session = await signInAtHome(
             info.address,
             detectedRegion(req),
             undefined,
             info.identity,
-            !info.authoritative,
           );
+          return { session, needsEmail: false };
+        }
+        return { session: undefined, needsEmail: true };
       });
-      if (!session) {
+      if (result.session) {
+        res.cookie("rn_session", result.session, {
+          ...cookieOptions,
+          maxAge: 30 * 86400000,
+        });
+      }
+      res.clearCookie("rn_oidc_proof", cookieOptions);
+      if (result.needsEmail) {
         res.cookie(
           "rn_oidc_link",
           await oidc.ticket(cfg, provider, "link", {
@@ -728,12 +670,7 @@ for (const provider of additionalProviders) {
             (info.destination === "/feedback" ? "&intent=feedback" : ""),
         );
       }
-      res.cookie("rn_session", session, {
-        ...cookieOptions,
-        maxAge: 30 * 86400000,
-      });
       res.clearCookie("rn_oidc_link", cookieOptions);
-      res.clearCookie("rn_oidc_proof", cookieOptions);
       res.redirect(303, info.destination);
     } catch {
       res.redirect(303, "/login?error=oauth");

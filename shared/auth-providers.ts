@@ -1,5 +1,10 @@
-export const additionalProviders = ["apple", "yahoo", "microsoft"] as const;
-export type Provider = (typeof additionalProviders)[number];
+export const signInProviders = [
+  "google",
+  "apple",
+  "yahoo",
+  "microsoft",
+] as const;
+export type Provider = (typeof signInProviders)[number];
 export const providerNames = {
   google: "Google",
   apple: "Apple",
