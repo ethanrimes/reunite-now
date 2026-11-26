@@ -5,12 +5,12 @@ import { spawn } from "node:child_process";
 import { once } from "node:events";
 import { createServer } from "node:net";
 import {
+  copyFile,
   mkdtemp,
   mkdir,
   readFile,
   readdir,
   rename,
-  symlink,
   rm,
   stat,
   writeFile,
@@ -19,13 +19,13 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import { EmailClient } from "@azure/communication-email";
-import { sendEmail } from "../server/email";
+import { sendEmail } from "../server/email/delivery";
 import { PGlite } from "@electric-sql/pglite";
 import {
   newSignInCode,
   tokenFromCode,
   signInMessage,
-} from "../server/email-signin-message";
+} from "../server/email/signin-message";
 
 test("email codes are independent and tolerate case, separators and common transcription substitutions", () => {
   const codes = Array.from({ length: 100 }, newSignInCode);
@@ -163,7 +163,11 @@ test("Azure mail submission preserves both formats and reports acceptance and pr
 test("email sign-in server, end to end", { timeout: 100000 }, async (t) => {
   const cwd = await mkdtemp(path.join(tmpdir(), "rn-signin-test-"));
   t.after(() => rm(cwd, { recursive: true, force: true }));
-  await symlink(path.resolve("server"), path.join(cwd, "server"), "dir");
+  await mkdir(path.join(cwd, "server/data"), { recursive: true });
+  await copyFile(
+    path.resolve("server/data/dbip-country.mmdb.gz"),
+    path.join(cwd, "server/data/dbip-country.mmdb.gz"),
+  );
   const logs = path.join(cwd, ".local/email-signin");
   await mkdir(logs, { recursive: true });
   const expiredFile = path.join(logs, "2000-01-01-" + randomUUID() + ".jsonl");

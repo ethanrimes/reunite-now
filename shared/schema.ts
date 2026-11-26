@@ -154,6 +154,8 @@ export const caseSchema = z
     role: z.enum(caseRoles).optional(),
     category: z.enum(visaCategories),
     post: z.string().trim().min(2).max(120),
+    shareTimelineRow: z.boolean().optional(),
+    shareTimelineHistory: z.boolean().optional(),
     events: z
       .array(eventSchema)
       .min(1, "Add at least one dated milestone")

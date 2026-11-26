@@ -4,7 +4,7 @@ import {
   storySchema,
   states,
   type VisaCase,
-} from "../shared/schema";
+} from "../../shared/schema";
 
 // Preview fixtures never enter the database or the email/reminder pipeline.
 export function demoEnabled(env = process.env) {
@@ -128,6 +128,8 @@ export async function createDemoData(now = new Date()) {
       country,
       nationality: country,
       role: "Other relationship to the applicant",
+      shareTimelineRow: true,
+      shareTimelineHistory: true,
       post,
       category,
       updatedAt: timestamp(index < 8 ? index : Math.floor(random() * 115)),

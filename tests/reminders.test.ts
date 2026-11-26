@@ -4,8 +4,8 @@ import { profileSchema } from "../shared/schema";
 process.env.TEST_DB = "1";
 delete process.env.DATABASE_URL;
 process.env.APP_URL = "https://visatransparency.org";
-const { db, migrate, closeDb } = await import("../server/db");
-const { sendReminders } = await import("../server/reminders");
+const { db, migrate, closeDb } = await import("../server/storage/db");
+const { sendReminders } = await import("../server/jobs/reminders");
 await migrate();
 const now = new Date("2026-11-11T12:00:00Z");
 const baseProfile = {

@@ -1,5 +1,5 @@
 import { createHash, randomBytes } from "node:crypto";
-import { maintainerEmail } from "../shared/feedback";
+import { maintainerEmail } from "../../shared/feedback";
 
 const alphabet = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
 export const newSignInCode = () =>

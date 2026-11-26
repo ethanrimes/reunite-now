@@ -6,9 +6,9 @@ import {
   migrate,
   regions,
   transaction,
-} from "./db";
-import { acrossRegions, routed } from "./regions";
-import { cleanHistoricalStoryPhotos } from "./story-photos";
+} from "../storage/db";
+import { acrossRegions, routed } from "../storage/regions";
+import { cleanHistoricalStoryPhotos } from "../stories/photos";
 
 try {
   if (externalSchema)

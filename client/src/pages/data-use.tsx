@@ -107,7 +107,21 @@ export function DataUse() {
             "Maps show signature counts by location and selected filters. Visa tables summarize reported cases and waiting times. Published stories show your name, country, text and photos. Leave out passport and receipt numbers, addresses, birth dates, identity documents and other identifying details.",
           )}
         </p>
-        <p>{t("Signing requires your consent to publish your name and signing time. You can hide them later in Account → Configuration. Earlier signatures appear anonymously unless the signer chose to be listed by name.")}</p>
+        <p>
+          {t(
+            "Signing requires your consent to publish your name and signing time. You can hide them later in Account → Configuration. Earlier signatures appear anonymously unless the signer chose to be listed by name.",
+          )}
+        </p>
+        <p>
+          {t(
+            "Only cases shared for the public timelines table appear here. Each row shows the visa type, consular post, milestone date and wait, without a name.",
+          )}
+        </p>
+        <p>
+          {t(
+            "A case timeline shows the dates and types of all completed milestones only if the owner chooses to share that history.",
+          )}
+        </p>
         <h2>{t("What stays private")}</h2>
         <p>
           {t(
@@ -119,7 +133,11 @@ export function DataUse() {
             "For email sign-in, Reunite Now verifies a single-use link delivered by Azure Communication Services. If you choose Google sign-in, Google verifies your identity and provides your verified email address to Reunite Now.",
           )}
         </p>
-        <p>{t("Your email also includes a one-time sign-in code. To troubleshoot email sign-in, authorized operators can see your email when known, a link reference, and the outcome or error in private diagnostic logs kept for about seven days.")}</p>
+        <p>
+          {t(
+            "Your email also includes a one-time sign-in code. To troubleshoot email sign-in, authorized operators can see your email when known, a link reference, and the outcome or error in private diagnostic logs kept for about seven days.",
+          )}
+        </p>
         <h2>{t("Statistics and interpretation")}</h2>
         <p>
           {t(

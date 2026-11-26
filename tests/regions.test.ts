@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { Pool } from "pg";
-import { regionForIP } from "../server/geolocation";
+import { regionForIP } from "../server/storage/geolocation";
 
 test("IPv4, IPv6, App Service ports and unknown IPs select the expected region", () => {
   for (const ip of [

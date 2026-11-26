@@ -1,5 +1,10 @@
 import { useLocation } from "react-router-dom";
 import { previewMode } from "./preview";
+import { keyedSnapshotCache, snapshotCache } from "./snapshot-cache";
+import type { SignatureGroup } from "../../../shared/coverage";
+import type { PublishedStoryEntry } from "../../../shared/public-views";
+import type { SignatoryRoster } from "../../../shared/signatories";
+import type { timelineSnapshot } from "../../../shared/visa-timelines";
 import {
   createContext,
   useContext,
@@ -28,8 +33,82 @@ export async function api<T = any>(
   });
   const data = await r.json();
   if (!r.ok) throw new Error(data.error || "Request failed");
+  const method = (options.method || "GET").toUpperCase();
+  if (!["GET", "HEAD"].includes(method)) {
+    const profile = url === "/me/profile" || url === "/me/profile/profile";
+    const deleted = url === "/me" && method === "DELETE";
+    if (profile || deleted || url === "/me/profile/cases") {
+      coverageSnapshot.clear();
+    }
+    if (profile || deleted || url === "/me/profile/settings") {
+      signatorySnapshots.clear();
+    }
+    if (
+      profile ||
+      deleted ||
+      url === "/me/profile/cases" ||
+      url === "/me/confirm"
+    ) {
+      visaSnapshot.clear();
+    }
+    if (profile || deleted || url === "/me/story") {
+      storiesSnapshot.clear();
+      storyPhotoSnapshots.clear();
+    }
+  }
   return data;
 }
+export const coverageSnapshot = snapshotCache(() =>
+  api<SignatureGroup[]>("/stats/coverage/groups"),
+);
+export const visaSnapshot = snapshotCache(() =>
+  api<ReturnType<typeof timelineSnapshot>>("/stats/visas/snapshot"),
+);
+export const storiesSnapshot = snapshotCache(() =>
+  api<PublishedStoryEntry[]>("/stories/snapshot"),
+);
+const storyPhotoSnapshots = keyedSnapshotCache<string[]>(4);
+export function readStoryPhotos(id: string, updatedAt: string) {
+  return storyPhotoSnapshots.read(JSON.stringify([id, updatedAt]), () =>
+    api<string[]>(`/story/${encodeURIComponent(id)}/photos`),
+  );
+}
+const signatorySnapshots = keyedSnapshotCache<SignatoryRoster>(8);
+export function readSignatoryPage(before?: string) {
+  return signatorySnapshots.read(before ?? "", () =>
+    api<SignatoryRoster>(
+      "/signatories" + (before ? "?" + new URLSearchParams({ before }) : ""),
+    ),
+  );
+}
+
+type SnapshotSource<T> = { read(): Promise<T> };
+export function useSnapshot<T>(source: SnapshotSource<T>, enabled = true) {
+  const [result, setResult] = useState<{
+    source: SnapshotSource<T>;
+    data?: T;
+    error?: boolean;
+  }>();
+  useEffect(() => {
+    if (!enabled) return;
+    let active = true;
+    source.read().then(
+      (data) => {
+        if (active) setResult({ source, data });
+      },
+      () => {
+        if (active) setResult({ source, error: true });
+      },
+    );
+    return () => {
+      active = false;
+    };
+  }, [source, enabled]);
+  return enabled && result?.source === source ? result : undefined;
+}
+const demoSnapshot = snapshotCache(() =>
+  api<{ profiles: PublicProfile[]; stories: PublicStory[] }>("/demo"),
+);
 export type Me = {
   user: { id: string; email?: string; storageRegion?: "eu" | "us" } | null;
   profile: (Profile & { updatedAt: string; signedAt: string }) | null;
@@ -77,10 +156,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
     const id = ++requestId.current;
     try {
       if (previewMode) {
-        const sample = await api<{
-          profiles: PublicProfile[];
-          stories: PublicStory[];
-        }>("/demo");
+        const sample = await demoSnapshot.read();
         if (id !== requestId.current) return;
         setMe({ user: null, profile: null, story: null });
         setConfig({
@@ -127,28 +203,3 @@ export function DataProvider({ children }: { children: ReactNode }) {
   );
 }
 export const useData = () => useContext(Context);
-
-// Key results to the request so a slow response cannot replace newer filters.
-export function usePublicView<T>(path: string | null) {
-  const [result, setResult] = useState<{
-    path: string;
-    data?: T;
-    error?: boolean;
-  }>();
-  useEffect(() => {
-    if (!path || previewMode) {
-      setResult(undefined);
-      return;
-    }
-    const controller = new AbortController();
-    api<T>(path, { signal: controller.signal })
-      .then((data) => {
-        if (!controller.signal.aborted) setResult({ path, data });
-      })
-      .catch(() => {
-        if (!controller.signal.aborted) setResult({ path, error: true });
-      });
-    return () => controller.abort();
-  }, [path]);
-  return result?.path === path ? result : undefined;
-}

@@ -1,5 +1,5 @@
 import sharp from "sharp";
-import { db } from "./db";
+import { db } from "../storage/db";
 
 export async function cleanStoryPhoto(photo: string) {
   const comma = photo.indexOf(",");

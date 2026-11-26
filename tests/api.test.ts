@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import sharp from "sharp";
+import type { PublishedStoryEntry } from "../shared/public-views";
 // Integration tests target the local API; no real email is sent.
 const base = process.env.TEST_API_URL || "http://127.0.0.1:3001",
   origin = "http://127.0.0.1:5173";
@@ -260,8 +261,17 @@ test("email authentication, data privacy, ownership, update and deletion", async
     places.find((p: any) => p.state === "VA"),
     { country: "United States", state: "VA", district: "10", count: 1 },
   );
-  const stats = await (await request("/api/stats/visas?days=0")).json();
-  assert.equal(stats.categories["K-1"].count, 1);
+  const aggregate = await (
+    await request("/api/stats/visas?days=0&metric=sinceNvc")
+  ).json();
+  assert.equal(aggregate.categories["K-1"].metrics.sinceNvc.sample, 1);
+  assert.equal(aggregate.countries.Colombia.sample, 1);
+  assert.equal("rows" in aggregate, false);
+  const stats = await (await request("/api/stats/visas/rows?days=0")).json();
+  assert.deepEqual(stats.rows, []);
+  const currentSnapshot = async () =>
+    (await (await request("/api/stats/visas/snapshot")).json()).metrics;
+  assert.deepEqual((await currentSnapshot()).nvc, []);
   for (const value of [
     me.user.id,
     profile.name,
@@ -270,6 +280,63 @@ test("email authentication, data privacy, ownership, update and deletion", async
     "backup@example.test",
   ])
     assert.ok(!JSON.stringify(stats).includes(value));
+  const sharedCases = [{ ...profile.cases[0], shareTimelineRow: true }];
+  assert.equal(
+    (
+      await request("/api/me/profile/cases", "PATCH", {
+        cases: sharedCases,
+        personallyInvolved: true,
+      })
+    ).status,
+    200,
+  );
+  const timeline = await (await request("/api/stats/visas/rows?days=0")).json();
+  assert.deepEqual(timeline.rows, [
+    {
+      category: "K-1",
+      post: "Bogotá",
+      start: "2026-03-01",
+      days: (Date.parse(timeline.asOf) - Date.parse("2026-03-01")) / 86400000,
+    },
+  ]);
+  assert.deepEqual(
+    (await currentSnapshot()).nvc,
+    timeline.rows.map((row: object) => ({ ...row, window: 30 })),
+  );
+  assert.equal(
+    (
+      await request("/api/me/profile/cases", "PATCH", {
+        cases: [{ ...sharedCases[0], shareTimelineHistory: true }],
+        personallyInvolved: true,
+      })
+    ).status,
+    200,
+  );
+  const history = (await currentSnapshot()).nvc[0].history;
+  assert.ok(history.length > 1);
+  assert.ok(
+    history.every(
+      (event: object) => Object.keys(event).sort().join() === "date,type",
+    ),
+  );
+  assert.deepEqual(
+    (await (await request("/api/stats/visas/rows?days=0")).json()).rows,
+    timeline.rows,
+  );
+  assert.equal(
+    (
+      await request("/api/me/profile/cases", "PATCH", {
+        cases: profile.cases,
+        personallyInvolved: true,
+      })
+    ).status,
+    200,
+  );
+  assert.deepEqual(
+    (await (await request("/api/stats/visas/rows?days=0")).json()).rows,
+    [],
+  );
+  assert.deepEqual((await currentSnapshot()).nvc, []);
   const originalPhoto = await sharp({
     create: { width: 20, height: 10, channels: 3, background: "#aabbcc" },
   })
@@ -308,6 +375,38 @@ test("email authentication, data privacy, ownership, update and deletion", async
     ...published,
     photos: ["data:image/webp;base64," + photoBytes.toString("base64")],
   });
+  const getPublishedStory = async () => {
+    const response = await request(
+      "/api/stories/snapshot",
+      "GET",
+      undefined,
+      false,
+    );
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get("cache-control"), "no-store");
+    const stories: PublishedStoryEntry[] = await response.json();
+    return stories.find((s) => s.id === me.user.id);
+  };
+  const { photos: _photos, ...text } = published;
+  assert.deepEqual(await getPublishedStory(), {
+    ...text,
+    cover: card.cover,
+    photoCount: 1,
+  });
+  const photosPath = storyPath + "/photos";
+  assert.deepEqual(
+    await (await request(photosPath, "GET", undefined, false)).json(),
+    completeStory.photos,
+  );
+  assert.equal(
+    (await request("/api/me/story", "PUT", { ...story, publish: false }))
+      .status,
+    200,
+  );
+  assert.equal(await getPublishedStory(), undefined);
+  assert.equal((await request(photosPath)).status, 404);
+  assert.equal((await request("/api/me/story", "PUT", story)).status, 200);
+  assert.equal((await getPublishedStory())?.title, story.title);
   const photoInfo = await sharp(photoBytes).metadata();
   assert.equal(photoInfo.format, "webp");
   assert.equal(photoInfo.width, 20);
@@ -357,6 +456,21 @@ test("email authentication, data privacy, ownership, update and deletion", async
     assert.equal(change.status, 200);
     assert.equal(await showsParty(expected), true);
     assert.equal(await showsParty(expected === "" ? "Other" : ""), false);
+    const groups = await (await request("/api/stats/coverage/groups")).json();
+    assert.deepEqual(
+      groups.filter((g: { state: string }) => g.state === "VA"),
+      [
+        {
+          country: "United States",
+          state: "VA",
+          district: "10",
+          status: "US citizen",
+          connection: "Yes",
+          party: expected,
+          count: 1,
+        },
+      ],
+    );
   }
   const exported = await (await request("/api/me/export")).json();
   assert.equal(exported.email, email);
@@ -396,6 +510,8 @@ test("email authentication, data privacy, ownership, update and deletion", async
   assert.equal((await (await request("/api/me")).json()).user, null);
   assert.equal((await request(storyPath)).status, 404);
   assert.equal((await request(published.photos[0])).status, 404);
+  assert.equal((await request(photosPath)).status, 404);
+  assert.equal(await getPublishedStory(), undefined);
   assert.equal(
     (await (await request("/api/story-cards?q=synthetic")).json()).cards.length,
     0,
@@ -404,10 +520,11 @@ test("email authentication, data privacy, ownership, update and deletion", async
 
 // HTML must revalidate so returning visitors receive current scripts and styles.
 test("homepage and deep-link HTML revalidate after releases", async () => {
-  for (const path of ["/", "/account"]) {
+  for (const path of ["/", "/account", "/stories"]) {
     const response = await request(path);
     assert.equal(response.status, 200);
     assert.equal(response.headers.get("cache-control"), "no-cache");
+    if (path === "/stories") assert.equal(response.headers.get("link"), null);
   }
 });
 

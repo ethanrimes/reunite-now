@@ -16,7 +16,8 @@ export const publicViews = [
      GROUP BY 1,2,3,4,5,6`,
   `CREATE OR REPLACE VIEW public.rn_visa_samples WITH (security_barrier=true) AS
    SELECT updated_at, (SELECT jsonb_agg(jsonb_build_object(
-            'post', c->'post', 'category', c->'category', 'nationality', c->'nationality', 'updatedAt', c->'updatedAt',
+            'post', c->'post', 'category', c->'category', 'nationality', c->'nationality', 'shareTimelineRow', c->'shareTimelineRow',
+            'shareTimelineHistory', c->'shareTimelineHistory', 'updatedAt', c->'updatedAt',
             'events', (SELECT jsonb_agg(jsonb_build_object('date', e->'date', 'type', e->'type') ORDER BY position)
                       FROM jsonb_array_elements(c->'events') WITH ORDINALITY AS events(e, position))
           )) FROM jsonb_array_elements(data->'cases') AS c) AS cases

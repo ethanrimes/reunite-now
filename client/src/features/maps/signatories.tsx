@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   anonymousRowsOnPage,
   signatoryPage,
   type SignatoryRoster,
 } from "../../../../shared/signatories";
-import { useData, usePublicView } from "../../app/api";
+import { readSignatoryPage, useData, useSnapshot } from "../../app/api";
 import { previewMode } from "../../app/preview";
 import { PageIntro } from "../../components/ui";
 import { getLocale, number, t } from "../../i18n/i18n";
@@ -15,10 +15,12 @@ export function Signatories() {
   const [pages, setPages] = useState<string[]>([]);
   const [anonymousPage, setAnonymousPage] = useState(0);
   const before = pages.at(-1);
-  const result = usePublicView<SignatoryRoster>(
-    "/signatories" + (before ? "?" + new URLSearchParams({ before }) : ""),
+  const source = useMemo(
+    () => ({ read: () => readSignatoryPage(before) }),
+    [before],
   );
-  let data = result?.data;
+  const result = useSnapshot(source, !previewMode);
+  let data: SignatoryRoster | undefined = result?.data;
   if (previewMode && !loading) {
     const listed = profiles.filter((p) => p.listSignature);
     data = {

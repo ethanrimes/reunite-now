@@ -22,9 +22,7 @@ import { About } from "./pages/about";
 const Coverage = lazy(() =>
   import("./features/maps/maps").then((m) => ({ default: m.Coverage })),
 );
-const VisaData = lazy(() =>
-  import("./features/maps/maps").then((m) => ({ default: m.VisaData })),
-);
+const VisaData = lazy(() => import("./features/visas/timelines"));
 const Account = lazy(() =>
   import("./features/account/account").then((m) => ({ default: m.Account })),
 );
@@ -123,7 +121,7 @@ function App() {
           <NavLink to="/policies">{t("Policy & action")}</NavLink>
           <NavLink to="/stories">{t("Our stories")}</NavLink>
           <NavLink to="/coverage">{t("Signature map")}</NavLink>
-          <NavLink to="/visa-data">{t("Visa data")}</NavLink>
+          <NavLink to="/visa-data">{t("Visa timelines")}</NavLink>
           <NavLink to="/data-use">{t("Data use")}</NavLink>
           <NavLink to="/feedback">{t("Project feedback")}</NavLink>
           <div className="nav-account">
@@ -150,9 +148,11 @@ function App() {
         <div className="demo-banner" role="status">
           <strong>{previewMode ? t("Sample data") : t("Local demo")}</strong>
           <span>
-            {t(
-              "Sample signatures, stories, and visa timelines. These are fictional records.",
-            )}
+            {location.pathname.replace(/\/$/, "") === "/visa-data"
+              ? t("The timeline explorer uses fictional cases.")
+              : t(
+                  "Sample signatures, stories, and visa timelines. These are fictional records.",
+                )}
           </span>
           {previewMode && (
             <a href={location.pathname + location.search}>
@@ -249,7 +249,9 @@ function App() {
             <Link to="/data-use">{t("Privacy & data use")}</Link>
             <Link to="/about">{t("Our purpose")}</Link>
             <Link to="/sources">{t("Sources & credits")}</Link>
-            <a href="https://github.com/ethanrimes">{t("Project maintainer")}</a>
+            <a href="https://github.com/ethanrimes">
+              {t("Project maintainer")}
+            </a>
           </div>
         </div>
         <p className="footer-note">

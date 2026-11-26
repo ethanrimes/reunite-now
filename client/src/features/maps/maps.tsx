@@ -6,8 +6,6 @@ import L from "leaflet";
 import { useLanguage } from "../../i18n/language";
 import "leaflet/dist/leaflet.css";
 import {
-  Map as MapIcon,
-  Table2,
   ArrowUpRight,
   Info,
   Users,
@@ -17,7 +15,7 @@ import {
   LocateFixed,
 } from "lucide-react";
 import {
-  filterSignatures,
+  signatureGroup,
   usMapBounds,
   territoryMapBounds,
   stateInsets,
@@ -27,11 +25,9 @@ import {
 } from "../../../../shared/coverage";
 import { Link } from "react-router-dom";
 import { previewMode } from "../../app/preview";
-import { visaStatistics, type PlaceCount } from "../../../../shared/public-views";
-import { useData, usePublicView } from "../../app/api";
+import { coverageSnapshot, useData, useSnapshot } from "../../app/api";
 import { PageIntro, Modal, External, Empty, date } from "../../components/ui";
-import { states, legalStatuses, visaCategories } from "../../../../shared/schema";
-import { metricLabels, type Metric } from "../../../../shared/metrics";
+import { states, legalStatuses } from "../../../../shared/schema";
 type Rep = {
   id: string;
   name: string;
@@ -482,8 +478,7 @@ export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
   ]);
   useEffect(() => {
     if (worldwide) return;
-    fetch("/data/districts.json")
-      .then((r) => r.json())
+    geography("districts")
       .then((d) =>
         setDistrictKeys(d.features.map((f: any) => String(f.properties.GEOID))),
       )
@@ -498,26 +493,31 @@ export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
         setRepError("Representative information could not be loaded."),
       );
   }, [worldwide]);
-  const params = new URLSearchParams({ filtered: "1" });
-  status.forEach((v) => params.append("status", v));
-  involved.forEach((v) => params.append("connection", v));
-  parties.forEach((v) => params.append("party", v));
-  const coverage = usePublicView<{ places: PlaceCount[] }>(
-    "/stats/coverage?" + params,
+  const coverage = useSnapshot(coverageSnapshot, !previewMode);
+  const groups = useMemo(
+    () => (previewMode ? profiles.map(signatureGroup) : (coverage?.data ?? [])),
+    [profiles, coverage],
   );
-  const matching = previewMode
-    ? filterSignatures(profiles, {
-        statuses: status,
-        involvement: involved,
-        parties,
-      }).map((p) => ({ ...p, count: 1 }))
-    : (coverage?.data?.places ?? []);
-  const filtered = matching.filter((p) => {
-    if (kind === "world") return true;
-    if (p.country !== "United States") return false;
-    const state = states.find((s) => s[1] === p.state);
-    return state && isTerritory(state[0]) === (kind === "territories");
-  });
+  const matching = useMemo(
+    () =>
+      groups.filter(
+        (g) =>
+          status.includes(g.status) &&
+          involved.includes(g.connection) &&
+          parties.includes(g.party),
+      ),
+    [groups, status, involved, parties],
+  );
+  const filtered = useMemo(
+    () =>
+      matching.filter((p) => {
+        if (kind === "world") return true;
+        if (p.country !== "United States") return false;
+        const state = states.find((s) => s[1] === p.state);
+        return state && isTerritory(state[0]) === (kind === "territories");
+      }),
+    [matching, kind],
+  );
   useEffect(() => {
     setSelected(null);
   }, [kind, status, involved, parties]);
@@ -568,16 +568,7 @@ export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
       r[key].count += p.count;
     }
     return r;
-  }, [
-    profiles,
-    coverage,
-    kind,
-    status.join(),
-    involved.join(),
-    parties.join(),
-    representatives,
-    districtKeys,
-  ]);
+  }, [filtered, kind, representatives, districtKeys]);
   return (
     <div className="page-shell">
       <PageIntro
@@ -732,8 +723,8 @@ export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
             : t("Boundary source · US Census")}
         </External>
         <Link to="/sources">{t("All sources & credits")}</Link>
-        <Link to="/visa-data?view=map">
-          {t("Explore visa applicants worldwide")} <ArrowUpRight size={15} />
+        <Link to="/visa-data">
+          {t("Visa timelines")} <ArrowUpRight size={15} />
         </Link>
       </div>
       {selected && (
@@ -815,339 +806,6 @@ export function Coverage({ worldwide = false }: { worldwide?: boolean }) {
               </External>
             </>
           )}
-        </Modal>
-      )}
-    </div>
-  );
-}
-export function VisaData() {
-  const { profiles } = useData();
-  const [view, setView] = useState(
-    new URLSearchParams(window.location.search).get("view") === "map"
-      ? "map"
-      : "table",
-  );
-  const [post, setPost] = useState("");
-  const [days, setDays] = useState("90");
-  const [status, setStatus] = useState("active");
-  const [category, setCategory] = useState("");
-  const [shade, setShade] = useState("count");
-  const [metric, setMetric] = useState<Metric>("sinceFiling");
-  const [selected, setSelected] = useState<Region | null>(null);
-  const [postSearch, setPostSearch] = useState("");
-  const filters = { post, days: Number(days), status, category };
-  const remote = usePublicView<ReturnType<typeof visaStatistics>>(
-    "/stats/visas?" +
-      new URLSearchParams({ post, days, status, category, metric }),
-  );
-  const sample = useMemo(
-    () => (previewMode ? visaStatistics(profiles, filters, metric) : null),
-    [profiles, post, days, status, category, metric],
-  );
-  const stats = sample ?? remote?.data;
-  const posts = stats?.posts ?? (post ? [post] : []);
-  const metrics: Metric[] =
-    status === "active"
-      ? ["sinceFiling", "sinceNvc"]
-      : ["total", "filingInterview", "nvcInterview", "nvcClosure"];
-  const regions = Object.fromEntries(
-    Object.entries(stats?.countries ?? {}).map(([name, value]) => [
-      name,
-      { key: name, name, ...value },
-    ]),
-  );
-  useEffect(() => setSelected(null), [post, days, status, category, metric]);
-  return (
-    <div className="page-shell">
-      <PageIntro
-        eyebrow={t("COMMUNITY VISA DATA")}
-        title={
-          <>
-            {t("Visa processing")} {t("in our community.")}
-          </>
-        }
-        text={t(
-          "Compare self-reported timelines by visa category and consular post. These are community reports, not State Department estimates.",
-        )}
-      />
-      <div className="toolbar">
-        <div className="segmented">
-          <button
-            className={view === "table" ? "selected" : ""}
-            onClick={() => setView("table")}
-          >
-            <Table2 size={16} />
-            {t("Table view")}
-          </button>
-          <button
-            className={view === "map" ? "selected" : ""}
-            onClick={() => setView("map")}
-          >
-            <MapIcon size={16} />
-            {t("Map view")}
-          </button>
-        </div>
-        <span className="small-copy">
-          {t("Medians in calendar days · Missing dates excluded")}
-        </span>
-      </div>
-      <div className="data-filters">
-        <label className="field">
-          <span>{t("Consular post")}</span>
-          <input
-            aria-label={t("Search consular posts")}
-            type="search"
-            placeholder={t("Search posts…")}
-            value={postSearch}
-            onChange={(e) => setPostSearch(e.target.value)}
-          />
-          <select
-            aria-label={t("Select consular post")}
-            value={post}
-            onChange={(e) => setPost(e.target.value)}
-          >
-            <option value="">{t("All posts")}</option>
-            {posts
-              .filter(
-                (p) =>
-                  p.toLowerCase().includes(postSearch.toLowerCase()) ||
-                  p === post,
-              )
-              .map((p) => (
-                <option key={p} value={p}>
-                  {p}
-                </option>
-              ))}
-          </select>
-        </label>
-        <label className="field">
-          <span>{t("Last confirmed")}</span>
-          <select value={days} onChange={(e) => setDays(e.target.value)}>
-            <option value="30">{t("Within 30 days")}</option>
-            <option value="60">{t("Within 60 days")}</option>
-            <option value="90">{t("Within 90 days")}</option>
-            <option value="0">{t("Any time")}</option>
-          </select>
-        </label>
-        <label className="field">
-          <span>{t("Case status")}</span>
-          <select
-            value={status}
-            onChange={(e) => {
-              setStatus(e.target.value);
-              setMetric(e.target.value === "active" ? "sinceFiling" : "total");
-            }}
-          >
-            <option value="active">{t("Active cases")}</option>
-            <option value="closed">{t("Closed cases")}</option>
-          </select>
-        </label>
-        <label className="field">
-          <span>
-            {t("Visa category ")}
-            {view === "map" ? t("(required)") : ""}
-          </span>
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            <option value="">
-              {view === "map"
-                ? t("Select a category")
-                : t("All visa categories")}
-            </option>
-            {visaCategories.map((c) => (
-              <option key={c} value={c}>
-                {t(c)}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
-      {!stats && (
-        <p role="status">
-          {remote?.error
-            ? t("Something went wrong. Please try again.")
-            : t("Loading…")}
-        </p>
-      )}
-      <div className="data-summary">
-        <span>
-          {t(
-            status === "active"
-              ? "{count} active cases in this view"
-              : "{count} closed cases in this view",
-            { count: number(stats?.count ?? 0) },
-          )}
-        </span>
-        <span>
-          <strong>{number(Object.keys(regions).length)}</strong>
-          {t(" confirmed nationalities")}
-        </span>
-        <span>
-          <strong>{number(stats?.postCount ?? 0)}</strong>
-          {t(" consular posts")}
-        </span>
-      </div>
-      {view === "table" ? (
-        <div className="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>{t("Visa category")}</th>
-                <th>{t("Cases")}</th>
-                {metrics.map((m) => (
-                  <th key={m}>
-                    {t(metricLabels[m])}
-                    <small>{t("median days · sample size")}</small>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {visaCategories
-                .filter(
-                  (v) => (!category || v === category) && stats?.categories[v],
-                )
-                .map((v) => {
-                  const vc = stats!.categories[v];
-                  return (
-                    <tr key={v}>
-                      <th>{v}</th>
-                      <td>{number(vc.count)}</td>
-                      {metrics.map((m) => {
-                        const s = vc.metrics[m];
-                        return (
-                          <td key={m}>
-                            {s.median === null
-                              ? "—"
-                              : number(Math.round(s.median))}
-                            <small>
-                              {t("n = ")}
-                              {number(s.sample)}
-                            </small>
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-              {stats && !stats.count && (
-                <tr>
-                  <td colSpan={metrics.length + 2}>
-                    <Empty title={t("No cases match these filters yet")}>
-                      {t(
-                        "As people add timelines, medians and sample sizes will appear here.",
-                      )}{" "}
-                      <Link to="/account">{t("Add your experience")}</Link>
-                      {t(" or broaden the filters.")}
-                    </Empty>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <MapPanel
-          title={`${t("Visa applicants worldwide")}${category ? ` · ${category}` : ""}`}
-          expandable={!!category}
-        >
-          <div className="map-toolbar applicant-toolbar">
-            <label className="inline-field">
-              {t("Shade by")}
-              <select value={shade} onChange={(e) => setShade(e.target.value)}>
-                <option value="count">{t("Number of applicants")}</option>
-                <option value="median">{t("Median wait")}</option>
-              </select>
-            </label>
-            <label className="inline-field">
-              {t("Metric")}
-              <select
-                value={metric}
-                onChange={(e) => setMetric(e.target.value as Metric)}
-              >
-                {metrics.map((m) => (
-                  <option key={m} value={m}>
-                    {t(metricLabels[m])}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-          {category ? (
-            <GeoMap
-              kind="world"
-              measure="applicants"
-              regions={regions}
-              shade={shade}
-              onSelect={setSelected}
-            />
-          ) : (
-            <Empty title={t("Choose a visa category to explore the map")}>
-              {t(
-                "Comparing like categories gives the numbers context. Use the visa category filter above.",
-              )}
-            </Empty>
-          )}
-        </MapPanel>
-      )}
-      <div className="map-sources">
-        <External href="https://www.naturalearthdata.com/downloads/50m-cultural-vectors/50m-admin-0-countries-2/">
-          {t("Boundary source · Natural Earth")}
-        </External>
-        <Link to="/sources">{t("All sources & credits")}</Link>
-      </div>
-      <details className="methodology">
-        <summary>
-          <Info size={17} />
-          {t(" How to read these numbers")}
-        </summary>
-        <p>
-          {t(
-            "The map groups cases by confirmed applicant nationality. Older entries without a confirmed nationality remain in the table but are excluded from the map. The post filter selects the processing embassy or consulate. Medians describe reported durations, not predictions; each metric shows its own sample size.",
-          )}
-        </p>
-        <p>
-          {t(
-            "Active cases have no current final decision. Administrative processing, §221(g), and policy-related refusals stay active. Approved, issued, finally refused, and withdrawn cases are closed, unless reopened. Filing to final decision uses the first closing event after the most recent reopening. First-interview metrics exclude future appointments.",
-          )}
-        </p>
-        <p>
-          {t(
-            "“Last confirmed” records when the account holder reviewed the timelines, including a confirmation that nothing has changed. It does not imply independent verification. Small samples and self-selection can distort comparisons.",
-          )}
-        </p>
-      </details>
-      {selected && (
-        <Modal title={t("APPLICANT COUNTRY")} onClose={() => setSelected(null)}>
-          <h2>{t(selected.name)}</h2>
-          <p>
-            {category} · {t(status)}
-            {t(" cases · ")}
-            {post || t("All posts")}
-          </p>
-          <div className="country-metrics">
-            <strong>{number(selected.count)}</strong>
-            <span>{t("reported applicants")}</span>
-            <strong>
-              {selected.median == null
-                ? "—"
-                : t("{days} days", {
-                    days: number(Math.round(selected.median)),
-                  })}
-            </strong>
-            <span>
-              {t(metricLabels[metric])}
-              {t(" · n=")}
-              {number(selected.sample || 0)}
-            </span>
-          </div>
-          <p className="method-note">
-            {t(
-              "These are self-reported community timelines, not government processing estimates.",
-            )}
-          </p>
         </Modal>
       )}
     </div>

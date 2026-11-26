@@ -13,8 +13,8 @@
     "start": "node dist/server.js",
     "test": "tsx --test tests/email-signin.test.ts tests/metrics.test.ts tests/storage.test.ts tests/i18n.test.ts tests/canonical.test.ts tests/reminders.test.ts tests/coverage.test.ts tests/visa-workflow.test.ts",
     "data:refresh": "tsx scripts/refresh-data.ts",
-    "db:migrate": "tsx server/migrate-cli.ts",
-    "reminders": "tsx server/reminders-cli.ts",
+    "db:migrate": "tsx server/cli/migrate.ts",
+    "reminders": "tsx server/cli/reminders.ts",
     "test:integration": "tsx --test tests/api.test.ts",
     "data:legislation": "python3 scripts/refresh-legislation.py"
   },

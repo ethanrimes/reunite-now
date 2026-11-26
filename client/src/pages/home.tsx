@@ -9,13 +9,12 @@ import {
   Heart,
   ShieldCheck,
 } from "lucide-react";
-import { usePublicView, useData } from "../app/api";
+import { coverageSnapshot, useData, useSnapshot } from "../app/api";
 import { previewMode } from "../app/preview";
 import { Participate } from "../features/policy/campaign";
 // HumanitarianCases ("The Americans and their families paying the price") is
 // intentionally not rendered here; keep the component for future use.
 import { PetitionContext } from "../features/policy/petition-context";
-import type { PlaceCount } from "../../../shared/public-views";
 
 const demands = [
   {
@@ -35,12 +34,12 @@ const demands = [
   },
 ];
 export function Home() {
-  const { profiles, loading, me } = useData();
-  const reach = usePublicView<{ places: PlaceCount[] }>("/stats/coverage");
+  const { profiles, loading, error, me } = useData();
+  const reach = useSnapshot(coverageSnapshot, !previewMode);
   const places = previewMode
     ? profiles.map((p) => ({ ...p, count: 1 }))
-    : (reach?.data?.places ?? []);
-  const pending = previewMode ? loading : !reach?.data;
+    : (reach?.data ?? []);
+  const unavailable = previewMode ? loading || !!error : !reach?.data;
   const us = places.filter((p) => p.country === "United States");
   const nstates = new Set(us.map((p) => p.state)).size,
     ndistricts = new Set(us.map((p) => `${p.state}-${p.district}`)).size;
@@ -117,18 +116,18 @@ export function Home() {
         </div>
         <div>
           <strong>
-            {pending
+            {unavailable
               ? "—"
               : number(places.reduce((sum, p) => sum + p.count, 0))}
           </strong>
           <span>{t("petition signatories")}</span>
         </div>
         <div>
-          <strong>{pending ? "—" : number(nstates)}</strong>
+          <strong>{unavailable ? "—" : number(nstates)}</strong>
           <span>{t("US states & territories")}</span>
         </div>
         <div>
-          <strong>{pending ? "—" : number(ndistricts)}</strong>
+          <strong>{unavailable ? "—" : number(ndistricts)}</strong>
           <span>{t("congressional districts")}</span>
         </div>
         <Link to="/coverage">
@@ -136,6 +135,11 @@ export function Home() {
           <ArrowUpRight size={20} />
         </Link>
       </section>
+      {reach?.error && (
+        <p className="method-note" role="alert">
+          {t("Something went wrong. Please try again.")}
+        </p>
+      )}
       <div className="petition-motivation">
         <PetitionContext />
       </div>

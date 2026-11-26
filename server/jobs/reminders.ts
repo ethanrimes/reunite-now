@@ -1,9 +1,9 @@
 import { createHash } from "node:crypto";
-import { db, transaction, type Queryable } from "./db";
-import { emailReady, sendEmail } from "./email";
-import { acrossRegions, routed } from "./regions";
-import { caseStatus } from "../shared/metrics";
-import type { Profile } from "../shared/schema";
+import { db, transaction, type Queryable } from "../storage/db";
+import { emailReady, sendEmail } from "../email/delivery";
+import { acrossRegions, routed } from "../storage/regions";
+import { caseStatus } from "../../shared/metrics";
+import type { Profile } from "../../shared/schema";
 
 export function reminderRecipients(email: string, additional: string[] = []) {
   return [

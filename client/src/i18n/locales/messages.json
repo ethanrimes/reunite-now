@@ -1,4 +1,194 @@
 {
+  "View timeline": {
+    "es": "Ver cronología",
+    "pt": "Ver cronologia",
+    "tl": "Tingnan ang timeline"
+  },
+  "Also share the dates and types of all completed milestones in this case’s public timeline.": {
+    "es": "Compartir también las fechas y los tipos de todos los hitos completados en la cronología pública de este caso.",
+    "pt": "Compartilhar também as datas e os tipos de todas as etapas concluídas na cronologia pública deste caso.",
+    "tl": "Ibahagi rin sa pampublikong timeline ng kasong ito ang mga petsa at uri ng lahat ng nakumpletong yugto."
+  },
+  "A case timeline shows the dates and types of all completed milestones only if the owner chooses to share that history.": {
+    "es": "La cronología de un caso muestra las fechas y los tipos de todos los hitos completados solo si su titular decide compartir ese historial.",
+    "pt": "A cronologia do caso mostra as datas e os tipos de todas as etapas concluídas somente se o titular optar por compartilhar esse histórico.",
+    "tl": "Makikita lang ang mga petsa at uri ng lahat ng nakumpletong yugto kung pinili ng may-ari na ibahagi ang kasaysayan ng kaso."
+  },
+  "The timeline explorer uses fictional cases.": {
+    "es": "El explorador de plazos usa casos ficticios.",
+    "pt": "O explorador de prazos usa casos fictícios.",
+    "tl": "Kathang-isip ang mga kaso sa timeline explorer."
+  },
+  "Community discussion of family-based visa cases and applicants’ experiences.": {
+    "es": "Foro comunitario sobre casos de visas familiares y experiencias de solicitantes.",
+    "pt": "Discussões da comunidade sobre vistos familiares e experiências dos solicitantes.",
+    "tl": "Talakayan ng komunidad tungkol sa mga family visa at karanasan ng mga aplikante."
+  },
+  "Visa timelines": {
+    "es": "Plazos de visa",
+    "pt": "Prazos de visto",
+    "tl": "Mga tagal ng visa"
+  },
+  "Immediate family": {
+    "es": "Familia inmediata",
+    "pt": "Familiares imediatos",
+    "tl": "Malapit na pamilya"
+  },
+  "Fiancé visas": {
+    "es": "Visas de prometido/a",
+    "pt": "Vistos de noivo(a)",
+    "tl": "Mga visa para sa nobyo o nobya"
+  },
+  "Family preference": {
+    "es": "Preferencia familiar",
+    "pt": "Preferência familiar",
+    "tl": "Preperensiyang pampamilya"
+  },
+  "Employment-based": {
+    "es": "Visas basadas en el empleo",
+    "pt": "Vistos baseados em emprego",
+    "tl": "Mga visa batay sa trabaho"
+  },
+  "Diversity visas": {
+    "es": "Visas de diversidad",
+    "pt": "Vistos de diversidade",
+    "tl": "Mga visa sa programang diversity"
+  },
+  "Search visa categories": {
+    "es": "Buscar categorías de visa",
+    "pt": "Buscar categorias de visto",
+    "tl": "Maghanap ng kategorya ng visa"
+  },
+  "Select all": {
+    "es": "Seleccionar todo",
+    "pt": "Selecionar tudo",
+    "tl": "Piliin lahat"
+  },
+  "Deselect all": {
+    "es": "Deseleccionar todo",
+    "pt": "Desmarcar tudo",
+    "tl": "Alisin ang lahat ng pagpili"
+  },
+  "No matches": {
+    "es": "Sin coincidencias",
+    "pt": "Nenhum resultado",
+    "tl": "Walang tugma"
+  },
+  "Last updated": {
+    "es": "Última actualización",
+    "pt": "Última atualização",
+    "tl": "Huling na-update"
+  },
+  "NVC arrival date": {
+    "es": "Fecha de llegada al NVC",
+    "pt": "Data de chegada ao NVC",
+    "tl": "Petsa ng pagdating sa NVC"
+  },
+  "Time since arrival at post": {
+    "es": "Tiempo desde la llegada al consulado",
+    "pt": "Tempo desde a chegada ao posto consular",
+    "tl": "Tagal mula nang dumating sa konsulado"
+  },
+  "Post arrival date": {
+    "es": "Fecha de llegada al consulado",
+    "pt": "Data de chegada ao posto consular",
+    "tl": "Petsa ng pagdating sa konsulado"
+  },
+  "221(g) wait for reinterview": {
+    "es": "Espera de nueva entrevista por 221(g)",
+    "pt": "Espera por nova entrevista sob 221(g)",
+    "tl": "Paghihintay sa panibagong panayam sa ilalim ng 221(g)"
+  },
+  "First interview date": {
+    "es": "Fecha de la primera entrevista",
+    "pt": "Data da primeira entrevista",
+    "tl": "Petsa ng unang panayam"
+  },
+  "Shortest": {
+    "es": "Mínimo",
+    "pt": "Mínimo",
+    "tl": "Pinakamaikli"
+  },
+  "Q1": {
+    "es": "Q1",
+    "pt": "Q1",
+    "tl": "Q1"
+  },
+  "Q3": {
+    "es": "Q3",
+    "pt": "Q3",
+    "tl": "Q3"
+  },
+  "Longest": {
+    "es": "Máximo",
+    "pt": "Máximo",
+    "tl": "Pinakamatagal"
+  },
+  "Individual cases": {
+    "es": "Casos individuales",
+    "pt": "Casos individuais",
+    "tl": "Mga indibidwal na kaso"
+  },
+  "Time waiting": {
+    "es": "Tiempo de espera",
+    "pt": "Tempo de espera",
+    "tl": "Tagal ng paghihintay"
+  },
+  "Other visa data sources": {
+    "es": "Otras fuentes de datos de visas",
+    "pt": "Outras fontes de dados sobre vistos",
+    "tl": "Iba pang mapagkukunan ng datos sa visa"
+  },
+  "From the first recorded NVC arrival to today, even if the case has moved on.": {
+    "es": "Desde la primera llegada registrada al NVC hasta hoy, aunque el caso haya avanzado.",
+    "pt": "Da primeira chegada registrada ao NVC até hoje, mesmo que o caso tenha avançado.",
+    "tl": "Mula sa unang naitalang pagdating sa NVC hanggang ngayon, kahit umusad na ang kaso."
+  },
+  "From the first Ready milestone at the consular post to today.": {
+    "es": "Desde el primer estado «Ready» en el consulado hasta hoy.",
+    "pt": "Do primeiro status “Ready” no posto consular até hoje.",
+    "tl": "Mula sa unang katayuang Ready sa konsulado hanggang ngayon."
+  },
+  "From the first interview to today for a reported 221(g) case with no completed reinterview.": {
+    "es": "Desde la primera entrevista hasta hoy, en casos 221(g) sin segunda entrevista realizada.",
+    "pt": "Da primeira entrevista até hoje, em casos 221(g) sem nova entrevista concluída.",
+    "tl": "Mula sa unang panayam hanggang ngayon para sa kasong 221(g) na wala pang natapos na panibagong panayam."
+  },
+  "The box spans the middle half of reported waits. The center mark is the median; the ends show the shortest and longest waits.": {
+    "es": "La caja cubre el 50 % central de las esperas. La marca interior es la mediana; los extremos indican la espera mínima y máxima.",
+    "pt": "A caixa cobre os 50% centrais das esperas. A marca interna é a mediana; as pontas mostram a menor e a maior espera.",
+    "tl": "Saklaw ng kahon ang gitnang kalahati ng mga tagal. Ang guhit sa loob ang median; ang mga dulo ang pinakamaikli at pinakamatagal."
+  },
+  "Only cases shared for the public timelines table appear here. Each row shows the visa type, consular post, milestone date and wait, without a name.": {
+    "es": "Aquí solo aparecen los casos compartidos para la tabla pública. Cada fila indica el tipo de visa, consulado, fecha del hito y espera, sin nombre.",
+    "pt": "Somente casos compartilhados para a tabela pública aparecem aqui. Cada linha mostra tipo de visto, posto consular, data da etapa e espera, sem nome.",
+    "tl": "Mga kasong ibinahagi para sa pampublikong talaan lamang ang makikita rito. Bawat hanay ay may uri ng visa, konsulado, petsa ng yugto at tagal ng paghihintay, walang pangalan."
+  },
+  "Share this case’s visa type, consular post, milestone date and wait in the public timelines table, without a name. I can turn this off at any time.": {
+    "es": "Compartir sin nombre el tipo de visa, consulado, fecha del hito y espera de este caso en la tabla pública. Puedo desactivarlo en cualquier momento.",
+    "pt": "Compartilhar sem nome o tipo de visto, posto consular, data da etapa e espera deste caso na tabela pública. Posso desativar isso a qualquer momento.",
+    "tl": "Ibahagi sa pampublikong talaan ang uri ng visa, konsulado, petsa ng yugto at tagal ng paghihintay ng kasong ito nang walang pangalan. Maaari ko itong ihinto anumang oras."
+  },
+  "Community reports on administrative processing after interview, organized by consulate.": {
+    "es": "Informes comunitarios sobre el trámite administrativo posterior a la entrevista, por consulado.",
+    "pt": "Relatos da comunidade sobre processamento administrativo após a entrevista, por consulado.",
+    "tl": "Mga ulat ng komunidad sa pagproseso pagkatapos ng panayam, ayon sa konsulado."
+  },
+  "Independent estimates and case updates for applications at USCIS.": {
+    "es": "Estimaciones independientes y novedades de casos ante USCIS.",
+    "pt": "Estimativas independentes e atualizações de processos no USCIS.",
+    "tl": "Mga independiyenteng pagtataya at update sa mga aplikasyon sa USCIS."
+  },
+  "Check which documentarily complete cases the NVC is scheduling at each post.": {
+    "es": "Consulte qué casos con documentación completa programa el NVC en cada consulado.",
+    "pt": "Veja quais casos com documentação completa o NVC está agendando em cada posto.",
+    "tl": "Alamin kung aling mga kasong kumpleto ang dokumento ang iniiskedyul ng NVC sa bawat konsulado."
+  },
+  "Official monthly priority-date tables for family-preference and employment visas.": {
+    "es": "Tablas mensuales oficiales de fechas de prioridad para visas de preferencia familiar y de empleo.",
+    "pt": "Tabelas mensais oficiais de datas de prioridade para vistos de preferência familiar e de trabalho.",
+    "tl": "Mga opisyal na buwanang talahanayan ng priority date para sa family-preference at employment visa."
+  },
   "Skip to content": {
     "es": "Ir al contenido",
     "pt": "Ir para o conteúdo",

@@ -4,7 +4,7 @@ import { once } from "node:events";
 import { request as httpRequest } from "node:http";
 import type { AddressInfo } from "node:net";
 import express from "express";
-import { canonicalHost } from "../server/canonical";
+import { canonicalHost } from "../server/http/canonical";
 
 test("canonical redirects preserve browser routes, protect the destination, and leave probes and writes alone", async () => {
   const app = express();

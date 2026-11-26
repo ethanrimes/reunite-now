@@ -15,7 +15,48 @@ import {
   signatoryPageSize,
 } from "../shared/signatories";
 import { isPreviewPath } from "../client/src/app/preview";
+import {
+  keyedSnapshotCache,
+  snapshotCache,
+} from "../client/src/app/snapshot-cache";
 import type { PublicProfile } from "../shared/schema";
+
+test("public snapshots share pending and successful reads, retry failures, and expire", async () => {
+  let calls = 0;
+  const source = snapshotCache(async () => {
+    if (++calls === 1) throw Error("offline");
+    return calls;
+  });
+  const failed = source.read();
+  assert.equal(source.read(), failed);
+  await assert.rejects(failed, /offline/);
+  assert.equal(await source.read(), 2);
+  assert.equal(await source.read(), 2);
+  source.clear();
+  assert.equal(await source.read(), 3);
+  const expired = snapshotCache(async () => ++calls, 0);
+  assert.equal(await expired.read(), 4);
+  assert.equal(await expired.read(), 5);
+});
+
+test("keyed public snapshots reuse recently viewed data and drop stale versions", async () => {
+  let calls = 0;
+  const cache = keyedSnapshotCache<number>(2);
+  const read = (key: string) => cache.read(key, async () => ++calls);
+  const first = read("story:v1");
+  assert.equal(read("story:v1"), first);
+  assert.equal(await first, 1);
+  assert.equal(await read("other-story"), 2);
+  assert.equal(await read("story:v1"), 1);
+  assert.equal(await read("story:v2"), 3);
+  assert.equal(await read("other-story"), 4, "least recent entry is evicted");
+  cache.clear();
+  assert.equal(
+    await read("story:v2"),
+    5,
+    "a successful write clears cached reads",
+  );
+});
 
 test("signature filters intersect all dimensions and retain unspecified parties", () => {
   const profiles = [

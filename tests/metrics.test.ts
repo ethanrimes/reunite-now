@@ -2,12 +2,137 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { caseStatus, metricDays, median, filterCases } from "../shared/metrics";
 import {
+  visaTimelines,
+  timelineSnapshot,
+  calendarWait,
+  fiveNumberSummary,
+} from "../shared/visa-timelines";
+import {
   caseSchema,
   profileSchema,
   type VisaCase,
   type PublicProfile,
 } from "../shared/schema";
 const now = new Date("2026-11-11T12:00:00Z");
+test("timeline samples use shared active immigrant and K cases with a dated milestone, longest first", () => {
+  const a = { ...visa([["At NVC", "2026-11-11"]]), shareTimelineRow: true };
+  const b = {
+    ...a,
+    ...visa([
+      ["At NVC", "2026-10-12"],
+      ["Ready", "2026-11-01"],
+    ]),
+    category: "F1" as const,
+  };
+  const profiles = [
+    {
+      updatedAt: now.toISOString(),
+      cases: [
+        a,
+        b,
+        { ...b, category: "F-1" as const },
+        { ...b, category: "Other" as const },
+        { ...b, shareTimelineRow: undefined },
+        { ...b, updatedAt: "2020-01-01" },
+        {
+          ...a,
+          events: [
+            ...a.events,
+            { id: "x", type: "Approved" as const, date: "2026-11-11" },
+          ],
+        },
+      ],
+    },
+  ];
+  const nvc = visaTimelines(profiles, "nvc", 30, now);
+  assert.deepEqual(nvc.rows, [
+    { category: "F1", post: "Bogotá", start: "2026-10-12", days: 30 },
+    { category: "K-1", post: "Bogotá", start: "2026-11-11", days: 0 },
+  ]);
+  assert.deepEqual(fiveNumberSummary(nvc.rows), [0, 7.5, 15, 22.5, 30]);
+  const post = visaTimelines(profiles, "post", 30, now);
+  assert.deepEqual(fiveNumberSummary(post.rows), [10, 10, 10, 10, 10]);
+  assert.equal(fiveNumberSummary([]), null);
+  const snapshot = timelineSnapshot(profiles, now);
+  for (const days of [0, 30, 60, 90]) {
+    for (const metric of ["nvc", "post", "reinterview"] as const) {
+      const visible = snapshot.metrics[metric]
+        .filter((row) => !days || (row.window > 0 && row.window <= days))
+        .map(({ window: _, ...row }) => row);
+      assert.deepEqual(
+        visible,
+        visaTimelines(profiles, metric, days, now).rows,
+      );
+    }
+  }
+});
+test("221(g) counts from the interview only while a reinterview is pending", () => {
+  const run = (extra: [string, string][]) =>
+    visaTimelines(
+      [
+        {
+          updatedAt: now.toISOString(),
+          cases: [
+            {
+              ...visa([
+                ["Interview", "2026-09-01"],
+                ["Administrative processing / 221(g)", "2026-09-04"],
+                ...extra,
+              ]),
+              shareTimelineRow: true,
+            },
+          ],
+        },
+      ],
+      "reinterview",
+      0,
+      now,
+    ).rows;
+  assert.equal(run([["Reinterview", "2026-12-01"]])[0].start, "2026-09-01");
+  for (const event of ["Interview", "Reinterview", "Approved", "Reopened"])
+    assert.deepEqual(run([[event, "2026-10-01"]]), []);
+});
+test("completed histories need separate sharing and contain only milestone dates and types", () => {
+  const c = visa([
+    ["Interview", "2026-12-01"],
+    ["At NVC", "2026-10-12"],
+    ["Filed", "2026-09-01"],
+  ]);
+  function rows(shareTimelineRow: boolean, shareTimelineHistory: boolean) {
+    return timelineSnapshot(
+      [
+        {
+          updatedAt: now.toISOString(),
+          cases: [{ ...c, shareTimelineRow, shareTimelineHistory }],
+        },
+      ],
+      now,
+    ).metrics.nvc;
+  }
+  assert.deepEqual(rows(false, true), []);
+  assert.equal("history" in rows(true, false)[0], false);
+  assert.deepEqual(rows(true, true)[0].history, [
+    { type: "Filed", date: "2026-09-01" },
+    { type: "At NVC", date: "2026-10-12" },
+  ]);
+});
+test("calendar waits use real month lengths and leap years", () => {
+  assert.deepEqual(calendarWait("2024-02-29", "2025-03-01"), {
+    year: 1,
+    month: 0,
+    day: 1,
+  });
+  assert.deepEqual(calendarWait("2026-01-31", "2026-02-28"), {
+    year: 0,
+    month: 1,
+    day: 0,
+  });
+  assert.deepEqual(calendarWait("2026-10-31", "2026-11-01"), {
+    year: 0,
+    month: 0,
+    day: 1,
+  });
+});
 function visa(events: [string, string][]): VisaCase {
   return {
     id: "case-1",

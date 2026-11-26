@@ -15,6 +15,19 @@ export type StoryCard = Pick<
   "id" | "title" | "country" | "name"
 > & { cover: string | null };
 export type StoryPage = { cards: StoryCard[]; next: string | null };
+export type PublishedStoryEntry = Omit<PublicStory, "photos"> &
+  Pick<StoryCard, "cover"> & { photoCount: number };
+export const storyPageSize = 9;
+
+export function matchesStory(
+  story: Pick<PublicStory, "title" | "body" | "name" | "country" | "impacts">,
+  query: string,
+) {
+  return [story.title, story.body, story.name, story.country, ...story.impacts]
+    .join(" ")
+    .toLowerCase()
+    .includes(query);
+}
 
 export function visaStatistics(
   profiles: CaseReport[],

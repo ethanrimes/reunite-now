@@ -1,7 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 process.env.TEST_DB = "1";
-const { db, migrate, transaction, closeDb } = await import("../server/db");
+const { db, migrate, transaction, closeDb } =
+  await import("../server/storage/db");
 await migrate();
 test("account deletion cascades across profile, story, sessions and reminder ledger", async () => {
   await db.query("INSERT INTO users(id,email) VALUES($1,$2)", [

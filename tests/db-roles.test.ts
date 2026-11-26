@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { Pool } from "pg";
-import { db, inRegion, closeDb, regions } from "../server/db";
-import { sendReminders } from "../server/reminders";
+import { db, inRegion, closeDb, regions } from "../server/storage/db";
+import { sendReminders } from "../server/jobs/reminders";
 
 // This suite writes synthetic reminders. Refuse every non-fixture database
 // before registering either test, including when running a single test by name.

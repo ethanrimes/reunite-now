@@ -38,7 +38,7 @@ export function About() {
           )}
         </p>
         <p>
-          <Link to="/visa-data">{t("Visa data")}</Link>
+          <Link to="/visa-data">{t("Visa timelines")}</Link>
         </p>
         <h2>{t("Who can take part")}</h2>
         <p>

@@ -3,17 +3,23 @@ import express, {
   type Response,
   type NextFunction,
 } from "express";
+import { visaStatistics, type PlaceCount } from "../shared/public-views";
 import {
-  visaStatistics,
-  type PlaceCount,
-  type StoryCard,
-} from "../shared/public-views";
+  timelineSnapshot,
+  visaTimelines,
+  waitMetrics,
+} from "../shared/visa-timelines";
 import {
   signatoryPage,
   signatoryPageSize,
   type Signatory,
 } from "../shared/signatories";
-import { filterSignatures } from "../shared/coverage";
+import {
+  combineSignatureGroups,
+  filterSignatures,
+  signatureGroup,
+  type SignatureGroup,
+} from "../shared/coverage";
 import helmet from "helmet";
 import compression from "compression";
 import cookieParser from "cookie-parser";
@@ -38,36 +44,37 @@ import {
   dual,
   region,
   inRegion,
-} from "./db";
+} from "./storage/db";
 import {
   acrossRegions,
   homeForEmail,
   locate,
   moveAccount,
   routed,
-} from "./regions";
-import { regionForIP } from "./geolocation";
+} from "./storage/regions";
+import { regionForIP } from "./storage/geolocation";
 import { feedbackMessageLimit, maintainerEmail } from "../shared/feedback";
 import {
   newSignInCode,
   tokenFromCode,
   signInMessage,
-} from "./email-signin-message";
+} from "./email/signin-message";
 import {
   emailTrace,
   linkReference,
   traceEmailSignIn,
   validReference,
-} from "./email-signin-log";
-import { emailReady, sendEmail } from "./email";
+} from "./email/signin-log";
+import { emailReady, sendEmail } from "./email/delivery";
 import {
   storyCover,
   cleanStoryPhoto,
   cleanHistoricalStoryPhotos,
-} from "./story-photos";
-import { canonicalHost } from "./canonical";
-import { sendReminders } from "./reminders";
-import { createDemoData, demoEnabled } from "./demo";
+} from "./stories/photos";
+import { publicStoryRoutes } from "./stories/public-routes";
+import { canonicalHost } from "./http/canonical";
+import { sendReminders } from "./jobs/reminders";
+import { createDemoData, demoEnabled } from "./demo/fixtures";
 import {
   consentVersion,
   profileSchema,
@@ -893,6 +900,36 @@ app.get("/api/stats/coverage", async (req, res) => {
   res.json({ places: [...places.values()] });
 });
 
+app.get("/api/stats/coverage/groups", async (_req, res) => {
+  const regions = await routed(false, () =>
+    acrossRegions(() =>
+      publicDb.query<SignatureGroup>(
+        "SELECT country,state,district,status,connection,party,count FROM public.rn_signature_groups",
+      ),
+    ),
+  );
+  res.json(
+    combineSignatureGroups([
+      ...regions.flatMap((r) => r.rows),
+      ...(demo?.profiles.map(signatureGroup) ?? []),
+    ]),
+  );
+});
+
+async function timelineProfiles() {
+  const result = await routed(false, () =>
+    acrossRegions(() =>
+      publicDb.query(`SELECT updated_at,cases FROM public.rn_visa_samples`),
+    ),
+  );
+  const profiles = result.flatMap((r) =>
+    r.rows.map((row) => ({
+      cases: row.cases,
+      updatedAt: new Date(row.updated_at).toISOString(),
+    })),
+  );
+  return [...profiles, ...(demo?.profiles ?? [])];
+}
 app.get("/api/stats/visas", async (req, res) => {
   const { post, days, status, category, metric } = z
     .object({
@@ -912,129 +949,27 @@ app.get("/api/stats/visas", async (req, res) => {
         .default("sinceFiling"),
     })
     .parse(req.query);
-  const result = await routed(false, () =>
-    acrossRegions(() =>
-      publicDb.query(`SELECT updated_at,cases FROM public.rn_visa_samples`),
-    ),
-  );
-  const profiles = result.flatMap((r) =>
-    r.rows.map((row) => ({
-      cases: row.cases,
-      updatedAt: new Date(row.updated_at).toISOString(),
-    })),
-  );
   res.json(
     visaStatistics(
-      [...profiles, ...(demo?.profiles ?? [])],
+      await timelineProfiles(),
       { post, days, status, category },
       metric,
     ),
   );
 });
-
-app.get("/api/story-cards", async (req, res) => {
-  const { after, q } = z
+app.get("/api/stats/visas/rows", async (req, res) => {
+  const { days, metric } = z
     .object({
-      after: z.string().max(80).default(""),
-      q: z.string().max(250).default(""),
+      days: z.coerce.number().int().nonnegative().default(90),
+      metric: z.enum(waitMetrics).default("nvc"),
     })
     .parse(req.query);
-  const pageSize = 9;
-  const result = await routed(false, () =>
-    acrossRegions(() =>
-      publicDb.query(
-        `SELECT id,title,country,name,cover FROM public.rn_published_stories
-         WHERE id > $1 AND ($2='' OR strpos(lower(concat_ws(' ',title,body,name,country,impacts::text)),lower($2)) > 0)
-         ORDER BY id LIMIT $3`,
-        [after, q, pageSize + 1],
-      ),
-    ),
-  );
-  const cards: StoryCard[] = result.flatMap((r) =>
-    r.rows.map(({ id, name, title, country, cover }) => ({
-      id,
-      name,
-      title,
-      country,
-      cover,
-    })),
-  );
-  for (const s of demo?.stories ?? []) {
-    if (
-      s.id > after &&
-      [s.title, s.body, s.name, s.country, ...s.impacts]
-        .join(" ")
-        .toLowerCase()
-        .includes(q.toLowerCase())
-    )
-      cards.push({
-        id: s.id,
-        name: s.name,
-        title: s.title,
-        country: s.country,
-        cover: s.photos[0] ?? null,
-      });
-  }
-  cards.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
-  res.json({
-    cards: cards.slice(0, pageSize),
-    next: cards.length > pageSize ? cards[pageSize - 1].id : null,
-  });
+  res.json(visaTimelines(await timelineProfiles(), metric, days));
 });
-app.get("/api/story/:id/photo/:index", async (req, res) => {
-  const { id, index } = req.params;
-  if (!z.uuid().safeParse(id).success || !/^[0-3]$/.test(index))
-    return void res.sendStatus(404);
-  const result = await routed(false, () =>
-    acrossRegions(() =>
-      publicDb.query(
-        `SELECT photos->>$2::int AS photo FROM public.rn_published_stories WHERE id=$1`,
-        [id, Number(index)],
-      ),
-    ),
-  );
-  const photo = result.flatMap((r) => r.rows)[0]?.photo;
-  if (!photo) return void res.sendStatus(404);
-  res
-    .type("image/webp")
-    .send(Buffer.from(photo.slice(photo.indexOf(",") + 1), "base64"));
+app.get("/api/stats/visas/snapshot", async (_req, res) => {
+  res.json(timelineSnapshot(await timelineProfiles()));
 });
-app.get("/api/story/:id", async (req, res) => {
-  const { id } = req.params;
-  const fixture = demo?.stories.find((s) => s.id === id);
-  if (fixture) return void res.json(fixture);
-  if (!z.uuid().safeParse(id).success) return void res.sendStatus(404);
-  const inlinePhotos = req.query.photos === "inline";
-  const result = await routed(false, () =>
-    acrossRegions(() =>
-      publicDb.query(
-        `SELECT title,body,support,impacts,updated_at,name,country,
-            CASE WHEN $2::boolean THEN photos END AS photos, coalesce(jsonb_array_length(photos),0) AS photo_count
-         FROM public.rn_published_stories WHERE id=$1`,
-        [id, inlinePhotos],
-      ),
-    ),
-  );
-  const row = result.flatMap((r) => r.rows)[0];
-  if (!row) return void res.sendStatus(404);
-  const { title, body, support, impacts } = row;
-  res.json({
-    id,
-    title,
-    body,
-    support,
-    impacts,
-    photos:
-      row.photos ??
-      Array.from(
-        { length: row.photo_count },
-        (_, i) => `/api/story/${id}/photo/${i}`,
-      ),
-    updatedAt: row.updated_at,
-    name: row.name,
-    country: row.country,
-  });
-});
+app.use("/api", publicStoryRoutes(demo?.stories ?? []));
 app.post("/api/jobs/reminders", async (req, res) => {
   const secret = process.env.CRON_SECRET,
     auth = req.get("authorization") || "";
@@ -1051,13 +986,6 @@ app.use("/api", (_req, res) =>
 );
 app.use("/demo", (_req, res, next) => {
   res.set("X-Robots-Tag", "noindex, nofollow");
-  next();
-});
-app.get("/stories", (_req, res, next) => {
-  res.set(
-    "Link",
-    "</api/story-cards?q=&after=>; rel=preload; as=fetch; crossorigin=anonymous",
-  );
   next();
 });
 app.use(

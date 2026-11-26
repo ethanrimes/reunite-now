@@ -1,4 +1,39 @@
 import type { PublicProfile } from "./schema";
+import type { PlaceCount } from "./public-views";
+
+export type SignatureGroup = PlaceCount & {
+  status: string;
+  connection: string;
+  party: string;
+};
+export function signatureGroup(p: PublicProfile): SignatureGroup {
+  return {
+    country: p.country,
+    state: p.state,
+    district: p.district,
+    status: p.legalStatus,
+    connection: p.personallyInvolved ? "Yes" : "No",
+    party: p.politicalAffiliation,
+    count: 1,
+  };
+}
+export function combineSignatureGroups(groups: SignatureGroup[]) {
+  const combined = new Map<string, SignatureGroup>();
+  for (const g of groups) {
+    const key = JSON.stringify([
+      g.country,
+      g.state,
+      g.district,
+      g.status,
+      g.connection,
+      g.party,
+    ]);
+    const existing = combined.get(key);
+    if (existing) existing.count += g.count;
+    else combined.set(key, { ...g });
+  }
+  return [...combined.values()];
+}
 export function filterSignatures(
   profiles: PublicProfile[],
   filters: {

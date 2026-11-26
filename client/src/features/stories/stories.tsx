@@ -1,13 +1,21 @@
 import { ScrollRail } from "../../components/scroll-rail";
 import { t, number } from "../../i18n/i18n";
-import { useEffect, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Heart, Plus, Search, Clock3 } from "lucide-react";
-import { usePublicView, useData } from "../../app/api";
+import {
+  storiesSnapshot,
+  readStoryPhotos,
+  useData,
+  useSnapshot,
+} from "../../app/api";
 import { previewMode } from "../../app/preview";
 import { PageIntro, Modal, Notice, date } from "../../components/ui";
-import type { StoryPage } from "../../../../shared/public-views";
-import { type PublicStory } from "../../../../shared/schema";
+import {
+  matchesStory,
+  storyPageSize,
+  type PublishedStoryEntry,
+} from "../../../../shared/public-views";
 
 export function Stories() {
   const {
@@ -16,34 +24,30 @@ export function Stories() {
     error: sampleError,
   } = useData();
   const [q, setQ] = useState("");
-  const [query, setQuery] = useState("");
-  useEffect(() => {
-    if (q === query) return;
-    const timer = setTimeout(() => {
-      setQuery(q);
-      setCursors([""]);
-    }, 200);
-    return () => clearTimeout(timer);
-  }, [q, query]);
-  const [cursors, setCursors] = useState([""]);
+  const [page, setPage] = useState(0);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const page = usePublicView<StoryPage>(
-    "/story-cards?" +
-      new URLSearchParams({ q: query, after: cursors.at(-1) ?? "" }),
+  const snapshot = useSnapshot(storiesSnapshot, !previewMode);
+  const entries = useMemo(
+    () =>
+      previewMode
+        ? sampleStories.map(({ photos, ...story }) => ({
+            ...story,
+            cover: photos[0] ?? null,
+            photoCount: photos.length,
+          }))
+        : (snapshot?.data ?? []),
+    [sampleStories, snapshot?.data],
   );
-  const items = previewMode
-    ? sampleStories
-        .filter((s) =>
-          [s.title, s.body, s.name, s.country, ...s.impacts]
-            .join(" ")
-            .toLowerCase()
-            .includes(q.toLowerCase()),
-        )
-        .map((s) => ({ ...s, cover: s.photos[0] }))
-    : (page?.data?.cards ?? []);
-  const loading = previewMode ? sampleLoading : !page;
-  const failed = previewMode ? !!sampleError : page?.error;
-  const next = page?.data?.next;
+  const matches = useMemo(() => {
+    const query = q.toLowerCase();
+    return query ? entries.filter((s) => matchesStory(s, query)) : entries;
+  }, [entries, q]);
+  const offset = page * storyPageSize;
+  const items = matches.slice(offset, offset + storyPageSize);
+  const next = offset + storyPageSize < matches.length;
+  const selected = entries.find((s) => s.id === selectedId);
+  const loading = previewMode ? sampleLoading : !snapshot;
+  const failed = previewMode ? !!sampleError : snapshot?.error;
   return (
     <div className="page-shell">
       <PageIntro
@@ -64,12 +68,12 @@ export function Stories() {
       </PageIntro>
       <div className="toolbar">
         <span>
-          {loading || failed || next || cursors.length > 1
+          {loading || failed
             ? null
-            : items.length === 1
+            : matches.length === 1
               ? t("1 community story")
               : t("{count} community stories", {
-                  count: number(items.length),
+                  count: number(matches.length),
                 })}
         </span>
         <label className="search">
@@ -80,6 +84,7 @@ export function Stories() {
             maxLength={250}
             onChange={(e) => {
               setQ(e.target.value);
+              setPage(0);
             }}
             placeholder={t("Search places, stories, or experiences")}
           />
@@ -152,12 +157,12 @@ export function Stories() {
           </div>
         </div>
       )}
-      {(next || cursors.length > 1) && (
+      {(next || page > 0) && (
         <div className="story-navigation">
-          {cursors.length > 1 && (
+          {page > 0 && (
             <button
               className="button outline"
-              onClick={() => setCursors((c) => c.slice(0, -1))}
+              onClick={() => setPage((p) => p - 1)}
             >
               {t("Previous stories")}
             </button>
@@ -165,7 +170,7 @@ export function Stories() {
           {next && (
             <button
               className="button outline"
-              onClick={() => setCursors((c) => [...c, next])}
+              onClick={() => setPage((p) => p + 1)}
             >
               {t("More stories")}
             </button>
@@ -180,11 +185,11 @@ export function Stories() {
           "Stories are self-reported and are not independently verified. Sharing here does not send your story to a lawyer, political group, or representative.",
         )}
       </p>
-      {selectedId && (
+      {selected && (
         <StoryDialog
-          key={selectedId}
-          id={selectedId}
-          sample={sampleStories.find((s) => s.id === selectedId)}
+          key={selected.id}
+          selected={selected}
+          samplePhotos={sampleStories.find((s) => s.id === selected.id)?.photos}
           onClose={() => setSelectedId(null)}
         />
       )}
@@ -193,107 +198,88 @@ export function Stories() {
 }
 
 function StoryDialog({
-  id,
-  sample,
+  selected,
+  samplePhotos,
   onClose,
 }: {
-  id: string;
-  sample?: PublicStory;
+  selected: PublishedStoryEntry;
+  samplePhotos?: string[];
   onClose: () => void;
 }) {
-  const detail = usePublicView<PublicStory>(
-    "/story/" + encodeURIComponent(id) + "?photos=inline",
+  const source = useMemo(
+    () => ({
+      read: () => readStoryPhotos(selected.id, selected.updatedAt),
+    }),
+    [selected.id, selected.updatedAt],
   );
-  const selected = previewMode ? sample : detail?.data;
-  const content = useRef<HTMLDivElement>(null);
-  const [photos, setPhotos] = useState<"loading" | "ready" | "error">(
-    "loading",
-  );
-  useEffect(() => {
-    if (!selected?.photos.length || !content.current) return;
-    let active = true;
-    // Decode the actual carousel images before revealing any of the story.
-    const images = Array.from(content.current.querySelectorAll("img"));
-    Promise.all(images.map((image) => image.decode())).then(
-      () => {
-        if (active) setPhotos("ready");
-      },
-      () => {
-        if (active) setPhotos("error");
-      },
-    );
-    return () => {
-      active = false;
-    };
-  }, [selected]);
-  const ready = selected && (!selected.photos.length || photos === "ready");
+  const loadPhotos = !previewMode && selected.photoCount > 0;
+  const media = useSnapshot(source, loadPhotos);
+  const photos = samplePhotos ?? media?.data ?? [];
   return (
     <Modal title={t("A COMMUNITY STORY")} wide onClose={onClose}>
-      {detail?.error || photos === "error" ? (
-        <Notice tone="error">
-          {t("Something went wrong. Please try again.")}
-        </Notice>
-      ) : (
-        !ready && <p role="status">{t("Loading…")}</p>
-      )}
-      {selected && (
-        <div className="story-modal" ref={content} hidden={!ready}>
-          {selected.photos.length > 0 && (
-            <div className="story-photos">
-              {selected.photos.length === 1 ? (
-                <img
-                  src={selected.photos[0]}
-                  alt={t("Photo shared by {name}", { name: selected.name })}
-                />
-              ) : (
-                <ScrollRail
-                  id="story-photo-carousel"
-                  title={t("Story photos")}
-                  previousLabel={t("Previous photo")}
-                  nextLabel={t("Next photo")}
-                >
-                  {selected.photos.map((src, i) => (
-                    <img
-                      key={i}
-                      src={src}
-                      alt={t("Photo {count} shared by {name}", {
-                        count: i + 1,
-                        name: selected.name,
-                      })}
-                    />
-                  ))}
-                </ScrollRail>
-              )}
-            </div>
-          )}
-          <span className="eyebrow">
-            {selected.name} · {t(selected.country)}
-          </span>
-          <h2 dir="auto">{selected.title}</h2>
-          <p className="preserve-lines" dir="auto">
-            {selected.body}
-          </p>
-          <div className="tags">
-            {selected.impacts.map((x) => (
-              <span className="tag" key={x}>
-                {x}
-              </span>
-            ))}
+      <div className="story-modal">
+        {media?.error ? (
+          <Notice tone="error">
+            {t("Something went wrong. Please try again.")}
+          </Notice>
+        ) : loadPhotos && !media ? (
+          <p role="status">{t("Loading…")}</p>
+        ) : null}
+        {photos.length > 0 && (
+          <div className="story-photos">
+            {photos.length === 1 ? (
+              <img
+                src={photos[0]}
+                alt={t("Photo shared by {name}", { name: selected.name })}
+              />
+            ) : (
+              <ScrollRail
+                id="story-photo-carousel"
+                title={t("Story photos")}
+                previousLabel={t("Previous photo")}
+                nextLabel={t("Next photo")}
+              >
+                {photos.map((src, i) => (
+                  <img
+                    key={i}
+                    src={src}
+                    alt={t("Photo {count} shared by {name}", {
+                      count: i + 1,
+                      name: selected.name,
+                    })}
+                  />
+                ))}
+              </ScrollRail>
+            )}
           </div>
-          {selected.support && (
-            <>
-              <h3>{t("The support they’re looking for")}</h3>
-              <p className="preserve-lines" dir="auto">
-                {selected.support}
-              </p>
-            </>
-          )}
-          <small>
-            {t("Story last updated ")}
-            {date(selected.updatedAt)}
-          </small>
+        )}
+        <span className="eyebrow">
+          {selected.name} · {t(selected.country)}
+        </span>
+        <h2 dir="auto">{selected.title}</h2>
+        <p className="preserve-lines" dir="auto">
+          {selected.body}
+        </p>
+        <div className="tags">
+          {selected.impacts.map((x) => (
+            <span className="tag" key={x}>
+              {x}
+            </span>
+          ))}
         </div>
-      )}
+        {selected.support && (
+          <>
+            <h3>{t("The support they’re looking for")}</h3>
+            <p className="preserve-lines" dir="auto">
+              {selected.support}
+            </p>
+          </>
+        )}
+        <small>
+          {t("Story last updated ")}
+          {date(selected.updatedAt)}
+        </small>
+      </div>
     </Modal>
   );
 }
