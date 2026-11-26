@@ -56,6 +56,7 @@ import { caseStatus } from "../../../../shared/metrics";
 export function Login() {
   const { me, config, loading } = useData();
   const [email, setEmail] = useState("");
+  const [providerEmail, setProviderEmail] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [sent, setSent] = useState(false);
@@ -65,19 +66,25 @@ export function Login() {
   const connectProvider = signInProviders.find(
     (p) => p === params.get("connect"),
   );
+  const connectWithGoogle =
+    connectProvider === "microsoft" &&
+    (params.get("method") === "google" ||
+      (config.googleAuth && providerEmail.endsWith("@gmail.com")));
   useEffect(() => {
-    if (!connectProvider) return;
+    if (!connectProvider || params.get("method") === "google") return;
     const controller = new AbortController();
     api<{ email: string }>("/auth/" + connectProvider + "/pending-email", {
       signal: controller.signal,
     })
       .then(({ email: suggested }) => {
-        if (!controller.signal.aborted && suggested)
+        if (!controller.signal.aborted && suggested) {
+          setProviderEmail(suggested);
           setEmail((current) => current || suggested);
+        }
       })
       .catch(() => {});
     return () => controller.abort();
-  }, [connectProvider]);
+  }, [connectProvider, params]);
   async function submit(e: FormEvent) {
     e.preventDefault();
     setBusy(true);
@@ -147,7 +154,27 @@ export function Login() {
           </Link>
         ) : (
           <>
-            {connectProvider ? (
+            {connectWithGoogle ? (
+              <>
+                <Notice>
+                  {t(
+                    "Connect Microsoft to your petition account with Google. Future Microsoft sign-ins will open your account directly.",
+                  )}
+                </Notice>
+                <a
+                  className="button google"
+                  href={
+                    "/api/auth/google?connect=microsoft" +
+                    (forFeedback ? "&intent=feedback" : "")
+                  }
+                >
+                  <img src="/auth/google.svg" alt="" width={20} height={20} />
+                  {t("Continue with {provider}", {
+                    provider: providerNames.google,
+                  })}
+                </a>
+              </>
+            ) : connectProvider ? (
               <Notice>
                 {t(
                   "To connect {provider}, verify your petition email once in this browser. You can use the code from the email.",
@@ -198,51 +225,57 @@ export function Login() {
                 </div>
               </>
             )}
-            <form className="signin-email" onSubmit={submit}>
-              <Field label={t("Email address")}>
-                <input
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={email}
-                  placeholder={t("you@example.com")}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </Field>
-              <button
-                className="button full"
-                disabled={
-                  busy || loading || (!config.emailAuth && !config.devAuth)
-                }
-              >
-                {busy ? t("Sending your link…") : t("Email me a sign-in link")}
-                <Mail size={18} />
-              </button>
-            </form>
-            {!loading && !config.emailAuth && !config.devAuth && (
-              <Notice>
-                {t(
-                  "Email sign-in opens once the project’s email domain is connected. You can explore the petition, policies, and maps now.",
+            {!connectWithGoogle && (
+              <>
+                <form className="signin-email" onSubmit={submit}>
+                  <Field label={t("Email address")}>
+                    <input
+                      type="email"
+                      autoComplete="email"
+                      required
+                      value={email}
+                      placeholder={t("you@example.com")}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </Field>
+                  <button
+                    className="button full"
+                    disabled={
+                      busy || loading || (!config.emailAuth && !config.devAuth)
+                    }
+                  >
+                    {busy
+                      ? t("Sending your link…")
+                      : t("Email me a sign-in link")}
+                    <Mail size={18} />
+                  </button>
+                </form>
+                {!loading && !config.emailAuth && !config.devAuth && (
+                  <Notice>
+                    {t(
+                      "Email sign-in opens once the project’s email domain is connected. You can explore the petition, policies, and maps now.",
+                    )}
+                  </Notice>
                 )}
-              </Notice>
-            )}
-            {sent && (
-              <Notice tone="success">
-                {t(
-                  "Check your inbox for your sign-in link. If you don’t see it, check your spam folder. The link expires in 15 minutes and works once.",
+                {sent && (
+                  <Notice tone="success">
+                    {t(
+                      "Check your inbox for your sign-in link. If you don’t see it, check your spam folder. The link expires in 15 minutes and works once.",
+                    )}
+                  </Notice>
                 )}
-              </Notice>
+                <Link
+                  className="text-link"
+                  to={
+                    forFeedback
+                      ? "/auth/verify?method=code&intent=feedback"
+                      : "/auth/verify?method=code"
+                  }
+                >
+                  {t("Enter a sign-in code")}
+                </Link>
+              </>
             )}
-            <Link
-              className="text-link"
-              to={
-                forFeedback
-                  ? "/auth/verify?method=code&intent=feedback"
-                  : "/auth/verify?method=code"
-              }
-            >
-              {t("Enter a sign-in code")}
-            </Link>
             {me.user && connectProvider && (
               <Link
                 className="text-link"

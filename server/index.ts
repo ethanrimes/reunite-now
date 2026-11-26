@@ -586,6 +586,24 @@ app.post(
     res.sendStatus(204);
   },
 );
+async function microsoftGmailLink(cookie: unknown) {
+  const cfg = oidc.config("microsoft", appUrl);
+  if (!cfg || typeof cookie !== "string") return;
+  const pending = await oidc
+    .readTicket(cfg, "microsoft", "link", cookie)
+    .catch(() => null);
+  if (
+    typeof pending?.identity !== "string" ||
+    typeof pending.address !== "string" ||
+    !pending.address.endsWith("@gmail.com")
+  )
+    return;
+  return {
+    identity: pending.identity,
+    address: pending.address,
+    digest: hash(cookie),
+  };
+}
 for (const provider of signInProviders) {
   const start = "/api/auth/" + provider;
   const flowCookie = "rn_flow_" + provider;
@@ -598,10 +616,18 @@ for (const provider of signInProviders) {
   app.get(start, authLimit, async (req, res) => {
     const cfg = oidc.config(provider, appUrl);
     if (!cfg) return res.redirect("/login?error=oauth");
+    const connectingMicrosoft =
+      provider === "google" && req.query.connect === "microsoft";
+    const pending = connectingMicrosoft
+      ? await microsoftGmailLink(req.cookies.rn_oidc_link)
+      : undefined;
+    if (connectingMicrosoft && !pending)
+      return res.redirect("/login?error=oauth");
     const flow = await oidc.begin(
       provider,
       cfg,
       req.query.intent === "feedback",
+      pending,
     );
     res.cookie(flowCookie, flow.cookie, { ...options, maxAge: 600000 });
     res.redirect(flow.url);
@@ -628,9 +654,58 @@ for (const provider of signInProviders) {
         req.cookies[flowCookie],
         req.method === "POST" ? req.body : req.query,
       );
+      const pending =
+        info.microsoftLink &&
+        (await microsoftGmailLink(req.cookies.rn_oidc_link));
+      if (
+        info.microsoftLink &&
+        (provider !== "google" ||
+          !pending ||
+          pending.digest !== info.microsoftLink ||
+          !info.authoritative ||
+          info.address !== pending.address)
+      ) {
+        return res.redirect(
+          303,
+          "/login?connect=microsoft&error=oauth" +
+            (info.destination === "/feedback" ? "&intent=feedback" : ""),
+        );
+      }
       const result = await routed(true, async () => {
         const linked = await linkedAccount(info.identity);
+        if (pending) {
+          // Both callbacks must belong to the same browser and agree on the Gmail address.
+          if (linked && linked.email !== pending.address) throw emailConflict();
+          const microsoftAccount = await linkedAccount(pending.identity);
+          const session = await signInAtHome(
+            pending.address,
+            detectedRegion(req),
+            undefined,
+            pending.identity,
+            microsoftAccount,
+          );
+          return { session, needsEmail: false };
+        }
         if (linked) {
+          if (!linked.email && info.authoritative && provider === "microsoft") {
+            try {
+              const session = await signInAtHome(
+                info.address,
+                linked.home,
+                undefined,
+                info.identity,
+                linked,
+              );
+              return { session, needsEmail: false };
+            } catch (err) {
+              if (!(
+                err instanceof Error &&
+                "status" in err &&
+                err.status === 409
+              ))
+                throw err;
+            }
+          }
           const session = await inRegion(linked.home, () =>
             transaction((q) => issueSession(linked.id, q)),
           );
@@ -667,6 +742,11 @@ for (const provider of signInProviders) {
           303,
           "/login?connect=" +
             provider +
+            (provider === "microsoft" &&
+            info.address.endsWith("@gmail.com") &&
+            oidc.config("google", appUrl)
+              ? "&method=google"
+              : "") +
             (info.destination === "/feedback" ? "&intent=feedback" : ""),
         );
       }

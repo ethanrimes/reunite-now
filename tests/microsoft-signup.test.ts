@@ -57,7 +57,9 @@ test("Verified email unifies first and returning sign-ins while retaining legacy
     const id_token = await new SignJWT({
       nonce,
       email,
-      ...(google && { email_verified: true }),
+      ...(google
+        ? { email_verified: true }
+        : { verified_primary_email: verifiedPrimary }),
     })
       .setProtectedHeader({ alg: "RS256", kid: "profile-test-key" })
       .setIssuer(google ? "https://accounts.google.com" : issuer)
@@ -74,20 +76,26 @@ test("Verified email unifies first and returning sign-ins while retaining legacy
       .find((c) => c.startsWith(name + "=") && !c.startsWith(name + "=;"))
       ?.split(";")[0];
   }
+  let verifiedPrimary: string | undefined;
   let client = 0;
   async function signIn(
     sub: string,
     claim?: string,
     provider: "google" | "microsoft" = "microsoft",
+    connect?: { cookie: string; callbackCookie?: string },
   ) {
     client++;
     const headers = { "X-Forwarded-For": "192.0.2." + client };
-    const start = await http(base + "/api/auth/" + provider, {
-      redirect: "manual",
-      headers,
-    });
+    const start = await http(
+      base + "/api/auth/" + provider + (connect ? "?connect=microsoft" : ""),
+      {
+        redirect: "manual",
+        headers: { ...headers, Cookie: connect?.cookie ?? "" },
+      },
+    );
     const params = new URL(start.headers.get("location")!).searchParams;
     assert.equal(params.get("scope"), "openid email");
+    if (connect) assert.equal(params.get("login_hint"), "member@gmail.com");
     nonce = params.get("nonce")!;
     subject = sub;
     email = claim;
@@ -99,7 +107,15 @@ test("Verified email unifies first and returning sign-ins while retaining legacy
         params.get("state"),
       {
         redirect: "manual",
-        headers: { ...headers, Cookie: cookie(start, "rn_flow_" + provider)! },
+        headers: {
+          ...headers,
+          Cookie: [
+            cookie(start, "rn_flow_" + provider),
+            connect?.callbackCookie ?? connect?.cookie,
+          ]
+            .filter(Boolean)
+            .join("; "),
+        },
       },
     );
   }
@@ -179,6 +195,47 @@ test("Verified email unifies first and returning sign-ins while retaining legacy
     assert.equal(next.email, email);
     assert.equal((await user(await signIn(sub))).id, first.id);
   }
+  const gmailUser = await user(
+    await signIn("google-member", "member@gmail.com", "google"),
+  );
+  verifiedPrimary = "MEMBER@gmail.com";
+  const direct = await signIn("verified-ms-gmail", "member@gmail.com");
+  assert.equal(direct.headers.get("location"), "/account");
+  assert.equal((await user(direct)).id, gmailUser.id);
+  verifiedPrimary = undefined;
+  const suggested = await signIn("suggested-ms-gmail", "member@gmail.com");
+  assert.equal(
+    suggested.headers.get("location"),
+    "/login?connect=microsoft&method=google",
+  );
+  assert.equal(cookie(suggested, "rn_session"), undefined);
+  const connect = { cookie: cookie(suggested, "rn_oidc_link")! };
+  const mismatch = await signIn(
+    "another-google-account",
+    "different@gmail.com",
+    "google",
+    connect,
+  );
+  assert.equal(cookie(mismatch, "rn_session"), undefined);
+  const otherBrowser = await signIn(
+    "google-member",
+    "member@gmail.com",
+    "google",
+    { ...connect, callbackCookie: "" },
+  );
+  assert.equal(cookie(otherBrowser, "rn_session"), undefined);
+  const connected = await signIn(
+    "google-member",
+    "member@gmail.com",
+    "google",
+    connect,
+  );
+  assert.equal((await user(connected)).id, gmailUser.id);
+  assert.equal(
+    (await user(await signIn("suggested-ms-gmail"))).id,
+    gmailUser.id,
+  );
+
   // Legacy provider-only users keep their original id and records. A different
   // account owning the chosen address must never be overwritten.
   const { createHash } = await import("node:crypto");

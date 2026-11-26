@@ -87,7 +87,12 @@ export async function readTicket(
     })
   ).payload;
 }
-export async function begin(p: Provider, c: Config, feedback: boolean) {
+export async function begin(
+  p: Provider,
+  c: Config,
+  feedback: boolean,
+  microsoftLink?: { digest: string; address: string },
+) {
   const state = random(),
     nonce = random(),
     verifier = random();
@@ -100,6 +105,8 @@ export async function begin(p: Provider, c: Config, feedback: boolean) {
     state,
     nonce,
   }).toString();
+  if (p === "google" && microsoftLink)
+    url.searchParams.set("login_hint", microsoftLink.address);
   if (p === "microsoft") {
     url.searchParams.set(
       "claims",
@@ -120,6 +127,7 @@ export async function begin(p: Provider, c: Config, feedback: boolean) {
       state,
       nonce,
       verifier,
+      ...(microsoftLink && { microsoftLink: microsoftLink.digest }),
       destination: feedback ? "/feedback" : "/account",
     }),
   };
@@ -219,7 +227,13 @@ export async function finish(
     Boolean(address) &&
     ((p === "microsoft" &&
       (primary?.success === true || verified) &&
-      ["outlook.com", "hotmail.com", "live.com", "msn.com"].includes(domain)) ||
+      [
+        "outlook.com",
+        "hotmail.com",
+        "live.com",
+        "msn.com",
+        "gmail.com",
+      ].includes(domain)) ||
       (verified &&
         ((p === "google" &&
           (domain === "gmail.com" ||
@@ -239,6 +253,8 @@ export async function finish(
     address,
     emailVerified: Boolean(address) && verified,
     authoritative,
+    microsoftLink:
+      typeof saved.microsoftLink === "string" ? saved.microsoftLink : undefined,
     destination: saved.destination === "/feedback" ? "/feedback" : "/account",
   };
 }
