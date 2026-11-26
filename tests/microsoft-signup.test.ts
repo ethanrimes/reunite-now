@@ -337,6 +337,29 @@ test("Verified email unifies first and returning sign-ins while retaining legacy
     (await user(await signIn("new-yahoo", undefined, "yahoo"))).id,
     "existing-user",
   );
+  for (const provider of ["google", "apple", "yahoo", "microsoft"] as const) {
+    for (const emailFirst of [true, false]) {
+      const subject = provider + (emailFirst ? "-email-first" : "-oauth-first");
+      const address = subject + "@gmail.com";
+      verifiedPrimary = provider === "microsoft" ? address : undefined;
+      const byEmail = () => mailbox(address.toUpperCase());
+      const byProvider = () => signIn(subject, address, provider);
+      const firstAccount = await user(
+        await (emailFirst ? byEmail() : byProvider()),
+      );
+      const sameAccount = await user(
+        await (emailFirst ? byProvider() : byEmail()),
+      );
+      assert.equal(sameAccount.id, firstAccount.id, subject);
+      assert.equal(sameAccount.email, address);
+      assert.equal(
+        (await db.query("SELECT id FROM users WHERE email=$1", [address])).rows
+          .length,
+        1,
+      );
+    }
+  }
+  verifiedPrimary = undefined;
   // Legacy provider-only users keep their original id and records. A different
   // account owning the chosen address must never be overwritten.
   const { createHash } = await import("node:crypto");
